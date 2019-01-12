@@ -16,7 +16,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-
+import frc.robot.commands.DriveDistance;
+import frc.robot.commands.RotateAngle;
 import frc.robot.subsystems.DriveTrain;
 
 
@@ -35,19 +36,7 @@ public class Robot extends TimedRobot {
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 
-  /*Vision Testing*/
-  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-  NetworkTableEntry tv = table.getEntry("tv");
-  NetworkTableEntry tx = table.getEntry("tx");
-  NetworkTableEntry ty = table.getEntry("ty");
-  NetworkTableEntry ta = table.getEntry("ta");
-  NetworkTableEntry ts = table.getEntry("ts");
-  NetworkTableEntry tl = table.getEntry("tl");
-
-  public static final double CAMERA_HEIGHT = 0.0; //Inches, height of Limelight
-  public static final double TARGET_HEIGHT = 0.0; //Inches, height of field target
-  public static final double CAMERA_ANGLE = 0.0;  //Degrees, angle that the camera is mounted at
-
+  
 
   /**
    * This function is run when the robot is first started up and should be
@@ -72,7 +61,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-  
+    
   }
 
   /**
@@ -142,6 +131,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
+    SmartDashboard.putData(new RotateAngle(90));
     Scheduler.getInstance().run();
   }
 
@@ -151,26 +142,6 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
     Scheduler.getInstance().run();
-    visionTest();
   }
 
-  public void visionTest() {
-    boolean validTarget = tv.getBoolean(false);
-    double x = tx.getDouble(0.0);
-    double y = ty.getDouble(0.0);
-    double area = ta.getDouble(0.0);
-    double skew = ts.getDouble(0.0);
-    double latency = tl.getDouble(0.0);
-
-    SmartDashboard.putBoolean("LimelightValidTarget", validTarget);
-    SmartDashboard.putNumber("LimelightX", x);
-    SmartDashboard.putNumber("LimelightY", y);
-    SmartDashboard.putNumber("LimelightArea", area);
-    SmartDashboard.putNumber("LimelightSkew", skew);
-    SmartDashboard.putNumber("LimelightLatency", latency);
-
-    //Maths
-    double distance = (TARGET_HEIGHT - CAMERA_HEIGHT) / Math.tan(CAMERA_ANGLE + x);
-    SmartDashboard.putNumber("LimelightDistance", distance);
-  }
 }
