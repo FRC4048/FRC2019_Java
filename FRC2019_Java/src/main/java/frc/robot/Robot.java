@@ -46,6 +46,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+  
   }
 
   /**
@@ -55,6 +56,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+  
   }
 
   @Override
@@ -107,6 +109,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    System.out.println("teleop init");
   }
 
   /**

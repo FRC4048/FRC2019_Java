@@ -1,4 +1,4 @@
-package main.java.frc.drive;
+package frc.drive;
 
 /**
  * Base class for enclosure. Implements common behavior that helps with the robot driving:

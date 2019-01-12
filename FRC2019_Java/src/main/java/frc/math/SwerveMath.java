@@ -1,4 +1,4 @@
-package main.java.frc.math;
+package frc.math;
 
 import java.util.Arrays;
 import java.util.List;

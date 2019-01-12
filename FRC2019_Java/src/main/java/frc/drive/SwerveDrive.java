@@ -1,8 +1,8 @@
-package main.java.frc.drive;
+package frc.drive;
 
-import org.usfirst.frc4048.swerve.math.CentricMode;
-import org.usfirst.frc4048.swerve.math.SwerveDirective;
-import org.usfirst.frc4048.swerve.math.SwerveMath;
+import frc.math.CentricMode;
+import frc.math.SwerveDirective;
+import frc.math.SwerveMath;
 
 import java.util.List;
 

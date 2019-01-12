@@ -1,4 +1,4 @@
-package main.java.frc.math;
+package frc.math;
 
 /**
  * SwerveDirective is the instruction for drive control action. Use the values from this class to set the angle and speed of

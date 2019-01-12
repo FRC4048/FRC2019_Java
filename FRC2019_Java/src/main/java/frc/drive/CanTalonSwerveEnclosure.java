@@ -1,11 +1,11 @@
-package main.java.frc.drive;
+package frc.drive;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import org.usfirst.frc4048.swerve.drive.BaseEnclosure;
-import org.usfirst.frc4048.swerve.drive.SwerveEnclosure;
+import frc.drive.BaseEnclosure;
+import frc.drive.SwerveEnclosure;
 
 /**
  * An implementation of the SwerveEnclosure using CanTalon motors and encoders

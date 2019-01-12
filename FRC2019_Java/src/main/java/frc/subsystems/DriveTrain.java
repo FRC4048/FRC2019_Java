@@ -7,7 +7,18 @@
 
 package frc.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.sensors.PigeonIMU;
+
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.drive.CanTalonSwerveEnclosure;
+import frc.drive.SwerveDrive;
 import frc.robot.RobotMap;
 
 /**
@@ -27,6 +38,11 @@ public class DriveTrain extends Subsystem {
   private WPI_TalonSRX steerRR;
   private PigeonIMU pigeon;
   private Encoder encoder;
+
+  private AnalogInput analogInputFrontRight;
+  private AnalogInput analogInputFrontLeft;
+  private AnalogInput analogInputRearRight;
+  private AnalogInput analogInputRearLeft;
 
   public SwerveDrive swerveDrivetrain;
   private CanTalonSwerveEnclosure frontLeftWheel;
@@ -66,16 +82,16 @@ public class DriveTrain extends Subsystem {
   private final int TIMEOUT = 100;
 
   public DriveTrain() {
-    driveFL = WPI_TalonSRX(RobotMap.FRONT_LEFT_DRIVE_MOTOR_ID);
-    driveFR = WPI_TalonSRX(RobotMap.FRONT_RIGHT_DRIVE_MOTOR_ID);
-    driveRL = WPI_TalonSRX(RobotMap.REAR_LEFT_DRIVE_MOTOR_ID);
-    driveRR = WPI_TalonSRX(RobotMap.REAR_RIGHT_DRIVE_MOTOR_ID);
-    steerFL = WPI_TalonSRX(RobotMap.FRONT_LEFT_STEER_MOTOR_ID);
-    steerFR = WPI_TalonSRX(RobotMap.FRONT_RIGHT_STEER_MOTOR_ID);
-    steerRL = WPI_TalonSRX(RobotMap.REAR_LEFT_STEER_MOTOR_ID);
-    steerRR = WPI_TalonSRX(RobotMap.REAR_RIGHT_DRIVE_MOTOR_ID);
-    pigeon = PigeonIMU(RobotMap.DRIVE_PIGEON_ID);
-    encoder = Encoder(RobotMap.SWERVE_DRIVE_ENCODER_A_ID, RobotMap.SWERVE_DRIVE_ENCODER_B_ID);
+    driveFL = new WPI_TalonSRX(RobotMap.FRONT_LEFT_DRIVE_MOTOR_ID);
+    driveFR = new WPI_TalonSRX(RobotMap.FRONT_RIGHT_DRIVE_MOTOR_ID);
+    driveRL = new WPI_TalonSRX(RobotMap.REAR_LEFT_DRIVE_MOTOR_ID);
+    driveRR = new WPI_TalonSRX(RobotMap.REAR_RIGHT_DRIVE_MOTOR_ID);
+    steerFL = new WPI_TalonSRX(RobotMap.FRONT_LEFT_STEER_MOTOR_ID);
+    steerFR = new WPI_TalonSRX(RobotMap.FRONT_RIGHT_STEER_MOTOR_ID);
+    steerRL = new WPI_TalonSRX(RobotMap.REAR_LEFT_STEER_MOTOR_ID);
+    steerRR = new WPI_TalonSRX(RobotMap.REAR_RIGHT_DRIVE_MOTOR_ID);
+    pigeon = new PigeonIMU(RobotMap.DRIVE_PIGEON_ID);
+    encoder = new Encoder(RobotMap.SWERVE_DRIVE_ENCODER_A_ID, RobotMap.SWERVE_DRIVE_ENCODER_B_ID);
 
     init();
   }
@@ -89,8 +105,6 @@ public class DriveTrain extends Subsystem {
   @Override
   public void periodic() {
     // Put code here to be run every loop
-
-    loggingContext.writeData();
   }
 
   // Put methods for controlling this subsystem
@@ -99,10 +113,10 @@ public class DriveTrain extends Subsystem {
     pigeon.setYaw(0, TIMEOUT);
     pigeon.setFusedHeading(0, TIMEOUT);
 
-    initSteerMotor(frontRightSteerMotor);
-    initSteerMotor(frontLeftSteerMotor);
-    initSteerMotor(rearLeftSteerMotor);
-    initSteerMotor(rearRightSteerMotor);
+    initSteerMotor(steerFR);
+    initSteerMotor(steerFL);
+    initSteerMotor(steerRL);
+    initSteerMotor(steerRR);
 
     frontRightWheel.setReverseEncoder(REVERSE_ENCODER);
     frontLeftWheel.setReverseEncoder(REVERSE_ENCODER);
@@ -117,9 +131,6 @@ public class DriveTrain extends Subsystem {
     resetDriveEncoder();
 
     resetQuadEncoder();
-
-    globalDriveDirSpeed = 0;
-    globalDriveDistance = 0;
   }
 
   private void initSteerMotor(WPI_TalonSRX steerMotor) {
@@ -145,19 +156,19 @@ public class DriveTrain extends Subsystem {
   }
 
   public void resetQuadEncoder() {
-    frontRightSteerMotor.setSelectedSensorPosition(
-        (int) ((getAnalogInputFrontRight().getValue() - FR_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
-    frontLeftSteerMotor.setSelectedSensorPosition(
+    steerFR.setSelectedSensorPosition(
+        (int) ((analogInputFrontRight.getValue() - FR_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
+    steerFL.setSelectedSensorPosition(
         (int) ((analogInputFrontLeft.getValue() - FL_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
-    rearLeftSteerMotor.setSelectedSensorPosition(
+    steerRL.setSelectedSensorPosition(
         (int) ((analogInputRearLeft.getValue() - RL_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
-    rearRightSteerMotor.setSelectedSensorPosition(
+    steerRR.setSelectedSensorPosition(
         (int) ((analogInputRearRight.getValue() - RR_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
 
-    frontRightSteerMotor.set(ControlMode.Position, 0);
-    frontLeftSteerMotor.set(ControlMode.Position, 0);
-    rearLeftSteerMotor.set(ControlMode.Position, 0);
-    rearRightSteerMotor.set(ControlMode.Position, 0);
+    steerFR.set(ControlMode.Position, 0);
+    steerFL.set(ControlMode.Position, 0);
+    steerRL.set(ControlMode.Position, 0);
+    steerRR.set(ControlMode.Position, 0);
   }
 
   public void resetDriveEncoder() {
@@ -181,12 +192,12 @@ public class DriveTrain extends Subsystem {
    * Outputs absolute encoder positions
    */
   public void outputAbsEncValues() {
-    SmartDashboard.putNumber("Front Right Enc", frontRightSteerMotor.getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Front Left Enc", frontLeftSteerMotor.getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Rear Left Enc", rearLeftSteerMotor.getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Rear Right Enc", rearRightSteerMotor.getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Front Right Enc", steerFR.getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Front Left Enc", steerFL.getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Rear Left Enc", steerRL.getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Rear Right Enc", steerRR.getSelectedSensorPosition(0));
 
-    SmartDashboard.putNumber("Front Right Abs", getAnalogInputFrontRight().getValue());
+    SmartDashboard.putNumber("Front Right Abs", analogInputFrontRight.getValue());
     SmartDashboard.putNumber("Front Left Abs", analogInputFrontLeft.getValue());
     SmartDashboard.putNumber("Rear Left Abs", analogInputRearLeft.getValue());
     SmartDashboard.putNumber("Rear Right Abs", analogInputRearRight.getValue());
@@ -196,10 +207,10 @@ public class DriveTrain extends Subsystem {
    * Turns wheels to reset position
    */
   public void setZero() {
-    frontRightSteerMotor.set(ControlMode.Position, 0);
-    frontLeftSteerMotor.set(ControlMode.Position, 0);
-    rearLeftSteerMotor.set(ControlMode.Position, 0);
-    rearRightSteerMotor.set(ControlMode.Position, 0);
+    steerFR.set(ControlMode.Position, 0);
+    steerFL.set(ControlMode.Position, 0);
+    steerRL.set(ControlMode.Position, 0);
+    steerRR.set(ControlMode.Position, 0);
   }
 
   public double getDistance() {
