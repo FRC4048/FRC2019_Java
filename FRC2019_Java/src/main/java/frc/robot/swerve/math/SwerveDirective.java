@@ -6,18 +6,32 @@ package frc.robot.swerve.math;
  */
 public class SwerveDirective {
     private double angle;
-    private double speed;
+	private double speed;
 
-    public SwerveDirective(double angle, double speed) {
-        this.angle = angle;
-        this.speed = speed;
-    }
+	
+	public SwerveDirective() { 
+	}
 
-    public double getAngle() {
-        return angle;
-    }
+	
+	public SwerveDirective(double angle, double speed) { 
+		this.angle = angle; 
+		this.speed = speed; 
+	}
 
-    public double getSpeed() {
-        return speed;
-    }
+	public double getAngle() {
+		return angle;
+	}
+
+	public double getSpeed() {
+		return speed;
+	}
+
+	public void setAngle(double angle) {
+		this.angle = angle;
+	}
+
+
+	public void setSpeed(double speed) {
+		this.speed = speed;
+	}
 }

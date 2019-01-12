@@ -7,10 +7,14 @@ public class Drive extends Command {
 
     double fwd, str, rcw;
 
+    public Drive() {
+        requires(Robot.drivetrain);
+    }
+
     // Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-        requires(Robot.drivetrain);
+        
 	}
 
 	// Called repeatedly when this Command is scheduled to run

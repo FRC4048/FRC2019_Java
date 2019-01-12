@@ -29,7 +29,7 @@ public class RobotMap {
   public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 6; 
   public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 5; 
   public static final int REAR_LEFT_DRIVE_MOTOR_ID = 7;
-  public static final int REAR_RIGHT_DRIVE_MOTOR_ID = 8;
+  public static final int REAR_RIGHT_DRIVE_MOTOR_ID = 8; 
   public static final int FRONT_LEFT_STEER_MOTOR_ID = 2; 
   public static final int FRONT_RIGHT_STEER_MOTOR_ID = 1; 
   public static final int REAR_LEFT_STEER_MOTOR_ID = 3; 
@@ -42,7 +42,7 @@ public class RobotMap {
 
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
-  
+
   public static final int DRIVE_PIGEON_ID = 9;
 
   
