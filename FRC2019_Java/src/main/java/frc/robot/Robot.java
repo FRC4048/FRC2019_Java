@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,6 +28,21 @@ public class Robot extends TimedRobot {
   
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+
+  /*Vision Testing*/
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+  NetworkTableEntry tv = table.getEntry("tv");
+  NetworkTableEntry tx = table.getEntry("tx");
+  NetworkTableEntry ty = table.getEntry("ty");
+  NetworkTableEntry ta = table.getEntry("ta");
+  NetworkTableEntry ts = table.getEntry("ts");
+  NetworkTableEntry tl = table.getEntry("tl");
+
+  public static final double CAMERA_HEIGHT = 0.0; //Inches, height of Limelight
+  public static final double TARGET_HEIGHT = 0.0; //Inches, height of field target
+  public static final double CAMERA_ANGLE = 0.0;  //Degrees, angle that the camera is mounted at
+
 
   /**
    * This function is run when the robot is first started up and should be
@@ -125,5 +143,27 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    Scheduler.getInstance().run();
+    visionTest();
+  }
+
+  public void visionTest() {
+    boolean validTarget = tv.getBoolean(false);
+    double x = tx.getDouble(0.0);
+    double y = ty.getDouble(0.0);
+    double area = ta.getDouble(0.0);
+    double skew = ts.getDouble(0.0);
+    double latency = tl.getDouble(0.0);
+
+    SmartDashboard.putBoolean("LimelightValidTarget", validTarget);
+    SmartDashboard.putNumber("LimelightX", x);
+    SmartDashboard.putNumber("LimelightY", y);
+    SmartDashboard.putNumber("LimelightArea", area);
+    SmartDashboard.putNumber("LimelightSkew", skew);
+    SmartDashboard.putNumber("LimelightLatency", latency);
+
+    //Maths
+    double distance = (TARGET_HEIGHT - CAMERA_HEIGHT) / Math.tan(CAMERA_ANGLE + x);
+    SmartDashboard.putNumber("LimelightDistance", distance);
   }
 }
