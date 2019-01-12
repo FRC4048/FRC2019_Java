@@ -12,9 +12,13 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+
+import frc.robot.subsystems.DriveTrain;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,7 +29,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
  */
 public class Robot extends TimedRobot {
   public static OI oi;
-  
+  public static DriveTrain drivetrain;
+
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -50,6 +55,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    drivetrain = new DriveTrain();
+
+    //OI must be initilized last
     oi = new OI();
     SmartDashboard.putData("Auto mode", m_chooser);
   }
@@ -127,7 +135,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    System.out.println("teleop init");
   }
 
   /**

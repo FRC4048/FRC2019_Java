@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.subsystems;
+package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -17,9 +17,10 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.drive.CanTalonSwerveEnclosure;
-import frc.drive.SwerveDrive;
+import frc.robot.swerve.drive.CanTalonSwerveEnclosure;
+import frc.robot.swerve.drive.SwerveDrive;
 import frc.robot.RobotMap;
+import frc.robot.commands.Drive;
 
 /**
  * Add your docs here.
@@ -62,10 +63,10 @@ public class DriveTrain extends Subsystem {
   private final boolean REVERSE_ENCODER = true;
   private final boolean REVERSE_OUTPUT = true;
 
-  private final int FR_ZERO = 1028;
-  private final int FL_ZERO = 1784;
-  private final int RL_ZERO = 2475;
-  private final int RR_ZERO = 1448;
+  private final int FR_ZERO = 986;//1028;
+  private final int FL_ZERO = 1768;//1784;
+  private final int RL_ZERO = 1460;//2475;
+  private final int RR_ZERO = 2432;//1448;
 
   private final double P = 10;
   private final double I = 0;
@@ -89,22 +90,42 @@ public class DriveTrain extends Subsystem {
     steerFL = new WPI_TalonSRX(RobotMap.FRONT_LEFT_STEER_MOTOR_ID);
     steerFR = new WPI_TalonSRX(RobotMap.FRONT_RIGHT_STEER_MOTOR_ID);
     steerRL = new WPI_TalonSRX(RobotMap.REAR_LEFT_STEER_MOTOR_ID);
-    steerRR = new WPI_TalonSRX(RobotMap.REAR_RIGHT_DRIVE_MOTOR_ID);
+    steerRR = new WPI_TalonSRX(RobotMap.REAR_RIGHT_STEER_MOTOR_ID);
     pigeon = new PigeonIMU(RobotMap.DRIVE_PIGEON_ID);
     encoder = new Encoder(RobotMap.SWERVE_DRIVE_ENCODER_A_ID, RobotMap.SWERVE_DRIVE_ENCODER_B_ID);
+    
+    driveFL.setNeutralMode(NeutralMode.Brake);
+    driveFR.setNeutralMode(NeutralMode.Brake);
+    driveRL.setNeutralMode(NeutralMode.Brake);
+    driveRR.setNeutralMode(NeutralMode.Brake);
+
+    analogInputFrontLeft = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_FRONT_LEFT_ID);
+    analogInputFrontRight = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID);
+    analogInputRearLeft = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_REAR_LEFT_ID);
+    analogInputRearRight = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_REAR_RIGHT_ID);
+
+    frontLeftWheel = new CanTalonSwerveEnclosure("FrontLeftWheel", driveFL, steerFL, GEAR_RATIO);
+    frontRightWheel = new CanTalonSwerveEnclosure("FrontRightWheel", driveFR, steerFR, GEAR_RATIO);
+    rearLeftWheel = new CanTalonSwerveEnclosure("RearLeftWheel", driveRL, steerRL, GEAR_RATIO);
+    rearRightWheel = new CanTalonSwerveEnclosure("RearRightWheel", driveRR, steerRR, GEAR_RATIO);
 
     init();
+
+    swerveDrivetrain = new SwerveDrive(frontRightWheel, frontLeftWheel, rearLeftWheel, rearRightWheel, WIDTH, LENGTH);
+
   }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new Drive());
   }
 
   @Override
   public void periodic() {
     // Put code here to be run every loop
+    outputAbsEncValues();
   }
 
   // Put methods for controlling this subsystem
@@ -156,14 +177,10 @@ public class DriveTrain extends Subsystem {
   }
 
   public void resetQuadEncoder() {
-    steerFR.setSelectedSensorPosition(
-        (int) ((analogInputFrontRight.getValue() - FR_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
-    steerFL.setSelectedSensorPosition(
-        (int) ((analogInputFrontLeft.getValue() - FL_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
-    steerRL.setSelectedSensorPosition(
-        (int) ((analogInputRearLeft.getValue() - RL_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
-    steerRR.setSelectedSensorPosition(
-        (int) ((analogInputRearRight.getValue() - RR_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
+    steerFR.setSelectedSensorPosition((int) ((analogInputFrontRight.getValue() - FR_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
+    steerFL.setSelectedSensorPosition((int) ((analogInputFrontLeft.getValue() - FL_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
+    steerRL.setSelectedSensorPosition((int) ((analogInputRearLeft.getValue() - RL_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
+    steerRR.setSelectedSensorPosition((int) ((analogInputRearRight.getValue() - RR_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
 
     steerFR.set(ControlMode.Position, 0);
     steerFL.set(ControlMode.Position, 0);
