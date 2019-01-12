@@ -1,4 +1,4 @@
-package frc.math;
+package frc.robot.swerve.math;
 
 public enum CentricMode {
     ROBOT,

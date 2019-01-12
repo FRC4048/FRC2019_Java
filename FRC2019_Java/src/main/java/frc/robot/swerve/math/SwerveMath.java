@@ -1,4 +1,4 @@
-package frc.math;
+package frc.robot.swerve.math;
 
 import java.util.Arrays;
 import java.util.List;

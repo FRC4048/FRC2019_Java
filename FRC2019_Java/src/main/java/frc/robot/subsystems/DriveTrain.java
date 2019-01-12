@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.subsystems;
+package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -17,9 +17,10 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.drive.CanTalonSwerveEnclosure;
-import frc.drive.SwerveDrive;
+import frc.robot.swerve.drive.CanTalonSwerveEnclosure;
+import frc.robot.swerve.drive.SwerveDrive;
 import frc.robot.RobotMap;
+import frc.robot.commands.Drive;
 
 /**
  * Add your docs here.
@@ -92,14 +93,23 @@ public class DriveTrain extends Subsystem {
     steerRR = new WPI_TalonSRX(RobotMap.REAR_RIGHT_DRIVE_MOTOR_ID);
     pigeon = new PigeonIMU(RobotMap.DRIVE_PIGEON_ID);
     encoder = new Encoder(RobotMap.SWERVE_DRIVE_ENCODER_A_ID, RobotMap.SWERVE_DRIVE_ENCODER_B_ID);
+    
+    frontLeftWheel = new CanTalonSwerveEnclosure("FrontLeftWheel", driveFL, steerFL, GEAR_RATIO);
+    frontRightWheel = new CanTalonSwerveEnclosure("FrontRightWheel", driveFR, steerFR, GEAR_RATIO);
+    rearLeftWheel = new CanTalonSwerveEnclosure("RearLeftWheel", driveRL, steerRL, GEAR_RATIO);
+    rearRightWheel = new CanTalonSwerveEnclosure("RearRightWheel", driveRR, steerRR, GEAR_RATIO);
 
     init();
+
+    swerveDrivetrain = new SwerveDrive(frontRightWheel, frontLeftWheel, rearLeftWheel, rearRightWheel, WIDTH, LENGTH);
+
   }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new Drive());
   }
 
   @Override

@@ -1,8 +1,8 @@
-package frc.drive;
+package frc.robot.swerve.drive;
 
-import frc.math.CentricMode;
-import frc.math.SwerveDirective;
-import frc.math.SwerveMath;
+import frc.robot.swerve.math.CentricMode;
+import frc.robot.swerve.math.SwerveDirective;
+import frc.robot.swerve.math.SwerveMath;
 
 import java.util.List;
 
