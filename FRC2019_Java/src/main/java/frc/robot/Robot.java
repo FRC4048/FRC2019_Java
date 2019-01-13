@@ -12,7 +12,14 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.commands.DriveDistance;
+import frc.robot.commands.RotateAngle;
 import frc.robot.subsystems.DriveTrain;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,6 +34,9 @@ public class Robot extends TimedRobot {
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+
+  
 
   /**
    * This function is run when the robot is first started up and should be
@@ -51,7 +61,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-  
+    
   }
 
   /**
@@ -121,6 +131,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
+    SmartDashboard.putData(new RotateAngle(90));
     Scheduler.getInstance().run();
   }
 
@@ -129,5 +141,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    Scheduler.getInstance().run();
   }
+
 }
