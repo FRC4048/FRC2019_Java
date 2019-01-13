@@ -14,8 +14,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc4048.commands.DriveDistance;
+import org.usfirst.frc4048.commands.LimelightAlign;
+import org.usfirst.frc4048.commands.LimelightDriveDistance;
 import org.usfirst.frc4048.commands.RotateAngle;
 import org.usfirst.frc4048.subsystems.DriveTrain;
+import org.usfirst.frc4048.utils.LimeLightVision;
 
 
 /**
@@ -28,6 +31,7 @@ import org.usfirst.frc4048.subsystems.DriveTrain;
 public class Robot extends TimedRobot {
   public static OI oi;
   public static DriveTrain drivetrain;
+  public static LimeLightVision limelight;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -42,10 +46,11 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     drivetrain = new DriveTrain();
-
+    limelight = new LimeLightVision();
     //OI must be initilized last
     oi = new OI();
     SmartDashboard.putData("Auto mode", m_chooser);
+    
   }
 
   /**
@@ -58,7 +63,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    
+    SmartDashboard.putNumber("distance", Robot.limelight.getDistance());
   }
 
   /**
@@ -121,6 +126,11 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    Robot.drivetrain.swerveDrivetrain.setModeField();
+    
+    SmartDashboard.putData(new DriveDistance(10, 0.0, 0.0, 0.0));
+    SmartDashboard.putData(new RotateAngle(90));
+    
   }
 
   /**
@@ -128,8 +138,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
-    SmartDashboard.putData(new RotateAngle(90));
+    
+    SmartDashboard.putData(new LimelightDriveDistance(30, 0.25));
+    SmartDashboard.putData(new LimelightAlign());
     Scheduler.getInstance().run();
   }
 
