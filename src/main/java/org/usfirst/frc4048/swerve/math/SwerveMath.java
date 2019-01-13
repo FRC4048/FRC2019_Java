@@ -1,7 +1,4 @@
-package frc.robot.swerve.math;
-
-import java.util.Arrays;
-import java.util.List;
+package org.usfirst.frc4048.swerve.math;
 
 /**
  * This is the main class for the swerveDrive library.

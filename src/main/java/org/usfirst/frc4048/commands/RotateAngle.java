@@ -1,7 +1,7 @@
-package frc.robot.commands;
+package org.usfirst.frc4048.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
+import org.usfirst.frc4048.Robot;
 
 public class RotateAngle extends Command {
 

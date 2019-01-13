@@ -1,10 +1,8 @@
-package frc.robot.swerve.drive;
+package org.usfirst.frc4048.swerve.drive;
 
-import frc.robot.swerve.math.CentricMode;
-import frc.robot.swerve.math.SwerveDirective;
-import frc.robot.swerve.math.SwerveMath;
-
-import java.util.List;
+import org.usfirst.frc4048.swerve.math.CentricMode;
+import org.usfirst.frc4048.swerve.math.SwerveDirective;
+import org.usfirst.frc4048.swerve.math.SwerveMath;
 
 /**
  * The main class for the SwerveDrive subsystem: This class handles all aspects of controlling the swerve drive.

@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
+package org.usfirst.frc4048;
 
 import edu.wpi.first.wpilibj.Joystick;
 

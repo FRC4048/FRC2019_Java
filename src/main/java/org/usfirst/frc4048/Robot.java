@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
+package org.usfirst.frc4048;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -13,12 +13,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import frc.robot.commands.DriveDistance;
-import frc.robot.commands.RotateAngle;
-import frc.robot.subsystems.DriveTrain;
+import org.usfirst.frc4048.commands.DriveDistance;
+import org.usfirst.frc4048.commands.RotateAngle;
+import org.usfirst.frc4048.subsystems.DriveTrain;
 
 
 /**

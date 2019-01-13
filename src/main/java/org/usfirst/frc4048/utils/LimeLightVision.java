@@ -1,4 +1,4 @@
-package frc.robot.utils;
+package org.usfirst.frc4048.utils;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;

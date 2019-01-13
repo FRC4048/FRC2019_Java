@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+package org.usfirst.frc4048.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -17,10 +17,10 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.swerve.drive.CanTalonSwerveEnclosure;
-import frc.robot.swerve.drive.SwerveDrive;
-import frc.robot.RobotMap;
-import frc.robot.commands.Drive;
+import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
+import org.usfirst.frc4048.swerve.drive.SwerveDrive;
+import org.usfirst.frc4048.RobotMap;
+import org.usfirst.frc4048.commands.Drive;
 
 /**
  * Add your docs here.

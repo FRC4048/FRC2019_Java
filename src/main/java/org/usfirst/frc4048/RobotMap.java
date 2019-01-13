@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
+package org.usfirst.frc4048;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
