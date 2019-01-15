@@ -7,13 +7,18 @@
 
 package org.usfirst.frc4048;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc4048.commands.DriveDistance;
+import org.usfirst.frc4048.commands.DriveDistanceMaintainAngle;
 import org.usfirst.frc4048.commands.LimelightAlign;
 import org.usfirst.frc4048.commands.LimelightDriveDistance;
 import org.usfirst.frc4048.commands.RotateAngle;
@@ -29,6 +34,8 @@ import org.usfirst.frc4048.utils.LimeLightVision;
  * project.
  */
 public class Robot extends TimedRobot {
+  private NetworkTableEntry pigeonEntry;
+  
   public static OI oi;
   public static DriveTrain drivetrain;
   public static LimeLightVision limelight;
@@ -50,7 +57,7 @@ public class Robot extends TimedRobot {
     //OI must be initilized last
     oi = new OI();
     SmartDashboard.putData("Auto mode", m_chooser);
-    
+    pigeonEntry = Shuffleboard.getTab("Drivetrain").add("Gyro Angle", Robot.drivetrain.getGyro()).getEntry();    
   }
 
   /**
@@ -141,6 +148,9 @@ public class Robot extends TimedRobot {
     
     SmartDashboard.putData(new LimelightDriveDistance(30, 0.25));
     SmartDashboard.putData(new LimelightAlign());
+    SmartDashboard.putData(new DriveDistanceMaintainAngle(80, 0.25, 0));
+    pigeonEntry.setValue(Robot.drivetrain.getGyro());
+
     Scheduler.getInstance().run();
   }
 

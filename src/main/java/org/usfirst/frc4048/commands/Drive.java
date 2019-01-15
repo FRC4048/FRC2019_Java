@@ -1,6 +1,8 @@
 package org.usfirst.frc4048.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc4048.Robot;
 
 public class Drive extends Command {
@@ -39,7 +41,9 @@ public class Drive extends Command {
     		rcw *= rcw * -1;
     	else
     		rcw *= rcw;
-        
+		
+		SmartDashboard.putNumber("rotation", rcw);	
+
         Robot.drivetrain.move(fwd, str, rcw);
 	}
 

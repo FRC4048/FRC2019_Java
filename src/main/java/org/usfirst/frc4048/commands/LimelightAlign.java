@@ -46,7 +46,7 @@ public class LimelightAlign extends Command {
     horizontalSpeed = (horizontal/distance) * speed;
     horizontalSpeed *= -1; 
     distanceSpeed = speed;
-    Scheduler.getInstance().add(new DriveDistance(diagonalDistance-minDistance, -distanceSpeed, horizontalSpeed, 0.0));
+    Scheduler.getInstance().add(new DriveDistanceMaintainAngle(diagonalDistance-minDistance, -distanceSpeed, horizontalSpeed));
   }
 
   // Make this return true when this Command no longer needs to run execute()

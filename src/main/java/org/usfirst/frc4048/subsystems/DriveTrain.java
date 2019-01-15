@@ -248,7 +248,7 @@ public class DriveTrain extends Subsystem {
     return encoder.getDirection();
   }
 
-
+  
   public void move(double fwd, double str, double rcw) {
     if (fwd <= LEFT_JOY_X_MAX_DEADZONE && fwd >= LEFT_JOY_X_MIN_DEADZONE)
       fwd = 0.0;
