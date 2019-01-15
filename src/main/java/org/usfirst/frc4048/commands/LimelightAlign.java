@@ -37,7 +37,11 @@ public class LimelightAlign extends Command {
     distance = Robot.limelight.getDistance();
     horizontal = Robot.limelight.getHorizontal();
     diagonalDistance = Math.sqrt((horizontal*horizontal)+(distance*distance));
-    speed = 0.2;
+    SmartDashboard.putNumber("diagonal distance", diagonalDistance);
+    SmartDashboard.putNumber("horizontal distance", horizontal);
+    SmartDashboard.putNumber("forward distance", distance);
+    
+    speed = 0.25;
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -58,7 +62,7 @@ public class LimelightAlign extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.drivetrain.swerveDrivetrain.setModeField();
+    Robot.drivetrain.swerveDrivetrain.setModeField(); //TODO Change mode not set to field
     SmartDashboard.putNumber("horizontal speed", horizontalSpeed);
     SmartDashboard.putNumber("distance speed", -distanceSpeed);
     

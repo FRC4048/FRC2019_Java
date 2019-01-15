@@ -11,6 +11,7 @@ import org.usfirst.frc4048.Robot;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveDistanceMaintainAngle extends Command {
   private double distance;
@@ -69,9 +70,11 @@ public class DriveDistanceMaintainAngle extends Command {
       
       double currAngle = Robot.drivetrain.getGyro();
       double rot = calcRot(startAngle, currAngle);
-
+      
 			Robot.drivetrain.move(PIDCalc(fwd), PIDCalc(dir), rot);
-			distanceLeft -= Math.abs(Robot.drivetrain.getDistance() - lastDistance);
+      SmartDashboard.putNumber("fwd", fwd);
+      SmartDashboard.putNumber("dir", dir);
+      distanceLeft -= Math.abs(Robot.drivetrain.getDistance() - lastDistance);
 			lastDistance = Robot.drivetrain.getDistance();
 		}
 		else
