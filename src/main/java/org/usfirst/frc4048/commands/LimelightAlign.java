@@ -8,12 +8,14 @@
 package org.usfirst.frc4048.commands;
 
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.swerve.math.CentricMode;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class LimelightAlign extends Command {
+public class LimelightAlign extends CommandGroup {
   double distance;
   double horizontal;
   double horizontalSpeed;
@@ -23,50 +25,42 @@ public class LimelightAlign extends Command {
   final double minDistance = 20;
   final double ANGLE = 0.0;
   double speed = 0.4;
-
+  CentricMode mode;
 
   public LimelightAlign() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.drivetrain);
+    distance = Robot.limelight.getDistance();
+    horizontal = Robot.limelight.getHorizontal();
+  
+    diagonalDistance = Math.sqrt((horizontal*horizontal)+(distance*distance));
+  
+    horizontalSpeed = (horizontal/distance) * speed;
+    horizontalSpeed *= -1; 
+    distanceSpeed = speed;
+    addSequential(new DriveDistanceMaintainAngle(diagonalDistance-minDistance, -distanceSpeed, horizontalSpeed));
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    mode = Robot.drivetrain.swerveDrivetrain.getModeRobot();
     Robot.drivetrain.swerveDrivetrain.setModeRobot();
-    distance = Robot.limelight.getDistance();
-    horizontal = Robot.limelight.getHorizontal();
-  
-    SmartDashboard.putNumber("angle", angle);
-    diagonalDistance = Math.sqrt((horizontal*horizontal)+(distance*distance));
-    
-    SmartDashboard.putNumber("diagonal distance", diagonalDistance);
-    
-  }
-
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    horizontalSpeed = (horizontal/distance) * speed;
-    horizontalSpeed *= -1; 
-    distanceSpeed = speed;
-    Scheduler.getInstance().add(new DriveDistanceMaintainAngle(diagonalDistance-minDistance, -distanceSpeed, horizontalSpeed));
-  }
-
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return true;
+ 
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.drivetrain.swerveDrivetrain.setModeField(); //TODO Change mode not set to field
+    if(mode == CentricMode.FIELD){
+      Robot.drivetrain.swerveDrivetrain.setModeField(); 
+    } else {
+      Robot.drivetrain.swerveDrivetrain.setModeRobot();
+    }
     SmartDashboard.putNumber("horizontal speed", horizontalSpeed);
     SmartDashboard.putNumber("distance speed", -distanceSpeed);
-    
+
   }
 
   // Called when another command which requires one or more of the same
