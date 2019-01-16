@@ -40,6 +40,7 @@ public class Robot extends TimedRobot {
   public static DriveTrain drivetrain;
   public static LimeLightVision limelight;
 
+
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -70,7 +71,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("distance", Robot.limelight.getDistance());
+    SmartDashboard.putNumber("forward distance", Robot.limelight.getDistance());
+    SmartDashboard.putNumber("horizontal distance", Robot.limelight.getHorizontal());
+ 
   }
 
   /**
@@ -135,7 +138,6 @@ public class Robot extends TimedRobot {
     }
     Robot.drivetrain.swerveDrivetrain.setModeField();
     
-    SmartDashboard.putData(new DriveDistance(10, 0.0, 0.0, 0.0));
     SmartDashboard.putData(new RotateAngle(90));
     
   }
@@ -146,9 +148,10 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     
+    SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
     SmartDashboard.putData(new LimelightDriveDistance(30, 0.25));
     SmartDashboard.putData(new LimelightAlign());
-    SmartDashboard.putData(new DriveDistanceMaintainAngle(80, -0.25, 0));
+    SmartDashboard.putData(new DriveDistanceMaintainAngle(80, -0.4, 0.05));
     pigeonEntry.setValue(Robot.drivetrain.getGyro());
 
     Scheduler.getInstance().run();

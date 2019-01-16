@@ -53,4 +53,12 @@ public class LimeLightVision {
     public double getHorizontal() {
         return horizontal;
     }
+    
+    public double getAngle() {
+        double angle = Math.atan(distance/horizontal);
+        
+        SmartDashboard.putNumber("angle", Math.toDegrees(angle));
+        return angle;
+    }
+
 }

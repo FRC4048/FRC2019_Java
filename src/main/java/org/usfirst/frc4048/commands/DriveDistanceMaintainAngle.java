@@ -70,10 +70,8 @@ public class DriveDistanceMaintainAngle extends Command {
       
       double currAngle = Robot.drivetrain.getGyro();
       double rot = calcRot(startAngle, currAngle);
-      
+				
 			Robot.drivetrain.move(PIDCalc(fwd), PIDCalc(dir), rot);
-      SmartDashboard.putNumber("fwd", fwd);
-      SmartDashboard.putNumber("dir", dir);
       distanceLeft -= Math.abs(Robot.drivetrain.getDistance() - lastDistance);
 			lastDistance = Robot.drivetrain.getDistance();
 		}
@@ -100,9 +98,9 @@ public class DriveDistanceMaintainAngle extends Command {
 		else
 		{
 			if(distanceLeft < MAX_ERROR) {
-				scaledSpeed = (distanceLeft/MAX_ERROR)*(Math.abs(speed)-MIN_SPEED) + MIN_SPEED;
-				if(speed < 0)
-					scaledSpeed = -scaledSpeed;
+				scaledSpeed = (distanceLeft/MAX_ERROR)*(speed);
+				// if(speed < 0)
+				// 	scaledSpeed = -scaledSpeed;
 			}
 			else
 				scaledSpeed = speed;
@@ -127,4 +125,5 @@ public class DriveDistanceMaintainAngle extends Command {
 	protected void interrupted() {
 		end();
 	}
+
 }

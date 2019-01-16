@@ -19,9 +19,10 @@ public class LimelightAlign extends Command {
   double horizontalSpeed;
   double distanceSpeed;
   double diagonalDistance;
+  double angle = 0.0;
   final double minDistance = 20;
   final double ANGLE = 0.0;
-  double speed;
+  double speed = 0.4;
 
 
   public LimelightAlign() {
@@ -36,12 +37,12 @@ public class LimelightAlign extends Command {
     Robot.drivetrain.swerveDrivetrain.setModeRobot();
     distance = Robot.limelight.getDistance();
     horizontal = Robot.limelight.getHorizontal();
+  
+    SmartDashboard.putNumber("angle", angle);
     diagonalDistance = Math.sqrt((horizontal*horizontal)+(distance*distance));
-    SmartDashboard.putNumber("diagonal distance", diagonalDistance);
-    SmartDashboard.putNumber("horizontal distance", horizontal);
-    SmartDashboard.putNumber("forward distance", distance);
     
-    speed = 0.25;
+    SmartDashboard.putNumber("diagonal distance", diagonalDistance);
+    
   }
 
   // Called repeatedly when this Command is scheduled to run
