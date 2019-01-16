@@ -7,6 +7,8 @@
 
 package org.usfirst.frc4048;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -45,5 +47,11 @@ public class RobotMap {
 
   public static final int DRIVE_PIGEON_ID = 9;
 
+  public static PowerDistributionPanel pdp;
+
+	public static void init() {
+    pdp = new PowerDistributionPanel(0);
+  }
+  
   
 }

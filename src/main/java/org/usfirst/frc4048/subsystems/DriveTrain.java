@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
 import org.usfirst.frc4048.swerve.drive.SwerveDrive;
+import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.commands.Drive;
 
@@ -114,6 +115,16 @@ public class DriveTrain extends Subsystem {
     swerveDrivetrain = new SwerveDrive(frontRightWheel, frontLeftWheel, rearLeftWheel, rearRightWheel, WIDTH, LENGTH);
 
   }
+
+  
+  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVETRAIN) {
+
+		protected void addAll() {
+		}
+
+    	
+
+    };
 
   @Override
   public void initDefaultCommand() {

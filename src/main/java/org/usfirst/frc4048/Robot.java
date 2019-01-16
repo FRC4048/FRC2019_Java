@@ -7,6 +7,7 @@
 
 package org.usfirst.frc4048;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -16,6 +17,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc4048.commands.DriveDistance;
 import org.usfirst.frc4048.commands.RotateAngle;
 import org.usfirst.frc4048.subsystems.DriveTrain;
+import org.usfirst.frc4048.utils.Logging;
+import org.usfirst.frc4048.utils.PowerDistPanel;
 
 
 /**
@@ -28,6 +31,10 @@ import org.usfirst.frc4048.subsystems.DriveTrain;
 public class Robot extends TimedRobot {
   public static OI oi;
   public static DriveTrain drivetrain;
+  public static Logging logging;
+  public static PowerDistPanel pdp;
+  public static WorkQueue wq;
+  public static double timeOfStart = 0;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -42,10 +49,14 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     drivetrain = new DriveTrain();
-
+    pdp = new PowerDistPanel();
     //OI must be initilized last
     oi = new OI();
     SmartDashboard.putData("Auto mode", m_chooser);
+
+    WorkQueue wq = new WorkQueue(512);
+		logging = new Logging(100, wq);
+		logging.startThread(); // Starts the logger
   }
 
   /**
