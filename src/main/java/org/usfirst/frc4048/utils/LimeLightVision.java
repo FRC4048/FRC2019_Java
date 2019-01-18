@@ -15,9 +15,9 @@ public class LimeLightVision {
     NetworkTableEntry ts = table.getEntry("ts");
     NetworkTableEntry tl = table.getEntry("tl");
 
-    public static final double CAMERA_HEIGHT = 45.75; // Inches, height of Limelight
+    public static final double CAMERA_HEIGHT = 49.5; // Inches, height of Limelight
     public static final double TARGET_HEIGHT = 36.5; // Inches, height of field target
-    public static final double CAMERA_ANGLE = -13.0; // Degrees, angle that the camera is mounted at
+    public static final double CAMERA_ANGLE = 0; // Degrees, angle that the camera is mounted at
 
     private double distance;
     private double horizontal;

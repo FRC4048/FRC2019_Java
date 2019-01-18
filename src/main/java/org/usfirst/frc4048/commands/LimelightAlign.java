@@ -16,15 +16,17 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class LimelightAlign extends CommandGroup {
-  double distance;
-  double horizontal;
-  double horizontalSpeed;
-  double distanceSpeed;
-  double diagonalDistance;
-  double angle = 0.0;
-  final double minDistance = 20;
-  final double ANGLE = 0.0;
-  double speed = 0.4;
+  private double distance;
+  private double horizontal;
+  private double horizontalSpeed;
+  private double distanceSpeed;
+  private double diagonalDistance;
+  private double angle = 0.0;
+  private final double minDistance = 20;
+  private final double ANGLE = 0.0;
+  private final double MAX_SPEED = 0.4;
+  private final double MIN_SPEED = 0.3;
+  private double speed = 0.4;
   CentricMode mode;
 
   public LimelightAlign() {
@@ -39,7 +41,7 @@ public class LimelightAlign extends CommandGroup {
     horizontalSpeed = (horizontal/distance) * speed;
     horizontalSpeed *= -1; 
     distanceSpeed = speed;
-    addSequential(new DriveDistanceMaintainAngle(diagonalDistance-minDistance, -distanceSpeed, horizontalSpeed));
+    addSequential(new DriveDistanceMaintainAngle(diagonalDistance-minDistance, Robot.drivetrain.getGyro(), MAX_SPEED, MIN_SPEED));
   }
 
   // Called just before this Command runs the first time

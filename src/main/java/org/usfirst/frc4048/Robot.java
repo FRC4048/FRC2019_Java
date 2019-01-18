@@ -151,9 +151,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
     SmartDashboard.putData(new LimelightDriveDistance(30, 0.25));
     SmartDashboard.putData(new LimelightAlign());
-    SmartDashboard.putData(new DriveDistanceMaintainAngle(80, -0.4, 0.05));
+    SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 0, -0.45, -0.3));
+    SmartDashboard.putNumber("distance", Robot.limelight.getDistance());
     pigeonEntry.setValue(Robot.drivetrain.getGyro());
-
+    
     Scheduler.getInstance().run();
   }
 
