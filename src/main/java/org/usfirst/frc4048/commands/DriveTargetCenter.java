@@ -48,7 +48,7 @@ public class DriveTargetCenter extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		double horizontalAngleToTarget = Robot.limelight.getHorizontalAngle();
+		double horizontalAngleToTarget = Robot.drivetrainSensors.getHorizontalAngle();
 		double forwardDistance = Robot.drivetrainSensors.getUltrasonicDistance();
 
 		if (forwardDistance < distanceFromTarget) {

@@ -20,7 +20,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc4048.commands.DriveDistance;
 import org.usfirst.frc4048.commands.DriveDistanceMaintainAngle;
 import org.usfirst.frc4048.commands.DriveTargetCenter;
-import org.usfirst.frc4048.commands.LimelightAlign;
+// import org.usfirst.frc4048.commands.LimelightAlign;
+import org.usfirst.frc4048.commands.LimelightAlignToTargetGroup;
 import org.usfirst.frc4048.commands.RotateAngle;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
@@ -153,11 +154,9 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     
     SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
-    SmartDashboard.putData(new LimelightAlign());
+    // SmartDashboard.putData(new LimelightAlign());
     SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
-
-    limelight.getTargetDistance();
-    
+    SmartDashboard.putData(new LimelightAlignToTargetGroup());    
     Scheduler.getInstance().run();
   }
 
