@@ -7,23 +7,10 @@
 
 package org.usfirst.frc4048.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.sensors.PigeonIMU;
-
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
-import org.usfirst.frc4048.swerve.drive.SwerveDrive;
-import org.usfirst.frc4048.RobotMap;
-import org.usfirst.frc4048.commands.Drive;
 
 /**
  * This subsystem holds the sensors the robot uses for navigation
