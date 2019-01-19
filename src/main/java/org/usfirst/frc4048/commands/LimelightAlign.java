@@ -9,10 +9,9 @@ package org.usfirst.frc4048.commands;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.swerve.math.CentricMode;
+import org.usfirst.frc4048.utils.CameraDistance;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class LimelightAlign extends CommandGroup {
@@ -33,8 +32,13 @@ public class LimelightAlign extends CommandGroup {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.drivetrain);
-    distance = Robot.limelight.getDistance();
-    horizontal = Robot.limelight.getHorizontal();
+
+    CameraDistance cameraDistance = Robot.limelight.getTargetDistance();
+    if (cameraDistance == null) {
+      return;
+    }
+    distance = cameraDistance.getForward();
+    horizontal = cameraDistance.getSideways();
   
     diagonalDistance = Math.sqrt((horizontal*horizontal)+(distance*distance));
   

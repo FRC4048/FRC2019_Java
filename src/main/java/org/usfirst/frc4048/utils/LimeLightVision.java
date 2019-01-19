@@ -3,6 +3,7 @@ package org.usfirst.frc4048.utils;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class LimeLightVision {
@@ -15,20 +16,27 @@ public class LimeLightVision {
     NetworkTableEntry ts = table.getEntry("ts");
     NetworkTableEntry tl = table.getEntry("tl");
 
-    public static final double CAMERA_HEIGHT = 49.5; // Inches, height of Limelight
+    NetworkTableEntry validTargetEntry = Shuffleboard.getTab("Approach").add("LimelightValidTarget", 0.0).getEntry();
+    NetworkTableEntry limelightXEntry = Shuffleboard.getTab("Approach").add("LimelightX", 0.0).getEntry();
+    NetworkTableEntry LimelightYEntry = Shuffleboard.getTab("Approach").add("LimelightY", 0.0).getEntry();
+    NetworkTableEntry forwardDistanceEntry = Shuffleboard.getTab("Approach").add("forwardDistance", 0.0).getEntry();
+    NetworkTableEntry sidewaysDistanceEntry = Shuffleboard.getTab("Approach").add("sidewaysDistance", 0.0).getEntry();
+
+    public static final double CAMERA_HEIGHT = 45.5; // Inches, height of Limelight
     public static final double TARGET_HEIGHT = 36.5; // Inches, height of field target
-    public static final double CAMERA_ANGLE = 0; // Degrees, angle that the camera is mounted at
+    public static final double CAMERA_ANGLE = -13.0; // Degrees, angle that the camera is mounted at
 
-    private double distance;
-    private double horizontal;
+    public CameraDistance getTargetDistance() {
+        double validTarget = tv.getDouble(0.0);
+        if ( validTarget != 1.0 ) {
+            return null;
+        }
 
-    public void visionTest() {
-        boolean validTarget = tv.getBoolean(false);
         double x = tx.getDouble(0.0);
         double y = ty.getDouble(0.0);
-        double area = ta.getDouble(0.0);
-        double skew = ts.getDouble(0.0);
-        double latency = tl.getDouble(0.0);
+        // double area = ta.getDouble(0.0);
+        // double skew = ts.getDouble(0.0);
+        // double latency = tl.getDouble(0.0);
 
         // SmartDashboard.putBoolean("LimelightValidTarget", validTarget);
         // SmartDashboard.putNumber("LimelightX", x);
@@ -38,27 +46,27 @@ public class LimeLightVision {
         // SmartDashboard.putNumber("LimelightLatency", latency);
 
         // Maths
-        distance = (TARGET_HEIGHT - CAMERA_HEIGHT) / Math.tan(Math.toRadians(CAMERA_ANGLE + y));
-        horizontal = distance * Math.tan(Math.toRadians(x));
+        double forwardDistance = (TARGET_HEIGHT - CAMERA_HEIGHT) / Math.tan(Math.toRadians(CAMERA_ANGLE + y));
+        double sidewaysDistance = forwardDistance * Math.tan(Math.toRadians(x));
 
-        // SmartDashboard.putNumber("LimelightDistance", distance);
-        // SmartDashboard.putNumber("Horizontal offset", horizontal);
-    }
+        validTargetEntry.setDouble(validTarget);
+        limelightXEntry.setDouble(x);
+        LimelightYEntry.setDouble(y);
+        forwardDistanceEntry.setDouble(forwardDistance);
+        sidewaysDistanceEntry.setDouble(sidewaysDistance);
 
-    public double getDistance() {
-        visionTest();
-        return distance;
+        return new CameraDistance(forwardDistance, sidewaysDistance);
     }
     
-    public double getHorizontal() {
-        return horizontal;
-    }
-    
-    public double getAngle() {
-        double angle = Math.atan(distance/horizontal);
-        
-        SmartDashboard.putNumber("angle", Math.toDegrees(angle));
-        return angle;
+    public double getHorizontalAngle() {
+        double validTarget = tv.getDouble(0.0);
+        if ( validTarget != 1.0 ) {
+            return 0.0;
+        }
+
+        double x = tx.getDouble(0.0);
+
+        return x;
     }
 
 }
