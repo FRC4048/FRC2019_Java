@@ -7,15 +7,23 @@
 
 package org.usfirst.frc4048;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc4048.commands.DriveDistance;
+import org.usfirst.frc4048.commands.DriveDistanceMaintainAngle;
+import org.usfirst.frc4048.commands.LimelightAlign;
+import org.usfirst.frc4048.commands.LimelightDriveDistance;
 import org.usfirst.frc4048.commands.RotateAngle;
 import org.usfirst.frc4048.subsystems.DriveTrain;
+import org.usfirst.frc4048.utils.LimeLightVision;
 
 
 /**
@@ -26,8 +34,12 @@ import org.usfirst.frc4048.subsystems.DriveTrain;
  * project.
  */
 public class Robot extends TimedRobot {
+  private NetworkTableEntry pigeonEntry;
+  
   public static OI oi;
   public static DriveTrain drivetrain;
+  public static LimeLightVision limelight;
+
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -42,10 +54,11 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     drivetrain = new DriveTrain();
-
+    limelight = new LimeLightVision();
     //OI must be initilized last
     oi = new OI();
     SmartDashboard.putData("Auto mode", m_chooser);
+    pigeonEntry = Shuffleboard.getTab("Drivetrain").add("Gyro Angle", Robot.drivetrain.getGyro()).getEntry();    
   }
 
   /**
@@ -58,7 +71,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    
+    SmartDashboard.putNumber("forward distance", Robot.limelight.getDistance());
+    SmartDashboard.putNumber("horizontal distance", Robot.limelight.getHorizontal());
+ 
   }
 
   /**
@@ -121,6 +136,10 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    Robot.drivetrain.swerveDrivetrain.setModeField();
+    
+    SmartDashboard.putData(new RotateAngle(90));
+    
   }
 
   /**
@@ -128,8 +147,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
-    SmartDashboard.putData(new RotateAngle(90));
+    
+    SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
+    SmartDashboard.putData(new LimelightDriveDistance(30, 0.25));
+    SmartDashboard.putData(new LimelightAlign());
+    SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 0, -0.45, -0.3));
+    SmartDashboard.putNumber("distance", Robot.limelight.getDistance());
+    pigeonEntry.setValue(Robot.drivetrain.getGyro());
+    
     Scheduler.getInstance().run();
   }
 
