@@ -19,8 +19,8 @@ public class DriveTargetCenter extends Command {
 	private boolean done = false;
 	private CentricMode mode;
 
-	private NetworkTableEntry horizontalPowerEntry = Shuffleboard.getTab("Approach").add("horizontalPower", 0.0).getEntry();
-	private NetworkTableEntry distanceEntry = Shuffleboard.getTab("Approach").add("distance", 0.0).getEntry();
+	// private NetworkTableEntry horizontalPowerEntry = Shuffleboard.getTab("Approach").add("horizontalPower", 0.0).getEntry();
+	// private NetworkTableEntry distanceEntry = Shuffleboard.getTab("Approach").add("distance", 0.0).getEntry();
 
 
 	/**
@@ -62,8 +62,8 @@ public class DriveTargetCenter extends Command {
 
 		Robot.drivetrain.move(power, horizontalPower, rot);
 
-		horizontalPowerEntry.setDouble(horizontalPower);
-		distanceEntry.setDouble(forwardDistance);
+		// horizontalPowerEntry.setDouble(horizontalPower);
+		// distanceEntry.setDouble(forwardDistance);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

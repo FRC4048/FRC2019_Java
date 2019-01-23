@@ -82,7 +82,9 @@ public class DriveDistanceMaintainAngle extends Command {
 		double power = pidCalc(distanceLeft, pMax, pMin);
 		double pFwd = power * Math.cos(headingAngle);
 		double pDir = power * Math.sin(headingAngle);
-
+		SmartDashboard.putNumber("power", power);
+		SmartDashboard.putNumber("pFwd", pFwd);
+		SmartDashboard.putNumber("pDir", pDir);
 		double currAngle = Robot.drivetrain.getGyro();
 		double rot = calcRot(startAngle, currAngle);
 
