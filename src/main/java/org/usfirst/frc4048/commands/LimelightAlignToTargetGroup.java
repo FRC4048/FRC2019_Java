@@ -43,21 +43,24 @@ public class LimelightAlignToTargetGroup extends CommandGroup {
     if(targetDistance == null) {
       forward = 0;  
       horizontal = 0;
+      System.out.println("----------------------No target detected----------------------");
+      return;
     } else {
       forward = targetDistance.getForward();
       horizontal = targetDistance.getSideways();
+      SmartDashboard.putNumber("Forward Distance", forward);
+      SmartDashboard.putNumber("Horizontal Distnace", horizontal);
     }
 
     final double angle = Math.toDegrees(Math.atan(horizontal/(forward-distanceAway)));
     final double moveDistance = Math.sqrt(Math.pow((forward-distanceAway), 2) + Math.pow(horizontal, 2));
 
-    addSequential(new LimelightOn());
     addSequential(new RotateAngle(0));//step 1  THIS WILL CHANGE
     SmartDashboard.putNumber("move Distance", moveDistance);
-    SmartDashboard.putNumber("angle", angle);
-    // addSequential(new DriveDistanceMaintainAngle(moveDistance, angle, -maxSpeed, -minSpeed)); //step 2
+    SmartDashboard.putNumber("angle 123", angle);
+    addSequential(new DriveDistanceMaintainAngle(moveDistance, angle, -maxSpeed, -minSpeed)); //step 2
     // addSequential(new DriveTargetCenter(distanceAway, -maxSpeed)); //step 3
-    addSequential(new LimelightOff());
+    // addSequential(new LimelightOff());
   }
 }
  

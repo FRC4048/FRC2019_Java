@@ -25,6 +25,7 @@ import org.usfirst.frc4048.commands.LimelightAlignToTargetGroup;
 import org.usfirst.frc4048.commands.LimelightOff;
 import org.usfirst.frc4048.commands.LimelightOn;
 import org.usfirst.frc4048.commands.RotateAngle;
+import org.usfirst.frc4048.commands.ScheduleLimelightAlign;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
 // import org.usfirst.frc4048.utils.LimeLightVision;
@@ -151,7 +152,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
     // SmartDashboard.putData(new LimelightAlign());
     SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
-    SmartDashboard.putData(new LimelightAlignToTargetGroup());   
+    SmartDashboard.putData(new ScheduleLimelightAlign());
     SmartDashboard.putData(new RotateAngle(-61.25)); 
     SmartDashboard.putData(new LimelightOn());
     SmartDashboard.putData(new LimelightOff());
@@ -162,7 +163,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    
     SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
     Scheduler.getInstance().run();
   }

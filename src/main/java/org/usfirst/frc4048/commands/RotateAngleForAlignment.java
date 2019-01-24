@@ -15,9 +15,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 public class RotateAngleForAlignment extends Command {
   private double angle;
   private double angleToMoveTo;
-  private final double angleMarginValue = 5.0;
+  private final double angleMarginValue = 10.0;
   private final double rocketSideAngle = 90.0;
-  private final double rocketBackAngle = 126.5;
+  private final double rocketBackAngle = 151.25;
   private final double rocketFrontAngle = 61.25;
   private final double cargoFrontAngle = 0.0;
 
