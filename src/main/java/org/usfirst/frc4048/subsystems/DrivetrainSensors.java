@@ -46,7 +46,7 @@ public class DrivetrainSensors extends Subsystem {
 
   public static final int LED_ON = 3;
   public static final int LED_OFF = 1;
-
+  
   public DrivetrainSensors() {
     ultrasonic = new Ultrasonic(8, 9);
     ultrasonic.setAutomaticMode(true);
@@ -61,10 +61,11 @@ public class DrivetrainSensors extends Subsystem {
   @Override
   public void periodic() {
     // Put code here to be run every loop
-    unltrasonicEntry.setDouble(ultrasonic.getRangeInches());
-    if(getTargetDistance() != null) {
-      SmartDashboard.putNumber("Distance", getTargetDistance().getForward());
-      SmartDashboard.putNumber("Horizontal", getTargetDistance().getSideways());
+    CameraDistance targetDistance = getTargetDistance();
+    // unltrasonicEntry.setDouble(ultrasonic.getRangeInches());
+    if(targetDistance != null) {
+      SmartDashboard.putNumber("Distance", targetDistance.getForward());
+      SmartDashboard.putNumber("Horizontal", targetDistance.getSideways());
     }
   }
 

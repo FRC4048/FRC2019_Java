@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc4048.commands.DriveAlignPhase2;
 import org.usfirst.frc4048.commands.DriveDistance;
 import org.usfirst.frc4048.commands.DriveDistanceMaintainAngle;
 import org.usfirst.frc4048.commands.DriveTargetCenter;
@@ -156,6 +157,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData(new RotateAngle(-61.25)); 
     SmartDashboard.putData(new LimelightOn());
     SmartDashboard.putData(new LimelightOff());
+    SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.5, false));
   }
 
   /**
