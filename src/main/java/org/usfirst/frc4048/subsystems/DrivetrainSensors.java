@@ -7,6 +7,7 @@
 
 package org.usfirst.frc4048.subsystems;
 
+import org.usfirst.frc4048.utils.CameraAngles;
 import org.usfirst.frc4048.utils.CameraDistance;
 
 import edu.wpi.first.networktables.NetworkTable;
@@ -110,17 +111,25 @@ public class DrivetrainSensors extends Subsystem {
       return new CameraDistance(forwardDistance, sidewaysDistance);
   }
   
-  public double getHorizontalAngle() {
-      double validTarget = tv.getDouble(0.0);
-      if ( validTarget != 1.0 ) {
-          return 0.0;
-      }
+  // public double getHorizontalAngle() {
+  //     double validTarget = tv.getDouble(0.0);
+  //     if ( validTarget != 1.0 ) {
+  //         return 0.0;
+  //     }
 
-      double x = tx.getDouble(0.0);
+  //     double x = tx.getDouble(0.0);
 
-      return x;
-  }
+  //     return x;
+  // }
 
+  public CameraAngles getCameraAngles() {
+    double validTarget = tv.getDouble(0.0);
+    if ( validTarget != 1.0 ) {
+        return null;
+    }
+
+    return new CameraAngles(tx.getDouble(0.0), ty.getDouble(0.0));
+}
   public void ledOn() {
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(LED_ON);
   }

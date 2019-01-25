@@ -18,9 +18,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc4048.commands.DriveAlignPhase2;
+import org.usfirst.frc4048.commands.DriveAlignPhase3;
 import org.usfirst.frc4048.commands.DriveDistance;
 import org.usfirst.frc4048.commands.DriveDistanceMaintainAngle;
-import org.usfirst.frc4048.commands.DriveTargetCenter;
+// import org.usfirst.frc4048.commands.DriveTargetCenter;
 // import org.usfirst.frc4048.commands.LimelightAlign;
 import org.usfirst.frc4048.commands.LimelightAlignToTargetGroup;
 import org.usfirst.frc4048.commands.LimelightOff;
@@ -158,6 +159,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData(new LimelightOn());
     SmartDashboard.putData(new LimelightOff());
     SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.5, false));
+    SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
   }
 
   /**

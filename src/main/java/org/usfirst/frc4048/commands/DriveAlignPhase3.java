@@ -2,17 +2,17 @@ package org.usfirst.frc4048.commands;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.swerve.math.CentricMode;
+import org.usfirst.frc4048.utils.CameraAngles;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
-public class DriveTargetCenter extends Command {
+public class DriveAlignPhase3 extends Command {
 	private final double SIDEWAYS_POWER_FACTOR = 0.1; // factor to apply to forward power when adjusting horizontally
 	private final double MIN_ANGLE_ERROR = 2.0; // The angle error that triggers correction
 	private final double ROTATION_SPEED = 0.05; // The rotation correction power
-
-	private double distanceFromTarget; // required distance from target to drive to
+	private final double DISTANCE_FROM_TARGET = 10; // required distance from target to drive to
 	private double power; // power the robot will use to drive
 
 	private double startAngle = 0.0; // Initial orientation of the robot (this is the one we will try to maintain), in degrees
@@ -26,14 +26,16 @@ public class DriveTargetCenter extends Command {
 	/**
 	 * Moves robot a certain distance while maintaining initial robot orientation
 	 * 
-	 * @param distanceFromTarget - Distance from target for the robot to drive to
-	 * @param distanceFromTarget  - total power to apply to drivetrain
+	 * @param power  - total power to apply to drivetrain
+	 * @param b
 	 */
-	public DriveTargetCenter(double distanceFromTarget, double power) {
+	public DriveAlignPhase3(double power, boolean isCamFront) {
 		requires(Robot.drivetrain);
 
-		this.distanceFromTarget = distanceFromTarget;
 		this.power = power;
+		if(!isCamFront){
+			this.power *= -1;
+		}
 	}
 
 	// Called just before this Command runs the first time
@@ -48,10 +50,16 @@ public class DriveTargetCenter extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		double horizontalAngleToTarget = Robot.drivetrainSensors.getHorizontalAngle();
+		CameraAngles cameraAngles = Robot.drivetrainSensors.getCameraAngles();
+		if(cameraAngles == null){
+			System.out.println("------------NO CAMERA VALUE------------");
+			done = true;
+			return;
+		}
+		double horizontalAngleToTarget = cameraAngles.getTx();
 		double forwardDistance = Robot.drivetrainSensors.getUltrasonicDistance();
 
-		if (forwardDistance < distanceFromTarget) {
+		if (forwardDistance < DISTANCE_FROM_TARGET) {
 			done = true;
 			return;
 		}
