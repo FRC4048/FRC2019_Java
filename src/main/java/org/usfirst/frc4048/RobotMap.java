@@ -48,10 +48,9 @@ public class RobotMap {
   public static final int DRIVE_PIGEON_ID = 9;
 
   public static PowerDistributionPanel pdp;
-
-	public static void init() {
+  public static final int PCM_CAN_ID = 10;
+  
+  public static void init() {
     pdp = new PowerDistributionPanel(0);
   }
-  
-  
 }
