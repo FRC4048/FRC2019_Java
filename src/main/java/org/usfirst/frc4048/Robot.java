@@ -41,7 +41,7 @@ import org.usfirst.frc4048.commands.RotateAngleForAlignment;
 
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.utils.Logging;
-import org.usfirst.frc4048.utils.PowerDistPanel;
+import org.usfirst.frc4048.subsystems.PowerDistPanel;
 import org.usfirst.frc4048.utils.WorkQueue;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
 // import org.usfirst.frc4048.utils.LimeLightVision;

@@ -36,7 +36,7 @@ public class MotorUtils {
 	
 	public boolean isStalled()
 	{
-		final double currentValue = RobotMap.pdp.getCurrent(PDPChannel);
+		final double currentValue = Robot.pdp.getPDP().getCurrent(PDPChannel);
 		final double now = Timer.getFPGATimestamp();
 		if (DEBUG)
 			SmartDashboard.putNumber(String.format("PDP%d.Current",  PDPChannel), currentValue);

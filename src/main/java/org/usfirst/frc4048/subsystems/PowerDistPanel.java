@@ -1,4 +1,4 @@
-package org.usfirst.frc4048.utils;
+package org.usfirst.frc4048.subsystems;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
@@ -15,15 +15,15 @@ public class PowerDistPanel extends Subsystem {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-	public static PowerDistributionPanel pdp = RobotMap.pdp;
+	public static PowerDistributionPanel pdp;
 	
+	public PowerDistPanel() {
+		pdp = new PowerDistributionPanel(RobotMap.PDP_CAN_ID);
+	}
+
 	public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    }
-    
-    public void init() {
-    	  pdp = new PowerDistributionPanel(0);
     }
     
 	public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.POWERDISTPANEL) {
@@ -45,5 +45,7 @@ public class PowerDistPanel extends Subsystem {
     	 */
     	loggingContext.writeData();
     }
-    
+    public PowerDistributionPanel getPDP() {
+		return pdp;
+	}
 }
