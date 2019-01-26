@@ -7,21 +7,44 @@
 
 package org.usfirst.frc4048;
 
+
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc4048.commands.DriveAlignPhase2;
+import org.usfirst.frc4048.commands.DriveAlignPhase3;
 import org.usfirst.frc4048.commands.DriveDistance;
+import org.usfirst.frc4048.commands.ExampleSolenoidCommand;
+
+import org.usfirst.frc4048.subsystems.CompressorSubsystem;
+import org.usfirst.frc4048.subsystems.DriveTrain;
+import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
+
+import org.usfirst.frc4048.commands.ExampleSolenoidCommand;
+import org.usfirst.frc4048.subsystems.CompressorSubsystem;
+
+import org.usfirst.frc4048.commands.DriveDistanceMaintainAngle;
+// import org.usfirst.frc4048.commands.DriveTargetCenter;
+// import org.usfirst.frc4048.commands.LimelightAlign;
+import org.usfirst.frc4048.commands.DriveAlignGroup;
+import org.usfirst.frc4048.commands.LimelightToggle;
 import org.usfirst.frc4048.commands.RotateAngle;
+import org.usfirst.frc4048.commands.RotateAngleForAlignment;
+
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.PowerDistPanel;
 import org.usfirst.frc4048.utils.WorkQueue;
-
+import org.usfirst.frc4048.subsystems.DrivetrainSensors;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,13 +53,17 @@ import org.usfirst.frc4048.utils.WorkQueue;
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends TimedRobot {  
   public static OI oi;
   public static DriveTrain drivetrain;
+
   public static Logging logging;
   public static PowerDistPanel pdp;
   public static WorkQueue wq;
   public static double timeOfStart = 0;
+  public static CompressorSubsystem compressorSubsystem;
+  public static ExampleSolenoidSubsystem solenoidSubsystem;
+  public static DrivetrainSensors drivetrainSensors;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -51,9 +78,21 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     drivetrain = new DriveTrain();
+
     pdp = new PowerDistPanel();
+    compressorSubsystem = new CompressorSubsystem();
+    solenoidSubsystem = new ExampleSolenoidSubsystem();
+    drivetrainSensors = new DrivetrainSensors();
+    // limelight = new LimeLightVision();
+
+    compressorSubsystem = new CompressorSubsystem();
+
+    drivetrainSensors = new DrivetrainSensors();
+    // limelight = new LimeLightVision();
+
     //OI must be initilized last
     oi = new OI();
+    // Robot.drivetrainSensors.ledOn();
     SmartDashboard.putData("Auto mode", m_chooser);
 
     WorkQueue wq = new WorkQueue(512);
@@ -71,7 +110,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    
+
+    SmartDashboard.putData("Extend Piston", new ExampleSolenoidCommand(true));
+    SmartDashboard.putData("Retract Piston", new ExampleSolenoidCommand(false));
+    SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
+    SmartDashboard.putBoolean("Pressure", Robot.compressorSubsystem.getPressure());
   }
 
   /**
@@ -81,7 +124,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-  
+    // Robot.drivetrainSensors.ledOff();
   }
 
   @Override
@@ -135,6 +178,26 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    Robot.drivetrain.swerveDrivetrain.setModeField();
+    
+    // Shuffleboard.getTab("Approach").add("90", new RotateAngle(90));
+    // Shuffleboard.getTab("Approach").add("-45", new RotateAngle(-45));
+    // Shuffleboard.getTab("Approach").add("0", new RotateAngle(0));
+    // Shuffleboard.getTab("Approach").add("10", new RotateAngle(10));
+    // Shuffleboard.getTab("Approach").add("-30", new RotateAngle(-30));
+
+    // Shuffleboard.getTab("Approach").add("TargetAlign", new DriveTargetCenter(10.0, -0.25));
+  
+    SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
+    // SmartDashboard.putData(new LimelightAlign());
+    SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
+    SmartDashboard.putData(new DriveAlignGroup());
+    SmartDashboard.putData(new RotateAngle(0)); 
+    SmartDashboard.putData("Limelight On", new LimelightToggle(true));
+    SmartDashboard.putData("Limelight Off", new LimelightToggle(false));
+    SmartDashboard.putData(new RotateAngleForAlignment());
+    SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.5, false));
+    SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
   }
 
   /**
@@ -142,9 +205,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+
     SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
     SmartDashboard.putData(new RotateAngle(90));
     System.out.println("test");
+    SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
     Scheduler.getInstance().run();
   
   }
@@ -154,6 +219,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+
     Scheduler.getInstance().run();
   }
 
