@@ -23,52 +23,9 @@ public class LimeLightVision {
     NetworkTableEntry ts = table.getEntry("ts");
     NetworkTableEntry tl = table.getEntry("tl");
 
-
-    private double distance;
-    private double horizontal;
-
-    public void visionTest() {
-        boolean validTarget = tv.getBoolean(false);
-        double x = tx.getDouble(0.0);
-        double y = ty.getDouble(0.0);
-        double area = ta.getDouble(0.0);
-        double skew = ts.getDouble(0.0);
-        double latency = tl.getDouble(0.0);
-
-        // SmartDashboard.putBoolean("LimelightValidTarget", validTarget);
-        // SmartDashboard.putNumber("LimelightX", x);
-        // SmartDashboard.putNumber("LimelightY", y);
-        // SmartDashboard.putNumber("LimelightArea", area);
-        // SmartDashboard.putNumber("LimelightSkew", skew);
-        // SmartDashboard.putNumber("LimelightLatency", latency);
-
-        // Maths
-        distance = (TARGET_HEIGHT - CAMERA_HEIGHT) / Math.tan(Math.toRadians(CAMERA_ANGLE + y));
-        horizontal = distance * Math.tan(Math.toRadians(x));
-
-        // SmartDashboard.putNumber("LimelightDistance", distance);
-        // SmartDashboard.putNumber("Horizontal offset", horizontal);
-    }
-
-    public double getDistance() {
-        visionTest();
-        return distance;
-    }
-    
-    public double getHorizontal() {
-        return horizontal;
-    }
-    
-    public double getAngle() {
-        double angle = Math.atan(distance/horizontal);
-        
-        SmartDashboard.putNumber("angle", Math.toDegrees(angle));
-        return angle;
-    }
-
     /**
-     * Calculate and return teh distances from the camera.
-     * @return Camera distance calculated from teh limelight, null if no target acquired
+     * Calculate and return the distances from the camera.
+     * @return Camera distance calculated from the limelight, null if no target acquired
      */
     public CameraDistance getTargetDistance() {
         double validTarget = tv.getDouble(0.0);
