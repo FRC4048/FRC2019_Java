@@ -17,12 +17,11 @@ public class DriveDistanceMaintainAngle extends Command {
 	private double totalDistance; // Total distance to travel
 	private double headingAngle; // Angle of travel, measured from the robot heading, in Radians
 	private double pMax; // Maximum power the drivetrain will get
-	private double pMin; // Minimum power robot will get
+	private double pMin; // Minimum power drivetrain will get
 
 	private double initialDrivetrainDistance; // Initial value for the robot distance from the encoder
 	private boolean done = false;
-	private double startAngle = 0.0; // Initial orientation of the robot (this is the one we will try to maintain),
-																		// in degrees
+	private double startAngle = 0.0; // Initial orientation of the robot (this is the one we will try to maintain), in degrees
 	private double time = 0; // time since starting the PID section of the route, in seconds
 	private CentricMode mode;
 	/**
@@ -47,6 +46,7 @@ public class DriveDistanceMaintainAngle extends Command {
 		// Robot.drivetrain.setZero();
 		mode = Robot.drivetrain.swerveDrivetrain.getModeRobot();
 		Robot.drivetrain.swerveDrivetrain.setModeRobot();
+		
 		initialDrivetrainDistance = Robot.drivetrain.getDistance();
 		startAngle = Robot.drivetrain.getGyro();
 		done = false;
@@ -82,7 +82,9 @@ public class DriveDistanceMaintainAngle extends Command {
 		double power = pidCalc(distanceLeft, pMax, pMin);
 		double pFwd = power * Math.cos(headingAngle);
 		double pDir = power * Math.sin(headingAngle);
-
+		SmartDashboard.putNumber("power", power);
+		SmartDashboard.putNumber("pFwd", pFwd);
+		SmartDashboard.putNumber("pDir", pDir);
 		double currAngle = Robot.drivetrain.getGyro();
 		double rot = calcRot(startAngle, currAngle);
 
