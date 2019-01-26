@@ -20,11 +20,9 @@ public class CompressorSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   private Compressor compressor;
-  private Solenoid exampleSolenoid;
-
+ 
   public CompressorSubsystem() {
     compressor = new Compressor(RobotMap.PCM_CAN_ID);
-    exampleSolenoid = new Solenoid(RobotMap.PCM_CAN_ID, 0);
     compressor.setClosedLoopControl(true);
   }
 
@@ -45,11 +43,5 @@ public class CompressorSubsystem extends Subsystem {
   public double getCurrent() {
     return compressor.getCompressorCurrent();
   }
-  public void extendPiston() {
-    exampleSolenoid.set(true);
-  }
-
-  public void retractPiston() {
-    exampleSolenoid.set(false);
-  } 
+ 
 }
