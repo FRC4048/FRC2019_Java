@@ -15,7 +15,6 @@ public class LimelightOn extends Command {
   public LimelightOn() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.drivetrainSensors);
   }
 
   // Called just before this Command runs the first time
