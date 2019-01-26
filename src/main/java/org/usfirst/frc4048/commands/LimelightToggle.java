@@ -11,10 +11,14 @@ import org.usfirst.frc4048.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class LimelightOn extends Command {
-  public LimelightOn() {
+public class LimelightToggle extends Command {
+
+  private boolean isLimelightOn;
+
+  public LimelightToggle(boolean isLimelightOn) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    this.isLimelightOn = isLimelightOn;
   }
 
   // Called just before this Command runs the first time
@@ -25,7 +29,11 @@ public class LimelightOn extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.drivetrainSensors.ledOn();
+    if (isLimelightOn) {
+      Robot.drivetrainSensors.ledOn();
+    } else {
+      Robot.drivetrainSensors.ledOff();
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

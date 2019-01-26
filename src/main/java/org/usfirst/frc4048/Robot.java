@@ -26,6 +26,7 @@ import org.usfirst.frc4048.commands.DriveDistanceMaintainAngle;
 import org.usfirst.frc4048.commands.DriveAlignGroup;
 import org.usfirst.frc4048.commands.LimelightOff;
 import org.usfirst.frc4048.commands.LimelightOn;
+import org.usfirst.frc4048.commands.LimelightToggle;
 import org.usfirst.frc4048.commands.RotateAngle;
 import org.usfirst.frc4048.commands.RotateAngleForAlignment;
 import org.usfirst.frc4048.subsystems.DriveTrain;
@@ -156,8 +157,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
     SmartDashboard.putData(new DriveAlignGroup());
     SmartDashboard.putData(new RotateAngle(0)); 
-    SmartDashboard.putData(new LimelightOn());
-    SmartDashboard.putData(new LimelightOff());
+    SmartDashboard.putData("Limelight On", new LimelightToggle(true));
+    SmartDashboard.putData("Limelight Off", new LimelightToggle(false));
     SmartDashboard.putData(new RotateAngleForAlignment());
     SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.5, false));
     SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
