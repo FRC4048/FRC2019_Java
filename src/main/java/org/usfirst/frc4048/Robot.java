@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -158,6 +159,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+
     Scheduler.getInstance().run();
   }
 
@@ -197,8 +199,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+
+    SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
+    SmartDashboard.putData(new RotateAngle(90));
+    System.out.println("test");
     SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
     Scheduler.getInstance().run();
+  
   }
 
   /**
@@ -209,5 +216,7 @@ public class Robot extends TimedRobot {
 
     Scheduler.getInstance().run();
   }
+
+
 
 }
