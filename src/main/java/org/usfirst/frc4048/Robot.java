@@ -9,6 +9,7 @@ package org.usfirst.frc4048;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -19,6 +20,7 @@ import org.usfirst.frc4048.commands.RotateAngle;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.PowerDistPanel;
+import org.usfirst.frc4048.utils.WorkQueue;
 
 
 /**
@@ -120,6 +122,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+
     Scheduler.getInstance().run();
   }
 
@@ -141,7 +144,9 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
     SmartDashboard.putData(new RotateAngle(90));
+    System.out.println("test");
     Scheduler.getInstance().run();
+  
   }
 
   /**
@@ -151,5 +156,7 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
     Scheduler.getInstance().run();
   }
+
+
 
 }

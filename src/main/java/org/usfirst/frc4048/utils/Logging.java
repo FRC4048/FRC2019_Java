@@ -252,6 +252,12 @@ public class Logging {
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
+
+				catch (Exception e){
+
+					System.out.println(e);
+				
+				}
 			}
 			print();
 		}
