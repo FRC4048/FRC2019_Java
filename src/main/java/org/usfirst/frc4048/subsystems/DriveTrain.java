@@ -63,10 +63,10 @@ public class DriveTrain extends Subsystem {
   private final boolean REVERSE_ENCODER = true;
   private final boolean REVERSE_OUTPUT = true;
 
-  private final int FR_ZERO = 1037;//1037;
-  private final int FL_ZERO = 1767;//1767;
-  private final int RL_ZERO = 2491;//1456;//1456;
-  private final int RR_ZERO = 1444;//2444;
+  private final int FR_ZERO = 1057;//1037;
+  private final int FL_ZERO = 1790;//1767;
+  private final int RL_ZERO = 2455;//1456;//1456;
+  private final int RR_ZERO = 1487;//2444;
 
   private final double P = 10;
   private final double I = 0;
@@ -181,6 +181,10 @@ public class DriveTrain extends Subsystem {
     steerFL.setSelectedSensorPosition((int) ((analogInputFrontLeft.getValue() - FL_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
     steerRL.setSelectedSensorPosition((int) ((analogInputRearLeft.getValue() - RL_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
     steerRR.setSelectedSensorPosition((int) ((analogInputRearRight.getValue() - RR_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
+    // steerFR.setSelectedSensorPosition(0);
+    // steerFL.setSelectedSensorPosition(0);
+    // steerRL.setSelectedSensorPosition(0);
+    // steerRR.setSelectedSensorPosition(0);
 
     steerFR.set(ControlMode.Position, 0);
     steerFL.set(ControlMode.Position, 0);
@@ -244,6 +248,7 @@ public class DriveTrain extends Subsystem {
     return encoder.getDirection();
   }
 
+  
   public void move(double fwd, double str, double rcw) {
     if (fwd <= LEFT_JOY_X_MAX_DEADZONE && fwd >= LEFT_JOY_X_MIN_DEADZONE)
       fwd = 0.0;

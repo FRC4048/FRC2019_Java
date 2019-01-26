@@ -7,8 +7,8 @@ public class RotateAngle extends Command {
 
     public double angle;
     private final double ANGLE_TOLERANCE = 3; // Defines angle tolernace used when going to a specific location
-    private final double MAX_SPEED = 0.45;
-    private final double MIN_SPEED = 0.30;
+    private final double MAX_SPEED = 0.3;
+    private final double MIN_SPEED = 0.25;
 
     public RotateAngle(double angle) {
         requires(Robot.drivetrain);
