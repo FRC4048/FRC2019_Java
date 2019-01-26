@@ -19,6 +19,7 @@ import org.usfirst.frc4048.commands.RotateAngle;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.PowerDistPanel;
+import org.usfirst.frc4048.utils.WorkQueue;
 
 
 /**
