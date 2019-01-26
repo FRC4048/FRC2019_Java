@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands;
+package org.usfirst.frc4048.commands.drive;
 
 import org.usfirst.frc4048.Robot;
 
@@ -57,7 +57,7 @@ public class RotateAngleForAlignment extends Command {
 
     
 
-    Scheduler.getInstance().add(new RotateAngle(angleToMoveTo));  
+    Scheduler.getInstance().add(new RotateAngle(angleToMoveTo));
   }
   // Make this return true when this Command no longer needs to run execute()
   @Override

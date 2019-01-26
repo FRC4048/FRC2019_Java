@@ -1,4 +1,4 @@
-package org.usfirst.frc4048.commands;
+package org.usfirst.frc4048.commands.drive;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.swerve.math.CentricMode;
