@@ -69,16 +69,16 @@ public class RobotMap {
   public static final int INTAKES_WRIST_PISTON_ID = 4;
   public static final int CLIMBER_PISTONS_ID = 5;
   
-	/**
-	 * In inches, the distance between the left and right optical sensors used for
-	 * aligning the robot for deploying the climbing ramp.
-	 * 
-	 * @see CLIMBER_DISTANCE_SENSOR_LEFT_ID
-	 * @see CLIMBER_DISTANCE_SENSOR_RIGHT_ID
-	 */
-	public static final double INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS = 16.0;
+  /**
+   * In inches, the distance between the left and right optical sensors used for
+   * aligning the robot for deploying the climbing ramp.
+   * 
+   * @see CLIMBER_DISTANCE_SENSOR_LEFT_ID
+   * @see CLIMBER_DISTANCE_SENSOR_RIGHT_ID
+   */
+  public static final double INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS = 16.0;
 
-	public static final int CLIMBER_DISTANCE_SENSOR_OVERSAMPLE_BITS = 14;
+  public static final int CLIMBER_DISTANCE_SENSOR_OVERSAMPLE_BITS = 14;
 
-	public static final int CLIMBER_DISTANCE_SENSOR_AVERAGE_BITS = 0;
+  public static final int CLIMBER_DISTANCE_SENSOR_AVERAGE_BITS = 0;
 }

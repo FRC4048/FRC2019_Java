@@ -67,42 +67,48 @@ public class Robot extends TimedRobot {
   
 
   /**
-   * This function is run when the robot is first started up and should be
-   * used for any initialization code.
+   * This function is run when the robot is first started up and should be used
+   * for any initialization code.
    */
-	@Override
-	public void robotInit() {
-		drivetrain = new DriveTrain();
-		compressorSubsystem = new CompressorSubsystem();
-		solenoidSubsystem = new ExampleSolenoidSubsystem();
-		drivetrainSensors = new DrivetrainSensors();
-		// limelight = new LimeLightVision();
+  @Override
+  public void robotInit() {
+    drivetrain = new DriveTrain();
+    compressorSubsystem = new CompressorSubsystem();
+    solenoidSubsystem = new ExampleSolenoidSubsystem();
+    drivetrainSensors = new DrivetrainSensors();
+    // limelight = new LimeLightVision();
 
-		compressorSubsystem = new CompressorSubsystem();
+    compressorSubsystem = new CompressorSubsystem();
 
-		drivetrainSensors = new DrivetrainSensors();
-		// limelight = new LimeLightVision();
+    drivetrainSensors = new DrivetrainSensors();
+    // limelight = new LimeLightVision();
 
-		final AnalogInput leftRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_LEFT_ID);
-		final AnalogInput rightRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_RIGHT_ID);
+    climberAngleFinder = initClimberAngleFinder();
 
-		final AnalogInput all[] = { leftRangeInput, rightRangeInput };
-		for (AnalogInput x : all) {
-			// These AnalogInput settings provided stable and fast results.
-			x.setOversampleBits(RobotMap.CLIMBER_DISTANCE_SENSOR_OVERSAMPLE_BITS);
-			x.setAverageBits(RobotMap.CLIMBER_DISTANCE_SENSOR_AVERAGE_BITS);
-		}
+    // OI must be initilized last
+    oi = new OI();
+    // Robot.drivetrainSensors.ledOn();
+    SmartDashboard.putData("Auto mode", m_chooser);
+  }
+  
+  /**
+   * Initialize the climber angle finder. Standalone function since it involves
+   * multiple steps.
+   */
+  static AngleFinder initClimberAngleFinder() {
+    final AnalogInput leftRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_LEFT_ID);
+    final AnalogInput rightRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_RIGHT_ID);
+    final AnalogInput all[] = { leftRangeInput, rightRangeInput };
+    for (AnalogInput x : all) {
+      // These AnalogInput settings provided stable and fast results.
+      x.setOversampleBits(RobotMap.CLIMBER_DISTANCE_SENSOR_OVERSAMPLE_BITS);
+      x.setAverageBits(RobotMap.CLIMBER_DISTANCE_SENSOR_AVERAGE_BITS);
+    }
 
-		final OpticalRangeFinder leftRangeFinder = new OpticalRangeFinder(leftRangeInput);
-		final OpticalRangeFinder rightRangeFinder = new OpticalRangeFinder(rightRangeInput);
-		climberAngleFinder = new AngleFinder(leftRangeFinder, rightRangeFinder,
-				RobotMap.INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS);
-
-		// OI must be initilized last
-		oi = new OI();
-		// Robot.drivetrainSensors.ledOn();
-		SmartDashboard.putData("Auto mode", m_chooser);
-	}
+    final OpticalRangeFinder leftRangeFinder = new OpticalRangeFinder(leftRangeInput);
+    final OpticalRangeFinder rightRangeFinder = new OpticalRangeFinder(rightRangeInput);
+    return new AngleFinder(leftRangeFinder, rightRangeFinder, RobotMap.INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS);
+  }
 
   /**
    * This function is called every robot packet, no matter the mode. Use
