@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.AnalogInput;
 
 import org.usfirst.frc4048.commands.DriveAlignPhase2;
 import org.usfirst.frc4048.commands.DriveAlignPhase3;
@@ -25,7 +26,8 @@ import org.usfirst.frc4048.commands.ExampleSolenoidCommand;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
-
+import org.usfirst.frc4048.utils.AngleFinder;
+import org.usfirst.frc4048.utils.OpticalRangeFinder;
 import org.usfirst.frc4048.commands.ExampleSolenoidCommand;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 
@@ -56,6 +58,7 @@ public class Robot extends TimedRobot {
   public static ExampleSolenoidSubsystem solenoidSubsystem;
   public static DrivetrainSensors drivetrainSensors;
   // public static LimeLightVision limelight;
+  public static AngleFinder climberAngleFinder;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -67,24 +70,39 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
-  @Override
-  public void robotInit() {
-    drivetrain = new DriveTrain();
-    compressorSubsystem = new CompressorSubsystem();
-    solenoidSubsystem = new ExampleSolenoidSubsystem();
-    drivetrainSensors = new DrivetrainSensors();
-    // limelight = new LimeLightVision();
+	@Override
+	public void robotInit() {
+		drivetrain = new DriveTrain();
+		compressorSubsystem = new CompressorSubsystem();
+		solenoidSubsystem = new ExampleSolenoidSubsystem();
+		drivetrainSensors = new DrivetrainSensors();
+		// limelight = new LimeLightVision();
 
-    compressorSubsystem = new CompressorSubsystem();
+		compressorSubsystem = new CompressorSubsystem();
 
-    drivetrainSensors = new DrivetrainSensors();
-    // limelight = new LimeLightVision();
+		drivetrainSensors = new DrivetrainSensors();
+		// limelight = new LimeLightVision();
 
-    //OI must be initilized last
-    oi = new OI();
-    // Robot.drivetrainSensors.ledOn();
-    SmartDashboard.putData("Auto mode", m_chooser);
-  }
+		final AnalogInput leftRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_LEFT_ID);
+		final AnalogInput rightRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_RIGHT_ID);
+
+		final AnalogInput all[] = { leftRangeInput, rightRangeInput };
+		for (AnalogInput x : all) {
+			// These AnalogInput settings provided stable and fast results.
+			x.setOversampleBits(RobotMap.CLIMBER_DISTANCE_SENSOR_OVERSAMPLE_BITS);
+			x.setAverageBits(RobotMap.CLIMBER_DISTANCE_SENSOR_AVERAGE_BITS);
+		}
+
+		final OpticalRangeFinder leftRangeFinder = new OpticalRangeFinder(leftRangeInput);
+		final OpticalRangeFinder rightRangeFinder = new OpticalRangeFinder(rightRangeInput);
+		climberAngleFinder = new AngleFinder(leftRangeFinder, rightRangeFinder,
+				RobotMap.INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS);
+
+		// OI must be initilized last
+		oi = new OI();
+		// Robot.drivetrainSensors.ledOn();
+		SmartDashboard.putData("Auto mode", m_chooser);
+	}
 
   /**
    * This function is called every robot packet, no matter the mode. Use
