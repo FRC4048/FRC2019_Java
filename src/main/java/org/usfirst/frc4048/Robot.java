@@ -21,7 +21,7 @@ import org.usfirst.frc4048.commands.pneumatics.ExampleSolenoidCommand;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
-
+import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.commands.drive.DriveDistanceMaintainAngle;
 // import org.usfirst.frc4048.commands.DriveTargetCenter;
 // import org.usfirst.frc4048.commands.LimelightAlign;
@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
   public static CompressorSubsystem compressorSubsystem;
   public static ExampleSolenoidSubsystem solenoidSubsystem;
   public static DrivetrainSensors drivetrainSensors;
-  // public static LimeLightVision limelight;
+  public static LimeLightVision limelight;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -65,12 +65,8 @@ public class Robot extends TimedRobot {
     compressorSubsystem = new CompressorSubsystem();
     solenoidSubsystem = new ExampleSolenoidSubsystem();
     drivetrainSensors = new DrivetrainSensors();
-    // limelight = new LimeLightVision();
+    limelight = new LimeLightVision();
 
-    compressorSubsystem = new CompressorSubsystem();
-
-    drivetrainSensors = new DrivetrainSensors();
-    // limelight = new LimeLightVision();
 
     //OI must be initilized last
     oi = new OI();
