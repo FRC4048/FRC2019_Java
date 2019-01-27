@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
 import org.usfirst.frc4048.swerve.drive.SwerveDrive;
 import org.usfirst.frc4048.RobotMap;
-import org.usfirst.frc4048.commands.Drive;
+import org.usfirst.frc4048.commands.drive.Drive;
 
 /**
  * Add your docs here.
