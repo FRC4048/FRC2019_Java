@@ -5,33 +5,45 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands;
+package org.usfirst.frc4048.commands.pneumatics;
+
+import org.usfirst.frc4048.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class WaitCommand extends Command {
-  private double seconds;
-  public WaitCommand(double seconds) {
+public class ExampleSolenoidCommand extends Command {
+  private boolean state;
+  /**
+   * true is extend false is retract
+   * @param state
+   */
+  public ExampleSolenoidCommand(boolean state) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    this.seconds = seconds;
+    this.state = state;
+
+    requires(Robot.compressorSubsystem);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    setTimeout(seconds);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if(state == true) {
+      Robot.solenoidSubsystem.extendPiston();
+    } else {
+      Robot.solenoidSubsystem.retractPiston();
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return isTimedOut();
+    return true;
   }
 
   // Called once after isFinished returns true
@@ -43,6 +55,5 @@ public class WaitCommand extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

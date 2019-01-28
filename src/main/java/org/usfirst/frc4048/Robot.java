@@ -7,39 +7,33 @@
 
 package org.usfirst.frc4048;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.AnalogInput;
 
-import org.usfirst.frc4048.commands.DriveAlignPhase2;
-import org.usfirst.frc4048.commands.DriveAlignPhase3;
-import org.usfirst.frc4048.commands.DriveDistance;
-import org.usfirst.frc4048.commands.ExampleSolenoidCommand;
+import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
+import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
+import org.usfirst.frc4048.commands.drive.DriveDistance;
+import org.usfirst.frc4048.commands.pneumatics.ExampleSolenoidCommand;
 
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
 import org.usfirst.frc4048.utils.AngleFinder;
 import org.usfirst.frc4048.utils.OpticalRangeFinder;
-import org.usfirst.frc4048.commands.ExampleSolenoidCommand;
-import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 
-import org.usfirst.frc4048.commands.DriveDistanceMaintainAngle;
+import org.usfirst.frc4048.utils.LimeLightVision;
+import org.usfirst.frc4048.commands.drive.DriveDistanceMaintainAngle;
 // import org.usfirst.frc4048.commands.DriveTargetCenter;
 // import org.usfirst.frc4048.commands.LimelightAlign;
-import org.usfirst.frc4048.commands.DriveAlignGroup;
-import org.usfirst.frc4048.commands.LimelightToggle;
-import org.usfirst.frc4048.commands.RotateAngle;
-import org.usfirst.frc4048.commands.RotateAngleForAlignment;
+import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
+import org.usfirst.frc4048.commands.limelight.LimelightToggle;
+import org.usfirst.frc4048.commands.drive.RotateAngle;
+import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
 
-import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
 // import org.usfirst.frc4048.utils.LimeLightVision;
 
@@ -57,8 +51,8 @@ public class Robot extends TimedRobot {
   public static CompressorSubsystem compressorSubsystem;
   public static ExampleSolenoidSubsystem solenoidSubsystem;
   public static DrivetrainSensors drivetrainSensors;
-  // public static LimeLightVision limelight;
   public static AngleFinder climberAngleFinder;
+  public static LimeLightVision limelight;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -76,13 +70,7 @@ public class Robot extends TimedRobot {
     compressorSubsystem = new CompressorSubsystem();
     solenoidSubsystem = new ExampleSolenoidSubsystem();
     drivetrainSensors = new DrivetrainSensors();
-    // limelight = new LimeLightVision();
-
-    compressorSubsystem = new CompressorSubsystem();
-
-    drivetrainSensors = new DrivetrainSensors();
-    // limelight = new LimeLightVision();
-
+    limelight = new LimeLightVision();
     climberAngleFinder = initClimberAngleFinder();
 
     // OI must be initilized last
