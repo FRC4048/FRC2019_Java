@@ -15,13 +15,27 @@ public class LimeLightVision {
     public static final double TARGET_HEIGHT = 36.5; // Inches, height of field target
     public static final double CAMERA_ANGLE = -14; // Degrees, angle that the camera is mounted at
 
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry tv = table.getEntry("tv");
-    NetworkTableEntry tx = table.getEntry("tx");
-    NetworkTableEntry ty = table.getEntry("ty");
-    NetworkTableEntry ta = table.getEntry("ta");
-    NetworkTableEntry ts = table.getEntry("ts");
-    NetworkTableEntry tl = table.getEntry("tl");
+    NetworkTable table;
+    NetworkTableEntry tv;
+    NetworkTableEntry tx;
+    NetworkTableEntry ty;
+    NetworkTableEntry ta;
+    NetworkTableEntry ts;
+    NetworkTableEntry tl;
+
+    public LimeLightVision() {
+        table = NetworkTableInstance.getDefault().getTable("limelight");
+        tv = table.getEntry("tv");
+        tx = table.getEntry("tx");
+        ty = table.getEntry("ty");
+        ta = table.getEntry("ta");
+        ts = table.getEntry("ts");
+        tl = table.getEntry("tl");
+    }
+
+    LimeLightVision(boolean DO_NOT_USE_FOR_TESTING_ONLY) {
+
+    }
 
     /**
      * Calculate and return the distances from the camera.
@@ -36,11 +50,7 @@ public class LimeLightVision {
         double x = tx.getDouble(0.0);
         double y = ty.getDouble(0.0);
 
-        // Maths
-        double forwardDistance = (TARGET_HEIGHT - CAMERA_HEIGHT) / Math.tan(Math.toRadians(CAMERA_ANGLE + y));
-        double sidewaysDistance = forwardDistance * Math.tan(Math.toRadians(x));
-
-        return new CameraDistance(forwardDistance, sidewaysDistance);
+        return calcCameraDistance(x, y);
     }
 
     /**
@@ -62,6 +72,14 @@ public class LimeLightVision {
 
     public void setLedOff() {
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(LED_OFF);
+    }
+
+    CameraDistance calcCameraDistance(double angleX, double angleY) {
+        // Maths
+        double forwardDistance = (TARGET_HEIGHT - CAMERA_HEIGHT) / Math.tan(Math.toRadians(CAMERA_ANGLE + angleY));
+        double sidewaysDistance = forwardDistance * Math.tan(Math.toRadians(angleX));
+
+        return new CameraDistance(forwardDistance, sidewaysDistance);
     }
 
 }
