@@ -41,7 +41,6 @@ public class RobotMap {
   public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_LEFT_ID = 1;
   public static final int SWERVE_DRIVE_ANALOG_INPUT_REAR_RIGHT_ID = 3;
   public static final int SWERVE_DRIVE_ANALOG_INPUT_REAR_LEFT_ID = 2;
-
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
 
