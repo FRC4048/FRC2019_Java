@@ -20,7 +20,7 @@ public class Logging {
 	}
 
 	public static enum Subsystems {
-		PINCHER, ARM, CLAW, WRIST, DRIVETRAIN, INTAKE, CLIMBER, POWERDISTPANEL
+		ELEVATOR, HATCHPANEL, CARGO, DRIVETRAIN, POWERDISTPANEL
 	}
 
 	private boolean writeLoggingGap = false;
@@ -119,47 +119,6 @@ public class Logging {
 		this.executor = new java.util.Timer();
 		this.executor.schedule(new ConsolePrintTask(wq, this), 0L, this.period);
 	}
-
-//	public void traceSubsystem(LoggingContext context, boolean alwaysPrint, double... vals) {
-//		traceSubsystem(context, alwaysPrint, vals, (String[]) null);
-//	}
-	
-//	public void traceSubsystem(LoggingContext context, boolean alwaysPrint, String... vals) {
-//		traceSubsystem(context, true, (double[]) null, vals);
-//	}
-
-//	public void traceSubsystem(LoggingContext context, String vals1[], double... vals2) {
-//		traceSubsystem(context, false, vals2, vals1);
-//	}
-
-//	public void traceSubsystem(LoggingContext context, boolean alwaysPrint, double vals1[], String... vals2) {
-//		boolean printThis = alwaysPrint;
-//		if (!printThis) {
-//			printThis = DriverStation.getInstance().isEnabled() && (context.counter % 5 == 0);
-//			context.counter += 1;
-//		}
-//
-//		if (printThis) {
-//			final StringBuilder sb = new StringBuilder();
-//			sb.append(df3.format(Timer.getFPGATimestamp()));
-//			sb.append(",");
-//			sb.append(context.subsystem.name());
-//			sb.append(",");
-//			if (vals1 != null) {
-//				for (final double v : vals1) {
-//					sb.append(df5.format(v));
-//					sb.append(",");
-//				}
-//			}
-//			if (vals2 != null) {
-//				for (final String v : vals2) {
-//					sb.append("\"").append(v).append("\"");
-//					sb.append(",");
-//				}
-//			}
-//			traceMessage(sb);
-//		}
-//	}
 
 	private void traceMessage(final StringBuilder sb) {
 		if (writeLoggingGap) {

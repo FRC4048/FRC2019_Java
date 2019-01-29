@@ -2,6 +2,7 @@ package org.usfirst.frc4048.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.utils.Logging;
 
 public class CallError extends Command {
 
@@ -14,7 +15,7 @@ public class CallError extends Command {
     // Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Robot.logging.equals("Drive Team requested marking here :)");
+		Robot.logging.traceMessage(Logging.MessageLevel.INFORMATION, "~~~DriveTeam Breakpoint~~~");
 	}
 
 	// Called repeatedly when this Command is scheduled to run
