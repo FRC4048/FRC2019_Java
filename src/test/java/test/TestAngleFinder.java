@@ -25,9 +25,40 @@ public class TestAngleFinder {
 
   private static final double PRECISION = 0.01;
 
+  @Test
+  public void test11x10x20() {
+    AngleFinder af = new AngleFinder(dist(11), dist(10), 20);
+    Assert.assertEquals(2.86, af.calcAngleInDegrees(), PRECISION);
+  }
+
+  @Test
+  public void test11x10x30() {
+    AngleFinder af = new AngleFinder(dist(11), dist(10), 30);
+    Assert.assertEquals(1.91, af.calcAngleInDegrees(), PRECISION);
+  }
+
+  @Test
+  public void test11x10x40() {
+    AngleFinder af = new AngleFinder(dist(11), dist(10), 40);
+    Assert.assertEquals(1.43, af.calcAngleInDegrees(), PRECISION);
+  }
+
+  @Test
+  public void test11x10x50() {
+    AngleFinder af = new AngleFinder(dist(11), dist(10), 50);
+    Assert.assertEquals(1.15, af.calcAngleInDegrees(), PRECISION);
+  }
+  
+  @Test
+  public void test10x11x20() {
+    AngleFinder af = new AngleFinder(dist(10), dist(11), 20);
+    Assert.assertEquals(-2.86, af.calcAngleInDegrees(), PRECISION);
+  }
+
   /**
    * Common test function. Provide known left and right distances, perform the
    * angle calculation and assert that it was calculated to the expected value.
+   * Distance between sensors is constant for tests that use this function.
    * 
    * Uses PRECISION to determine equality.
    * 
