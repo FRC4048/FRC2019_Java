@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.AnalogInput;
 
 import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
 import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
@@ -22,13 +21,9 @@ import org.usfirst.frc4048.commands.pneumatics.ExampleSolenoidCommand;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
-import org.usfirst.frc4048.utils.AngleFinder;
-import org.usfirst.frc4048.utils.OpticalRangeFinder;
 
 import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.commands.drive.DriveDistanceMaintainAngle;
-// import org.usfirst.frc4048.commands.DriveTargetCenter;
-// import org.usfirst.frc4048.commands.LimelightAlign;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
 import org.usfirst.frc4048.commands.drive.RotateAngle;
@@ -51,7 +46,6 @@ public class Robot extends TimedRobot {
   public static CompressorSubsystem compressorSubsystem;
   public static ExampleSolenoidSubsystem solenoidSubsystem;
   public static DrivetrainSensors drivetrainSensors;
-  public static AngleFinder climberAngleFinder;
   public static LimeLightVision limelight;
 
   Command m_autonomousCommand;
@@ -71,33 +65,13 @@ public class Robot extends TimedRobot {
     solenoidSubsystem = new ExampleSolenoidSubsystem();
     drivetrainSensors = new DrivetrainSensors();
     limelight = new LimeLightVision();
-    climberAngleFinder = initClimberAngleFinder();
-
+    
     // OI must be initilized last
     oi = new OI();
     // Robot.drivetrainSensors.ledOn();
     SmartDashboard.putData("Auto mode", m_chooser);
   }
   
-  /**
-   * Initialize the climber angle finder. Standalone function since it involves
-   * multiple steps.
-   */
-  static AngleFinder initClimberAngleFinder() {
-    final AnalogInput leftRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_LEFT_ID);
-    final AnalogInput rightRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_RIGHT_ID);
-    final AnalogInput all[] = { leftRangeInput, rightRangeInput };
-    for (AnalogInput x : all) {
-      // These AnalogInput settings provided stable and fast results.
-      x.setOversampleBits(RobotMap.CLIMBER_DISTANCE_SENSOR_OVERSAMPLE_BITS);
-      x.setAverageBits(RobotMap.CLIMBER_DISTANCE_SENSOR_AVERAGE_BITS);
-    }
-
-    final OpticalRangeFinder leftRangeFinder = new OpticalRangeFinder(leftRangeInput);
-    final OpticalRangeFinder rightRangeFinder = new OpticalRangeFinder(rightRangeInput);
-    return new AngleFinder(leftRangeFinder, rightRangeFinder, RobotMap.INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS);
-  }
-
   /**
    * This function is called every robot packet, no matter the mode. Use
    * this for items like diagnostics that you want ran during disabled,

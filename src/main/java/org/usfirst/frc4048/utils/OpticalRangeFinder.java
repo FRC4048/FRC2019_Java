@@ -23,7 +23,7 @@ public class OpticalRangeFinder implements IRangeFinder {
     /**
      * @return the distance in Inches reads from the sensor. 0 in case we have no reading.
      */
-    public double getDistance() {
+    public double getDistanceInInches() {
         return calcDistance(sensor.getAverageVoltage()) * CM_2_INCH;
     }
 

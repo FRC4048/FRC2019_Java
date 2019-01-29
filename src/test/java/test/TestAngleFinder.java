@@ -17,7 +17,7 @@ public class TestAngleFinder {
    */
   IRangeFinder dist(final double value) {
     return new IRangeFinder() {
-      public double getDistance() {
+      public double getDistanceInInches() {
         return value;
       }
     };
@@ -42,52 +42,52 @@ public class TestAngleFinder {
 
   @Test
   public void test10x10() {
-    testCase(10, 10, 90);
+    testCase(10, 10, 0);
   }
 
   @Test
   public void test11x10() {
-    testCase(11, 10, 84.29);
+    testCase(11, 10, 5.71);
   }
 
   @Test
   public void test12x10() {
-    testCase(12, 10, 78.69);
+    testCase(12, 10, 11.31);
   }
 
   @Test
   public void test13x10() {
-    testCase(13, 10, 73.3);
+    testCase(13, 10, 16.70);
   }
 
   @Test
   public void test14x10() {
-    testCase(14, 10, 68.2);
+    testCase(14, 10, 21.80);
   }
 
   @Test
   public void test15x10() {
-    testCase(15, 10, 63.43);
+    testCase(15, 10, 26.56);
   }
 
   @Test
   public void test16x10() {
-    testCase(16, 10, 59.04);
+    testCase(16, 10, 30.96);
   }
 
   @Test
   public void test17x10() {
-    testCase(17, 10, 55.01);
+    testCase(17, 10, 34.99);
   }
 
   @Test
   public void test18x10() {
-    testCase(18, 10, 51.34);
+    testCase(18, 10, 38.66);
   }
 
   @Test
   public void test19x10() {
-    testCase(19, 10, 48.01);
+    testCase(19, 10, 41.98);
   }
 
   @Test

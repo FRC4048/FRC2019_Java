@@ -35,14 +35,21 @@ public class AngleFinder {
    * Read current distance values from the two range finders and calculate the
    * angle offset of the robot so the robot can turn parallel to the opposing
    * wall.
+   * 
+   * @return <b>0.0</b> when the robot side with the sensors is parallel to the opposing
+   *         wall. <b><0.0</b> when the robot needs to rotate counterclockwise (topview).
+   *         <b>>0.0</b> when the robot needs to rotate clockwise (topview).
    */
   public double calcAngleInDegrees() {
-    final double leftInches = rangeFinderL.getDistance();
-    final double rightInches = rangeFinderR.getDistance();
+    final double leftInches = rangeFinderL.getDistanceInInches();
+    final double rightInches = rangeFinderR.getDistanceInInches();
 
     final double opposite = leftInches - rightInches;
     final double angle = Math.toDegrees(Math.atan(distanceInInches / opposite));
-    return angle;
+    if (angle < 0)
+      return -(90 + angle);
+    else
+      return 90 - angle;
   }
 
 }
