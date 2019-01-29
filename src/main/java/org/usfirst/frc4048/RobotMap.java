@@ -28,6 +28,7 @@ public class RobotMap {
   public static final double SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK = 0.0942478739;
 
   //CAN ID
+  public static final int PDP_CAN_ID = 0;
   public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 6; 
   public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 5; 
   public static final int REAR_LEFT_DRIVE_MOTOR_ID = 7;
