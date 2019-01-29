@@ -7,12 +7,10 @@
 
 package test;
 
-import javax.crypto.ExemptionMechanismException;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.usfirst.frc4048.commands.RotateAngleForAlignment;
+import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
 
 /**
  * Add your docs here.

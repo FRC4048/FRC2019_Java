@@ -1,4 +1,4 @@
-package org.usfirst.frc4048.commands;
+package org.usfirst.frc4048.commands.drive;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;

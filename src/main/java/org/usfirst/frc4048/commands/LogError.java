@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.utils.Logging;
 
-public class CallError extends Command {
+public class LogError extends Command {
 
   
 
-    public CallError() {
+    public LogError() {
       
     }
 
