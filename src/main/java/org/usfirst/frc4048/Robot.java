@@ -7,7 +7,11 @@
 
 package org.usfirst.frc4048;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -28,6 +32,10 @@ import org.usfirst.frc4048.commands.limelight.LimelightToggle;
 import org.usfirst.frc4048.commands.drive.RotateAngle;
 import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
 
+import org.usfirst.frc4048.subsystems.DriveTrain;
+import org.usfirst.frc4048.utils.Logging;
+import org.usfirst.frc4048.subsystems.PowerDistPanel;
+import org.usfirst.frc4048.utils.WorkQueue;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
 
 /**
@@ -40,6 +48,10 @@ import org.usfirst.frc4048.subsystems.DrivetrainSensors;
 public class Robot extends TimedRobot {  
   public static OI oi;
   public static DriveTrain drivetrain;
+  public static Logging logging;
+  public static PowerDistPanel pdp;
+  public static WorkQueue wq;
+  public static double timeOfStart = 0;
   public static CompressorSubsystem compressorSubsystem;
   public static ExampleSolenoidSubsystem solenoidSubsystem;
   public static DrivetrainSensors drivetrainSensors;
@@ -57,6 +69,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     drivetrain = new DriveTrain();
+    pdp = new PowerDistPanel();
     compressorSubsystem = new CompressorSubsystem();
     solenoidSubsystem = new ExampleSolenoidSubsystem();
     drivetrainSensors = new DrivetrainSensors();
@@ -65,6 +78,10 @@ public class Robot extends TimedRobot {
     oi = new OI();
     // Robot.drivetrainSensors.ledOn();
     SmartDashboard.putData("Auto mode", m_chooser);
+
+    WorkQueue wq = new WorkQueue(512);
+		logging = new Logging(100, wq);
+		logging.startThread(); // Starts the logger
   }
   
   /**
@@ -132,6 +149,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+
     Scheduler.getInstance().run();
   }
 
@@ -154,16 +172,16 @@ public class Robot extends TimedRobot {
 
     // Shuffleboard.getTab("Approach").add("TargetAlign", new DriveTargetCenter(10.0, -0.25));
   
-    SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
+    // SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
     // SmartDashboard.putData(new LimelightAlign());
-    SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
-    SmartDashboard.putData(new DriveAlignGroup());
-    SmartDashboard.putData(new RotateAngle(0)); 
+    // SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
+    // SmartDashboard.putData(new DriveAlignGroup());
+    // SmartDashboard.putData(new RotateAngle(0)); 
     SmartDashboard.putData("Limelight On", new LimelightToggle(true));
     SmartDashboard.putData("Limelight Off", new LimelightToggle(false));
-    SmartDashboard.putData(new RotateAngleForAlignment());
-    SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.5, false));
-    SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
+    // SmartDashboard.putData(new RotateAngleForAlignment());
+    // SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.5, false));
+    // SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
   }
 
   /**
@@ -171,8 +189,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+
+    SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
+    SmartDashboard.putData(new RotateAngle(90));
+    System.out.println("test");
     SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
     Scheduler.getInstance().run();
+  
   }
 
   /**
@@ -183,5 +206,7 @@ public class Robot extends TimedRobot {
 
     Scheduler.getInstance().run();
   }
+
+
 
 }

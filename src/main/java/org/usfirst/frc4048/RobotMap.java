@@ -7,6 +7,7 @@
 
 package org.usfirst.frc4048;
 
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -68,7 +69,19 @@ public class RobotMap {
   public static final int HATCH_PANEL_WRIST_PISTON_ID = 3;
   public static final int INTAKES_WRIST_PISTON_ID = 4;
   public static final int CLIMBER_PISTONS_ID = 5;
-  
+
+  //OI
+  public static final int XBOX_A_BUTTON = 1;
+  public static final int XBOX_B_BUTTON = 2;
+  public static final int XBOX_X_BUTTON = 3;
+  public static final int XBOX_Y_BUTTON = 4;
+  public static final int XBOX_LEFT_BUMPER = 5;
+  public static final int XBOX_RIGHT_BUMPER = 6;
+  public static final int XBOX_BACK_BUTTON = 7;
+  public static final int XBOX_START_BUTTON = 8;
+  public static final int XBOX_LEFT_STICK_PRESS = 9;
+  public static final int XBOX_RIGHT_STICK_PRESS = 10;
+
   /**
    * In inches, the distance between the left and right optical sensors used for
    * aligning the robot for deploying the climbing ramp.
@@ -81,4 +94,5 @@ public class RobotMap {
   public static final int CLIMBER_DISTANCE_SENSOR_OVERSAMPLE_BITS = 14;
 
   public static final int CLIMBER_DISTANCE_SENSOR_AVERAGE_BITS = 0;
+
 }
