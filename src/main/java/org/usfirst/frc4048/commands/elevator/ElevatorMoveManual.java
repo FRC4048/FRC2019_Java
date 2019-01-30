@@ -8,37 +8,41 @@
 package org.usfirst.frc4048.commands.elevator;
 
 import org.usfirst.frc4048.Robot;
-import org.usfirst.frc4048.utils.ElevatorPosition;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ElevatorMoveToPos extends Command {
-  private double position;
-  private ElevatorPosition elevatorPosition;
-  public ElevatorMoveToPos(ElevatorPosition elevatorPosition) {
+public class ElevatorMoveManual extends Command {
+  private double speed;
+  private final double TRIGGER_MARGIN_VALUE = 0.01;
+
+  public ElevatorMoveManual() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    this.elevatorPosition = elevatorPosition;
-    this.position = elevatorPosition.getPosition();
-
     requires(Robot.elevator);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    speed = 0.0;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.elevator.setPosition(position);
+    if(Robot.oi.getRightTrigger() > 0.0 + TRIGGER_MARGIN_VALUE) {
+      speed = Robot.oi.getRightTrigger();
+    } else if(Robot.oi.getLeftTrigger() > 0.0 + TRIGGER_MARGIN_VALUE) {
+      speed = Robot.oi.getLeftTrigger();
+      speed *= -1; //invert the speed because we are going down
+    }
+    Robot.elevator.setSpeed(speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Robot.elevator.elevatorAtPos(elevatorPosition) || Robot.elevator.getTopSwitch() || Robot.elevator.getBotSwitch();
+    return false;
   }
 
   // Called once after isFinished returns true

@@ -16,6 +16,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import org.usfirst.frc4048.RobotMap;
+import org.usfirst.frc4048.commands.elevator.ElevatorMoveManual;
 import org.usfirst.frc4048.utils.ElevatorPosition;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -67,7 +68,7 @@ public class Elevator extends Subsystem {
     
     resetEncoder();
   }
-  
+
   @Override
   public void periodic() {
   }
@@ -76,6 +77,7 @@ public class Elevator extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new ElevatorMoveManual());
   }
 
   public void setPosition(double position) {
@@ -98,5 +100,18 @@ public class Elevator extends Subsystem {
   
   public void resetEncoder() {
     elevatorMotor.setSelectedSensorPosition(0, 0, TIMEOUT);
+  }
+
+  public boolean getTopSwitch() {
+    return elevatorMotor.getSensorCollection().isFwdLimitSwitchClosed();
+  }
+
+  public boolean getBotSwitch() {
+    return elevatorMotor.getSensorCollection().isRevLimitSwitchClosed();
+  }
+
+  //MANUAL CONTROL
+  public void setSpeed(double speed) {
+    elevatorMotor.set(ControlMode.PercentOutput, speed);
   }
 }
