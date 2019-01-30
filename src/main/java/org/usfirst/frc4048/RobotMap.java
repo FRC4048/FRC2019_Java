@@ -59,6 +59,7 @@ public class RobotMap {
   public static final int[] ELEVATOR_QUAD_ENCODER_ID = {3,4};
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
+  public static final int CARGO_OPTICAL_SENSOR_ID = 7;
 
   //PWM
   public static final int WINCH_MOTOR_ID = 1;

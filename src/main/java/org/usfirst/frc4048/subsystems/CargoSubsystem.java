@@ -1,0 +1,66 @@
+package org.usfirst.frc4048.subsystems;
+
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import org.usfirst.frc4048.RobotMap;
+
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.command.Subsystem;
+
+public class CargoSubsystem extends Subsystem {
+
+    private WPI_TalonSRX intakeRoller; 
+    private DigitalInput rightLimit;
+    private DigitalInput leftLimit;
+    private DigitalInput opticalSensor;
+    private Solenoid ejectPiston;
+
+    //TODO Make these speeds accurate
+    private final double CARGO_INPUT_SPEED = 0.5; 
+    private final double CARGO_OUTPUT_SPEED = -0.5;
+
+    public CargoSubsystem() {
+        intakeRoller = new WPI_TalonSRX(RobotMap.CARGO_INTAKE_MOTOR_ID);
+        leftLimit = new DigitalInput(RobotMap.CARGO_LIMIT_SWITCH_LEFT_ID);
+        rightLimit = new DigitalInput(RobotMap.CARGO_LIMIT_SWITCH_RIGHT_ID);
+        ejectPiston = new Solenoid(RobotMap.CARGO_PISTON_ID);
+        opticalSensor = new DigitalInput(RobotMap.CARGO_OPTICAL_SENSOR_ID);
+    }
+    
+    @Override
+    public void initDefaultCommand() {
+      // Set the default command for a subsystem here.
+      // setDefaultCommand(new MySpecialCommand());
+    }
+
+
+
+    public boolean leftLimitPressed(){
+        return leftLimit.get();
+    }
+    public boolean rightLimitPressed(){
+        return rightLimit.get();
+    }
+    public boolean cargoInIntake(){
+        return opticalSensor.get();
+    }
+
+    public void cargoInput(){
+        intakeRoller.set(CARGO_INPUT_SPEED);
+    }
+    public void cargoOutput(){
+        intakeRoller.set(CARGO_OUTPUT_SPEED);
+    }
+    public void cargoStop(){
+        intakeRoller.set(0.0);
+    }
+
+    public void cargoEject(){
+        ejectPiston.set(true);
+    }
+    public void cargoRetract(){
+        ejectPiston.set(false);
+    }
+
+}
