@@ -40,6 +40,7 @@ import org.usfirst.frc4048.subsystems.PowerDistPanel;
 import org.usfirst.frc4048.utils.WorkQueue;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
 // import org.usfirst.frc4048.utils.LimeLightVision;
+import org.usfirst.frc4048.subsystems.Elevator;
 
 
 /**
@@ -60,6 +61,7 @@ public class Robot extends TimedRobot {
   public static ExampleSolenoidSubsystem solenoidSubsystem;
   public static DrivetrainSensors drivetrainSensors;
   public static LimeLightVision limelight;
+  public static Elevator elevator;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -79,7 +81,7 @@ public class Robot extends TimedRobot {
     solenoidSubsystem = new ExampleSolenoidSubsystem();
     drivetrainSensors = new DrivetrainSensors();
     limelight = new LimeLightVision();
-
+    elevator = new Elevator();
 
     //OI must be initilized last
     oi = new OI();
