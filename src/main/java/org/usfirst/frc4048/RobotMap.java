@@ -28,6 +28,7 @@ public class RobotMap {
   public static final double SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK = 0.0942478739;
 
   //CAN ID
+  public static final int PDP_CAN_ID = 0;
   public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 6; 
   public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 5; 
   public static final int REAR_LEFT_DRIVE_MOTOR_ID = 7;
@@ -81,4 +82,18 @@ public class RobotMap {
   public static final int XBOX_START_BUTTON = 8;
   public static final int XBOX_LEFT_STICK_PRESS = 9;
   public static final int XBOX_RIGHT_STICK_PRESS = 10;
+
+  /**
+   * In inches, the distance between the left and right optical sensors used for
+   * aligning the robot for deploying the climbing ramp.
+   * 
+   * @see CLIMBER_DISTANCE_SENSOR_LEFT_ID
+   * @see CLIMBER_DISTANCE_SENSOR_RIGHT_ID
+   */
+  public static final double INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS = 16.0;
+
+  public static final int CLIMBER_DISTANCE_SENSOR_OVERSAMPLE_BITS = 14;
+
+  public static final int CLIMBER_DISTANCE_SENSOR_AVERAGE_BITS = 0;
+
 }
