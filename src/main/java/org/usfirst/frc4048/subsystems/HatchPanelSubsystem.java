@@ -29,8 +29,8 @@ public class HatchPanelSubsystem extends Subsystem {
   private Solenoid hatchPanelPiston;
   public HatchPanelSubsystem() {
 
-      limitSwitchLeft = new DigitalInput(RobotMap.CARGO_LIMIT_SWITCH_LEFT_ID);
-      limitSwitchRight = new DigitalInput(RobotMap.CARGO_LIMIT_SWITCH_RIGHT_ID);
+      limitSwitchLeft = new DigitalInput(RobotMap.HATCHPANEL_LIMIT_SWITCH_LEFT_ID);
+      limitSwitchRight = new DigitalInput(RobotMap.HATCHPANEL_LIMIT_SWITCH_RIGHT_ID);
       hatchPanelPiston = new Solenoid(RobotMap.HATCH_PANEL_PISTON_ID);
       }
 

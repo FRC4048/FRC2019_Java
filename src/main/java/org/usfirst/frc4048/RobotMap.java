@@ -41,6 +41,7 @@ public class RobotMap {
   public static final int PCM_CAN_ID = 10;  
   public static final int ELEVATOR_MOTOR_ID = 11;
   public static final int CARGO_INTAKE_MOTOR_ID = 12;
+  public static final int PDP_CAN_ID = 0; 
 
 
   //ANALOG INPUTS
@@ -54,6 +55,8 @@ public class RobotMap {
   public static final int ALIGNMENT_DISTANCE_SENSOR_ID = 6;
 
   //DIGITAL INPUTS
+  public static final int HATCHPANEL_LIMIT_SWITCH_LEFT_ID = 7;
+  public static final int HATCHPANEL_LIMIT_SWITCH_RIGHT_ID = 8;
   public static final int CARGO_LIMIT_SWITCH_LEFT_ID = 1;
   public static final int CARGO_LIMIT_SWITCH_RIGHT_ID = 2;
   public static final int[] ELEVATOR_QUAD_ENCODER_ID = {3,4};
@@ -65,7 +68,7 @@ public class RobotMap {
 
   //PCM
   public static final int CARGO_PISTON_ID = 1;
-  public static final int HATCH_PANEL_PISTON_ID = 2;
+  public static final int HATCH_PANEL_PISTON_ID = 0;
   public static final int HATCH_PANEL_WRIST_PISTON_ID = 3;
   public static final int INTAKES_WRIST_PISTON_ID = 4;
   public static final int CLIMBER_PISTONS_ID = 5;
