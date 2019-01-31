@@ -1,13 +1,14 @@
 package org.usfirst.frc4048.commands.drive;
 
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.commands.LoggedCommand;
 import org.usfirst.frc4048.swerve.math.CentricMode;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class DriveDistanceMaintainAngle extends Command {
+public class DriveDistanceMaintainAngle extends LoggedCommand {
 	private final double MAX_ERROR = 40.0; // Distance, in Inches, for the PID portion of the path
 	private final double TIMEOUT_DISTANCE = 15.0; // Distance, in Inches, for the portion of the path where timeout is
 																								// calculated
@@ -33,6 +34,8 @@ public class DriveDistanceMaintainAngle extends Command {
 	 * @param pMin          - the minimum power to use (such that the command will not go below this setting) (between 0-1)
 	 */
 	public DriveDistanceMaintainAngle(double totalDistance, double headingAngle, double pMax, double pMin) {
+		super(String.format(" is running, totalDistance=%f, headingAngle=%f, pMax=%f, pMin=%f", 
+		totalDistance, headingAngle, pMax, pMin));
 		requires(Robot.drivetrain);
 
 		this.totalDistance = totalDistance;
@@ -42,7 +45,7 @@ public class DriveDistanceMaintainAngle extends Command {
 	}
 
 	// Called just before this Command runs the first time
-	protected void initialize() {
+	protected void loggedInitialize() {
 		// Robot.drivetrain.setZero();
 		mode = Robot.drivetrain.swerveDrivetrain.getModeRobot();
 		Robot.drivetrain.swerveDrivetrain.setModeRobot();
@@ -55,7 +58,7 @@ public class DriveDistanceMaintainAngle extends Command {
 	}
 
 	// Called repeatedly when this Command is scheduled to run
-	protected void execute() {
+	protected void loggedExecute() {
 		// if the timer is started and the timer is more than 2 seconds then we are
 		// travelling 15 inches
 		// for more than 2 seconds and we stop the command
@@ -130,12 +133,12 @@ public class DriveDistanceMaintainAngle extends Command {
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
-	protected boolean isFinished() {
+	protected boolean loggedIsFinished() {
 		return done;
 	}
 
 	// Called once after isFinished returns true
-	protected void end() {
+	protected void loggedEnd() {
 		if(mode.equals(CentricMode.FIELD)) {
 			Robot.drivetrain.swerveDrivetrain.setModeField();
 		} else {
@@ -146,7 +149,12 @@ public class DriveDistanceMaintainAngle extends Command {
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-	protected void interrupted() {
-		end();
+	protected void loggedInterrupted() {
+		loggedEnd();
+	}
+
+	@Override
+	protected void loggedCancel() {
+		loggedEnd();
 	}
 }

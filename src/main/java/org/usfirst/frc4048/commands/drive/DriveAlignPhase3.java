@@ -1,6 +1,7 @@
 package org.usfirst.frc4048.commands.drive;
 
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.commands.LoggedCommand;
 import org.usfirst.frc4048.swerve.math.CentricMode;
 import org.usfirst.frc4048.utils.CameraAngles;
 
@@ -8,7 +9,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
-public class DriveAlignPhase3 extends Command {
+public class DriveAlignPhase3 extends LoggedCommand {
 	private final double SIDEWAYS_POWER_FACTOR = 0.1; // factor to apply to forward power when adjusting horizontally
 	private final double MIN_ANGLE_ERROR = 2.0; // The angle error that triggers correction
 	private final double ROTATION_SPEED = 0.05; // The rotation correction power
@@ -30,6 +31,7 @@ public class DriveAlignPhase3 extends Command {
 	 * @param b
 	 */
 	public DriveAlignPhase3(double power, boolean isCamFront) {
+		super(String.format(" is running, power=%f, isCamFront=%b", power, isCamFront));
 		requires(Robot.drivetrain);
 
 		this.power = power;
@@ -39,7 +41,7 @@ public class DriveAlignPhase3 extends Command {
 	}
 
 	// Called just before this Command runs the first time
-	protected void initialize() {
+	protected void loggedInitialize() {
 		// Robot.drivetrain.setZero();
 		mode = Robot.drivetrain.swerveDrivetrain.getModeRobot();
 		Robot.drivetrain.swerveDrivetrain.setModeRobot();
@@ -49,7 +51,7 @@ public class DriveAlignPhase3 extends Command {
 	}
 
 	// Called repeatedly when this Command is scheduled to run
-	protected void execute() {
+	protected void loggedExecute() {
 		CameraAngles cameraAngles = Robot.drivetrainSensors.getCameraAngles();
 		if(cameraAngles == null){
 			System.out.println("------------NO CAMERA VALUE------------");
@@ -75,12 +77,12 @@ public class DriveAlignPhase3 extends Command {
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
-	protected boolean isFinished() {
+	protected boolean loggedIsFinished() {
 		return done;
 	}
 
 	// Called once after isFinished returns true
-	protected void end() {
+	protected void loggedEnd() {
 		if(mode.equals(CentricMode.FIELD)) {
 			Robot.drivetrain.swerveDrivetrain.setModeField();
 		} else {
@@ -91,8 +93,8 @@ public class DriveAlignPhase3 extends Command {
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-	protected void interrupted() {
-		end();
+	protected void loggedInterrupted() {
+		loggedEnd();
 	}
 
 	private double calcRot(double startAngle, double currAngle) {
@@ -105,5 +107,10 @@ public class DriveAlignPhase3 extends Command {
 		// the current angle
 		// we need to turn clockwise. The rotation value currently is hardcoded at 0.1.
 		return Math.signum(startAngle - currAngle) * ROTATION_SPEED;
+	}
+
+	@Override
+	protected void loggedCancel() {
+		loggedEnd();
 	}
 }

@@ -37,6 +37,7 @@ public class RobotMap {
   public static final int REAR_LEFT_STEER_MOTOR_ID = 3; 
   public static final int REAR_RIGHT_STEER_MOTOR_ID = 4;
 
+  public static final int PDP_CAN_ID = 0;  
   public static final int DRIVE_PIGEON_ID = 9;
   public static final int PCM_CAN_ID = 10;  
   public static final int ELEVATOR_MOTOR_ID = 11;
