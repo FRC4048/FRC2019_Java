@@ -8,11 +8,12 @@
 package org.usfirst.frc4048.commands.drive;
 
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.commands.LoggedCommand;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
-public class RotateAngleForAlignment extends Command {
+public class RotateAngleForAlignment extends LoggedCommand {
   private double angle;
   private final double angleMarginValue = 20.0;
   private final double rightRocketSideAngle = 90.0;
@@ -36,13 +37,14 @@ public class RotateAngleForAlignment extends Command {
   //to another because of the order of the if statements 
 
   public RotateAngleForAlignment() {
+    super(String.format(" is running"));
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  protected void loggedInitialize() {
     angle = Robot.drivetrain.getGyro();
     angle = angle % 360;
     if(angle < 0) {
@@ -52,7 +54,7 @@ public class RotateAngleForAlignment extends Command {
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  protected void loggedExecute() {
     double angleToMoveTo = calculateAngle(angle);
 
     
@@ -61,19 +63,20 @@ public class RotateAngleForAlignment extends Command {
   }
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  protected boolean loggedIsFinished() {
     return true;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  protected void loggedEnd() {
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
+  protected void loggedInterrupted() {
+    loggedEnd();
   }
 
   public double calculateAngle(double currAngle) {
@@ -103,5 +106,10 @@ public class RotateAngleForAlignment extends Command {
     // }
 
     return resultAngle;
+  }
+
+  @Override
+  protected void loggedCancel() {
+    loggedEnd();
   }
 }
