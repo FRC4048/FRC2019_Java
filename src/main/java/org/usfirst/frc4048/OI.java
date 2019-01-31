@@ -7,6 +7,8 @@
 
 package org.usfirst.frc4048;
 
+import org.usfirst.frc4048.commands.LogError;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
@@ -42,12 +44,18 @@ public class OI {
   // Start the command when the button is released and let it run the command
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
+  private JoystickButton logError; 
+  private Joystick controller; 
   private Joystick leftJoy;
   private Joystick rightJoy;
 
   public OI() {
     leftJoy = new Joystick(0);
     rightJoy = new Joystick(1);
+    controller = new Joystick(2);
+
+    logError = new JoystickButton(controller, 3);
+    logError.whenPressed(new LogError());
   }
 
   public Joystick getLeftJoy() {
