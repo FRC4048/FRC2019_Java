@@ -19,8 +19,8 @@ public class EjectCargo extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-        //TODO Make it eject only when motor is fully sped up.
-        Robot.cargoSubsystem.cargoEject();
+        if (Robot.cargoSubsystem.getCargoSpeed() >= Robot.cargoSubsystem.CARGO_OUTPUT_SPEED)
+            Robot.cargoSubsystem.cargoEject();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

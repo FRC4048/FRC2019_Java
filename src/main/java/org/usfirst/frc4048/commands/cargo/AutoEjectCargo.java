@@ -13,16 +13,20 @@ public class AutoEjectCargo extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.cargoSubsystem.cargoOutput();
+        
     }
 	
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        //TODO Make it eject only when motor is fully sped up.
-        if (Robot.cargoSubsystem.leftLimitPressed() || Robot.cargoSubsystem.rightLimitPressed())
-            Robot.cargoSubsystem.cargoEject();
+        if (Robot.cargoSubsystem.leftLimitPressed() || Robot.cargoSubsystem.rightLimitPressed()) {
+            Robot.cargoSubsystem.cargoOutput();
+            if (Robot.cargoSubsystem.getCargoSpeed() >= Robot.cargoSubsystem.CARGO_OUTPUT_SPEED)
+                Robot.cargoSubsystem.cargoEject();
+        } else 
+            Robot.cargoSubsystem.cargoStop();
+        
     }
 
     // Make this return true when this Command no longer needs to run execute()

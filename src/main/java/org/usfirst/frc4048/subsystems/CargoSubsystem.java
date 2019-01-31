@@ -17,8 +17,8 @@ public class CargoSubsystem extends Subsystem {
     private Solenoid ejectPiston;
 
     //TODO Make these speeds accurate
-    private final double CARGO_INPUT_SPEED = 0.5; 
-    private final double CARGO_OUTPUT_SPEED = -0.5;
+    public final double CARGO_INPUT_SPEED = 0.5; 
+    public final double CARGO_OUTPUT_SPEED = -0.5;
 
     public CargoSubsystem() {
         intakeRoller = new WPI_TalonSRX(RobotMap.CARGO_INTAKE_MOTOR_ID);
@@ -54,6 +54,9 @@ public class CargoSubsystem extends Subsystem {
     }
     public void cargoStop(){
         intakeRoller.set(0.0);
+    }
+    public double getCargoSpeed(){
+        return intakeRoller.get();
     }
 
     public void cargoEject(){
