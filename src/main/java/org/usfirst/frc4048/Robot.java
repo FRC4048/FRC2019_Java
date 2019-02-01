@@ -68,12 +68,21 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+
+    System.out.println("RobotInit: before sleep");
+    try {
+      Thread.currentThread().sleep(2000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    System.out.println("RobotInit: after sleep");
+
     drivetrain = new DriveTrain();
     pdp = new PowerDistPanel();
-    compressorSubsystem = new CompressorSubsystem();
-    solenoidSubsystem = new ExampleSolenoidSubsystem();
+//    compressorSubsystem = new CompressorSubsystem();
+//    solenoidSubsystem = new ExampleSolenoidSubsystem();
     drivetrainSensors = new DrivetrainSensors();
-    
+
     // OI must be initilized last
     oi = new OI();
     // Robot.drivetrainSensors.ledOn();
@@ -83,7 +92,7 @@ public class Robot extends TimedRobot {
 		logging = new Logging(100, wq);
 		logging.startThread(); // Starts the logger
   }
-  
+
   /**
    * This function is called every robot packet, no matter the mode. Use
    * this for items like diagnostics that you want ran during disabled,
@@ -95,10 +104,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-    SmartDashboard.putData("Extend Piston", new ExampleSolenoidCommand(true));
-    SmartDashboard.putData("Retract Piston", new ExampleSolenoidCommand(false));
-    SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
-    SmartDashboard.putBoolean("Pressure", Robot.compressorSubsystem.getPressure());
+//    SmartDashboard.putData("Extend Piston", new ExampleSolenoidCommand(true));
+//    SmartDashboard.putData("Retract Piston", new ExampleSolenoidCommand(false));
+//    SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
+//    SmartDashboard.putBoolean("Pressure", Robot.compressorSubsystem.getPressure());
   }
 
   /**
@@ -142,6 +151,9 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.start();
     }
+
+    // in 2019 the autonomous is used for the Sandstorm driving where the driver is using the camera
+    Robot.drivetrain.swerveDrivetrain.setModeField();
   }
 
   /**
@@ -176,7 +188,7 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putData(new LimelightAlign());
     // SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
     // SmartDashboard.putData(new DriveAlignGroup());
-    // SmartDashboard.putData(new RotateAngle(0)); 
+    // SmartDashboard.putData(new RotateAngle(0));
     SmartDashboard.putData("Limelight On", new LimelightToggle(true));
     SmartDashboard.putData("Limelight Off", new LimelightToggle(false));
     // SmartDashboard.putData(new RotateAngleForAlignment());
@@ -190,12 +202,11 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
-    SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
-    SmartDashboard.putData(new RotateAngle(90));
-    System.out.println("test");
-    SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
+//    SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
+//    SmartDashboard.putData(new RotateAngle(90));
+//    SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
     Scheduler.getInstance().run();
-  
+
   }
 
   /**

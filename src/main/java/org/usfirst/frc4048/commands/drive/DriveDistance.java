@@ -33,7 +33,7 @@ public class DriveDistance extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.drivetrain.setZero();
+//		Robot.drivetrain.setZero();
 		lastDistance = Robot.drivetrain.getDistance();
 		distanceLeft = distance;
 		done = false;

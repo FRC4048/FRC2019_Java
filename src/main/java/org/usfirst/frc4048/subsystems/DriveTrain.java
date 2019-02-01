@@ -113,17 +113,17 @@ public class DriveTrain extends Subsystem {
     init();
 
     swerveDrivetrain = new SwerveDrive(frontRightWheel, frontLeftWheel, rearLeftWheel, rearRightWheel, WIDTH, LENGTH);
-    
+
   }
 
-  
+
   public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVETRAIN) {
 
 		protected void addAll() {
 		}
 
-    	
-    
+
+
     };
 
   @Override
@@ -189,19 +189,22 @@ public class DriveTrain extends Subsystem {
   }
 
   public void resetQuadEncoder() {
-    steerFR.setSelectedSensorPosition((int) ((analogInputFrontRight.getValue() - FR_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
+    int frontRightValue = analogInputFrontRight.getValue();
+    steerFR.setSelectedSensorPosition((int) ((frontRightValue - FR_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
     steerFL.setSelectedSensorPosition((int) ((analogInputFrontLeft.getValue() - FL_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
     steerRL.setSelectedSensorPosition((int) ((analogInputRearLeft.getValue() - RL_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
     steerRR.setSelectedSensorPosition((int) ((analogInputRearRight.getValue() - RR_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
+    SmartDashboard.putNumber("InitialFrontRightValue", frontRightValue);
+    SmartDashboard.putNumber("SecondFrontRightValue", analogInputFrontRight.getValue());
     // steerFR.setSelectedSensorPosition(0);
     // steerFL.setSelectedSensorPosition(0);
     // steerRL.setSelectedSensorPosition(0);
     // steerRR.setSelectedSensorPosition(0);
 
-    steerFR.set(ControlMode.Position, 0);
-    steerFL.set(ControlMode.Position, 0);
-    steerRL.set(ControlMode.Position, 0);
-    steerRR.set(ControlMode.Position, 0);
+//    steerFR.set(ControlMode.Position, 0);
+//    steerFL.set(ControlMode.Position, 0);
+//    steerRL.set(ControlMode.Position, 0);
+//    steerRR.set(ControlMode.Position, 0);
   }
 
   public void resetDriveEncoder() {
