@@ -57,7 +57,6 @@ public class RobotMap {
   //DIGITAL INPUTS
   public static final int CARGO_LIMIT_SWITCH_LEFT_ID = 1;
   public static final int CARGO_LIMIT_SWITCH_RIGHT_ID = 2;
-  public static final int[] ELEVATOR_QUAD_ENCODER_ID = {3,4};
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
 
@@ -82,4 +81,7 @@ public class RobotMap {
   public static final int XBOX_START_BUTTON = 8;
   public static final int XBOX_LEFT_STICK_PRESS = 9;
   public static final int XBOX_RIGHT_STICK_PRESS = 10;
+
+  //PDP
+  public static final int ELEVATOR_PDP = 13; //this will change
 }

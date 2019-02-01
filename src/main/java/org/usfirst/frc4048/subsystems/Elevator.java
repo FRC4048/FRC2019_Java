@@ -18,6 +18,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveManual;
 import org.usfirst.frc4048.utils.ElevatorPosition;
+import org.usfirst.frc4048.utils.MotorUtils;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -35,22 +36,24 @@ public class Elevator extends Subsystem {
   private final double ELEVATOR_POSITION_ERROR = 0;
 
   private final double ELEVATOR_UP_SCALE_FACTOR = 1.00;
-  private final double ELEVATOR_DOWN_SCALE_FACTOR = 0.50;
+  private final double ELEVATOR_DOWN_SCALE_FACTOR = 1.00;
 
-  private final double ELEVATOR_P = 0; 
+  private final double ELEVATOR_P = 10; 
   private final double ELEVATOR_I = 0;
-  private final double ELEVATOR_D = 0;
+  private final double ELEVATOR_D = 3;
   private final double ELEVATOR_F = 0;
-  private final int ELEVATOR_ACCEL = 281; //initial acceleration is 75% of the RPM, this may change 
-  private final int ELEVATOR_CRUISE_VELOCITY = 281; // ^
-
+  private final int ELEVATOR_ACCEL = 375/*281*/; //RPM Of motor 
+  private final int ELEVATOR_CRUISE_VELOCITY = 375/*281*/; // ^
+  private final int FINETUNE_RATE = 60;
+  private double elevatorSetpoint;
+  
   public Elevator() {
     elevatorMotor = new WPI_TalonSRX(RobotMap.ELEVATOR_MOTOR_ID);
     elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT);
     elevatorMotor.configNominalOutputForward(0, TIMEOUT);
     elevatorMotor.configNominalOutputReverse(0, TIMEOUT);
     elevatorMotor.configPeakOutputForward(ELEVATOR_UP_SCALE_FACTOR, TIMEOUT);
-    elevatorMotor.configPeakOutputReverse(ELEVATOR_DOWN_SCALE_FACTOR, TIMEOUT);
+    elevatorMotor.configPeakOutputReverse(-ELEVATOR_DOWN_SCALE_FACTOR, TIMEOUT);
     elevatorMotor.setNeutralMode(NeutralMode.Brake);
 
     
@@ -67,10 +70,13 @@ public class Elevator extends Subsystem {
     elevatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     
     resetEncoder();
+    elevatorSetpoint = getEncoder();
   }
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("elevator setpoint", elevatorSetpoint);
+    moveElevator();
   }
 
   @Override
@@ -80,8 +86,13 @@ public class Elevator extends Subsystem {
     setDefaultCommand(new ElevatorMoveManual());
   }
 
-  public void setPosition(double position) {
-    elevatorMotor.set(ControlMode.MotionMagic, position, DemandType.ArbitraryFeedForward, 0.05); //may change this number is the amount of speed sent to the motor to keep it in place
+  public void moveElevator() {
+    double position = elevatorSetpoint;
+    elevatorMotor.set(ControlMode.MotionMagic, (int) position);
+  }
+
+  public void elevatorToPosition(ElevatorPosition elevatorPosition) {
+    elevatorSetpoint = elevatorPosition.getPosition();
   }
 
   public boolean elevatorAtPos(ElevatorPosition elevatorPosition) {
@@ -102,6 +113,10 @@ public class Elevator extends Subsystem {
     elevatorMotor.setSelectedSensorPosition(0, 0, TIMEOUT);
   }
 
+  public double getEncoder() {
+    return elevatorMotor.getSelectedSensorPosition(0);
+  }
+
   public boolean getTopSwitch() {
     return elevatorMotor.getSensorCollection().isFwdLimitSwitchClosed();
   }
@@ -110,8 +125,20 @@ public class Elevator extends Subsystem {
     return elevatorMotor.getSensorCollection().isRevLimitSwitchClosed();
   }
 
+  public void stopElevator() {
+    elevatorSetpoint = getEncoder();
+  }
+
   //MANUAL CONTROL
   public void setSpeed(double speed) {
     elevatorMotor.set(ControlMode.PercentOutput, speed);
   }
+
+  public void fineTuneUp() {
+    elevatorSetpoint += FINETUNE_RATE;
+  }
+  public void fineTuneDown() {
+    elevatorSetpoint -= FINETUNE_RATE;
+  }
+
 }

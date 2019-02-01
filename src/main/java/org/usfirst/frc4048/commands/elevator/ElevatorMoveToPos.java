@@ -13,13 +13,11 @@ import org.usfirst.frc4048.utils.ElevatorPosition;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ElevatorMoveToPos extends Command {
-  private double position;
   private ElevatorPosition elevatorPosition;
   public ElevatorMoveToPos(ElevatorPosition elevatorPosition) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     this.elevatorPosition = elevatorPosition;
-    this.position = elevatorPosition.getPosition();
 
     requires(Robot.elevator);
   }
@@ -32,13 +30,13 @@ public class ElevatorMoveToPos extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.elevator.setPosition(position);
+    Robot.elevator.elevatorToPosition(elevatorPosition);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Robot.elevator.elevatorAtPos(elevatorPosition) || Robot.elevator.getTopSwitch() || Robot.elevator.getBotSwitch();
+    return Robot.elevator.elevatorAtPos(elevatorPosition) || !Robot.elevator.getTopSwitch() || !Robot.elevator.getBotSwitch();//we do this because on the test bed false is pushed down
   }
 
   // Called once after isFinished returns true

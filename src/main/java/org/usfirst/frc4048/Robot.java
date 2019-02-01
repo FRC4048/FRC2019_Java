@@ -25,6 +25,7 @@ import org.usfirst.frc4048.commands.pneumatics.ExampleSolenoidCommand;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
+import org.usfirst.frc4048.utils.ElevatorPosition;
 import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.commands.drive.DriveDistanceMaintainAngle;
 // import org.usfirst.frc4048.commands.DriveTargetCenter;
@@ -33,7 +34,7 @@ import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
 import org.usfirst.frc4048.commands.drive.RotateAngle;
 import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
-
+import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.subsystems.PowerDistPanel;
@@ -191,6 +192,10 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putData(new RotateAngleForAlignment());
     // SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.5, false));
     // SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
+    SmartDashboard.putData("Motion Magic Test 0.0", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
+    SmartDashboard.putData("Motion Magic Test 100.0", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
+    SmartDashboard.putData("Motion Magic Test 1500.0", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
+    SmartDashboard.putData("Motion Magic Test -4000.0", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
   }
 
   /**
@@ -203,6 +208,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData(new RotateAngle(90));
     System.out.println("test");
     SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
+    SmartDashboard.putNumber("Elevator Encoder", Robot.elevator.getEncoder());
     Scheduler.getInstance().run();
   
   }

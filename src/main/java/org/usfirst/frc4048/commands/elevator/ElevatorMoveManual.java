@@ -12,7 +12,6 @@ import org.usfirst.frc4048.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ElevatorMoveManual extends Command {
-  private double speed;
   private final double TRIGGER_MARGIN_VALUE = 0.01;
 
   public ElevatorMoveManual() {
@@ -24,19 +23,16 @@ public class ElevatorMoveManual extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    speed = 0.0;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     if(Robot.oi.getRightTrigger() > 0.0 + TRIGGER_MARGIN_VALUE) {
-      speed = Robot.oi.getRightTrigger();
+      Robot.elevator.fineTuneUp();
     } else if(Robot.oi.getLeftTrigger() > 0.0 + TRIGGER_MARGIN_VALUE) {
-      speed = Robot.oi.getLeftTrigger();
-      speed *= -1; //invert the speed because we are going down
+      Robot.elevator.fineTuneDown();
     }
-    Robot.elevator.setSpeed(speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()

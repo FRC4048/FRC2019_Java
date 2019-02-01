@@ -11,7 +11,7 @@ package org.usfirst.frc4048.utils;
  * Add your docs here.
  */
 public enum ElevatorPosition {
-    HATCH_ROCKET_BOT(0.0), HATCH_ROCKET_MID(5.0), HATCH_ROCKET_HIGH(0.0), CARGO_ROCKET_LOW(0.0), CARGO_ROCKET_MID(0.0), CARGO_ROCKET_HIGH(0.0);
+    HATCH_ROCKET_BOT(0.0), HATCH_ROCKET_MID(100.0), HATCH_ROCKET_HIGH(1500.0), CARGO_ROCKET_LOW(-9000.0), CARGO_ROCKET_MID(0.0), CARGO_ROCKET_HIGH(0.0);
 
     public double position;
 
