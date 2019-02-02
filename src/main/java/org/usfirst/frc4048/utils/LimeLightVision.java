@@ -51,7 +51,7 @@ public class LimeLightVision {
         double x = tx.getDouble(0.0);
         double y = ty.getDouble(0.0);
 
-        return calcCameraDistance(x, y, RobotMap.TARGET_HEIGHT, RobotMap.CAMERA_HEIGHT, RobotMap.CAMERA_ANGLE);
+        return calcCameraDistance(x, y, RobotMap.TARGET_HEIGHT_HATCH, RobotMap.CAMERA_HEIGHT, RobotMap.CAMERA_ANGLE);
     }
 
     /**

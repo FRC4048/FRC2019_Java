@@ -175,13 +175,13 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
     // SmartDashboard.putData(new LimelightAlign());
     // SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
-    // SmartDashboard.putData(new DriveAlignGroup());
-    // SmartDashboard.putData(new RotateAngle(0)); 
+    SmartDashboard.putData(new DriveAlignGroup());
+    SmartDashboard.putData(new RotateAngle(0)); 
     SmartDashboard.putData("Limelight On", new LimelightToggle(true));
     SmartDashboard.putData("Limelight Off", new LimelightToggle(false));
     // SmartDashboard.putData(new RotateAngleForAlignment());
-    // SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.5, false));
-    // SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
+    SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.4, false));
+    SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
   }
 
   /**

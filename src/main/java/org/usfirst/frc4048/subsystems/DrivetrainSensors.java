@@ -38,7 +38,7 @@ public class DrivetrainSensors extends Subsystem {
     private NetworkTableEntry limelightSidewaysEntry = Shuffleboard.getTab("DrivetrainSensors").add("LimelightSideways", 0.0).getEntry();
 
     public DrivetrainSensors() {
-        ultrasonic = new Ultrasonic(8, 9);
+        ultrasonic = new Ultrasonic(2, 3);
         ultrasonic.setAutomaticMode(true);
 
         limelight = new LimeLightVision();
