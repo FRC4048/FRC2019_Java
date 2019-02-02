@@ -49,7 +49,6 @@ interface RobotMapForTestbed {
   //DIGITAL INPUTS
   public static final int CARGO_LIMIT_SWITCH_LEFT_ID = 1;
   public static final int CARGO_LIMIT_SWITCH_RIGHT_ID = 2;
-  public static final int[] ELEVATOR_QUAD_ENCODER_ID = {3,4};
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
 
@@ -57,11 +56,11 @@ interface RobotMapForTestbed {
   public static final int WINCH_MOTOR_ID = 1;
 
   //PCM
-  public static final int CARGO_PISTON_ID = 1;
-  public static final int HATCH_PANEL_PISTON_ID = 2;
-  public static final int HATCH_PANEL_WRIST_PISTON_ID = 3;
-  public static final int INTAKES_WRIST_PISTON_ID = 4;
-  public static final int CLIMBER_PISTONS_ID = 5;
+  public static final int CARGO_PISTON_ID = 0;
+  public static final int HATCH_PANEL_PISTON_ID = 1;
+  public static final int HATCH_PANEL_WRIST_PISTON_ID = 2;
+  public static final int INTAKES_WRIST_PISTON_ID = 3;
+  public static final int CLIMBER_PISTONS_ID = 4;
 
   //OI
   public static final int XBOX_A_BUTTON = 1;
