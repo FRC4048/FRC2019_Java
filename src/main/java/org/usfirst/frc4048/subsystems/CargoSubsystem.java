@@ -16,15 +16,14 @@ public class CargoSubsystem extends Subsystem {
     private DigitalInput opticalSensor;
     private Solenoid ejectPiston;
 
-    //TODO Make these speeds accurate
-    public final double CARGO_INPUT_SPEED = 0.5; 
-    public final double CARGO_OUTPUT_SPEED = -0.5;
+    public final double CARGO_INPUT_SPEED = -1.0; 
+    public final double CARGO_OUTPUT_SPEED = 1.0;
 
     public CargoSubsystem() {
         intakeRoller = new WPI_TalonSRX(RobotMap.CARGO_INTAKE_MOTOR_ID);
         leftLimit = new DigitalInput(RobotMap.CARGO_LIMIT_SWITCH_LEFT_ID);
         rightLimit = new DigitalInput(RobotMap.CARGO_LIMIT_SWITCH_RIGHT_ID);
-        ejectPiston = new Solenoid(RobotMap.CARGO_PISTON_ID);
+        ejectPiston = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.CARGO_PISTON_ID);
         opticalSensor = new DigitalInput(RobotMap.CARGO_OPTICAL_SENSOR_ID);
     }
     
@@ -37,13 +36,13 @@ public class CargoSubsystem extends Subsystem {
 
 
     public boolean leftLimitPressed(){
-        return leftLimit.get();
+        return !leftLimit.get();
     }
     public boolean rightLimitPressed(){
-        return rightLimit.get();
+        return !rightLimit.get();
     }
     public boolean cargoInIntake(){
-        return opticalSensor.get();
+        return !opticalSensor.get();
     }
 
     public void cargoInput(){

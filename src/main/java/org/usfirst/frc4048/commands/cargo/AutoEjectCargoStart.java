@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc4048.Robot;
 
-public class AutoEjectCargo extends Command {
-    public AutoEjectCargo() {
+public class AutoEjectCargoStart extends Command {
+    public AutoEjectCargoStart() {
         requires(Robot.cargoSubsystem);
     }
 
@@ -22,24 +22,20 @@ public class AutoEjectCargo extends Command {
     protected void execute() {
         if (Robot.cargoSubsystem.leftLimitPressed() || Robot.cargoSubsystem.rightLimitPressed()) {
             Robot.cargoSubsystem.cargoOutput();
-            if (Robot.cargoSubsystem.getCargoSpeed() >= Robot.cargoSubsystem.CARGO_OUTPUT_SPEED)
-                Robot.cargoSubsystem.cargoEject();
-        } else 
-            Robot.cargoSubsystem.cargoStop();
+            setTimeout(0.2);
+        }
         
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return !Robot.cargoSubsystem.cargoInIntake();
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.cargoSubsystem.cargoStop();
-        Robot.cargoSubsystem.cargoRetract();
     }
 
     // Called when another command which requires one or more of the same

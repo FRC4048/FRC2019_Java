@@ -27,6 +27,9 @@ import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
 import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.commands.drive.DriveDistanceMaintainAngle;
+import org.usfirst.frc4048.commands.cargo.AutoCargoEjectGroup;
+import org.usfirst.frc4048.commands.cargo.CargoEjectGroup;
+import org.usfirst.frc4048.commands.cargo.IntakeCargo;
 // import org.usfirst.frc4048.commands.DriveTargetCenter;
 // import org.usfirst.frc4048.commands.LimelightAlign;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
@@ -203,6 +206,13 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData(new RotateAngle(90));
     System.out.println("test");
     SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
+
+    //Cargo testing
+    SmartDashboard.putData(new AutoCargoEjectGroup());
+    SmartDashboard.putData(new CargoEjectGroup());
+    SmartDashboard.putData(new IntakeCargo());
+    //SmartDashboard.putData("Optical Sensor", data);
+
     Scheduler.getInstance().run();
   
   }
