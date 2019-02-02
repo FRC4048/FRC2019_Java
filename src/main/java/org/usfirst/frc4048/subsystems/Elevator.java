@@ -44,7 +44,6 @@ public class Elevator extends Subsystem {
   private final double ELEVATOR_F = 0;
   private final int ELEVATOR_ACCEL = 375/*281*/; //RPM Of motor 
   private final int ELEVATOR_CRUISE_VELOCITY = 375/*281*/; // ^
-  private final int FINETUNE_RATE = 60;
   private double elevatorSetpoint;
   
   public Elevator() {
@@ -134,11 +133,8 @@ public class Elevator extends Subsystem {
     elevatorMotor.set(ControlMode.PercentOutput, speed);
   }
 
-  public void fineTuneUp() {
-    elevatorSetpoint += FINETUNE_RATE;
-  }
-  public void fineTuneDown() {
-    elevatorSetpoint -= FINETUNE_RATE;
+  public void fineTune(double speed) {
+    elevatorSetpoint += speed;
   }
 
 }

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ElevatorMoveManual extends Command {
   private final double TRIGGER_MARGIN_VALUE = 0.01;
+  private int finetuneRate;
 
   public ElevatorMoveManual() {
     // Use requires() here to declare subsystem dependencies
@@ -23,15 +24,18 @@ public class ElevatorMoveManual extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    finetuneRate = 60;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     if(Robot.oi.getRightTrigger() > 0.0 + TRIGGER_MARGIN_VALUE) {
-      Robot.elevator.fineTuneUp();
+      finetuneRate *= Robot.oi.getRightTrigger();
+      Robot.elevator.fineTune(finetuneRate);
     } else if(Robot.oi.getLeftTrigger() > 0.0 + TRIGGER_MARGIN_VALUE) {
-      Robot.elevator.fineTuneDown();
+      finetuneRate *= Robot.oi.getLeftTrigger();
+      Robot.elevator.fineTune(-finetuneRate);
     }
   }
 
