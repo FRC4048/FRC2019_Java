@@ -10,7 +10,8 @@ import org.usfirst.frc4048.utils.MotorUtils;
 
 public class IntakeCargo extends LoggedCommand {
 
-	private MotorUtils util = new MotorUtils(RobotMap.CARGO_INTAKE_MOTOR_ID, RobotMap.CURRENT_THRESHOLD_CARGO_INTAKE);
+	//NOTE: The timeout for the cargo intake motor is currently set to half a second. This should be confirmed/updated with further testing.
+	private MotorUtils util = new MotorUtils(RobotMap.PDP_ID_CARGO_INTAKE, RobotMap.CURRENT_THRESHOLD_CARGO_INTAKE, 0.5);
 
 	public IntakeCargo() {
 		super(" is running");
@@ -26,7 +27,7 @@ public class IntakeCargo extends LoggedCommand {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void loggedExecute() {
-
+		
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

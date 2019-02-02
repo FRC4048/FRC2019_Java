@@ -69,4 +69,8 @@ public class CargoSubsystem extends Subsystem {
         ejectPiston.set(false);
     }
 
+
+    public double getCargoCurrent(){
+        return intakeRoller.getOutputCurrent();
+    }
 }

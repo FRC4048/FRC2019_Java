@@ -84,6 +84,10 @@ public class RobotMap {
   public static final int XBOX_LEFT_STICK_PRESS = 9;
   public static final int XBOX_RIGHT_STICK_PRESS = 10;
   
+  //PDP IDS
+  public static final int PDP_ID_CARGO_INTAKE = 13; //Just a test value for now; will be changed on the real robot.
+
   //MOTOR STALL CURRENT THRESHOLDS
-  public static final double CURRENT_THRESHOLD_CARGO_INTAKE = 5.0; //TODO Find the correct value for this; it is currently just a placeholder.
+  public static final double CURRENT_THRESHOLD_CARGO_INTAKE = 15.0;
+
 }

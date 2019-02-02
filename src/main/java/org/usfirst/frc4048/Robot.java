@@ -211,6 +211,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData(new AutoCargoEjectGroup());
     SmartDashboard.putData(new CargoEjectGroup());
     SmartDashboard.putData(new IntakeCargo());
+    SmartDashboard.putNumber("Cargo Motor Current", Robot.cargoSubsystem.getCargoCurrent());
     //SmartDashboard.putData("Optical Sensor", data);
 
     Scheduler.getInstance().run();
