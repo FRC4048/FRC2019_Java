@@ -83,4 +83,7 @@ public class RobotMap {
   public static final int XBOX_START_BUTTON = 8;
   public static final int XBOX_LEFT_STICK_PRESS = 9;
   public static final int XBOX_RIGHT_STICK_PRESS = 10;
+  
+  //MOTOR STALL CURRENT THRESHOLDS
+  public static final double CURRENT_THRESHOLD_CARGO_INTAKE = 5.0; //TODO Find the correct value for this; it is currently just a placeholder.
 }

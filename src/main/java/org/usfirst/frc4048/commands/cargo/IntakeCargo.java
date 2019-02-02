@@ -4,9 +4,14 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.commands.LoggedCommand;
+import org.usfirst.frc4048.utils.MotorUtils;
 
 public class IntakeCargo extends LoggedCommand {
+
+	private MotorUtils util = new MotorUtils(RobotMap.CARGO_INTAKE_MOTOR_ID, RobotMap.CURRENT_THRESHOLD_CARGO_INTAKE);
+
 	public IntakeCargo() {
 		super(" is running");
 		requires(Robot.cargoSubsystem);
@@ -27,7 +32,7 @@ public class IntakeCargo extends LoggedCommand {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean loggedIsFinished() {
-		return Robot.cargoSubsystem.cargoInIntake();
+		return Robot.cargoSubsystem.cargoInIntake() || util.isStalled();
 	}
 
 	// Called once after isFinished returns true
