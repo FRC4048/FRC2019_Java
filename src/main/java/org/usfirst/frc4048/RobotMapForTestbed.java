@@ -92,5 +92,4 @@ interface RobotMapForTestbed {
   public static final double TARGET_HEIGHT = 36.5; // Inches, height of field target
   public static final double CAMERA_ANGLE = -14; // Degrees, angle that the camera is mounted at
 
-
 }
