@@ -14,14 +14,14 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 public class RotateAngleForAlignment extends LoggedCommand {
-  private final double rightRocketSideAngle = 90.0;
-  private final double rightRocketBackAngle = 151.25;
-  private final double rightRocketFrontAngle = 61.25;
-  private final double leftRocketSideAngle = 270;
-  private final double leftRocketBackAngle = 241.25;
-  private final double leftRocketFrontAngle = 331.25;
-  private final double cargoFrontAngle = 0.0;
-  private final double[] depositAngles = new double[]{rightRocketSideAngle, rightRocketBackAngle, rightRocketFrontAngle, 
+  private static final double rightRocketSideAngle = 90.0;
+  private static final double rightRocketBackAngle = 151.25;
+  private static final double rightRocketFrontAngle = 61.25;
+  private static final double leftRocketSideAngle = 270;
+  private static final double leftRocketBackAngle = 241.25;
+  private static final double leftRocketFrontAngle = 331.25;
+  private static final double cargoFrontAngle = 0.0;
+  private static final double[] depositAngles = new double[]{rightRocketSideAngle, rightRocketBackAngle, rightRocketFrontAngle, 
           leftRocketSideAngle, leftRocketBackAngle,  leftRocketFrontAngle, cargoFrontAngle};
 
   /*
@@ -32,9 +32,6 @@ public class RotateAngleForAlignment extends LoggedCommand {
    /
   / <-- Front Angle 
   */
-
-  //There is a problem with overlap because if you are in the middle of 2 angles it will prefer one angle
-  //to another because of the order of the if statements 
 
   public RotateAngleForAlignment() {
     super(String.format(" is running"));
@@ -53,6 +50,7 @@ public class RotateAngleForAlignment extends LoggedCommand {
     double angleToMoveTo = calculateAngle(Robot.drivetrain.getGyro());
     Scheduler.getInstance().add(new RotateAngle(angleToMoveTo));
   }
+
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean loggedIsFinished() {
@@ -71,19 +69,21 @@ public class RotateAngleForAlignment extends LoggedCommand {
     loggedEnd();
   }
 
+
   public double calculateAngle(double currAngle) {
     double currentDistance = 0;
     double closestDistance= 360;
     int closestIndex = 0;
 
+    /* Make sure the angle is positive and less tha 360 */
     currAngle = currAngle % 360;
     if(currAngle < 0) {
       currAngle += 360;
     }
 
+    /* find the angle that is closest to the current robot angle */
     for (int i = 0; i < depositAngles.length; i++)
     {
-      if (findAngleDistance(currAngle, depositAngles[i]) < closestDistance)
       currentDistance = findAngleDistance(currAngle, depositAngles[i]);
       if (currentDistance < closestDistance)
       {
@@ -91,13 +91,16 @@ public class RotateAngleForAlignment extends LoggedCommand {
         closestIndex = i;
       }
     }
-
     return depositAngles[closestIndex];
   }
 
+  
   private double findAngleDistance(double angle1, double angle2) {
     double diff;
 
+    /* every 2 points on the circle have 2 'distances' from each other. A cw distance and a ccw distance  */
+    /* One of the distances is >= 180, the other is <=180, and they add up to 360.                        */
+    /* We want to make sure that if we get the >180, we actually return the other distance.               */
     diff = Math.abs(angle1-angle2);
     if (diff > 180)
     {
