@@ -85,14 +85,11 @@ public class Robot extends TimedRobot {
       solenoidSubsystem = new ExampleSolenoidSubsystem();
     }
     drivetrainSensors = new DrivetrainSensors();
-<<<<<<< HEAD
 
-=======
     limelight = new LimeLightVision();
     climber = new Climber();
     diagnostics = new Diagnostics();
     
->>>>>>> 5080c21ab7e61a8cc9983a18104e564a7ddb2cab
     // OI must be initilized last
     oi = new OI();
     // Robot.drivetrainSensors.ledOn();
@@ -115,21 +112,14 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-<<<<<<< HEAD
     if (RobotMap.ENABLE_SOLENOID) {
       SmartDashboard.putData("Extend Piston", new ExampleSolenoidCommand(true));
       SmartDashboard.putData("Retract Piston", new ExampleSolenoidCommand(false));
     }
     if (RobotMap.ENABLE_COMPRESSOR) {
       SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
-      SmartDashboard.putBoolean("Pressure", Robot.compressorSubsystem.getPressure());
+      SmartDashboard.putNumber("Pressure", Robot.compressorSubsystem.getPressure());
     }
-=======
-    SmartDashboard.putData("Extend Piston", new ExampleSolenoidCommand(true));
-    SmartDashboard.putData("Retract Piston", new ExampleSolenoidCommand(false));
-//    SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
-//    SmartDashboard.putBoolean("Pressure", Robot.compressorSubsystem.getPressure());
->>>>>>> 5080c21ab7e61a8cc9983a18104e564a7ddb2cab
   }
 
   /**
