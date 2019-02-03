@@ -40,6 +40,10 @@ interface RobotMapFor2018Robot {
    */
   public static final boolean ENABLE_PIGEON_THREAD = true;
 
+  /**
+   * Enables loging of timing data related to watchdog timeouts.
+   */
+  public static final boolean LOG_PERIODIC_TIME = true;
 
   public static final double SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK = 0.0942478739;
 
