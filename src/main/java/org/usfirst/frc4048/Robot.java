@@ -7,6 +7,7 @@
 
 package org.usfirst.frc4048;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -166,8 +167,6 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     
-    SmartDashboard.putNumber("Pressure Value", compressorSubsystem.getPressure());
-
     // SmartDashboard.putData(new LimelightAlign());
     SmartDashboard.putData("Limelight On", new LimelightToggle(true));
     SmartDashboard.putData("Limelight Off", new LimelightToggle(false));
@@ -200,6 +199,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+
+    SmartDashboard.putNumber("Pressure Value", compressorSubsystem.getPressure());
 
     if(RobotMap.ENABLE_DRIVETRAIN) {
       SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));

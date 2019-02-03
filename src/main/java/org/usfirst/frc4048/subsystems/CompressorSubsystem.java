@@ -8,6 +8,7 @@
 package org.usfirst.frc4048.subsystems;
 
 import org.usfirst.frc4048.RobotMap;
+import org.usfirst.frc4048.utils.PressureSensor;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
@@ -21,11 +22,11 @@ public class CompressorSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   private Compressor compressor;
-  private AnalogInput pressureSensor;
+  private PressureSensor pressureSensor;
 
   public CompressorSubsystem() {
     compressor = new Compressor(RobotMap.PCM_CAN_ID);
-    pressureSensor = new AnalogInput(RobotMap.COMPRESSOR_PRESSURE_SENSOR);
+    pressureSensor = new PressureSensor(new AnalogInput(RobotMap.COMPRESSOR_PRESSURE_SENSOR));
     compressor.setClosedLoopControl(true);
   }
 
@@ -44,7 +45,7 @@ public class CompressorSubsystem extends Subsystem {
   }
 
   public double getPressure() {
-    return pressureSensor.getVoltage();
+    return pressureSensor.getPressureInPSI();
   }
 
   public double getCurrent() {
