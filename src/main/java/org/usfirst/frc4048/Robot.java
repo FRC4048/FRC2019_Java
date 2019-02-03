@@ -27,6 +27,7 @@ import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
 
 import org.usfirst.frc4048.commands.drive.DriveDistanceMaintainAngle;
+import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
 import org.usfirst.frc4048.commands.drive.RotateAngle;
@@ -178,6 +179,7 @@ public class Robot extends TimedRobot {
       // SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
     // }
     // SmartDashboard.putData(new LimelightAlign());
+<<<<<<< HEAD
     // if(RobotMap.ENABLE_DRIVETRAIN) {
     //   SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
     //   SmartDashboard.putData(new DriveAlignGroup());
@@ -190,6 +192,19 @@ public class Robot extends TimedRobot {
     //   SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.5, false));
     //   SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
     // }
+=======
+    SmartDashboard.putData("Limelight On", new LimelightToggle(true));
+    SmartDashboard.putData("Limelight Off", new LimelightToggle(false));
+    if(RobotMap.ENABLE_DRIVETRAIN) {
+      // SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
+      SmartDashboard.putData(new DriveAlignGroup());
+      SmartDashboard.putData(new RotateAngle(0)); 
+      // SmartDashboard.putData(new RotateAngleForAlignment());
+      SmartDashboard.putData("Toggle Centric Mode", new CentricModeToggle());
+      SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.4, false));
+      SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
+    }
+>>>>>>> 5d3b63d2db0c5e981c898ea91fb8fb6c3e967a14
   }
 
   /**

@@ -77,10 +77,10 @@ public class DriveAlignPhase2 extends LoggedCommand {
 
     }
 
-    // SmartDashboard.putNumber("Forward Distance", forward);
-    // SmartDashboard.putNumber("Horizontal Distnace", horizontal);
-    // SmartDashboard.putNumber("Angle", Math.toDegrees(angle));
-    // SmartDashboard.putNumber("Move Distance", moveDistance);
+    SmartDashboard.putNumber("Forward Distance", forward);
+    SmartDashboard.putNumber("Horizontal Distnace", horizontal);
+    SmartDashboard.putNumber("Angle", Math.toDegrees(angle));
+    SmartDashboard.putNumber("Move Distance", moveDistance);
 
   }
 
