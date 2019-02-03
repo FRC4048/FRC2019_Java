@@ -165,23 +165,24 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    Robot.drivetrain.swerveDrivetrain.setModeField();
     
-    // Shuffleboard.getTab("Approach").add("90", new RotateAngle(90));
-    // Shuffleboard.getTab("Approach").add("-45", new RotateAngle(-45));
-    // Shuffleboard.getTab("Approach").add("0", new RotateAngle(0));
-    // Shuffleboard.getTab("Approach").add("10", new RotateAngle(10));
-    // Shuffleboard.getTab("Approach").add("-30", new RotateAngle(-30));
-
-    // Shuffleboard.getTab("Approach").add("TargetAlign", new DriveTargetCenter(10.0, -0.25));
-  
-    // if(RobotMap.ENABLE_DRIVETRAIN) {
-      // SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
-    // }
     // SmartDashboard.putData(new LimelightAlign());
     SmartDashboard.putData("Limelight On", new LimelightToggle(true));
     SmartDashboard.putData("Limelight Off", new LimelightToggle(false));
+    
     if(RobotMap.ENABLE_DRIVETRAIN) {
+      Robot.drivetrain.swerveDrivetrain.setModeField();
+    
+      // Shuffleboard.getTab("Approach").add("90", new RotateAngle(90));
+      // Shuffleboard.getTab("Approach").add("-45", new RotateAngle(-45));
+      // Shuffleboard.getTab("Approach").add("0", new RotateAngle(0));
+      // Shuffleboard.getTab("Approach").add("10", new RotateAngle(10));
+      // Shuffleboard.getTab("Approach").add("-30", new RotateAngle(-30));
+  
+      // Shuffleboard.getTab("Approach").add("TargetAlign", new DriveTargetCenter(10.0, -0.25));
+    
+      // SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
+
       // SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
       SmartDashboard.putData(new DriveAlignGroup());
       SmartDashboard.putData(new RotateAngle(0)); 
