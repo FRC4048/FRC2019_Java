@@ -7,6 +7,7 @@
 
 package org.usfirst.frc4048;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -14,6 +15,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -22,10 +24,12 @@ import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
 import org.usfirst.frc4048.commands.drive.DriveDistance;
 import org.usfirst.frc4048.commands.pneumatics.ExampleSolenoidCommand;
 import org.usfirst.frc4048.subsystems.CargoSubsystem;
+import org.usfirst.frc4048.subsystems.Climber;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
-
+import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
+import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.commands.drive.DriveDistanceMaintainAngle;
 import org.usfirst.frc4048.commands.cargo.AutoCargoEjectGroup;
 import org.usfirst.frc4048.commands.cargo.CargoEjectGroup;
@@ -44,6 +48,7 @@ import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.subsystems.PowerDistPanel;
 import org.usfirst.frc4048.utils.WorkQueue;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
+import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -64,7 +69,11 @@ public class Robot extends TimedRobot {
   public static DrivetrainSensors drivetrainSensors;
   public static LimeLightVision limelight;
   public static CargoSubsystem cargoSubsystem;
+  public static HatchPanelSubsystem hatchPanelSubsystem; 
+  public static Climber climber;
+  public static Diagnostics diagnostics;
 
+  
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -86,9 +95,11 @@ public class Robot extends TimedRobot {
     drivetrainSensors = new DrivetrainSensors();
     limelight = new LimeLightVision();
     cargoSubsystem = new CargoSubsystem();
-
-
-    //OI must be initilized last
+    hatchPanelSubsystem = new HatchPanelSubsystem();
+    climber = new Climber();
+    diagnostics = new Diagnostics();
+    
+    // OI must be initilized last
     oi = new OI();
     // Robot.drivetrainSensors.ledOn();
     SmartDashboard.putData("Auto mode", m_chooser);
@@ -111,8 +122,8 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData("Extend Piston", new ExampleSolenoidCommand(true));
     SmartDashboard.putData("Retract Piston", new ExampleSolenoidCommand(false));
-    SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
-    SmartDashboard.putBoolean("Pressure", Robot.compressorSubsystem.getPressure());
+//    SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
+//    SmartDashboard.putBoolean("Pressure", Robot.compressorSubsystem.getPressure());
   }
 
   /**
@@ -210,6 +221,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
+    SmartDashboard.putNumber("Pressure Value", compressorSubsystem.getPressure());
+
     if(RobotMap.ENABLE_DRIVETRAIN) {
       SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
       SmartDashboard.putData(new RotateAngle(90));
@@ -219,11 +232,18 @@ public class Robot extends TimedRobot {
   
   }
 
+  @Override
+  public void testInit() {
+    diagnostics.reset();
+  }
+
   /**
    * This function is called periodically during test mode.
    */
   @Override
   public void testPeriodic() {
+
+    diagnostics.refresh();
 
     Scheduler.getInstance().run();
   }
