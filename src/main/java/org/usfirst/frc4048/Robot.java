@@ -27,7 +27,8 @@ import org.usfirst.frc4048.subsystems.Climber;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
-
+import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
+import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.commands.drive.DriveDistanceMaintainAngle;
 import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
@@ -61,9 +62,11 @@ public class Robot extends TimedRobot {
   public static ExampleSolenoidSubsystem solenoidSubsystem;
   public static DrivetrainSensors drivetrainSensors;
   public static LimeLightVision limelight;
+  public static HatchPanelSubsystem hatchPanelSubsystem; 
   public static Climber climber;
   public static Diagnostics diagnostics;
 
+  
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -84,6 +87,7 @@ public class Robot extends TimedRobot {
     solenoidSubsystem = new ExampleSolenoidSubsystem();
     drivetrainSensors = new DrivetrainSensors();
     limelight = new LimeLightVision();
+    hatchPanelSubsystem = new HatchPanelSubsystem();
     climber = new Climber();
     diagnostics = new Diagnostics();
     
