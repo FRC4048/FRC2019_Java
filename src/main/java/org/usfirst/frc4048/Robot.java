@@ -90,9 +90,9 @@ public class Robot extends TimedRobot {
       drivetrain = new DriveTrain();
     }
     pdp = new PowerDistPanel();
-//    compressorSubsystem = new CompressorSubsystem();
-//    solenoidSubsystem = new ExampleSolenoidSubsystem();
-//    drivetrainSensors = new DrivetrainSensors();
+    compressorSubsystem = new CompressorSubsystem();
+    solenoidSubsystem = new ExampleSolenoidSubsystem();
+    drivetrainSensors = new DrivetrainSensors();
     limelight = new LimeLightVision();
     cargoSubsystem = new CargoSubsystem();
     hatchPanelSubsystem = new HatchPanelSubsystem();
