@@ -33,6 +33,7 @@ import org.usfirst.frc4048.commands.drive.RotateAngle;
 import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
 
 import org.usfirst.frc4048.subsystems.DriveTrain;
+import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.subsystems.PowerDistPanel;
 import org.usfirst.frc4048.utils.WorkQueue;
@@ -55,6 +56,7 @@ public class Robot extends TimedRobot {
   public static CompressorSubsystem compressorSubsystem;
   public static ExampleSolenoidSubsystem solenoidSubsystem;
   public static DrivetrainSensors drivetrainSensors;
+  public static LimeLightVision limelight;
   public static Climber climber;
 
   Command m_autonomousCommand;
@@ -74,9 +76,10 @@ public class Robot extends TimedRobot {
     compressorSubsystem = new CompressorSubsystem();
     solenoidSubsystem = new ExampleSolenoidSubsystem();
     drivetrainSensors = new DrivetrainSensors();
+    limelight = new LimeLightVision();
     climber = new Climber();
 
-    // OI must be initilized last
+    //OI must be initilized last
     oi = new OI();
     // Robot.drivetrainSensors.ledOn();
     SmartDashboard.putData("Auto mode", m_chooser);
