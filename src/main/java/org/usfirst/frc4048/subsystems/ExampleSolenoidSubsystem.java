@@ -21,7 +21,7 @@ public class ExampleSolenoidSubsystem extends Subsystem {
   private Solenoid exampleSolenoid;
   
   public ExampleSolenoidSubsystem() {
-    exampleSolenoid = new Solenoid(RobotMap.PCM_CAN_ID, 0);
+    //exampleSolenoid = new Solenoid(RobotMap.PCM_CAN_ID, 0);
   }
 
   @Override

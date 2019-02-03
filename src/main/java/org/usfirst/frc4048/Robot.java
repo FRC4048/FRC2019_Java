@@ -7,6 +7,7 @@
 
 package org.usfirst.frc4048;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -22,12 +23,19 @@ import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
 import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
 import org.usfirst.frc4048.commands.drive.DriveDistance;
 import org.usfirst.frc4048.commands.pneumatics.ExampleSolenoidCommand;
-
+import org.usfirst.frc4048.subsystems.CargoSubsystem;
+import org.usfirst.frc4048.subsystems.Climber;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
-
+import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
+import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.commands.drive.DriveDistanceMaintainAngle;
+import org.usfirst.frc4048.commands.cargo.AutoCargoEjectGroup;
+import org.usfirst.frc4048.commands.cargo.CargoEjectGroup;
+import org.usfirst.frc4048.commands.cargo.IntakeCargo;
+// import org.usfirst.frc4048.commands.DriveTargetCenter;
+// import org.usfirst.frc4048.commands.LimelightAlign;
 import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
@@ -35,6 +43,7 @@ import org.usfirst.frc4048.commands.drive.RotateAngle;
 import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
 
 import org.usfirst.frc4048.subsystems.DriveTrain;
+import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.subsystems.PowerDistPanel;
 import org.usfirst.frc4048.utils.WorkQueue;
@@ -58,7 +67,12 @@ public class Robot extends TimedRobot {
   public static CompressorSubsystem compressorSubsystem;
   public static ExampleSolenoidSubsystem solenoidSubsystem;
   public static DrivetrainSensors drivetrainSensors;
+  public static LimeLightVision limelight;
+  public static CargoSubsystem cargoSubsystem;
+  public static HatchPanelSubsystem hatchPanelSubsystem;
+  public static Climber climber;
   public static Diagnostics diagnostics;
+
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -72,11 +86,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-//    drivetrain = new DriveTrain();
+    if(RobotMap.ENABLE_DRIVETRAIN) {
+      drivetrain = new DriveTrain();
+    }
     pdp = new PowerDistPanel();
 //    compressorSubsystem = new CompressorSubsystem();
 //    solenoidSubsystem = new ExampleSolenoidSubsystem();
 //    drivetrainSensors = new DrivetrainSensors();
+    limelight = new LimeLightVision();
+    cargoSubsystem = new CargoSubsystem();
+    hatchPanelSubsystem = new HatchPanelSubsystem();
+    climber = new Climber();
     diagnostics = new Diagnostics();
     
     // OI must be initilized last
@@ -167,27 +187,32 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    Robot.drivetrain.swerveDrivetrain.setModeField();
-    
-    // Shuffleboard.getTab("Approach").add("90", new RotateAngle(90));
-    // Shuffleboard.getTab("Approach").add("-45", new RotateAngle(-45));
-    // Shuffleboard.getTab("Approach").add("0", new RotateAngle(0));
-    // Shuffleboard.getTab("Approach").add("10", new RotateAngle(10));
-    // Shuffleboard.getTab("Approach").add("-30", new RotateAngle(-30));
 
-    // Shuffleboard.getTab("Approach").add("TargetAlign", new DriveTargetCenter(10.0, -0.25));
-  
-    // SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
     // SmartDashboard.putData(new LimelightAlign());
-    // SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
-    SmartDashboard.putData(new DriveAlignGroup());
-    SmartDashboard.putData(new RotateAngle(0)); 
     SmartDashboard.putData("Limelight On", new LimelightToggle(true));
     SmartDashboard.putData("Limelight Off", new LimelightToggle(false));
-    // SmartDashboard.putData(new RotateAngleForAlignment());
-    SmartDashboard.putData("Toggle Centric Mode", new CentricModeToggle());
-    SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.4, false));
-    SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
+
+    if(RobotMap.ENABLE_DRIVETRAIN) {
+      Robot.drivetrain.swerveDrivetrain.setModeField();
+    
+      // Shuffleboard.getTab("Approach").add("90", new RotateAngle(90));
+      // Shuffleboard.getTab("Approach").add("-45", new RotateAngle(-45));
+      // Shuffleboard.getTab("Approach").add("0", new RotateAngle(0));
+      // Shuffleboard.getTab("Approach").add("10", new RotateAngle(10));
+      // Shuffleboard.getTab("Approach").add("-30", new RotateAngle(-30));
+
+      // Shuffleboard.getTab("Approach").add("TargetAlign", new DriveTargetCenter(10.0, -0.25));
+
+      // SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
+
+      // SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
+      SmartDashboard.putData(new DriveAlignGroup());
+      SmartDashboard.putData(new RotateAngle(0));
+      // SmartDashboard.putData(new RotateAngleForAlignment());
+      SmartDashboard.putData("Toggle Centric Mode", new CentricModeToggle());
+      SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.4, false));
+      SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
+    }
   }
 
   /**
@@ -196,9 +221,13 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
-    SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
-    SmartDashboard.putData(new RotateAngle(90));
-    SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
+    SmartDashboard.putNumber("Pressure Value", compressorSubsystem.getPressure());
+
+    if(RobotMap.ENABLE_DRIVETRAIN) {
+      SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
+      SmartDashboard.putData(new RotateAngle(90));
+      SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
+    }
     Scheduler.getInstance().run();
   
   }

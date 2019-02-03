@@ -17,6 +17,9 @@ package org.usfirst.frc4048;
  * will use with a single change in RobotMap.
  */
 interface RobotMapForTestbed {
+
+  public static final boolean ENABLE_DRIVETRAIN = false;
+
   public static final double SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK = 0.0942478739;
 
   //CAN ID
@@ -45,13 +48,17 @@ interface RobotMapForTestbed {
   public static final int CLIMBER_DISTANCE_SENSOR_LEFT_ID = 4;
   public static final int CLIMBER_DISTANCE_SENSOR_RIGHT_ID = 5;
   public static final int ALIGNMENT_DISTANCE_SENSOR_ID = 6;
-  public static final int[] ALIGNMENT_ULTRASONIC_ID = {2,3};
+
+  public static final int COMPRESSOR_PRESSURE_SENSOR = 2;
 
   //DIGITAL INPUTS
   public static final int CARGO_LIMIT_SWITCH_LEFT_ID = 1;
   public static final int CARGO_LIMIT_SWITCH_RIGHT_ID = 2;
+  public static final int CARGO_OPTICAL_SENSOR_ID = 3;
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
+
+  public static final int[] ALIGNMENT_ULTRASONIC_ID = {2,3};
 
   //PWM
   public static final int WINCH_MOTOR_ID = 1;
@@ -94,4 +101,10 @@ interface RobotMapForTestbed {
   public static final double CAMERA_ANGLE = -14; // Degrees, angle that the camera is mounted at
 
   public static final double ROBOT_CENTRIC_SCALE_RATIO = 0.3;
+  
+  //PDP IDS
+  public static final int PDP_ID_CARGO_INTAKE = 13; //Just a test value for now; will be changed on the real robot.
+
+  //MOTOR STALL CURRENT THRESHOLDS
+  public static final double CURRENT_THRESHOLD_CARGO_INTAKE = 15.0;
 }
