@@ -4,8 +4,10 @@ import edu.wpi.first.wpilibj.AnalogInput;
 
 /**
  * A wrapper class for the Sharp Optical Range Finder
+ * The product data sheet can be viewed here:
+ * http://www.sharp-world.com/products/device/lineup/data/pdf/datasheet/gp2y0a21yk_e.pdf
  */
-public class OpticalRangeFinder {
+public class OpticalRangeFinder implements IRangeFinder {
     private final double COEFF_A = 1817.29393232899;
     private final double COEFF_B = 1.17165226621558;
     private final double COEFF_C = 0.0291621813457088;
@@ -23,14 +25,15 @@ public class OpticalRangeFinder {
     /**
      * @return the distance in Inches reads from the sensor. 0 in case we have no reading.
      */
-    public double getDistance() {
+    public double getDistanceInInches() {
         return calcDistance(sensor.getAverageVoltage()) * CM_2_INCH;
     }
 
     /**
      * This is the result of using curve-fitting algorithm to the values from the product data sheet
-     * http://www.sharp-world.com/products/device/lineup/data/pdf/datasheet/gp2y0a21yk_e.pdf
+     * See here:
      * https://mycurvefit.com/
+     *
      * Voltage  Distance
      *  0.4      80
      *  0.6      50

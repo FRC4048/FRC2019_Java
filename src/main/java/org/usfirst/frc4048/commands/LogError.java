@@ -6,10 +6,7 @@ import org.usfirst.frc4048.utils.Logging;
 
 public class LogError extends Command {
 
-  
-
     public LogError() {
-      
     }
 
     // Called just before this Command runs the first time
@@ -42,5 +39,4 @@ public class LogError extends Command {
 	protected void interrupted() {
         end();
 	}
-
 }

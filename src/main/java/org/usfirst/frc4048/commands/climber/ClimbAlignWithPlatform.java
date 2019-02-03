@@ -5,41 +5,34 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands.pneumatics;
+package org.usfirst.frc4048.commands.climber;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
+import org.usfirst.frc4048.commands.drive.RotateAngle;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
-public class ExampleSolenoidCommand extends LoggedCommand {
-  private boolean state;
-  /**
-   * true is extend false is retract
-   * @param state
-   */
-  public ExampleSolenoidCommand(boolean state) {
-    super(String.format(" is running, state: %b", state));
+public class ClimbAlignWithPlatform extends LoggedCommand {
+  public ClimbAlignWithPlatform() {
+    super("ClimbAlignWithPlatform");
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    this.state = state;
-
-    requires(Robot.compressorSubsystem);
+    requires(Robot.drivetrain);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
+    
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void loggedExecute() {
-    if(state == true) {
-      Robot.solenoidSubsystem.extendPiston();
-    } else {
-      Robot.solenoidSubsystem.retractPiston();
-    }
+    double angle = Robot.climber.getAngle();
+    Scheduler.getInstance().add(new RotateAngle(angle));
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -57,11 +50,10 @@ public class ExampleSolenoidCommand extends LoggedCommand {
   // subsystems is scheduled to run
   @Override
   protected void loggedInterrupted() {
-    loggedEnd();
   }
 
   @Override
   protected void loggedCancel() {
-    loggedEnd();
+
   }
 }

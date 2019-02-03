@@ -5,63 +5,50 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands.pneumatics;
+package org.usfirst.frc4048.commands.climber;
 
 import org.usfirst.frc4048.Robot;
-import org.usfirst.frc4048.commands.LoggedCommand;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ExampleSolenoidCommand extends LoggedCommand {
-  private boolean state;
+public class ClimbWinchManual extends Command {
+  private double speed;
   /**
-   * true is extend false is retract
-   * @param state
-   */
-  public ExampleSolenoidCommand(boolean state) {
-    super(String.format(" is running, state: %b", state));
+   * This command is incomplete and needs to wait until we have a better understanding of how the 
+   * climber works/the control scheme. 
+   * */
+  public ClimbWinchManual(double speed) {
+    this.speed = speed;
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    this.state = state;
-
-    requires(Robot.compressorSubsystem);
+    requires(Robot.climber);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void loggedInitialize() {
+  protected void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void loggedExecute() {
-    if(state == true) {
-      Robot.solenoidSubsystem.extendPiston();
-    } else {
-      Robot.solenoidSubsystem.retractPiston();
-    }
+  protected void execute() {
+    Robot.climber.controlWinch(speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean loggedIsFinished() {
-    return true;
+  protected boolean isFinished() {
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void loggedEnd() {
+  protected void end() {
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void loggedInterrupted() {
-    loggedEnd();
-  }
-
-  @Override
-  protected void loggedCancel() {
-    loggedEnd();
+  protected void interrupted() {
   }
 }
