@@ -7,14 +7,20 @@
 
 package org.usfirst.frc4048.subsystems;
 
+import org.usfirst.frc4048.RobotMap;
+import org.usfirst.frc4048.utils.AngleFinder;
 import org.usfirst.frc4048.utils.CameraAngles;
 import org.usfirst.frc4048.utils.CameraDistance;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc4048.utils.LimeLightVision;
+import org.usfirst.frc4048.utils.OpticalRangeFinder;
 
 /**
  * This subsystem holds the sensors the robot uses for navigation
@@ -24,6 +30,7 @@ public class DrivetrainSensors extends Subsystem {
     private Ultrasonic ultrasonic;
 
     private LimeLightVision limelight;
+    private final AngleFinder climberAngleFinder;
 
     private NetworkTableEntry unltrasonicEntry = Shuffleboard.getTab("DrivetrainSensors").add("Ultrasonic Distance", 0.0).getEntry();
     private NetworkTableEntry limelightValidTargetEntry = Shuffleboard.getTab("DrivetrainSensors").add("LimelightValidTarget", false).getEntry();
@@ -33,11 +40,33 @@ public class DrivetrainSensors extends Subsystem {
     private NetworkTableEntry limelightSidewaysEntry = Shuffleboard.getTab("DrivetrainSensors").add("LimelightSideways", 0.0).getEntry();
 
     public DrivetrainSensors() {
-        ultrasonic = new Ultrasonic(8, 9);
+        ultrasonic = new Ultrasonic(RobotMap.ALIGNMENT_ULTRASONIC_ID[0], RobotMap.ALIGNMENT_ULTRASONIC_ID[1]);
         ultrasonic.setAutomaticMode(true);
 
         limelight = new LimeLightVision();
+        climberAngleFinder = initClimberAngleFinder();
     }
+    
+    /**
+     * Initialize the climber angle finder. Standalone function since it involves
+     * multiple steps.
+     */
+    private static AngleFinder initClimberAngleFinder() {
+      final AnalogInput leftRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_LEFT_ID);
+      final AnalogInput rightRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_RIGHT_ID);
+      final AnalogInput all[] = { leftRangeInput, rightRangeInput };
+      for (AnalogInput x : all) {
+        // These AnalogInput settings provided stable and fast results.
+        x.setOversampleBits(RobotMap.CLIMBER_DISTANCE_SENSOR_OVERSAMPLE_BITS);
+        x.setAverageBits(RobotMap.CLIMBER_DISTANCE_SENSOR_AVERAGE_BITS);
+      }
+
+      final OpticalRangeFinder leftRangeFinder = new OpticalRangeFinder(leftRangeInput);
+      final OpticalRangeFinder rightRangeFinder = new OpticalRangeFinder(rightRangeInput);
+      return new AngleFinder(leftRangeFinder, rightRangeFinder, RobotMap.INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS);
+    }
+
+
 
     @Override
     public void initDefaultCommand() {
@@ -56,7 +85,7 @@ public class DrivetrainSensors extends Subsystem {
         }
 
         // unltrasonicEntry.setDouble(ultrasonic.getRangeInches());
-
+        SmartDashboard.putNumber("Ultrasonic", getUltrasonicDistance());
     }
 
     // Put methods for controlling this subsystem

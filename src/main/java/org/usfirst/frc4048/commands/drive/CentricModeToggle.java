@@ -5,40 +5,37 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands.pneumatics;
+package org.usfirst.frc4048.commands.drive;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
+import org.usfirst.frc4048.swerve.math.CentricMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ExampleSolenoidCommand extends LoggedCommand {
-  private boolean state;
-  /**
-   * true is extend false is retract
-   * @param state
-   */
-  public ExampleSolenoidCommand(boolean state) {
-    super(String.format(" is running, state: %b", state));
+public class CentricModeToggle extends LoggedCommand {
+  public CentricModeToggle() {
+    super("CentricModeToggle");
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    this.state = state;
 
-    requires(Robot.compressorSubsystem);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
+  
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void loggedExecute() {
-    if(state == true) {
-      Robot.solenoidSubsystem.extendPiston();
+    CentricMode mode = Robot.drivetrain.swerveDrivetrain.getModeRobot();
+
+    if(mode == CentricMode.FIELD) {
+      Robot.drivetrain.swerveDrivetrain.setModeRobot();
     } else {
-      Robot.solenoidSubsystem.retractPiston();
+      Robot.drivetrain.swerveDrivetrain.setModeField();
     }
   }
 
@@ -57,11 +54,10 @@ public class ExampleSolenoidCommand extends LoggedCommand {
   // subsystems is scheduled to run
   @Override
   protected void loggedInterrupted() {
-    loggedEnd();
   }
 
   @Override
   protected void loggedCancel() {
-    loggedEnd();
+
   }
 }

@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 /**
  * A wrapper class for the Sharp Optical Range Finder
  */
-public class OpticalRangeFinder {
+public class OpticalRangeFinder implements IRangeFinder {
     private final double COEFF_A = 1817.29393232899;
     private final double COEFF_B = 1.17165226621558;
     private final double COEFF_C = 0.0291621813457088;
@@ -23,7 +23,7 @@ public class OpticalRangeFinder {
     /**
      * @return the distance in Inches reads from the sensor. 0 in case we have no reading.
      */
-    public double getDistance() {
+    public double getDistanceInInches() {
         return calcDistance(sensor.getAverageVoltage()) * CM_2_INCH;
     }
 

@@ -7,11 +7,14 @@
 
 package org.usfirst.frc4048.commands.misc;
 
+import org.usfirst.frc4048.commands.LoggedCommand;
+
 import edu.wpi.first.wpilibj.command.Command;
 
-public class WaitCommand extends Command {
+public class WaitCommand extends LoggedCommand {
   private double seconds;
   public WaitCommand(double seconds) {
+    super(String.format(" is running, on: %f", seconds));
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     this.seconds = seconds;
@@ -19,30 +22,35 @@ public class WaitCommand extends Command {
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  protected void loggedInitialize() {
     setTimeout(seconds);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  protected void loggedExecute() {
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  protected boolean loggedIsFinished() {
     return isTimedOut();
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  protected void loggedEnd() {
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
-    end();
+  protected void loggedInterrupted() {
+    loggedEnd();
+  }
+
+  @Override
+  protected void loggedCancel() {
+    loggedEnd();
   }
 }

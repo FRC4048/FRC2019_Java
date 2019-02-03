@@ -5,26 +5,41 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc4048.RobotMap;
 
 public class LimeLightVision {
 
     public static final int LED_ON = 3;
     public static final int LED_OFF = 1;
 
-    public static final double CAMERA_HEIGHT = 45.5; // Inches, height of Limelight
-    public static final double TARGET_HEIGHT = 36.5; // Inches, height of field target
-    public static final double CAMERA_ANGLE = -14; // Degrees, angle that the camera is mounted at
+    NetworkTable table;
+    NetworkTableEntry tv;
+    NetworkTableEntry tx;
+    NetworkTableEntry ty;
+    NetworkTableEntry ta;
+    NetworkTableEntry ts;
+    NetworkTableEntry tl;
 
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry tv = table.getEntry("tv");
-    NetworkTableEntry tx = table.getEntry("tx");
-    NetworkTableEntry ty = table.getEntry("ty");
-    NetworkTableEntry ta = table.getEntry("ta");
-    NetworkTableEntry ts = table.getEntry("ts");
-    NetworkTableEntry tl = table.getEntry("tl");
+    public LimeLightVision() {
+        table = NetworkTableInstance.getDefault().getTable("limelight");
+        tv = table.getEntry("tv");
+        tx = table.getEntry("tx");
+        ty = table.getEntry("ty");
+        ta = table.getEntry("ta");
+        ts = table.getEntry("ts");
+        tl = table.getEntry("tl");
+    }
+
+    LimeLightVision(boolean DO_NOT_USE_FOR_TESTING_ONLY) {
+
+    }
 
     /**
      * Calculate and return the distances from the camera.
+     * The calculated distances are in inches, as calculated by the triangulation of the vertical distance between the
+     * camera and target and the detected angles.
+     * forward is the "straight" distance from the camera to the target
+     * sideways is the "lateral" distance from the camera to the target
      * @return Camera distance calculated from the limelight, null if no target acquired
      */
     public CameraDistance getTargetDistance() {
@@ -36,15 +51,14 @@ public class LimeLightVision {
         double x = tx.getDouble(0.0);
         double y = ty.getDouble(0.0);
 
-        // Maths
-        double forwardDistance = (TARGET_HEIGHT - CAMERA_HEIGHT) / Math.tan(Math.toRadians(CAMERA_ANGLE + y));
-        double sidewaysDistance = forwardDistance * Math.tan(Math.toRadians(x));
-
-        return new CameraDistance(forwardDistance, sidewaysDistance);
+        return calcCameraDistance(x, y, RobotMap.TARGET_HEIGHT_HATCH, RobotMap.CAMERA_HEIGHT, RobotMap.CAMERA_ANGLE);
     }
 
     /**
      * Calculate and return the camera detected angles
+     * The angles are returned by the Limelight camera and are in degrees.
+     * tx is the horizontal angle between the target center and the camera crosshairs
+     * ty is the vertical angle between the target center and the camera crosshairs
      * @return the X and Y angles detected by the camera, Null in case no target is acquired
      */
     public CameraAngles getCameraAngles() {
@@ -62,6 +76,16 @@ public class LimeLightVision {
 
     public void setLedOff() {
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(LED_OFF);
+    }
+
+    /**
+     * Internal utility to calculate the distances, in inches, from the camera based off of the viewed angles
+     */
+    CameraDistance calcCameraDistance(double angleX, double angleY, double targetHeight, double cameraHeight, double cameraAngle) {
+        double forwardDistance = (targetHeight - cameraHeight) / Math.tan(Math.toRadians(cameraAngle + angleY));
+        double sidewaysDistance = forwardDistance * Math.tan(Math.toRadians(angleX));
+
+        return new CameraDistance(forwardDistance, sidewaysDistance);
     }
 
 }

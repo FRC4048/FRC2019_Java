@@ -8,6 +8,7 @@
 package org.usfirst.frc4048.commands.drive;
 
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.commands.LoggedCommand;
 import org.usfirst.frc4048.swerve.math.CentricMode;
 import org.usfirst.frc4048.utils.CameraDistance;
 
@@ -15,7 +16,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class DriveAlignPhase2 extends Command {
+public class DriveAlignPhase2 extends LoggedCommand {
   private double angle;
   private double moveDistance;
   private boolean done;
@@ -33,6 +34,7 @@ public class DriveAlignPhase2 extends Command {
   private final double ROTATION_SPEED = 0.05; // The rotation correction power
   private final double DISTANCE_AWAY = 20.0; //The distance away from the target where we stop moving
   public DriveAlignPhase2(double pMin, double pMax, boolean isCamFront) {
+    super(String.format(" is running, pMin=%f, pMax=%f, isCamFront=%b", pMin, pMax, isCamFront));
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.drivetrain);
@@ -50,7 +52,7 @@ public class DriveAlignPhase2 extends Command {
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  protected void loggedInitialize() {
     double forward = 0;
     double horizontal = 0;
     
@@ -75,16 +77,16 @@ public class DriveAlignPhase2 extends Command {
 
     }
 
-    // SmartDashboard.putNumber("Forward Distance", forward);
-    // SmartDashboard.putNumber("Horizontal Distnace", horizontal);
-    // SmartDashboard.putNumber("Angle", Math.toDegrees(angle));
-    // SmartDashboard.putNumber("Move Distance", moveDistance);
+    SmartDashboard.putNumber("Forward Distance", forward);
+    SmartDashboard.putNumber("Horizontal Distnace", horizontal);
+    SmartDashboard.putNumber("Angle", Math.toDegrees(angle));
+    SmartDashboard.putNumber("Move Distance", moveDistance);
 
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  protected void loggedExecute() {
     // if the timer is started and the timer is more than 2 seconds then we are
     // travelling 15 inches
     // for more than 2 seconds and we stop the command
@@ -122,13 +124,13 @@ public class DriveAlignPhase2 extends Command {
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  protected boolean loggedIsFinished() {
     return done;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  protected void loggedEnd() {
     if (mode.equals(CentricMode.FIELD)) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
     } else {
@@ -140,8 +142,8 @@ public class DriveAlignPhase2 extends Command {
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
-    end();
+  protected void loggedInterrupted() {
+    loggedEnd();
   }
 
   private double calcRot(double startAngle, double currAngle) {
@@ -175,5 +177,10 @@ public class DriveAlignPhase2 extends Command {
     } else {
       return pidRatio * pMax;
     }
+  }
+
+  @Override
+  protected void loggedCancel() {
+    loggedEnd();
   }
 }

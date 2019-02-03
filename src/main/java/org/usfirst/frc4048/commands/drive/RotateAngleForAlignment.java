@@ -8,20 +8,21 @@
 package org.usfirst.frc4048.commands.drive;
 
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.commands.LoggedCommand;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
-public class RotateAngleForAlignment extends Command {
-  private double angle;
-  private final double angleMarginValue = 20.0;
-  private final double rightRocketSideAngle = 90.0;
-  private final double rightRocketBackAngle = 151.25;
-  private final double rightRocketFrontAngle = 61.25;
-  private final double leftRocketSideAngle = 270;
-  private final double leftRocketBackAngle = 241.25;
-  private final double leftRocketFrontAngle = 331.25;
-  private final double cargoFrontAngle = 0.0;
+public class RotateAngleForAlignment extends LoggedCommand {
+  private static final double rightRocketSideAngle = 90.0;
+  private static final double rightRocketBackAngle = 151.25;
+  private static final double rightRocketFrontAngle = 61.25;
+  private static final double leftRocketSideAngle = 270;
+  private static final double leftRocketBackAngle = 241.25;
+  private static final double leftRocketFrontAngle = 331.25;
+  private static final double cargoFrontAngle = 0.0;
+  private static final double[] depositAngles = new double[]{rightRocketSideAngle, rightRocketBackAngle, rightRocketFrontAngle, 
+          leftRocketSideAngle, leftRocketBackAngle,  leftRocketFrontAngle, cargoFrontAngle};
 
   /*
   \  <-- Back Angle
@@ -32,76 +33,84 @@ public class RotateAngleForAlignment extends Command {
   / <-- Front Angle 
   */
 
-  //There is a problem with overlap because if you are in the middle of 2 angles it will prefer one angle
-  //to another because of the order of the if statements 
-
   public RotateAngleForAlignment() {
+    super(String.format(" is running"));
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
-    angle = Robot.drivetrain.getGyro();
-    angle = angle % 360;
-    if(angle < 0) {
-      angle += 360;
-    }
+  protected void loggedInitialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
-    double angleToMoveTo = calculateAngle(angle);
-
-    
-
+  protected void loggedExecute() {
+    double angleToMoveTo = calculateAngle(Robot.drivetrain.getGyro());
     Scheduler.getInstance().add(new RotateAngle(angleToMoveTo));
   }
+
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  protected boolean loggedIsFinished() {
     return true;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  protected void loggedEnd() {
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
+  protected void loggedInterrupted() {
+    loggedEnd();
   }
 
+
   public double calculateAngle(double currAngle) {
-    double resultAngle = 0;
+    double currentDistance = 0;
+    double closestDistance= 360;
+    int closestIndex = 0;
 
-    if(currAngle <= rightRocketSideAngle + angleMarginValue && currAngle >= rightRocketSideAngle - angleMarginValue) {
-      resultAngle = rightRocketSideAngle;
-    } else if(currAngle <= rightRocketBackAngle + angleMarginValue && currAngle >= rightRocketBackAngle - angleMarginValue) { 
-      resultAngle = rightRocketBackAngle;
-    } else if(currAngle <= rightRocketFrontAngle + angleMarginValue && currAngle >= rightRocketFrontAngle - angleMarginValue) { 
-      resultAngle = rightRocketFrontAngle;
-    } else if (currAngle <= leftRocketSideAngle + angleMarginValue && currAngle >= leftRocketSideAngle - angleMarginValue) {
-      resultAngle = leftRocketSideAngle;
-    } else if(currAngle <= leftRocketBackAngle + angleMarginValue && currAngle >= leftRocketBackAngle - angleMarginValue) { 
-      resultAngle = leftRocketBackAngle;
-    } else if(currAngle <= leftRocketFrontAngle + angleMarginValue && currAngle >= leftRocketFrontAngle - angleMarginValue) { 
-      resultAngle = leftRocketFrontAngle;
-    } else if(currAngle >= 360 - angleMarginValue || currAngle < angleMarginValue) {
-      resultAngle = cargoFrontAngle;
-    } else {
-      return currAngle;
+    /* Make sure the angle is positive and less tha 360 */
+    currAngle = currAngle % 360;
+    if(currAngle < 0) {
+      currAngle += 360;
     }
-    
-    //If the angle given at the beginning is negitive then we are at the left side rocket or right side of cargo
-    // if(currAngle > 180 && resultAngle != cargoFrontAngle) {
-    //   resultAngle -= 180;
-    // }
 
-    return resultAngle;
+    /* find the angle that is closest to the current robot angle */
+    for (int i = 0; i < depositAngles.length; i++)
+    {
+      currentDistance = findAngleDistance(currAngle, depositAngles[i]);
+      if (currentDistance < closestDistance)
+      {
+        closestDistance = currentDistance;
+        closestIndex = i;
+      }
+    }
+    return depositAngles[closestIndex];
+  }
+
+  
+  private double findAngleDistance(double angle1, double angle2) {
+    double diff;
+
+    /* every 2 points on the circle have 2 'distances' from each other. A cw distance and a ccw distance  */
+    /* One of the distances is >= 180, the other is <=180, and they add up to 360.                        */
+    /* We want to make sure that if we get the >180, we actually return the other distance.               */
+    diff = Math.abs(angle1-angle2);
+    if (diff > 180)
+    {
+      diff = Math.abs(diff - 360);
+    }
+    return diff;
+  }
+
+  @Override
+  protected void loggedCancel() {
+    loggedEnd();
   }
 }

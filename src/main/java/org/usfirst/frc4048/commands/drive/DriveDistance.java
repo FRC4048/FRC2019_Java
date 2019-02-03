@@ -3,8 +3,9 @@ package org.usfirst.frc4048.commands.drive;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.commands.LoggedCommand;
 
-public class DriveDistance extends Command {
+public class DriveDistance extends LoggedCommand {
     
     private double distance;
 	private double distanceLeft = 0.0; //Distance left to travel
@@ -24,6 +25,7 @@ public class DriveDistance extends Command {
 	 * @param rot - sets clockwise/counter-clockwise speed robot travels at
 	 */
 	public DriveDistance(double distance, double fwd, double dir, double rot) {    	
+		super(String.format(" is running, distance=%f, fwd=%f, dir=%f, rot=%f", distance, fwd, dir, rot));
 		requires(Robot.drivetrain);
 		this.distance = distance;
 		this.fwd = fwd;
@@ -32,7 +34,7 @@ public class DriveDistance extends Command {
 	}
 
 	// Called just before this Command runs the first time
-	protected void initialize() {
+	protected void loggedInitialize() {
 		Robot.drivetrain.setZero();
 		lastDistance = Robot.drivetrain.getDistance();
 		distanceLeft = distance;
@@ -42,7 +44,7 @@ public class DriveDistance extends Command {
 	}
 
 	// Called repeatedly when this Command is scheduled to run
-	protected void execute() {
+	protected void loggedExecute() {
 
 
 		if(doTimeout == false && Timer.getFPGATimestamp() - time > 2) {
@@ -85,18 +87,23 @@ public class DriveDistance extends Command {
 
 
 	// Make this return true when this Command no longer needs to run execute()
-	protected boolean isFinished() {
+	protected boolean loggedIsFinished() {
 		return done;
 	}
 
 	// Called once after isFinished returns true
-	protected void end() {
+	protected void loggedEnd() {
 		Robot.drivetrain.stop();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-	protected void interrupted() {
-		end();
+	protected void loggedInterrupted() {
+		loggedEnd();
+	}
+
+	@Override
+	protected void loggedCancel() {
+		loggedEnd();
 	}
 }
