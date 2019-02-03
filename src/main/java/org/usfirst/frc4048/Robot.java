@@ -72,11 +72,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    drivetrain = new DriveTrain();
+//    drivetrain = new DriveTrain();
     pdp = new PowerDistPanel();
-    compressorSubsystem = new CompressorSubsystem();
-    solenoidSubsystem = new ExampleSolenoidSubsystem();
-    drivetrainSensors = new DrivetrainSensors();
+//    compressorSubsystem = new CompressorSubsystem();
+//    solenoidSubsystem = new ExampleSolenoidSubsystem();
+//    drivetrainSensors = new DrivetrainSensors();
     diagnostics = new Diagnostics();
     
     // OI must be initilized last
