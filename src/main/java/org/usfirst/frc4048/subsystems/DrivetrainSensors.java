@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.utils.OpticalRangeFinder;
 
@@ -83,7 +85,7 @@ public class DrivetrainSensors extends Subsystem {
         }
 
         // unltrasonicEntry.setDouble(ultrasonic.getRangeInches());
-
+        SmartDashboard.putNumber("Ultrasonic", getUltrasonicDistance());
     }
 
     // Put methods for controlling this subsystem

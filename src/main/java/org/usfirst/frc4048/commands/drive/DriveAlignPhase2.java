@@ -119,7 +119,7 @@ public class DriveAlignPhase2 extends LoggedCommand {
     double currAngle = Robot.drivetrain.getGyro();
     double rot = calcRot(initialAngle, currAngle);
 
-    Robot.drivetrain.move(pFwd, pDir, rot);
+    // Robot.drivetrain.move(pFwd, pDir, rot);
   }
 
   // Make this return true when this Command no longer needs to run execute()
