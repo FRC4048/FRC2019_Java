@@ -40,6 +40,7 @@ import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.subsystems.PowerDistPanel;
 import org.usfirst.frc4048.utils.WorkQueue;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
+import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -58,6 +59,7 @@ public class Robot extends TimedRobot {
   public static CompressorSubsystem compressorSubsystem;
   public static ExampleSolenoidSubsystem solenoidSubsystem;
   public static DrivetrainSensors drivetrainSensors;
+  public static Diagnostics diagnostics;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -78,6 +80,7 @@ public class Robot extends TimedRobot {
     compressorSubsystem = new CompressorSubsystem();
     solenoidSubsystem = new ExampleSolenoidSubsystem();
     drivetrainSensors = new DrivetrainSensors();
+    diagnostics = new Diagnostics();
     
     // OI must be initilized last
     oi = new OI();
@@ -102,8 +105,8 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData("Extend Piston", new ExampleSolenoidCommand(true));
     SmartDashboard.putData("Retract Piston", new ExampleSolenoidCommand(false));
-    SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
-    SmartDashboard.putBoolean("Pressure", Robot.compressorSubsystem.getPressureSwitch());
+//    SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
+//    SmartDashboard.putBoolean("Pressure", Robot.compressorSubsystem.getPressure());
   }
 
   /**
@@ -212,11 +215,18 @@ public class Robot extends TimedRobot {
   
   }
 
+  @Override
+  public void testInit() {
+    diagnostics.reset();
+  }
+
   /**
    * This function is called periodically during test mode.
    */
   @Override
   public void testPeriodic() {
+
+    diagnostics.refresh();
 
     Scheduler.getInstance().run();
   }
