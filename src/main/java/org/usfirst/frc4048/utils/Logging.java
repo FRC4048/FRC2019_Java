@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.TimerTask;
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.RobotMap;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -150,8 +152,17 @@ public class Logging {
 	}
 
 	public void printHeadings() {
-		final LoggingContext list[] = { Robot.drivetrain.loggingContext, Robot.pdp.loggingContext  };
-//				Robot.claw.loggingContext, Robot.wrist.loggingContext, Robot.intake.loggingContext,
+		final LoggingContext list[];
+
+		// Might need to print these subsystem headings later
+		// Robot.claw.loggingContext, Robot.wrist.loggingContext, Robot.intake.loggingContext,
+		if(!RobotMap.ENABLE_DRIVETRAIN) {
+			final LoggingContext temp[] = { Robot.drivetrain.loggingContext, Robot.pdp.loggingContext  };
+			list = temp;
+		} else {
+			final LoggingContext temp[] = { Robot.pdp.loggingContext };
+			list = temp;
+		}
 				
 		for (final LoggingContext c : list) {
 			c.writeHeadings();
