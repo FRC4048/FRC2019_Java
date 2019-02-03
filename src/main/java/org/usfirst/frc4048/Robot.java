@@ -101,7 +101,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Extend Piston", new ExampleSolenoidCommand(true));
     SmartDashboard.putData("Retract Piston", new ExampleSolenoidCommand(false));
     SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
-    SmartDashboard.putBoolean("Pressure", Robot.compressorSubsystem.getPressure());
+    SmartDashboard.putBoolean("Pressure", Robot.compressorSubsystem.getPressureSwitch());
   }
 
   /**
@@ -166,6 +166,8 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     
+    SmartDashboard.putNumber("Pressure Value", compressorSubsystem.getPressure());
+
     // SmartDashboard.putData(new LimelightAlign());
     SmartDashboard.putData("Limelight On", new LimelightToggle(true));
     SmartDashboard.putData("Limelight Off", new LimelightToggle(false));
