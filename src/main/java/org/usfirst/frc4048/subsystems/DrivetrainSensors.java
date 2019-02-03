@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.utils.OpticalRangeFinder;
 
@@ -38,7 +40,7 @@ public class DrivetrainSensors extends Subsystem {
     private NetworkTableEntry limelightSidewaysEntry = Shuffleboard.getTab("DrivetrainSensors").add("LimelightSideways", 0.0).getEntry();
 
     public DrivetrainSensors() {
-        ultrasonic = new Ultrasonic(8, 9);
+        ultrasonic = new Ultrasonic(RobotMap.ALIGNMENT_ULTRASONIC_ID[0], RobotMap.ALIGNMENT_ULTRASONIC_ID[1]);
         ultrasonic.setAutomaticMode(true);
 
         limelight = new LimeLightVision();
@@ -85,6 +87,8 @@ public class DrivetrainSensors extends Subsystem {
         }
 
         // unltrasonicEntry.setDouble(ultrasonic.getRangeInches());
+        SmartDashboard.putNumber("Ultrasonic", getUltrasonicDistance());
+
         last_periodic = System.currentTimeMillis() - start;
     }
 
