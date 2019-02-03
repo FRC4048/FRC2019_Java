@@ -71,6 +71,7 @@ interface RobotMapForTestbed {
   //DIGITAL INPUTS
   public static final int CARGO_LIMIT_SWITCH_LEFT_ID = 1;
   public static final int CARGO_LIMIT_SWITCH_RIGHT_ID = 2;
+  public static final int CARGO_OPTICAL_SENSOR_ID = 3;
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
 
@@ -117,4 +118,10 @@ interface RobotMapForTestbed {
   public static final double CAMERA_ANGLE = -14; // Degrees, angle that the camera is mounted at
 
   public static final double ROBOT_CENTRIC_SCALE_RATIO = 0.3;
+  
+  //PDP IDS
+  public static final int PDP_ID_CARGO_INTAKE = 13; //Just a test value for now; will be changed on the real robot.
+
+  //MOTOR STALL CURRENT THRESHOLDS
+  public static final double CURRENT_THRESHOLD_CARGO_INTAKE = 15.0;
 }

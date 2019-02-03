@@ -23,12 +23,19 @@ import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
 import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
 import org.usfirst.frc4048.commands.drive.DriveDistance;
 import org.usfirst.frc4048.commands.pneumatics.ExampleSolenoidCommand;
+import org.usfirst.frc4048.subsystems.CargoSubsystem;
 import org.usfirst.frc4048.subsystems.Climber;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
-
+import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
+import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.commands.drive.DriveDistanceMaintainAngle;
+import org.usfirst.frc4048.commands.cargo.AutoCargoEjectGroup;
+import org.usfirst.frc4048.commands.cargo.CargoEjectGroup;
+import org.usfirst.frc4048.commands.cargo.IntakeCargo;
+// import org.usfirst.frc4048.commands.DriveTargetCenter;
+// import org.usfirst.frc4048.commands.LimelightAlign;
 import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
@@ -61,8 +68,11 @@ public class Robot extends TimedRobot {
   public static ExampleSolenoidSubsystem solenoidSubsystem;
   public static DrivetrainSensors drivetrainSensors;
   public static LimeLightVision limelight;
+  public static CargoSubsystem cargoSubsystem;
+  public static HatchPanelSubsystem hatchPanelSubsystem;
   public static Climber climber;
   public static Diagnostics diagnostics;
+
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -87,9 +97,11 @@ public class Robot extends TimedRobot {
     drivetrainSensors = new DrivetrainSensors();
 
     limelight = new LimeLightVision();
+    cargoSubsystem = new CargoSubsystem();
+    hatchPanelSubsystem = new HatchPanelSubsystem();
     climber = new Climber();
     diagnostics = new Diagnostics();
-    
+
     // OI must be initilized last
     oi = new OI();
     // Robot.drivetrainSensors.ledOn();
