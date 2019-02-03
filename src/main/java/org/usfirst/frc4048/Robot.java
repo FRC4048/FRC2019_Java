@@ -68,7 +68,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    drivetrain = new DriveTrain();
+    if(RobotMap.ENABLE_DRIVETRAIN) {
+      drivetrain = new DriveTrain();
+    }
     pdp = new PowerDistPanel();
     compressorSubsystem = new CompressorSubsystem();
     solenoidSubsystem = new ExampleSolenoidSubsystem();
@@ -172,16 +174,22 @@ public class Robot extends TimedRobot {
 
     // Shuffleboard.getTab("Approach").add("TargetAlign", new DriveTargetCenter(10.0, -0.25));
   
-    // SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
+    // if(RobotMap.ENABLE_DRIVETRAIN) {
+      // SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
+    // }
     // SmartDashboard.putData(new LimelightAlign());
-    // SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
-    // SmartDashboard.putData(new DriveAlignGroup());
-    // SmartDashboard.putData(new RotateAngle(0)); 
+    // if(RobotMap.ENABLE_DRIVETRAIN) {
+    //   SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
+    //   SmartDashboard.putData(new DriveAlignGroup());
+    //   SmartDashboard.putData(new RotateAngle(0));
+    // } 
     SmartDashboard.putData("Limelight On", new LimelightToggle(true));
     SmartDashboard.putData("Limelight Off", new LimelightToggle(false));
-    // SmartDashboard.putData(new RotateAngleForAlignment());
-    // SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.5, false));
-    // SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
+    // if(RobotMap.ENABLE_DRIVETRAIN) {
+    //   SmartDashboard.putData(new RotateAngleForAlignment());
+    //   SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.5, false));
+    //   SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
+    // }
   }
 
   /**
@@ -190,9 +198,11 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
-    SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
-    SmartDashboard.putData(new RotateAngle(90));
-    SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
+    if(RobotMap.ENABLE_DRIVETRAIN) {
+      SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
+      SmartDashboard.putData(new RotateAngle(90));
+      SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
+    }
     Scheduler.getInstance().run();
   
   }
