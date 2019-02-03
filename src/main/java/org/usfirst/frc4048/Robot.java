@@ -35,6 +35,7 @@ import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
 
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.utils.Logging;
+import org.usfirst.frc4048.utils.MechanicalMode;
 import org.usfirst.frc4048.subsystems.PowerDistPanel;
 import org.usfirst.frc4048.utils.WorkQueue;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
@@ -56,10 +57,12 @@ public class Robot extends TimedRobot {
   public static CompressorSubsystem compressorSubsystem;
   public static ExampleSolenoidSubsystem solenoidSubsystem;
   public static DrivetrainSensors drivetrainSensors;
+  public static MechanicalMode mechanicalMode;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+  
 
   
 
@@ -69,6 +72,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    mechanicalMode = new MechanicalMode();
+    int mode = mechanicalMode.getMode();
+    if(mode == RobotMap.CARGO_RETURN_CODE) {
+
+    } else if (mode == RobotMap.HATCH_RETURN_CODE) {
+
+    } else {
+      
+    }
     if(RobotMap.ENABLE_DRIVETRAIN) {
       drivetrain = new DriveTrain();
     }

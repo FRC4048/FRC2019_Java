@@ -55,7 +55,9 @@ interface RobotMapForTestbed {
   public static final int CARGO_LIMIT_SWITCH_RIGHT_ID = 2;
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
-
+  public static final int HATCH_DIGITAL_INPUT_ID = 7;
+  public static final int CARGO_DIGITAL_INPUT_ID = 8;
+  
   //PWM
   public static final int WINCH_MOTOR_ID = 1;
 
@@ -97,4 +99,8 @@ interface RobotMapForTestbed {
   public static final double CAMERA_ANGLE = -14; // Degrees, angle that the camera is mounted at
 
   public static final double ROBOT_CENTRIC_SCALE_RATIO = 0.3;
+  
+  public static final int HATCH_RETURN_CODE = 0;
+  public static final int CARGO_RETURN_CODE = 1;
+  public static final int NOTHING_RETURN_CODE = 2;
 }
