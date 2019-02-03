@@ -10,14 +10,16 @@ public class DiagSwitch implements Diagnosable {
     private DigitalInput digitalInput;
     private NetworkTableEntry networkTableEntry;
 
-    private boolean seenFalse = false;
-    private boolean seenTrue = false;
+    private boolean seenFalse;
+    private boolean seenTrue;
 
     public DiagSwitch(String name, DigitalInput digitalInput, ShuffleboardTab shuffleboardTab) {
         this.digitalInput = digitalInput;
         this.name = name;
 
         networkTableEntry = shuffleboardTab.add(name, false).getEntry();
+
+        reset();
     }
 
     @Override
@@ -31,13 +33,10 @@ public class DiagSwitch implements Diagnosable {
         }
 
         networkTableEntry.setBoolean(seenTrue && seenFalse);
-//        System.out.println("Setting value for " + name + " as " + seenTrue + "/" + seenFalse);
     }
 
     @Override
     public void reset() {
         seenFalse = seenTrue = false;
-
-        System.out.println("Reset " + name);
     }
 }

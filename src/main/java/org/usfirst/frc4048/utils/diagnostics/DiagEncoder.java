@@ -13,7 +13,7 @@ public class DiagEncoder implements Diagnosable {
     private NetworkTableEntry networkTableEntry;
 
     private int initialValue;
-    private boolean traveledDistance = false;
+    private boolean traveledDistance;
 
     public DiagEncoder(String name, int requiredTravel, Encoder encoder, ShuffleboardTab shuffleboardTab) {
         this.name = name;
@@ -21,7 +21,8 @@ public class DiagEncoder implements Diagnosable {
         this.encoder = encoder;
 
         networkTableEntry = shuffleboardTab.add(name, false).getEntry();
-        initialValue = encoder.get();
+
+        reset();
     }
 
     @Override
@@ -32,7 +33,6 @@ public class DiagEncoder implements Diagnosable {
             traveledDistance = true;
         }
 
-        SmartDashboard.putNumber("Encoder value", encoderValue);
         networkTableEntry.setBoolean(traveledDistance);
     }
 

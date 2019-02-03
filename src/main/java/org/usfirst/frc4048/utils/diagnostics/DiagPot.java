@@ -13,8 +13,8 @@ public class DiagPot implements Diagnosable{
     private AnalogPotentiometer pot;
     private NetworkTableEntry networkTableEntry;
 
-    private boolean seenMinVoltage = false;
-    private boolean seenMaxVoltage = false;
+    private boolean seenMinVoltage;
+    private boolean seenMaxVoltage;
 
     public DiagPot(String name, double minVoltage, double maxVoltage, AnalogPotentiometer pot, ShuffleboardTab shuffleboardTab) {
         this.name = name;
@@ -23,6 +23,8 @@ public class DiagPot implements Diagnosable{
         this.pot = pot;
 
         networkTableEntry = shuffleboardTab.add(name, false).getEntry();
+
+        reset();
     }
 
     @Override
@@ -30,10 +32,10 @@ public class DiagPot implements Diagnosable{
         double potValue = pot.get();
         if (potValue >= maxVoltage) {
             seenMaxVoltage = true;
-        }else if (potValue <= minVoltage){
+        } else if (potValue <= minVoltage){
             seenMinVoltage = true;
         }
-        SmartDashboard.putNumber("Pot value", potValue);
+
         networkTableEntry.setBoolean(seenMaxVoltage && seenMinVoltage);
     }
 
