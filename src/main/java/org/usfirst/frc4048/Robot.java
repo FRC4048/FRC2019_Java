@@ -23,7 +23,7 @@ import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
 import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
 import org.usfirst.frc4048.commands.drive.DriveDistance;
 import org.usfirst.frc4048.commands.pneumatics.ExampleSolenoidCommand;
-
+import org.usfirst.frc4048.subsystems.Climber;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
@@ -36,6 +36,7 @@ import org.usfirst.frc4048.commands.drive.RotateAngle;
 import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
 
 import org.usfirst.frc4048.subsystems.DriveTrain;
+import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.subsystems.PowerDistPanel;
 import org.usfirst.frc4048.utils.WorkQueue;
@@ -59,6 +60,8 @@ public class Robot extends TimedRobot {
   public static CompressorSubsystem compressorSubsystem;
   public static ExampleSolenoidSubsystem solenoidSubsystem;
   public static DrivetrainSensors drivetrainSensors;
+  public static LimeLightVision limelight;
+  public static Climber climber;
   public static Diagnostics diagnostics;
 
   Command m_autonomousCommand;
@@ -80,6 +83,8 @@ public class Robot extends TimedRobot {
     compressorSubsystem = new CompressorSubsystem();
     solenoidSubsystem = new ExampleSolenoidSubsystem();
     drivetrainSensors = new DrivetrainSensors();
+    limelight = new LimeLightVision();
+    climber = new Climber();
     diagnostics = new Diagnostics();
     
     // OI must be initilized last

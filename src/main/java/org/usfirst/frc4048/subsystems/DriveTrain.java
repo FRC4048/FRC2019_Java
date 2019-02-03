@@ -226,6 +226,13 @@ public class DriveTrain extends Subsystem {
     return angle % 360;
   }
 
+  public double getPitch() {
+    double[] ypr = new double[3];
+    pigeon.getYawPitchRoll(ypr);
+    double pitch = ypr[1];
+    return pitch;
+  }
+
   /**
    * Outputs absolute encoder positions
    */
