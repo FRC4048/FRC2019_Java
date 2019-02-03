@@ -48,7 +48,8 @@ interface RobotMapForTestbed {
   public static final int CLIMBER_DISTANCE_SENSOR_LEFT_ID = 4;
   public static final int CLIMBER_DISTANCE_SENSOR_RIGHT_ID = 5;
   public static final int ALIGNMENT_DISTANCE_SENSOR_ID = 6;
-  public static final int[] ALIGNMENT_ULTRASONIC_ID = {2,3};
+
+  public static final int COMPRESSOR_PRESSURE_SENSOR = 2;
 
   //DIGITAL INPUTS
   public static final int CARGO_LIMIT_SWITCH_LEFT_ID = 1;
@@ -56,6 +57,8 @@ interface RobotMapForTestbed {
   public static final int CARGO_OPTICAL_SENSOR_ID = 3;
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
+
+  public static final int[] ALIGNMENT_ULTRASONIC_ID = {2,3};
 
   //PWM
   public static final int WINCH_MOTOR_ID = 1;
