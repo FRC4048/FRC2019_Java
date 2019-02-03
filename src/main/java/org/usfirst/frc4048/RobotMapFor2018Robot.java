@@ -17,6 +17,9 @@ package org.usfirst.frc4048;
  * will use with a single change in RobotMap.
  */
 interface RobotMapFor2018Robot {
+
+  public static final boolean ENABLE_DRIVETRAIN = true;
+
   // For example to map the left and right motors, you could define the
   // following variables to use with your drivetrain subsystem.
   // public static int leftMotor = 1;
@@ -61,7 +64,7 @@ interface RobotMapFor2018Robot {
   public static final int CARGO_LIMIT_SWITCH_RIGHT_ID = 2;
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
-
+  public static final int[] ALIGNMENT_ULTRASONIC_ID = {2,3};
   //PWM
   public static final int WINCH_MOTOR_ID = 1;
 
@@ -97,8 +100,10 @@ interface RobotMapFor2018Robot {
 
   public static final int CLIMBER_DISTANCE_SENSOR_AVERAGE_BITS = 0;
 
-  public static final double CAMERA_HEIGHT = 45.5; // Inches, height of Limelight
-  public static final double TARGET_HEIGHT = 36.5; // Inches, height of field target
-  public static final double CAMERA_ANGLE = -14; // Degrees, angle that the camera is mounted at
+  public static final double CAMERA_HEIGHT = 43.5; // Inches, height of Limelight
+  public static final double TARGET_HEIGHT_CARGO = 36.5; // Inches, height of field target
+  public static final double TARGET_HEIGHT_HATCH = 32.0;
+  public static final double CAMERA_ANGLE = -29.44; // Degrees, angle that the camera is mounted at
 
+  public static final double ROBOT_CENTRIC_SCALE_RATIO = 0.3;
 }

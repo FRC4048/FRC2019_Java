@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -27,6 +28,7 @@ import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
 
 import org.usfirst.frc4048.commands.drive.DriveDistanceMaintainAngle;
+import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
 import org.usfirst.frc4048.commands.drive.RotateAngle;
@@ -38,6 +40,7 @@ import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.subsystems.PowerDistPanel;
 import org.usfirst.frc4048.utils.WorkQueue;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
+import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -58,6 +61,7 @@ public class Robot extends TimedRobot {
   public static DrivetrainSensors drivetrainSensors;
   public static LimeLightVision limelight;
   public static Climber climber;
+  public static Diagnostics diagnostics;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -71,15 +75,18 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    drivetrain = new DriveTrain();
+    if(RobotMap.ENABLE_DRIVETRAIN) {
+      drivetrain = new DriveTrain();
+    }
     pdp = new PowerDistPanel();
     compressorSubsystem = new CompressorSubsystem();
     solenoidSubsystem = new ExampleSolenoidSubsystem();
     drivetrainSensors = new DrivetrainSensors();
     limelight = new LimeLightVision();
     climber = new Climber();
-
-    //OI must be initilized last
+    diagnostics = new Diagnostics();
+    
+    // OI must be initilized last
     oi = new OI();
     // Robot.drivetrainSensors.ledOn();
     SmartDashboard.putData("Auto mode", m_chooser);
@@ -102,8 +109,8 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData("Extend Piston", new ExampleSolenoidCommand(true));
     SmartDashboard.putData("Retract Piston", new ExampleSolenoidCommand(false));
-    SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
-    SmartDashboard.putBoolean("Pressure", Robot.compressorSubsystem.getPressure());
+//    SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
+//    SmartDashboard.putBoolean("Pressure", Robot.compressorSubsystem.getPressure());
   }
 
   /**
@@ -167,26 +174,32 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    Robot.drivetrain.swerveDrivetrain.setModeField();
     
-    // Shuffleboard.getTab("Approach").add("90", new RotateAngle(90));
-    // Shuffleboard.getTab("Approach").add("-45", new RotateAngle(-45));
-    // Shuffleboard.getTab("Approach").add("0", new RotateAngle(0));
-    // Shuffleboard.getTab("Approach").add("10", new RotateAngle(10));
-    // Shuffleboard.getTab("Approach").add("-30", new RotateAngle(-30));
-
-    // Shuffleboard.getTab("Approach").add("TargetAlign", new DriveTargetCenter(10.0, -0.25));
-  
-    // SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
     // SmartDashboard.putData(new LimelightAlign());
-    // SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
-    // SmartDashboard.putData(new DriveAlignGroup());
-    // SmartDashboard.putData(new RotateAngle(0)); 
     SmartDashboard.putData("Limelight On", new LimelightToggle(true));
     SmartDashboard.putData("Limelight Off", new LimelightToggle(false));
-    // SmartDashboard.putData(new RotateAngleForAlignment());
-    // SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.5, false));
-    // SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
+    
+    if(RobotMap.ENABLE_DRIVETRAIN) {
+      Robot.drivetrain.swerveDrivetrain.setModeField();
+    
+      // Shuffleboard.getTab("Approach").add("90", new RotateAngle(90));
+      // Shuffleboard.getTab("Approach").add("-45", new RotateAngle(-45));
+      // Shuffleboard.getTab("Approach").add("0", new RotateAngle(0));
+      // Shuffleboard.getTab("Approach").add("10", new RotateAngle(10));
+      // Shuffleboard.getTab("Approach").add("-30", new RotateAngle(-30));
+  
+      // Shuffleboard.getTab("Approach").add("TargetAlign", new DriveTargetCenter(10.0, -0.25));
+    
+      // SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
+
+      // SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
+      SmartDashboard.putData(new DriveAlignGroup());
+      SmartDashboard.putData(new RotateAngle(0)); 
+      // SmartDashboard.putData(new RotateAngleForAlignment());
+      SmartDashboard.putData("Toggle Centric Mode", new CentricModeToggle());
+      SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.4, false));
+      SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
+    }
   }
 
   /**
@@ -195,11 +208,18 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
-    SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
-    SmartDashboard.putData(new RotateAngle(90));
-    SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
+    if(RobotMap.ENABLE_DRIVETRAIN) {
+      SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
+      SmartDashboard.putData(new RotateAngle(90));
+      SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
+    }
     Scheduler.getInstance().run();
   
+  }
+
+  @Override
+  public void testInit() {
+    diagnostics.reset();
   }
 
   /**
@@ -207,6 +227,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+
+    diagnostics.refresh();
 
     Scheduler.getInstance().run();
   }
