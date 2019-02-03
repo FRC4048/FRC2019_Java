@@ -2,7 +2,7 @@ package org.usfirst.frc4048.utils.diagnostics;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
 
 /**
  * Diagnostics class for digital switch.
@@ -24,7 +24,7 @@ public class DiagSwitch implements Diagnosable {
      * @param digitalInput    - the DigitalInput the switch is connected to
      * @param shuffleboardTab - the Shuffleboard tab to add the tile to
      */
-    public DiagSwitch(String name, DigitalInput digitalInput, ShuffleboardTab shuffleboardTab) {
+    public DiagSwitch(String name, DigitalInput digitalInput, ShuffleboardContainer shuffleboardTab) {
         this.digitalInput = digitalInput;
         this.name = name;
 
