@@ -17,6 +17,11 @@ package org.usfirst.frc4048;
  * will use with a single change in RobotMap.
  */
 interface RobotMapForTestbed {
+
+  public static final boolean ENABLE_COMPRESSOR = true;
+  public static final boolean ENABLE_SOLENOID = true;
+
+
   public static final double SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK = 0.0942478739;
 
   //CAN ID

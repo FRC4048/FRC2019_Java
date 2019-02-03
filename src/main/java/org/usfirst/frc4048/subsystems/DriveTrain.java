@@ -143,12 +143,8 @@ public class DriveTrain extends Subsystem {
     final long start = System.currentTimeMillis();
 
     // Put code here to be run every loop
-<<<<<<< HEAD
-    //outputAbsEncValues();
-=======
     outputAbsEncValues();
     pigeonCurrentAngle = pigeon.getFusedHeading();
->>>>>>> origin/master
     loggingContext.writeData();
 
     last_periodic = System.currentTimeMillis() - start;
