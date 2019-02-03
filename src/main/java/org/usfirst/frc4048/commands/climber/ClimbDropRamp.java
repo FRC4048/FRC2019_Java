@@ -12,8 +12,8 @@ import org.usfirst.frc4048.commands.LoggedCommand;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ClimberDropRamp extends LoggedCommand {
-  public ClimberDropRamp() {
+public class ClimbDropRamp extends LoggedCommand {
+  public ClimbDropRamp() {
     super("ClimberDropRamp");
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);

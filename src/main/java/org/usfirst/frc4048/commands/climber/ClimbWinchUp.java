@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ClimbWinchUp extends LoggedCommand {
   private final double WINCH_SPEED = 1.0;
-
+  private final double PITCH_MARGIN_VALUE = 2; //in degrees
+  private boolean done;
+  
   public ClimbWinchUp() {
     super("ClimbWinchUp");
     // Use requires() here to declare subsystem dependencies
@@ -25,18 +27,25 @@ public class ClimbWinchUp extends LoggedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
+    done = false;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void loggedExecute() {
-    Robot.climber.controlWinch(-WINCH_SPEED);
+    double pitch = Robot.drivetrain.getPitch();
+    
+    if(Math.abs(pitch) > 0 + PITCH_MARGIN_VALUE) {
+      done = true;
+    } else {
+      Robot.climber.controlWinch(-WINCH_SPEED);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean loggedIsFinished() {
-    return true;
+    return done;
   }
 
   // Called once after isFinished returns true

@@ -7,6 +7,7 @@
 
 package org.usfirst.frc4048.subsystems;
 
+import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.utils.AngleFinder;
 import org.usfirst.frc4048.utils.OpticalRangeFinder;
@@ -24,16 +25,17 @@ public class Climber extends Subsystem {
   // here. Call these from Commands.
   private Spark winch;
   private Solenoid climberPiston;
-  private OpticalRangeFinder leftDistanceSensor;
-  private OpticalRangeFinder rightDistanceSensor;
+  private AnalogInput leftDistanceSensorAnalogInput;
+  private AnalogInput rightDistanceSensorAnalogInput;
+  private OpticalRangeFinder leftRangeFinder;
+  private OpticalRangeFinder rightRangeFinder;
   private AngleFinder angleFinder;
 
+  private final double RANGE_FINDER_DISTANCE_APART = 20;
   public Climber() {
     winch = new Spark(RobotMap.WINCH_MOTOR_ID);
     climberPiston = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.CLIMBER_PISTONS_ID);
-    leftDistanceSensor = new OpticalRangeFinder(new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_LEFT_ID));
-    rightDistanceSensor = new OpticalRangeFinder(new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_RIGHT_ID));
-    angleFinder = new AngleFinder(leftDistanceSensor, rightDistanceSensor);
+    angleFinder = initClimberAngleFinder();
   }
 
   @Override
@@ -42,12 +44,8 @@ public class Climber extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 
-  public double getLeftSensorDistance() {
-    return leftDistanceSensor.getDistanceInInches();
-  }
-
-  public double getRightSensorDistance() {
-    return rightDistanceSensor.getDistanceInInches();
+  public double getAngle() {
+    return angleFinder.calcAngleInDegrees();
   }
 
   public void controlWinch(double speed) {
@@ -57,4 +55,23 @@ public class Climber extends Subsystem {
   public void movePiston(boolean state) {
     climberPiston.set(state);
   }
+
+    /**
+     * Initialize the climber angle finder. Standalone function since it involves
+     * multiple steps.
+     */
+    private static AngleFinder initClimberAngleFinder() {
+      final AnalogInput leftRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_LEFT_ID);
+      final AnalogInput rightRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_RIGHT_ID);
+      final AnalogInput all[] = { leftRangeInput, rightRangeInput };
+      for (AnalogInput x : all) {
+        // These AnalogInput settings provided stable and fast results.
+        x.setOversampleBits(RobotMap.CLIMBER_DISTANCE_SENSOR_OVERSAMPLE_BITS);
+        x.setAverageBits(RobotMap.CLIMBER_DISTANCE_SENSOR_AVERAGE_BITS);
+      }
+
+      final OpticalRangeFinder leftRangeFinder = new OpticalRangeFinder(leftRangeInput);
+      final OpticalRangeFinder rightRangeFinder = new OpticalRangeFinder(rightRangeInput);
+      return new AngleFinder(leftRangeFinder, rightRangeFinder, RobotMap.INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS);
+    }
 }
