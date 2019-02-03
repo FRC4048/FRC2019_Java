@@ -83,6 +83,11 @@ public class DriveTrain extends Subsystem {
 
   private final int TIMEOUT = 100;
 
+  /* Reading gyro angle is relatively slow, anywhere between 4mSec and 20mSec.             */
+  /* We will be reading it and storing it here in the periodic method and whoever needs    */
+  /* whoever needs to use the gyro will get the stored value through the getGyro() method. */
+  private double pigeonCurrentAngle = 0;
+
   public DriveTrain() {
     driveFL = new WPI_TalonSRX(RobotMap.FRONT_LEFT_DRIVE_MOTOR_ID);
     driveFR = new WPI_TalonSRX(RobotMap.FRONT_RIGHT_DRIVE_MOTOR_ID);
@@ -137,6 +142,7 @@ public class DriveTrain extends Subsystem {
   public void periodic() {
     // Put code here to be run every loop
     outputAbsEncValues();
+    pigeonCurrentAngle = pigeon.getFusedHeading();
     loggingContext.writeData();
   }
 
@@ -216,8 +222,7 @@ public class DriveTrain extends Subsystem {
   }
 
   public double getGyro() {
-    double angle = 0 - pigeon.getFusedHeading();
-
+    double angle = 0 - pigeonCurrentAngle;
     return angle % 360;
   }
 
