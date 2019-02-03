@@ -204,6 +204,8 @@ public class Robot extends TimedRobot {
     final long step1 = System.currentTimeMillis();
     //SmartDashboard.putData(new RotateAngle(90));
     final long step2 = System.currentTimeMillis();
+    //SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
+    //SmartDashboard.putData(new RotateAngle(90));
     SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
     final long step3 = System.currentTimeMillis();
     Scheduler.getInstance().run();
