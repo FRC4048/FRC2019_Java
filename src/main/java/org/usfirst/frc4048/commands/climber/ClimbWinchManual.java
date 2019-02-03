@@ -8,52 +8,47 @@
 package org.usfirst.frc4048.commands.climber;
 
 import org.usfirst.frc4048.Robot;
-import org.usfirst.frc4048.commands.LoggedCommand;
-import org.usfirst.frc4048.commands.drive.RotateAngle;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
 
-public class ClimbAlignWithPlatform extends LoggedCommand {
-  public ClimbAlignWithPlatform() {
-    super("ClimbAlignWithPlatform");
+public class ClimbWinchManual extends Command {
+  private double speed;
+  /**
+   * This command is incomplete and needs to wait until we have a better understanding of how the 
+   * climber works/the control scheme. 
+   * */
+  public ClimbWinchManual(double speed) {
+    this.speed = speed;
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.drivetrain);
+    requires(Robot.climber);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void loggedInitialize() {
-    
+  protected void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void loggedExecute() {
-    double angle = Robot.climber.getAngle();
-    Scheduler.getInstance().add(new RotateAngle(angle));
+  protected void execute() {
+    Robot.climber.controlWinch(speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean loggedIsFinished() {
-    return true;
+  protected boolean isFinished() {
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void loggedEnd() {
+  protected void end() {
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void loggedInterrupted() {
-  }
-
-  @Override
-  protected void loggedCancel() {
-
+  protected void interrupted() {
   }
 }
