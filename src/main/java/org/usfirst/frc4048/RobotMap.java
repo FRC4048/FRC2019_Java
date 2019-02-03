@@ -15,6 +15,10 @@ package org.usfirst.frc4048;
  * floating around.
  */
 public class RobotMap {
+
+  public static final boolean ENABLE_COMPRESSOR = false;
+  public static final boolean ENABLE_SOLENOID = false;
+
   // For example to map the left and right motors, you could define the
   // following variables to use with your drivetrain subsystem.
   // public static int leftMotor = 1;

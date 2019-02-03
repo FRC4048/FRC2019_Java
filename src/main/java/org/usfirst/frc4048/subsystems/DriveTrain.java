@@ -135,10 +135,16 @@ public class DriveTrain extends Subsystem {
 
   @Override
   public void periodic() {
+    final long start = System.currentTimeMillis();
+
     // Put code here to be run every loop
-    outputAbsEncValues();
+    //outputAbsEncValues();
     loggingContext.writeData();
+
+    last_periodic = System.currentTimeMillis() - start;
   }
+  public long last_periodic = -1;
+
 
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
@@ -269,6 +275,7 @@ public class DriveTrain extends Subsystem {
     if (rcw <= RIGHT_JOY_X_MAX_DEADZONE && rcw >= RIGHT_JOY_X_MIN_DEADZONE)
       rcw = 0.0;
 
+    // TODO: Add Gyro Value from here to Drive.java
     swerveDrivetrain.move(fwd, str, rcw, getGyro());
   }
 

@@ -22,6 +22,7 @@ public class Drive extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+		final long start = System.currentTimeMillis();
         fwd = -Robot.oi.getLeftJoy().getY();
         str = Robot.oi.getLeftJoy().getX();
         rcw = Robot.oi.getRightJoy().getX();
@@ -44,8 +45,12 @@ public class Drive extends Command {
 		
 		SmartDashboard.putNumber("rotation", rcw);	
 
-        Robot.drivetrain.move(fwd, str, rcw);
+		Robot.drivetrain.move(fwd, str, rcw);
+		
+		last_execute = System.currentTimeMillis() - start;
 	}
+
+	static public long last_execute = -1;
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override

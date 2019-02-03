@@ -70,8 +70,13 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     drivetrain = new DriveTrain();
     pdp = new PowerDistPanel();
-    compressorSubsystem = new CompressorSubsystem();
-    solenoidSubsystem = new ExampleSolenoidSubsystem();
+
+    if (RobotMap.ENABLE_COMPRESSOR) {
+      compressorSubsystem = new CompressorSubsystem();
+    }
+    if (RobotMap.ENABLE_SOLENOID) {
+      solenoidSubsystem = new ExampleSolenoidSubsystem();
+    }
     drivetrainSensors = new DrivetrainSensors();
     
     // OI must be initilized last
@@ -95,10 +100,14 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-    SmartDashboard.putData("Extend Piston", new ExampleSolenoidCommand(true));
-    SmartDashboard.putData("Retract Piston", new ExampleSolenoidCommand(false));
-    SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
-    SmartDashboard.putBoolean("Pressure", Robot.compressorSubsystem.getPressure());
+    if (RobotMap.ENABLE_SOLENOID) {
+      SmartDashboard.putData("Extend Piston", new ExampleSolenoidCommand(true));
+      SmartDashboard.putData("Retract Piston", new ExampleSolenoidCommand(false));
+    }
+    if (RobotMap.ENABLE_COMPRESSOR) {
+      SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
+      SmartDashboard.putBoolean("Pressure", Robot.compressorSubsystem.getPressure());
+    }
   }
 
   /**
@@ -190,13 +199,29 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
-    SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
-    SmartDashboard.putData(new RotateAngle(90));
-    System.out.println("test");
+    final long step0 = System.currentTimeMillis();
+    //SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
+    final long step1 = System.currentTimeMillis();
+    //SmartDashboard.putData(new RotateAngle(90));
+    final long step2 = System.currentTimeMillis();
     SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
+    final long step3 = System.currentTimeMillis();
     Scheduler.getInstance().run();
+    final long step4 = System.currentTimeMillis();
   
-  }
+    if ((step4 - step0) >= 5 ) {
+        java.lang.StringBuilder sb = new StringBuilder();
+        sb.append("DriDis: ").append((step1-step0));
+        sb.append(" RotAng: ").append((step2-step1));
+        sb.append(" GetGyr: ").append((step3-step2));
+        sb.append(" Sched: ").append((step4-step3));
+        sb.append(" PDP: ").append(pdp.last_periodic);
+        sb.append(" DrTr: ").append(drivetrain.last_periodic);
+        sb.append(" DrTrSen: ").append(drivetrainSensors.last_periodic);
+        sb.append(" DrCmd: ").append(org.usfirst.frc4048.commands.drive.Drive.last_execute);
+        System.out.println(sb);
+      }
+    }
 
   /**
    * This function is called periodically during test mode.
