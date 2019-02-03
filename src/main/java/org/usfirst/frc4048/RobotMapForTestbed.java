@@ -50,6 +50,7 @@ interface RobotMapForTestbed {
   public static final int CLIMBER_DISTANCE_SENSOR_LEFT_ID = 4;
   public static final int CLIMBER_DISTANCE_SENSOR_RIGHT_ID = 5;
   public static final int ALIGNMENT_DISTANCE_SENSOR_ID = 6;
+  public static final int[] ALIGNMENT_ULTRASONIC_ID = {2,3};
 
   //DIGITAL INPUTS
   public static final int CARGO_LIMIT_SWITCH_LEFT_ID = 1;
@@ -93,7 +94,9 @@ interface RobotMapForTestbed {
   public static final int CLIMBER_DISTANCE_SENSOR_AVERAGE_BITS = 0;
 
   public static final double CAMERA_HEIGHT = 45.5; // Inches, height of Limelight
-  public static final double TARGET_HEIGHT = 36.5; // Inches, height of field target
+  public static final double TARGET_HEIGHT_CARGO = 36.5; // Inches, height of field target
+  public static final double TARGET_HEIGHT_HATCH = 32.0;
   public static final double CAMERA_ANGLE = -14; // Degrees, angle that the camera is mounted at
 
+  public static final double ROBOT_CENTRIC_SCALE_RATIO = 0.3;
 }
