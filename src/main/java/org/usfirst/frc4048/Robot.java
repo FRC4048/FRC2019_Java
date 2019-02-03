@@ -7,6 +7,7 @@
 
 package org.usfirst.frc4048;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -14,6 +15,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -21,7 +23,7 @@ import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
 import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
 import org.usfirst.frc4048.commands.drive.DriveDistance;
 import org.usfirst.frc4048.commands.pneumatics.ExampleSolenoidCommand;
-
+import org.usfirst.frc4048.subsystems.Climber;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
@@ -34,10 +36,12 @@ import org.usfirst.frc4048.commands.drive.RotateAngle;
 import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
 
 import org.usfirst.frc4048.subsystems.DriveTrain;
+import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.subsystems.PowerDistPanel;
 import org.usfirst.frc4048.utils.WorkQueue;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
+import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -56,6 +60,9 @@ public class Robot extends TimedRobot {
   public static CompressorSubsystem compressorSubsystem;
   public static ExampleSolenoidSubsystem solenoidSubsystem;
   public static DrivetrainSensors drivetrainSensors;
+  public static LimeLightVision limelight;
+  public static Climber climber;
+  public static Diagnostics diagnostics;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -78,7 +85,14 @@ public class Robot extends TimedRobot {
       solenoidSubsystem = new ExampleSolenoidSubsystem();
     }
     drivetrainSensors = new DrivetrainSensors();
+<<<<<<< HEAD
 
+=======
+    limelight = new LimeLightVision();
+    climber = new Climber();
+    diagnostics = new Diagnostics();
+    
+>>>>>>> 5080c21ab7e61a8cc9983a18104e564a7ddb2cab
     // OI must be initilized last
     oi = new OI();
     // Robot.drivetrainSensors.ledOn();
@@ -101,6 +115,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
+<<<<<<< HEAD
     if (RobotMap.ENABLE_SOLENOID) {
       SmartDashboard.putData("Extend Piston", new ExampleSolenoidCommand(true));
       SmartDashboard.putData("Retract Piston", new ExampleSolenoidCommand(false));
@@ -109,6 +124,12 @@ public class Robot extends TimedRobot {
       SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
       SmartDashboard.putBoolean("Pressure", Robot.compressorSubsystem.getPressure());
     }
+=======
+    SmartDashboard.putData("Extend Piston", new ExampleSolenoidCommand(true));
+    SmartDashboard.putData("Retract Piston", new ExampleSolenoidCommand(false));
+//    SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
+//    SmartDashboard.putBoolean("Pressure", Robot.compressorSubsystem.getPressure());
+>>>>>>> 5080c21ab7e61a8cc9983a18104e564a7ddb2cab
   }
 
   /**
@@ -210,6 +231,8 @@ public class Robot extends TimedRobot {
     // Disabled for now to look at watchdog timeouts
     final boolean writeToDashboard = false;
 
+    SmartDashboard.putNumber("Pressure Value", compressorSubsystem.getPressure());
+
     final long step0 = System.currentTimeMillis();
     if (RobotMap.ENABLE_DRIVETRAIN && writeToDashboard) {
       SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
@@ -245,11 +268,18 @@ public class Robot extends TimedRobot {
     }
   }
 
+  @Override
+  public void testInit() {
+    diagnostics.reset();
+  }
+
   /**
    * This function is called periodically during test mode.
    */
   @Override
   public void testPeriodic() {
+
+    diagnostics.refresh();
 
     Scheduler.getInstance().run();
   }
