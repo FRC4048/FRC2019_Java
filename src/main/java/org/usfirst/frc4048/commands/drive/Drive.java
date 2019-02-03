@@ -4,12 +4,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.swerve.math.CentricMode;
 
 public class Drive extends Command {
 
     double fwd, str, rcw;
-	private final double ROBOT_CENTRIC_SCALE_RATIO = 0.3;
     public Drive() {
         requires(Robot.drivetrain);
     }
@@ -44,9 +44,9 @@ public class Drive extends Command {
     		rcw *= rcw;
 		
 		if(Robot.drivetrain.swerveDrivetrain.getModeRobot() == CentricMode.ROBOT) {
-			fwd *= ROBOT_CENTRIC_SCALE_RATIO;
-			str *= ROBOT_CENTRIC_SCALE_RATIO;
-			rcw *= ROBOT_CENTRIC_SCALE_RATIO;
+			fwd *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
+			str *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
+			rcw *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
 		}
 		SmartDashboard.putNumber("rotation", rcw);	
 		
