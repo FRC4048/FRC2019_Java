@@ -17,6 +17,9 @@ package org.usfirst.frc4048;
  * will use with a single change in RobotMap.
  */
 interface RobotMapFor2018Robot {
+
+  public static final boolean ENABLE_DRIVETRAIN = true;
+
   // For example to map the left and right motors, you could define the
   // following variables to use with your drivetrain subsystem.
   // public static int leftMotor = 1;
