@@ -8,6 +8,7 @@
 package org.usfirst.frc4048.subsystems;
 
 import org.usfirst.frc4048.RobotMap;
+import org.usfirst.frc4048.utils.AngleFinder;
 import org.usfirst.frc4048.utils.OpticalRangeFinder;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -25,12 +26,14 @@ public class Climber extends Subsystem {
   private Solenoid climberPiston;
   private OpticalRangeFinder leftDistanceSensor;
   private OpticalRangeFinder rightDistanceSensor;
+  private AngleFinder angleFinder;
 
   public Climber() {
     winch = new Spark(RobotMap.WINCH_MOTOR_ID);
     climberPiston = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.CLIMBER_PISTONS_ID);
     leftDistanceSensor = new OpticalRangeFinder(new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_LEFT_ID));
     rightDistanceSensor = new OpticalRangeFinder(new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_RIGHT_ID));
+    angleFinder = new AngleFinder(leftDistanceSensor, rightDistanceSensor);
   }
 
   @Override
