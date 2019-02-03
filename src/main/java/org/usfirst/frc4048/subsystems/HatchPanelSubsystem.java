@@ -31,7 +31,7 @@ public class HatchPanelSubsystem extends Subsystem {
 
       limitSwitchLeft = new DigitalInput(RobotMap.CARGO_LIMIT_SWITCH_LEFT_ID); //these are cargo because they use the same input ID's
       limitSwitchRight = new DigitalInput(RobotMap.CARGO_LIMIT_SWITCH_RIGHT_ID); //TODO: Change the name of the constant in Robotmap
-      hatchPanelPiston = new Solenoid(RobotMap.HATCH_PANEL_PISTON_ID);
+      hatchPanelPiston = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.HATCH_PANEL_PISTON_ID);
       }
 
   @Override

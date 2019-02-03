@@ -8,10 +8,11 @@
 package org.usfirst.frc4048.commands.hatchpanel;
 
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.commands.LoggedCommand;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class AutoHatchPanelIntake extends Command {
+public class AutoHatchPanelIntake extends LoggedCommand {
   
   /**
    * true is extend false is retract
@@ -20,19 +21,20 @@ public class AutoHatchPanelIntake extends Command {
   public AutoHatchPanelIntake() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    super("AutoHatchPanelIntake");
 
     requires(Robot.hatchPanelSubsystem);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  protected void loggedInitialize() {
     
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  protected void loggedExecute() {
    
     if(Robot.hatchPanelSubsystem.getLeftLimit() || Robot.hatchPanelSubsystem.getRightLimit()){
 
@@ -43,20 +45,25 @@ public class AutoHatchPanelIntake extends Command {
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  protected boolean loggedIsFinished() {
     return Robot.hatchPanelSubsystem.checkPiston(); 
     }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  protected void loggedEnd() {
 
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
+  protected void loggedInterrupted() {
     end(); 
+  }
+
+  @Override
+  protected void loggedCancel() {
+
   }
 }
