@@ -30,6 +30,21 @@ interface RobotMapFor2018Robot {
   // public static int rangefinderPort = 1;
   // public static int rangefinderModule = 1;
 
+  public static final boolean ENABLE_COMPRESSOR = false;
+  public static final boolean ENABLE_SOLENOID = false;
+
+  /**
+   * Enables reading of the gyro angle from the pigeon on it's own thread
+   * so it does not impact the amount of time it takes to complete the
+   * periodic() loop.
+   */
+  public static final boolean ENABLE_PIGEON_THREAD = true;
+
+  /**
+   * Enables loging of timing data related to watchdog timeouts.
+   */
+  public static final boolean LOG_PERIODIC_TIME = true;
+
   public static final double SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK = 0.0942478739;
 
   //CAN ID

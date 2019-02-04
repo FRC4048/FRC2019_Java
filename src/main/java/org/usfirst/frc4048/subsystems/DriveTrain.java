@@ -86,7 +86,7 @@ public class DriveTrain extends Subsystem {
   /* Reading gyro angle is relatively slow, anywhere between 4mSec and 20mSec.             */
   /* We will be reading it and storing it here in the periodic method and whoever needs    */
   /* whoever needs to use the gyro will get the stored value through the getGyro() method. */
-  private double pigeonCurrentAngle = 0;
+  private final PigeonData pigeonData = new PigeonData();
 
   public DriveTrain() {
     driveFL = new WPI_TalonSRX(RobotMap.FRONT_LEFT_DRIVE_MOTOR_ID);
@@ -118,7 +118,10 @@ public class DriveTrain extends Subsystem {
     init();
 
     swerveDrivetrain = new SwerveDrive(frontRightWheel, frontLeftWheel, rearLeftWheel, rearRightWheel, WIDTH, LENGTH);
-    
+
+    if (RobotMap.ENABLE_PIGEON_THREAD) {
+      pigeonThread.start();
+    }
   }
 
   
@@ -138,13 +141,45 @@ public class DriveTrain extends Subsystem {
     setDefaultCommand(new Drive());
   }
 
+  private final Thread pigeonThread = new Thread() {
+    public void run() {
+      for (;;) {
+        pigeonData.update();
+        // final double heading = pigeon.getFusedHeading();
+        // final long headingAt = System.currentTimeMillis();
+        // final long timeDiff = Math.abs(headingAt - pigeonCurrentAngleAt);
+        // final double angleDiff = Math.abs(heading - pigeonCurrentAngle);
+        // if (angleDiff > 0.3 && timeDiff < 5)
+        //   System.out.println(String.format("pigeonThread: TimeDiff %d,   angleDiff %.1f", timeDiff, angleDiff));
+      }
+    }
+  };
+
+  private class PigeonData {
+    private long time = 0;
+    private double heading = 0;
+
+    void update() {
+      heading = pigeon.getFusedHeading();
+      time = System.currentTimeMillis();  
+    }
+  }
+
   @Override
   public void periodic() {
+    final long start = System.currentTimeMillis();
+
     // Put code here to be run every loop
     outputAbsEncValues();
-    pigeonCurrentAngle = pigeon.getFusedHeading();
+    if (!RobotMap.ENABLE_PIGEON_THREAD) {
+      pigeonData.update();
+    }
     loggingContext.writeData();
+
+    last_periodic = System.currentTimeMillis() - start;
   }
+  public long last_periodic = -1;
+
 
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
@@ -222,7 +257,7 @@ public class DriveTrain extends Subsystem {
   }
 
   public double getGyro() {
-    double angle = 0 - pigeonCurrentAngle;
+    double angle = 0 - pigeonData.heading;
     return angle % 360;
   }
 
@@ -281,6 +316,7 @@ public class DriveTrain extends Subsystem {
     if (rcw <= RIGHT_JOY_X_MAX_DEADZONE && rcw >= RIGHT_JOY_X_MIN_DEADZONE)
       rcw = 0.0;
 
+    // TODO: Add Gyro Value from here to Drive.java
     swerveDrivetrain.move(fwd, str, rcw, getGyro());
   }
 

@@ -18,7 +18,24 @@ package org.usfirst.frc4048;
  */
 interface RobotMapForTestbed {
 
+  public static final boolean ENABLE_COMPRESSOR = true;
+  public static final boolean ENABLE_SOLENOID = true;
+
+  /**
+   * Enables reading of the gyro angle from the pigeon on it's own thread
+   * so it does not impact the amount of time it takes to complete the
+   * periodic() loop.
+   */
+  public static final boolean ENABLE_PIGEON_THREAD = true;
+
   public static final boolean ENABLE_DRIVETRAIN = false;
+
+    /**
+   * Enables loging of timing data related to watchdog timeouts.
+   */
+  public static final boolean LOG_PERIODIC_TIME = true;
+
+
 
   public static final double SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK = 0.0942478739;
 

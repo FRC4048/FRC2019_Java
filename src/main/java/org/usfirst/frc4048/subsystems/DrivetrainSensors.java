@@ -53,6 +53,8 @@ public class DrivetrainSensors extends Subsystem {
 
     @Override
     public void periodic() {
+        final long start = System.currentTimeMillis();
+
         // Put code here to be run every loop
         CameraDistance targetDistance = getTargetDistance();
         limelightValidTargetEntry.setBoolean(targetDistance != null);
@@ -63,7 +65,12 @@ public class DrivetrainSensors extends Subsystem {
 
         // unltrasonicEntry.setDouble(ultrasonic.getRangeInches());
         SmartDashboard.putNumber("Ultrasonic", getUltrasonicDistance());
+
+        last_periodic = System.currentTimeMillis() - start;
     }
+
+    public long last_periodic = -1;
+
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
