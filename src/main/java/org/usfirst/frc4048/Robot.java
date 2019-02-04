@@ -181,7 +181,6 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putData(new LimelightAlign());
     SmartDashboard.putData("Limelight On", new LimelightToggle(true));
     SmartDashboard.putData("Limelight Off", new LimelightToggle(false));
-<<<<<<< HEAD
     // SmartDashboard.putData(new RotateAngleForAlignment());
     // SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.5, false));
     // SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
@@ -189,7 +188,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Motion Magic Test 100.0", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
     SmartDashboard.putData("Motion Magic Test 1500.0", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
     SmartDashboard.putData("Motion Magic Test -4000.0", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
-=======
     
     if(RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
@@ -212,7 +210,6 @@ public class Robot extends TimedRobot {
       SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.4, false));
       SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
     }
->>>>>>> 4b58116dc3c7ca11cfb00121f69e2c2371a62622
   }
 
   /**
@@ -221,19 +218,11 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
-<<<<<<< HEAD
-    SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
-    SmartDashboard.putData(new RotateAngle(90));
-    System.out.println("test");
-    SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
-    SmartDashboard.putNumber("Elevator Encoder", Robot.elevator.getEncoder());
-=======
     if(RobotMap.ENABLE_DRIVETRAIN) {
       SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
       SmartDashboard.putData(new RotateAngle(90));
       SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
     }
->>>>>>> 4b58116dc3c7ca11cfb00121f69e2c2371a62622
     Scheduler.getInstance().run();
   
   }
