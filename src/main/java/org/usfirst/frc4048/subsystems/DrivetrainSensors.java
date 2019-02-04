@@ -30,7 +30,6 @@ public class DrivetrainSensors extends Subsystem {
     private Ultrasonic ultrasonic;
 
     private LimeLightVision limelight;
-    private final AngleFinder climberAngleFinder;
 
     private NetworkTableEntry unltrasonicEntry = Shuffleboard.getTab("DrivetrainSensors").add("Ultrasonic Distance", 0.0).getEntry();
     private NetworkTableEntry limelightValidTargetEntry = Shuffleboard.getTab("DrivetrainSensors").add("LimelightValidTarget", false).getEntry();
@@ -44,29 +43,7 @@ public class DrivetrainSensors extends Subsystem {
         ultrasonic.setAutomaticMode(true);
 
         limelight = new LimeLightVision();
-        climberAngleFinder = initClimberAngleFinder();
     }
-    
-    /**
-     * Initialize the climber angle finder. Standalone function since it involves
-     * multiple steps.
-     */
-    private static AngleFinder initClimberAngleFinder() {
-      final AnalogInput leftRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_LEFT_ID);
-      final AnalogInput rightRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_RIGHT_ID);
-      final AnalogInput all[] = { leftRangeInput, rightRangeInput };
-      for (AnalogInput x : all) {
-        // These AnalogInput settings provided stable and fast results.
-        x.setOversampleBits(RobotMap.CLIMBER_DISTANCE_SENSOR_OVERSAMPLE_BITS);
-        x.setAverageBits(RobotMap.CLIMBER_DISTANCE_SENSOR_AVERAGE_BITS);
-      }
-
-      final OpticalRangeFinder leftRangeFinder = new OpticalRangeFinder(leftRangeInput);
-      final OpticalRangeFinder rightRangeFinder = new OpticalRangeFinder(rightRangeInput);
-      return new AngleFinder(leftRangeFinder, rightRangeFinder, RobotMap.INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS);
-    }
-
-
 
     @Override
     public void initDefaultCommand() {
@@ -76,6 +53,8 @@ public class DrivetrainSensors extends Subsystem {
 
     @Override
     public void periodic() {
+        final long start = System.currentTimeMillis();
+
         // Put code here to be run every loop
         CameraDistance targetDistance = getTargetDistance();
         limelightValidTargetEntry.setBoolean(targetDistance != null);
@@ -86,7 +65,12 @@ public class DrivetrainSensors extends Subsystem {
 
         // unltrasonicEntry.setDouble(ultrasonic.getRangeInches());
         SmartDashboard.putNumber("Ultrasonic", getUltrasonicDistance());
+
+        last_periodic = System.currentTimeMillis() - start;
     }
+
+    public long last_periodic = -1;
+
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
