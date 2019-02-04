@@ -87,12 +87,13 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     mechanicalMode = new MechanicalMode();
     int mode = mechanicalMode.getMode();
-    if(mode == RobotMap.CARGO_RETURN_CODE) {
-
-    } else if (mode == RobotMap.HATCH_RETURN_CODE) {
-
-    } else {
-      
+    switch(mode){
+      case RobotMap.CARGO_RETURN_CODE:
+        cargoSubsystem = new CargoSubsystem();
+        break;
+      case RobotMap.HATCH_RETURN_CODE:
+        hatchPanelSubsystem = new HatchPanelSubsystem();
+        break;
     }
     if(RobotMap.ENABLE_DRIVETRAIN) {
       drivetrain = new DriveTrain();
@@ -106,10 +107,7 @@ public class Robot extends TimedRobot {
       solenoidSubsystem = new ExampleSolenoidSubsystem();
     }
     drivetrainSensors = new DrivetrainSensors();
-
     limelight = new LimeLightVision();
-    cargoSubsystem = new CargoSubsystem();
-    hatchPanelSubsystem = new HatchPanelSubsystem();
     climber = new Climber();
     diagnostics = new Diagnostics();
 

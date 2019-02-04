@@ -74,15 +74,12 @@ interface RobotMapForTestbed {
   public static final int CARGO_OPTICAL_SENSOR_ID = 3;
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
-<<<<<<< HEAD
   public static final int HATCH_DIGITAL_INPUT_ID = 7;
   public static final int CARGO_DIGITAL_INPUT_ID = 8;
   
-=======
 
   public static final int[] ALIGNMENT_ULTRASONIC_ID = {2,3};
 
->>>>>>> b158394d03198030ac31a2654f0309be90a435f5
   //PWM
   public static final int WINCH_MOTOR_ID = 1;
 
@@ -125,15 +122,12 @@ interface RobotMapForTestbed {
 
   public static final double ROBOT_CENTRIC_SCALE_RATIO = 0.3;
   
-<<<<<<< HEAD
   public static final int HATCH_RETURN_CODE = 0;
   public static final int CARGO_RETURN_CODE = 1;
   public static final int NOTHING_RETURN_CODE = 2;
-=======
   //PDP IDS
   public static final int PDP_ID_CARGO_INTAKE = 13; //Just a test value for now; will be changed on the real robot.
 
   //MOTOR STALL CURRENT THRESHOLDS
   public static final double CURRENT_THRESHOLD_CARGO_INTAKE = 15.0;
->>>>>>> b158394d03198030ac31a2654f0309be90a435f5
 }

@@ -48,12 +48,16 @@ public class OI {
   private Joystick controller; 
   private Joystick leftJoy;
   private Joystick rightJoy;
+  private Joystick manualController;
 
   public OI() {
     leftJoy = new Joystick(0);
     rightJoy = new Joystick(1);
     controller = new Joystick(2);
-
+    manualController = new Joystick(3);
+   
+    int mode = Robot.mechanicalMode.getMode();
+    
     logError = new JoystickButton(controller, 3);
     logError.whenPressed(new LogError());
   }
