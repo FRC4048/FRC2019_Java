@@ -57,7 +57,12 @@ public class OI {
     manualController = new Joystick(3);
    
     int mode = Robot.mechanicalMode.getMode();
-    
+    switch(mode) {
+      case RobotMap.CARGO_RETURN_CODE:
+        break;
+      case RobotMap.HATCH_RETURN_CODE:
+        break;
+    }
     logError = new JoystickButton(controller, 3);
     logError.whenPressed(new LogError());
   }

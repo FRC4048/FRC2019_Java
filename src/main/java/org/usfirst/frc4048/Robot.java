@@ -86,13 +86,16 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     mechanicalMode = new MechanicalMode();
-    int mode = mechanicalMode.getMode();
+    // int mode = mechanicalMode.getMode();
+    int mode = RobotMap.HATCH_RETURN_CODE;
     switch(mode){
       case RobotMap.CARGO_RETURN_CODE:
         cargoSubsystem = new CargoSubsystem();
+        SmartDashboard.putBoolean("Cargo Initilized", true);
         break;
       case RobotMap.HATCH_RETURN_CODE:
         hatchPanelSubsystem = new HatchPanelSubsystem();
+        SmartDashboard.putBoolean("Hatch Initilized", true);
         break;
     }
     if(RobotMap.ENABLE_DRIVETRAIN) {
