@@ -105,6 +105,11 @@ public class DriveTrain extends Subsystem {
     driveRL.setNeutralMode(NeutralMode.Brake);
     driveRR.setNeutralMode(NeutralMode.Brake);
 
+    driveFL.setSafetyEnabled(true);
+    driveFR.setSafetyEnabled(true);
+    driveRL.setSafetyEnabled(true);
+    driveRL.setSafetyEnabled(true);
+
     analogInputFrontLeft = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_FRONT_LEFT_ID);
     analogInputFrontRight = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID);
     analogInputRearLeft = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_REAR_LEFT_ID);
@@ -123,7 +128,6 @@ public class DriveTrain extends Subsystem {
       pigeonThread.start();
     }
   }
-
   
   public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVETRAIN) {
 
