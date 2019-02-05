@@ -8,6 +8,7 @@
 package org.usfirst.frc4048;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -86,17 +87,17 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     mechanicalMode = new MechanicalMode();
-    // int mode = mechanicalMode.getMode();
-    int mode = RobotMap.HATCH_RETURN_CODE;
+    int mode = mechanicalMode.getMode();
+  
     switch(mode){
       case RobotMap.CARGO_RETURN_CODE:
         cargoSubsystem = new CargoSubsystem();
-        SmartDashboard.putBoolean("Cargo Initilized", true);
         break;
       case RobotMap.HATCH_RETURN_CODE:
         hatchPanelSubsystem = new HatchPanelSubsystem();
-        SmartDashboard.putBoolean("Hatch Initilized", true);
         break;
+      default:
+        DriverStation.getInstance().reportError("-----INVALID STATE------", true);
     }
     if(RobotMap.ENABLE_DRIVETRAIN) {
       drivetrain = new DriveTrain();
