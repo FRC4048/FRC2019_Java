@@ -18,8 +18,6 @@ package org.usfirst.frc4048;
  */
 interface RobotMapFor2018Robot {
 
-  public static final boolean ENABLE_DRIVETRAIN = true;
-
   // For example to map the left and right motors, you could define the
   // following variables to use with your drivetrain subsystem.
   // public static int leftMotor = 1;
@@ -31,7 +29,6 @@ interface RobotMapFor2018Robot {
   // public static int rangefinderModule = 1;
 
   public static final boolean ENABLE_COMPRESSOR = false;
-  public static final boolean ENABLE_SOLENOID = false;
 
   /**
    * Enables reading of the gyro angle from the pigeon on it's own thread
@@ -40,10 +37,19 @@ interface RobotMapFor2018Robot {
    */
   public static final boolean ENABLE_PIGEON_THREAD = true;
 
+  public static final boolean ENABLE_DRIVETRAIN = true;
+
+  public static final boolean ENABLE_CARGO_SUBSYSTEM = false;
+
+  public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = true;
+
+  public static final boolean ENABLE_CLIMBER_SUBSYSTEM = true;
+
   /**
    * Enables loging of timing data related to watchdog timeouts.
    */
-  public static final boolean LOG_PERIODIC_TIME = true;
+  public static final boolean LOG_PERIODIC_TIME = false;
+
 
   public static final double SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK = 0.0942478739;
 
