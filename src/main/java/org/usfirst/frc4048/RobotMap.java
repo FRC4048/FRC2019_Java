@@ -11,7 +11,7 @@ package org.usfirst.frc4048;
  */
 
 // public interface RobotMap extends RobotMapForTestbed {
-public interface RobotMap extends RobotMapFor2018Robot {
+public interface RobotMap extends RobotMapForTestbed {
 
   // Do not add constants here. Use one of the RobotMapForXXXXX classes to add
   // definitions for the specific hardware.

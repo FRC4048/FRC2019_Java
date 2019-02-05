@@ -36,9 +36,9 @@ public class ExampleSolenoidCommand extends LoggedCommand {
   @Override
   protected void loggedExecute() {
     if(state == true) {
-      Robot.solenoidSubsystem.extendPiston();
+//      Robot.solenoidSubsystem.extendPiston();
     } else {
-      Robot.solenoidSubsystem.retractPiston();
+//      Robot.solenoidSubsystem.retractPiston();
     }
   }
 

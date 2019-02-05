@@ -25,7 +25,6 @@ public class AutoEjectCargoStart extends LoggedCommand {
             Robot.cargoSubsystem.cargoOutput();
             setTimeout(0.2);
         }
-
     }
 
     // Make this return true when this Command no longer needs to run execute()
