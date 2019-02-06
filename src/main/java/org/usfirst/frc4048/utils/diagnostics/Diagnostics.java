@@ -31,9 +31,9 @@ public class Diagnostics extends Subsystem {
         diagnosables = new ArrayList<>();
 
         // This simulates adding components by other subsystems...
-        addDiagnosable(new DiagSwitch("Switch1", new DigitalInput(1), shuffleBoardTab));
-        addDiagnosable(new DiagPot("Pot1", 0.1, 0.9, new AnalogPotentiometer(0), shuffleBoardTab));
-        addDiagnosable(new DiagEncoder("Encoder1", 100, new Encoder(5,6), shuffleBoardTab));
+        // addDiagnosable(new DiagSwitch("Switch1", new DigitalInput(1), shuffleBoardTab));
+        // addDiagnosable(new DiagPot("Pot1", 0.1, 0.9, new AnalogPotentiometer(0), shuffleBoardTab));
+        // addDiagnosable(new DiagEncoder("Encoder1", 100, new Encoder(5,6), shuffleBoardTab));
     }
 
     @Override
