@@ -36,20 +36,35 @@ public class DiagEncoder implements Diagnosable {
         reset();
     }
 
+    /**
+     * Do not use for testing only
+     */
+    public DiagEncoder(String name, int requiredTravel, Encoder encoder, boolean DO_NOT_USE_FOR_TESTING_ONLY) {
+        this.name = name;
+        this.requiredTravel = requiredTravel;
+        this.encoder = encoder;
+
+        reset();
+    }
+
     @Override
     public void refresh() {
-        int encoderValue = encoder.get();
-
-        if (Math.abs(encoderValue - initialValue) >= requiredTravel) {
-            traveledDistance = true;
-        }
-
-        networkTableEntry.setBoolean(traveledDistance);
+        networkTableEntry.setBoolean(getDiagResult());
     }
 
     @Override
     public void reset() {
         traveledDistance = false;
         initialValue = encoder.get();
+    }
+
+    boolean getDiagResult() {
+        int encoderValue = encoder.get();
+
+        if (Math.abs(encoderValue - initialValue) >= requiredTravel) {
+            traveledDistance = true;
+        }
+
+        return this.traveledDistance;
     }
 }
