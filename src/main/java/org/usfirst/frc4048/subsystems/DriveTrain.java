@@ -198,10 +198,14 @@ public class DriveTrain extends Subsystem {
           if (now > statusExpiration) {
             statusExpiration = now + (RobotMap.SHOW_PIGEON_STATUS_SECONDS * 1000);
             pigeon.getGeneralStatus(gstatus);
-            System.out.prinln(gstatus.toString());
+            System.out.println(gstatus.toString());
+          }
       }
     }
   }
+}
+
+
 
   @Override
   public void periodic() {
