@@ -13,7 +13,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Add your docs here.
+ * This class allows you to get the mode that the robot is in (Hatch, or Cargo). It does this based
+ * off of the DIO ports that check which mechanism is plugged in.
  */
 public class MechanicalMode {
     

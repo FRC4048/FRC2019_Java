@@ -56,6 +56,8 @@ public class OI {
     controller = new Joystick(2);
     manualController = new Joystick(3);
    
+
+    //Put all button inputs that are based off of the mechanism they are tied to in this switch statement
     int mode = Robot.mechanicalMode.getMode();
     switch(mode) {
       case RobotMap.CARGO_RETURN_CODE:
