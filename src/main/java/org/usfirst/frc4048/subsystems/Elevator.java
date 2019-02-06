@@ -18,6 +18,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveManual;
 import org.usfirst.frc4048.utils.ElevatorPosition;
+import org.usfirst.frc4048.utils.MechanicalMode;
 import org.usfirst.frc4048.utils.MotorUtils;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -72,8 +73,17 @@ public class Elevator extends Subsystem {
     elevatorMotor.configAllowableClosedloopError(0, 4, TIMEOUT);
     elevatorMotor.selectProfileSlot(0, 0);
     elevatorMotor.configAllowableClosedloopError(0, 4, TIMEOUT);
+    MechanicalMode mechanicalMode = new MechanicalMode();
+    int elevatorMode = mechanicalMode.getMode();
+    switch(elevatorMode){
+      case RobotMap.CARGO_RETURN_CODE:
+        setPID(CARGO_MODE);
+        break;
+      case RobotMap.HATCH_RETURN_CODE:
+        setPID(HATCH_MODE);
+        break;
+    }
     
-    setPID(CARGO_MODE);
     elevatorMotor.config_kP(0, elevatorP, TIMEOUT);
     elevatorMotor.config_kI(0, elevatorI, TIMEOUT);
     elevatorMotor.config_kD(0, elevatorD, TIMEOUT);
