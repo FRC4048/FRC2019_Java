@@ -48,12 +48,23 @@ public class OI {
   private Joystick controller; 
   private Joystick leftJoy;
   private Joystick rightJoy;
+  private Joystick manualController;
 
   public OI() {
     leftJoy = new Joystick(0);
     rightJoy = new Joystick(1);
     controller = new Joystick(2);
+    manualController = new Joystick(3);
+   
 
+    //Put all button inputs that are based off of the mechanism they are tied to in this switch statement
+    int mode = Robot.mechanicalMode.getMode();
+    switch(mode) {
+      case RobotMap.CARGO_RETURN_CODE:
+        break;
+      case RobotMap.HATCH_RETURN_CODE:
+        break;
+    }
     logError = new JoystickButton(controller, 3);
     logError.whenPressed(new LogError());
   }
