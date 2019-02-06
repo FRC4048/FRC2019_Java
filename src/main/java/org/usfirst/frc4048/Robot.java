@@ -67,15 +67,12 @@ public class Robot extends TimedRobot {
   public static WorkQueue wq;
   public static double timeOfStart = 0;
   public static CompressorSubsystem compressorSubsystem;
-  public static ExampleSolenoidSubsystem solenoidSubsystem;
   public static DrivetrainSensors drivetrainSensors;
-  public static MechanicalMode mechanicalMode;
-  public static LimeLightVision limelight;
   public static CargoSubsystem cargoSubsystem;
   public static HatchPanelSubsystem hatchPanelSubsystem;
   public static Climber climber;
   public static Diagnostics diagnostics;
-
+  public static MechanicalMode mechanicalMode;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -88,18 +85,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     mechanicalMode = new MechanicalMode();
     int mode = mechanicalMode.getMode();
-  
-    switch(mode){
-      case RobotMap.CARGO_RETURN_CODE:
-        cargoSubsystem = new CargoSubsystem();
-        break;
-      case RobotMap.HATCH_RETURN_CODE:
-        hatchPanelSubsystem = new HatchPanelSubsystem();
-        break;
-      default:
-        DriverStation.getInstance().reportError("-----INVALID STATE------", true);
-    }
-    if(RobotMap.ENABLE_DRIVETRAIN) {
+
+    if (RobotMap.ENABLE_DRIVETRAIN) {
       drivetrain = new DriveTrain();
     }
     pdp = new PowerDistPanel();
@@ -107,15 +94,26 @@ public class Robot extends TimedRobot {
     if (RobotMap.ENABLE_COMPRESSOR) {
       compressorSubsystem = new CompressorSubsystem();
     }
-    if (RobotMap.ENABLE_SOLENOID) {
-      solenoidSubsystem = new ExampleSolenoidSubsystem();
-    }
     drivetrainSensors = new DrivetrainSensors();
-    limelight = new LimeLightVision();
-    climber = new Climber();
+
+    switch(mode){
+      case RobotMap.CARGO_RETURN_CODE:
+        if (RobotMap.ENABLE_CARGO_SUBSYSTEM) {
+          cargoSubsystem = new CargoSubsystem();
+        }
+        break;
+      case RobotMap.HATCH_RETURN_CODE:
+        if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM) {
+          hatchPanelSubsystem = new HatchPanelSubsystem();
+        }
+        break;
+    }
+    if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
+      climber = new Climber();
+    }
     diagnostics = new Diagnostics();
 
-    // OI must be initilized last
+    // OI must be initialized last
     oi = new OI();
     // Robot.drivetrainSensors.ledOn();
     SmartDashboard.putData("Auto mode", m_chooser);
@@ -137,10 +135,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-    if (RobotMap.ENABLE_SOLENOID) {
-      SmartDashboard.putData("Extend Piston", new ExampleSolenoidCommand(true));
-      SmartDashboard.putData("Retract Piston", new ExampleSolenoidCommand(false));
-    }
     if (RobotMap.ENABLE_COMPRESSOR) {
       SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
       SmartDashboard.putNumber("Pressure", Robot.compressorSubsystem.getPressure());
@@ -260,8 +254,8 @@ public class Robot extends TimedRobot {
     if (RobotMap.ENABLE_DRIVETRAIN && writeToDashboard) {
       SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
       SmartDashboard.putData(new RotateAngle(90));
+      SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
     }
-    SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
     final long step3 = System.currentTimeMillis();
 
     Scheduler.getInstance().run();
@@ -275,7 +269,9 @@ public class Robot extends TimedRobot {
         sb.append(" GetGyr: ").append((step3 - step2));
         sb.append(" Sched: ").append((step4 - step3));
         sb.append(" PDP: ").append(pdp.last_periodic);
-        sb.append(" DrTr: ").append(drivetrain.last_periodic);
+        if (RobotMap.ENABLE_DRIVETRAIN) {
+          sb.append(" DrTr: ").append(drivetrain.last_periodic);
+        }
         sb.append(" DrTrSen: ").append(drivetrainSensors.last_periodic);
         sb.append(" DrCmd: ").append(org.usfirst.frc4048.commands.drive.Drive.last_execute);
         System.out.println(sb);
