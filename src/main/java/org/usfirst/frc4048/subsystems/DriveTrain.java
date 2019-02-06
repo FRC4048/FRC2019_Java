@@ -12,6 +12,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.PigeonIMU.FusionStatus;
+import com.ctre.phoenix.sensors.PigeonIMU.GeneralStatus;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -38,7 +40,14 @@ public class DriveTrain extends Subsystem {
   private WPI_TalonSRX steerFR;
   private WPI_TalonSRX steerRL;
   private WPI_TalonSRX steerRR;
+
+  /**
+   * Note that access to the pigeon should be done inside a synhronized block because the
+   * reading will be done in a separate thread. If you're reading values, use the pigeonData
+   * class member.
+   */
   private PigeonIMU pigeon;
+
   private Encoder encoder;
 
   private AnalogInput analogInputFrontRight;
@@ -148,24 +157,49 @@ public class DriveTrain extends Subsystem {
   private final Thread pigeonThread = new Thread() {
     public void run() {
       for (;;) {
+        final long start_time = System.currentTimeMillis();
         pigeonData.update();
-        // final double heading = pigeon.getFusedHeading();
-        // final long headingAt = System.currentTimeMillis();
-        // final long timeDiff = Math.abs(headingAt - pigeonCurrentAngleAt);
-        // final double angleDiff = Math.abs(heading - pigeonCurrentAngle);
-        // if (angleDiff > 0.3 && timeDiff < 5)
-        //   System.out.println(String.format("pigeonThread: TimeDiff %d,   angleDiff %.1f", timeDiff, angleDiff));
+
+        // Subtract the amount of time that it took to read the pigeon from
+        // the total delay time we want. This should give us
+        // consistently updated readings.
+        final long delta_time = System.currentTimeMillis() - start_time;
+        final long sleep_time = RobotMap.PIGEON_READ_DELAY_MS - delta_time;
+        if (sleep_time > 0) {
+          try {
+            Thread.sleep(sleep_time);
+          }
+          catch (InterruptedException e) {
+          }
+        }
       }
     }
   };
 
   private class PigeonData {
-    private long time = 0;
+    private final double[] ypr = new double[3];
+    private final FusionStatus fstatus = new FusionStatus();
+    private final GeneralStatus gstatus = new GeneralStatus();
+    private long statusExpiration = 0;
     private double heading = 0;
+    private double pitch = 0;
 
     void update() {
-      heading = pigeon.getFusedHeading();
-      time = System.currentTimeMillis();  
+      synchronized(pigeon) {
+        pigeon.getFusedHeading(fstatus);
+        if (fstatus.bIsValid) {
+          heading = fstatus.heading;
+        }
+        pigeon.getYawPitchRoll(ypr);
+        pitch = ypr[1];
+
+        if (RobotMap.SHOW_PIGEON_STATUS_SECONDS > 0) {
+          final long now = System.currentTimeMillis();
+          if (now > statusExpiration) {
+            statusExpiration = now + (RobotMap.SHOW_PIGEON_STATUS_SECONDS * 1000);
+            pigeon.getGeneralStatus(gstatus);
+            System.out.prinln(gstatus.toString());
+      }
     }
   }
 
@@ -188,8 +222,7 @@ public class DriveTrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   public void init() {
-    pigeon.setYaw(0, TIMEOUT);
-    pigeon.setFusedHeading(0, TIMEOUT);
+    setGyro(0);
 
     initSteerMotor(steerFR);
     initSteerMotor(steerFL);
@@ -256,8 +289,10 @@ public class DriveTrain extends Subsystem {
 
   @SuppressWarnings("unused")
   private void setGyro(double angle) {
-    pigeon.setYaw(angle, TIMEOUT);
-    pigeon.setFusedHeading(angle, TIMEOUT);
+    synchronized(pigeon) {
+      pigeon.setYaw(angle, TIMEOUT);
+      pigeon.setFusedHeading(angle, TIMEOUT);
+    }
   }
 
   public double getGyro() {
@@ -266,10 +301,7 @@ public class DriveTrain extends Subsystem {
   }
 
   public double getPitch() {
-    double[] ypr = new double[3];
-    pigeon.getYawPitchRoll(ypr);
-    double pitch = ypr[1];
-    return pitch;
+    return pigeonData.pitch;
   }
 
   /**

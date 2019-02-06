@@ -13,6 +13,17 @@ package org.usfirst.frc4048;
 // public interface RobotMap extends RobotMapForTestbed {
 public interface RobotMap extends RobotMapFor2018Robot {
 
-  // Do not add constants here. Use one of the RobotMapForXXXXX classes to add
+  // Add constants that are not specific to the Robot hardware or behavior.
+  // Use one of the RobotMapForXXXXX classes to add
   // definitions for the specific hardware.
+
+  /**
+   * Rough interval between reading the pigeon data on the pigeon thread. 11ms because it will be read
+   * once per robot period loop.
+   */
+  public static final long PIGEON_READ_DELAY_MS = 11;
+
+  public static final int SHOW_PIGEON_STATUS_SECONDS = 15;
+  
+
 }
