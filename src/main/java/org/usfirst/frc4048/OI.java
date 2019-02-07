@@ -10,6 +10,8 @@ package org.usfirst.frc4048;
 import org.usfirst.frc4048.commands.LogError;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
@@ -48,20 +50,40 @@ public class OI {
   private Joystick controller; 
   private Joystick leftJoy;
   private Joystick rightJoy;
+  private Joystick manualControler;
+  private XboxController manualXboxController;
 
   public OI() {
     leftJoy = new Joystick(0);
     rightJoy = new Joystick(1);
     controller = new Joystick(2);
+    manualControler = new Joystick(3);
+    manualXboxController = new XboxController(3);
 
+    //Put all button inputs that are based off of the mechanism they are tied to in this switch statement
+    int mode = Robot.mechanicalMode.getMode();
+    switch(mode) {
+      case RobotMap.CARGO_RETURN_CODE:
+        break;
+      case RobotMap.HATCH_RETURN_CODE:
+        break;
+    }
     logError = new JoystickButton(controller, 3);
     logError.whenPressed(new LogError());
   }
+
 
   public Joystick getLeftJoy() {
     return leftJoy;
   }
   public Joystick getRightJoy() {
     return rightJoy;
+  }
+
+  public double getLeftTrigger() {
+    return manualXboxController.getTriggerAxis(Hand.kLeft);  
+  }
+  public double getRightTrigger() {
+    return manualXboxController.getTriggerAxis(Hand.kRight);
   }
 }

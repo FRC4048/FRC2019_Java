@@ -18,8 +18,10 @@ package org.usfirst.frc4048;
  */
 interface RobotMapForTestbed {
 
+  /**
+   * Enable the compressor subsystem
+   */
   public static final boolean ENABLE_COMPRESSOR = true;
-  public static final boolean ENABLE_SOLENOID = true;
 
   /**
    * Enables reading of the gyro angle from the pigeon on it's own thread
@@ -30,12 +32,18 @@ interface RobotMapForTestbed {
 
   public static final boolean ENABLE_DRIVETRAIN = false;
 
+  public static final boolean ENABLE_ELEVATOR = false;
+
+  public static final boolean ENABLE_CARGO_SUBSYSTEM = false;
+
+  public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = false;
+
+  public static final boolean ENABLE_CLIMBER_SUBSYSTEM = false;
+
     /**
    * Enables loging of timing data related to watchdog timeouts.
    */
   public static final boolean LOG_PERIODIC_TIME = true;
-
-
 
   public static final double SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK = 0.0942478739;
 
@@ -74,6 +82,9 @@ interface RobotMapForTestbed {
   public static final int CARGO_OPTICAL_SENSOR_ID = 3;
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
+  public static final int HATCH_DIGITAL_INPUT_ID = 7;
+  public static final int CARGO_DIGITAL_INPUT_ID = 8;
+  
 
   public static final int[] ALIGNMENT_ULTRASONIC_ID = {2,3};
 
@@ -119,6 +130,9 @@ interface RobotMapForTestbed {
 
   public static final double ROBOT_CENTRIC_SCALE_RATIO = 0.3;
   
+  public static final int HATCH_RETURN_CODE = 0;
+  public static final int CARGO_RETURN_CODE = 1;
+  public static final int NOTHING_RETURN_CODE = 2;
   //PDP IDS
   public static final int PDP_ID_CARGO_INTAKE = 13; //Just a test value for now; will be changed on the real robot.
 

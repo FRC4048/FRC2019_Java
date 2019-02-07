@@ -8,6 +8,7 @@
 package org.usfirst.frc4048;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -28,6 +29,7 @@ import org.usfirst.frc4048.subsystems.Climber;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
+import org.usfirst.frc4048.utils.ElevatorPosition;
 import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
 import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.commands.drive.DriveDistanceMaintainAngle;
@@ -41,13 +43,17 @@ import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
 import org.usfirst.frc4048.commands.drive.RotateAngle;
 import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
-
+import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.utils.Logging;
+import org.usfirst.frc4048.utils.MechanicalMode;
 import org.usfirst.frc4048.subsystems.PowerDistPanel;
 import org.usfirst.frc4048.utils.WorkQueue;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
+// import org.usfirst.frc4048.utils.LimeLightVision;
+import org.usfirst.frc4048.subsystems.Elevator;
+
 import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
 
 /**
@@ -65,14 +71,13 @@ public class Robot extends TimedRobot {
   public static WorkQueue wq;
   public static double timeOfStart = 0;
   public static CompressorSubsystem compressorSubsystem;
-  public static ExampleSolenoidSubsystem solenoidSubsystem;
   public static DrivetrainSensors drivetrainSensors;
-  public static LimeLightVision limelight;
+  public static Elevator elevator;
   public static CargoSubsystem cargoSubsystem;
   public static HatchPanelSubsystem hatchPanelSubsystem;
   public static Climber climber;
   public static Diagnostics diagnostics;
-
+  public static MechanicalMode mechanicalMode;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -83,6 +88,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    mechanicalMode = new MechanicalMode();
+    int mode = mechanicalMode.getMode();
+
     if (RobotMap.ENABLE_DRIVETRAIN) {
       drivetrain = new DriveTrain();
     }
@@ -91,18 +99,31 @@ public class Robot extends TimedRobot {
     if (RobotMap.ENABLE_COMPRESSOR) {
       compressorSubsystem = new CompressorSubsystem();
     }
-    if (RobotMap.ENABLE_SOLENOID) {
-      solenoidSubsystem = new ExampleSolenoidSubsystem();
-    }
     drivetrainSensors = new DrivetrainSensors();
-
-    limelight = new LimeLightVision();
-    cargoSubsystem = new CargoSubsystem();
-    hatchPanelSubsystem = new HatchPanelSubsystem();
-    climber = new Climber();
+    if (RobotMap.ENABLE_ELEVATOR){
+      elevator = new Elevator();
+    }
+    switch(mode){
+      case RobotMap.CARGO_RETURN_CODE:
+        if (RobotMap.ENABLE_CARGO_SUBSYSTEM) {
+          cargoSubsystem = new CargoSubsystem();
+        }
+        break;
+      case RobotMap.HATCH_RETURN_CODE:
+        if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM) {
+          hatchPanelSubsystem = new HatchPanelSubsystem();
+        }
+        break;
+      default:
+        DriverStation.getInstance().reportError("-----Unable to determine robot has the Hatch Panel or Cargo assembly mounted-----", true);
+        break;
+    }
+    if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
+      climber = new Climber();
+    }
     diagnostics = new Diagnostics();
 
-    // OI must be initilized last
+    // OI must be initialized last
     oi = new OI();
     // Robot.drivetrainSensors.ledOn();
     SmartDashboard.putData("Auto mode", m_chooser);
@@ -124,10 +145,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-    if (RobotMap.ENABLE_SOLENOID) {
-      SmartDashboard.putData("Extend Piston", new ExampleSolenoidCommand(true));
-      SmartDashboard.putData("Retract Piston", new ExampleSolenoidCommand(false));
-    }
     if (RobotMap.ENABLE_COMPRESSOR) {
       SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
       SmartDashboard.putNumber("Pressure", Robot.compressorSubsystem.getPressure());
@@ -200,8 +217,20 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putData(new LimelightAlign());
     SmartDashboard.putData("Limelight On", new LimelightToggle(true));
     SmartDashboard.putData("Limelight Off", new LimelightToggle(false));
-
-    if (RobotMap.ENABLE_DRIVETRAIN) {
+    // SmartDashboard.putData(new RotateAngleForAlignment());
+    // SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.5, false));
+    // SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
+    if(RobotMap.ENABLE_ELEVATOR){
+      SmartDashboard.putData("Elevtor Hatch Rocket Bottom", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
+      SmartDashboard.putData("ELevator Hatch Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
+      SmartDashboard.putData("Elevator Hatch Rocket High", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
+      SmartDashboard.putData("Elevator Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
+      SmartDashboard.putData("Elevator Cargo Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
+      SmartDashboard.putData("Elevator Cargo Rocket High", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
+      SmartDashboard.putData("Elevator Cargo Intake Pos", new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
+      SmartDashboard.putData("Elevator Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
+    }
+    if(RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
 
       // Shuffleboard.getTab("Approach").add("90", new RotateAngle(90));
@@ -212,7 +241,6 @@ public class Robot extends TimedRobot {
 
       // Shuffleboard.getTab("Approach").add("TargetAlign", new
       // DriveTargetCenter(10.0, -0.25));
-
       // SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
 
       // SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
@@ -247,8 +275,8 @@ public class Robot extends TimedRobot {
     if (RobotMap.ENABLE_DRIVETRAIN && writeToDashboard) {
       SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
       SmartDashboard.putData(new RotateAngle(90));
+      SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
     }
-    SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
     final long step3 = System.currentTimeMillis();
 
     Scheduler.getInstance().run();
@@ -262,7 +290,9 @@ public class Robot extends TimedRobot {
         sb.append(" GetGyr: ").append((step3 - step2));
         sb.append(" Sched: ").append((step4 - step3));
         sb.append(" PDP: ").append(pdp.last_periodic);
-        sb.append(" DrTr: ").append(drivetrain.last_periodic);
+        if (RobotMap.ENABLE_DRIVETRAIN) {
+          sb.append(" DrTr: ").append(drivetrain.last_periodic);
+        }
         sb.append(" DrTrSen: ").append(drivetrainSensors.last_periodic);
         sb.append(" DrCmd: ").append(org.usfirst.frc4048.commands.drive.Drive.last_execute);
         System.out.println(sb);
