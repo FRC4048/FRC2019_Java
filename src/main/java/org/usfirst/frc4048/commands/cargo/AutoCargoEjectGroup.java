@@ -11,7 +11,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutoCargoEjectGroup extends CommandGroup {
   /**
-   * Add your docs here.
+   * Similar to CargoEjectGroup, this group command ejects the cargo from the intake by spinning up the motor, and then
+   * using a piston to eject the ball, then stopping all motors/retracting the piston. The way this differs from CargoEjectGroup
+   * is how the command first checks to make sure that the robot is lined up correctly by making sure that at least one of the
+   * limit switches is pressed. This version of the command would be best used in autonoumous commands, in order to ensure the robot
+   * is lined up before ejecting its cargo.
    */
   public AutoCargoEjectGroup() {
     // Add Commands here:
@@ -30,7 +34,7 @@ public class AutoCargoEjectGroup extends CommandGroup {
     // e.g. if Command1 requires chassis, and Command2 requires arm,
     // a CommandGroup containing them would require both the chassis and the
     // arm.
-    addSequential(new AutoEjectCargoStart());
-    addSequential(new EjectCargoEnd());
+    addSequential(new EjectCargoStart());
+    addSequential(new AutoEjectCargoEnd());
   }
 }

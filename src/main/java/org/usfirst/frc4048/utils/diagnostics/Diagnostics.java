@@ -1,14 +1,19 @@
 package org.usfirst.frc4048.utils.diagnostics;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.usfirst.frc4048.utils.OpticalRangeFinder;
 
 /**
  * The subsystem that handles diagnostics. This subsystem will hold the list of Diagnosables and make sure they go through
@@ -31,9 +36,15 @@ public class Diagnostics extends Subsystem {
         diagnosables = new ArrayList<>();
 
         // This simulates adding components by other subsystems...
-        // addDiagnosable(new DiagSwitch("Switch1", new DigitalInput(1), shuffleBoardTab));
-        // addDiagnosable(new DiagPot("Pot1", 0.1, 0.9, new AnalogPotentiometer(0), shuffleBoardTab));
-        // addDiagnosable(new DiagEncoder("Encoder1", 100, new Encoder(5,6), shuffleBoardTab));
+        /*
+        addDiagnosable(new DiagSwitch("Switch1", new DigitalInput(1), shuffleBoardTab));
+        addDiagnosable(new DiagPot("Pot1", 0.1, 0.9, new AnalogPotentiometer(0), shuffleBoardTab));
+        addDiagnosable(new DiagEncoder("Encoder1", 100, new Encoder(5,6), shuffleBoardTab));
+        
+        addDiagnosable(new DiagOpticalSensor("OpticalSensor1", new DigitalInput(2), shuffleBoardTab));
+        addDiagnosable(new DiagOpticalRangeFinder("OpticalRangeFinder1", new OpticalRangeFinder(new AnalogInput(1)), shuffleBoardTab, 3.0, 12.0));
+        addDiagnosable(new DiagSonar("Sonar1", new Ultrasonic(3, 4), shuffleBoardTab, 3.0, 12.0));
+        */
     }
 
     @Override

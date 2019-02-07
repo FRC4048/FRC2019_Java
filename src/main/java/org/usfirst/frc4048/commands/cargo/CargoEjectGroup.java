@@ -11,7 +11,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class CargoEjectGroup extends CommandGroup {
   /**
-   * Add your docs here.
+   * Group command to eject the cargo from the cargo intake, by first spinning up the intake motor, and then pushing the
+   * cargo out with a piston. It then stops all of the motors/retracts the piston.
    */
   public CargoEjectGroup() {
     // Add Commands here:

@@ -32,6 +32,8 @@ interface RobotMapForTestbed {
 
   public static final boolean ENABLE_DRIVETRAIN = false;
 
+  public static final boolean ENABLE_ELEVATOR = false;
+
   public static final boolean ENABLE_CARGO_SUBSYSTEM = false;
 
   public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = false;
