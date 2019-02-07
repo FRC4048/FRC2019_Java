@@ -15,6 +15,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveManual;
 import org.usfirst.frc4048.utils.ElevatorPosition;
@@ -101,6 +102,7 @@ public class Elevator extends Subsystem {
   public void periodic() {
     SmartDashboard.putNumber("Elevator setpoint", elevatorSetpoint);
     SmartDashboard.putNumber("Elevator Encoder", getEncoder());
+    SmartDashboard.putNumber("Elevator Current", elevatorMotor.getOutputCurrent());
     moveElevator();
   }
 
