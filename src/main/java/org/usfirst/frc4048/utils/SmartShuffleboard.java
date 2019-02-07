@@ -14,7 +14,19 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 
 /**
- * Add your docs here.
+ * This is a wrapper around the Shuffleboard class to make it easier to add data to shuffleboard.
+ * Adding and updating a value is done in the same manner, and there's no need to handle networkTable entries.
+ * Data can be displayed in its own widget or items can be grouped into a list widget.
+ * Example:
+ * 
+ *                          tab name   list name    field name       value
+ *     SmartShuffleboard.put("Drive", "encoders", "Front Right", steerFR.getSelectedSensorPosition(0));
+ *     SmartShuffleboard.put("Drive", "encoders", "Front Left", steerFL.getSelectedSensorPosition(0));
+ *     SmartShuffleboard.put("Drive", "encoders", "Rear Right", steerRR.getSelectedSensorPosition(0));
+ *     SmartShuffleboard.put("Drive", "encoders", "Rear Left", steerRL.getSelectedSensorPosition(0));
+ * 
+ *                           tab name   field name    value
+ *     SmartShuffleboard.put("Drive", "Gyro", getGyro());
  */
 public class SmartShuffleboard {
 
