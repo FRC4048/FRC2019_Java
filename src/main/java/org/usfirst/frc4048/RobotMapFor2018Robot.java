@@ -18,8 +18,6 @@ package org.usfirst.frc4048;
  */
 interface RobotMapFor2018Robot {
 
-  public static final boolean ENABLE_DRIVETRAIN = true;
-
   // For example to map the left and right motors, you could define the
   // following variables to use with your drivetrain subsystem.
   // public static int leftMotor = 1;
@@ -31,7 +29,6 @@ interface RobotMapFor2018Robot {
   // public static int rangefinderModule = 1;
 
   public static final boolean ENABLE_COMPRESSOR = false;
-  public static final boolean ENABLE_SOLENOID = false;
 
   /**
    * Enables reading of the gyro angle from the pigeon on it's own thread
@@ -40,10 +37,21 @@ interface RobotMapFor2018Robot {
    */
   public static final boolean ENABLE_PIGEON_THREAD = true;
 
+  public static final boolean ENABLE_DRIVETRAIN = true;
+
+  public static final boolean ENABLE_ELEVATOR = true;
+
+  public static final boolean ENABLE_CARGO_SUBSYSTEM = false; //this should be true when we actually get the robot
+
+  public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = true; //this should be true when we actually get the robot
+
+  public static final boolean ENABLE_CLIMBER_SUBSYSTEM = true;
+
   /**
    * Enables loging of timing data related to watchdog timeouts.
    */
-  public static final boolean LOG_PERIODIC_TIME = true;
+  public static final boolean LOG_PERIODIC_TIME = false;
+
 
   public static final double SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK = 0.0942478739;
 
@@ -83,6 +91,8 @@ interface RobotMapFor2018Robot {
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
   public static final int[] ALIGNMENT_ULTRASONIC_ID = {3,4};
+  public static final int HATCH_DIGITAL_INPUT_ID = 7;
+  public static final int CARGO_DIGITAL_INPUT_ID = 8;
   //PWM
   public static final int WINCH_MOTOR_ID = 1;
 
@@ -124,6 +134,10 @@ interface RobotMapFor2018Robot {
   public static final double CAMERA_ANGLE = -29.44; // Degrees, angle that the camera is mounted at
 
   public static final double ROBOT_CENTRIC_SCALE_RATIO = 0.3;
+
+  public static final int HATCH_RETURN_CODE = 0;
+  public static final int CARGO_RETURN_CODE = 1;
+  public static final int NOTHING_RETURN_CODE = 2;
   
   //PDP IDS
   public static final int PDP_ID_CARGO_INTAKE = 13; //Just a test value for now; will be changed on the real robot.

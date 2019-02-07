@@ -5,47 +5,41 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands.pneumatics;
+package org.usfirst.frc4048.commands.elevator;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
+import org.usfirst.frc4048.utils.ElevatorPosition;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ExampleSolenoidCommand extends LoggedCommand {
-  private boolean state;
-  /**
-   * true is extend false is retract
-   * @param state
-   */
-  public ExampleSolenoidCommand(boolean state) {
-    super(String.format(" is running, state: %b", state));
+public class ElevatorMoveToPos extends LoggedCommand {
+  private ElevatorPosition elevatorPosition;
+  public ElevatorMoveToPos(ElevatorPosition elevatorPosition) {
+    super("ElevatorMoveToPos: " + elevatorPosition.toString());
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    this.state = state;
+    this.elevatorPosition = elevatorPosition;
 
-    requires(Robot.compressorSubsystem);
+    requires(Robot.elevator);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
+    setTimeout(5);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void loggedExecute() {
-    if(state == true) {
-//      Robot.solenoidSubsystem.extendPiston();
-    } else {
-//      Robot.solenoidSubsystem.retractPiston();
-    }
+    Robot.elevator.elevatorToPosition(elevatorPosition);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean loggedIsFinished() {
-    return true;
+    return isTimedOut() || Robot.elevator.elevatorAtPos(elevatorPosition) || !Robot.elevator.getTopSwitch() || !Robot.elevator.getBotSwitch();//we do this because on the test bed false is pushed down
   }
 
   // Called once after isFinished returns true
@@ -62,6 +56,6 @@ public class ExampleSolenoidCommand extends LoggedCommand {
 
   @Override
   protected void loggedCancel() {
-    loggedEnd();
+
   }
 }

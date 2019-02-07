@@ -33,8 +33,32 @@ public class DiagSwitch implements Diagnosable {
         reset();
     }
 
+    /**
+     * Constructor FOR TESTING ONLY DO NOT USE
+     *
+     * @param name            the name of the unit. Will be used on the Shuffleboard
+     * @param digitalInput    - the DigitalInput the switch is connected to
+     * @param shuffleboardTab - the Shuffleboard tab to add the tile to
+     */
+    public DiagSwitch(String name, DigitalInput digitalInput, boolean FOR_TESTING_ONLY_DO_NOT_USE) {
+        this.digitalInput = digitalInput;
+        this.name = name;
+
+        reset();
+    }
+
     @Override
     public void refresh() {
+        networkTableEntry.setBoolean(getDiagResult());
+    }
+
+    @Override
+    public void reset() {
+        seenFalse = seenTrue = false;
+    }
+
+    // Package protected
+    boolean getDiagResult() {
         boolean currentValue = digitalInput.get();
         // Set the value for the state - whether the switch is pressed or not
         if (currentValue) {
@@ -43,11 +67,7 @@ public class DiagSwitch implements Diagnosable {
             seenFalse = true;
         }
 
-        networkTableEntry.setBoolean(seenTrue && seenFalse);
+        return seenTrue && seenFalse;
     }
 
-    @Override
-    public void reset() {
-        seenFalse = seenTrue = false;
-    }
 }
