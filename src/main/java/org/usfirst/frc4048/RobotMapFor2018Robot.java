@@ -41,9 +41,9 @@ interface RobotMapFor2018Robot {
 
   public static final boolean ENABLE_CARGO_SUBSYSTEM = false; //this should be true when we actually get the robot
 
-  public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = true; //this should be true when we actually get the robot
+  public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = false; //this should be true when we actually get the robot
 
-  public static final boolean ENABLE_CLIMBER_SUBSYSTEM = true;
+  public static final boolean ENABLE_CLIMBER_SUBSYSTEM = false;
 
   /**
    * Enables loging of timing data related to watchdog timeouts.
@@ -136,7 +136,7 @@ interface RobotMapFor2018Robot {
   public static final int HATCH_RETURN_CODE = 0;
   public static final int CARGO_RETURN_CODE = 1;
   public static final int NOTHING_RETURN_CODE = 2;
-  
+
   //PDP IDS
   public static final int PDP_ID_CARGO_INTAKE = 13; //Just a test value for now; will be changed on the real robot.
 

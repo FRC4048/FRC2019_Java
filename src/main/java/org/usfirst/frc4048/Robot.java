@@ -39,6 +39,7 @@ import org.usfirst.frc4048.commands.cargo.IntakeCargo;
 // import org.usfirst.frc4048.commands.LimelightAlign;
 import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
+import org.usfirst.frc4048.commands.limelight.LimelightToggleStream;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
 import org.usfirst.frc4048.commands.drive.RotateAngle;
 import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
@@ -242,7 +243,7 @@ public class Robot extends TimedRobot {
     // Disabled for now to look at watchdog timeouts
     final boolean writeToDashboard = false;
 
-    SmartDashboard.putNumber("Pressure Value", compressorSubsystem.getPressure());
+    // SmartDashboard.putNumber("Pressure Value", compressorSubsystem.getPressure());
 
     final long step0 = System.currentTimeMillis();
     if (RobotMap.ENABLE_DRIVETRAIN && writeToDashboard) {
@@ -279,11 +280,13 @@ public class Robot extends TimedRobot {
         System.out.println(sb);
       }
     }
+    SmartDashboard.putData("Limelight Streaming", new LimelightToggleStream());
+    SmartDashboard.putNumber("Limelight current streaming", drivetrainSensors.getStream());
   }
 
   @Override
   public void testInit() {
-    diagnostics.reset();
+    // diagnostics.reset();
   }
 
   /**
@@ -292,7 +295,7 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
 
-    diagnostics.refresh();
+    // diagnostics.refresh();
 
     Scheduler.getInstance().run();
   }
