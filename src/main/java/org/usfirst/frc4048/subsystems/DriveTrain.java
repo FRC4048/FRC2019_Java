@@ -105,10 +105,14 @@ public class DriveTrain extends Subsystem {
     driveRL.setNeutralMode(NeutralMode.Brake);
     driveRR.setNeutralMode(NeutralMode.Brake);
 
-    // driveFL.setSafetyEnabled(true);
-    // driveFR.setSafetyEnabled(true);
-    // driveRL.setSafetyEnabled(true);
-    // driveRL.setSafetyEnabled(true);
+    driveFL.setSafetyEnabled(true);
+    driveFL.setExpiration(0.5);
+    driveFR.setSafetyEnabled(true);
+    driveFR.setExpiration(0.5);
+    driveRL.setSafetyEnabled(true);
+    driveRL.setExpiration(0.5);
+    driveRR.setSafetyEnabled(true);
+    driveRR.setExpiration(0.5);
 
     analogInputFrontLeft = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_FRONT_LEFT_ID);
     analogInputFrontRight = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID);
