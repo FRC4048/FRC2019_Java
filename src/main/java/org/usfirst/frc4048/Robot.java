@@ -72,7 +72,6 @@ public class Robot extends TimedRobot {
   public static double timeOfStart = 0;
   public static CompressorSubsystem compressorSubsystem;
   public static DrivetrainSensors drivetrainSensors;
-  public static LimeLightVision limelight;
   public static Elevator elevator;
   public static CargoSubsystem cargoSubsystem;
   public static HatchPanelSubsystem hatchPanelSubsystem;
@@ -101,7 +100,9 @@ public class Robot extends TimedRobot {
       compressorSubsystem = new CompressorSubsystem();
     }
     drivetrainSensors = new DrivetrainSensors();
-    elevator = new Elevator();
+    if (RobotMap.ENABLE_ELEVATOR){
+      elevator = new Elevator();
+    }
     switch(mode){
       case RobotMap.CARGO_RETURN_CODE:
         if (RobotMap.ENABLE_CARGO_SUBSYSTEM) {

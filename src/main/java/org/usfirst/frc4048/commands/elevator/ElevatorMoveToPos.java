@@ -8,13 +8,15 @@
 package org.usfirst.frc4048.commands.elevator;
 
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.commands.LoggedCommand;
 import org.usfirst.frc4048.utils.ElevatorPosition;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ElevatorMoveToPos extends Command {
+public class ElevatorMoveToPos extends LoggedCommand {
   private ElevatorPosition elevatorPosition;
   public ElevatorMoveToPos(ElevatorPosition elevatorPosition) {
+    super("ElevatorMoveToPos: " + elevatorPosition.toString());
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     this.elevatorPosition = elevatorPosition;
@@ -24,30 +26,36 @@ public class ElevatorMoveToPos extends Command {
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  protected void loggedInitialize() {
+    setTimeout(5);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  protected void loggedExecute() {
     Robot.elevator.elevatorToPosition(elevatorPosition);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
-    return Robot.elevator.elevatorAtPos(elevatorPosition) || !Robot.elevator.getTopSwitch() || !Robot.elevator.getBotSwitch();//we do this because on the test bed false is pushed down
+  protected boolean loggedIsFinished() {
+    return isTimedOut() || Robot.elevator.elevatorAtPos(elevatorPosition) || !Robot.elevator.getTopSwitch() || !Robot.elevator.getBotSwitch();//we do this because on the test bed false is pushed down
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  protected void loggedEnd() {
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
-    end();
+  protected void loggedInterrupted() {
+    loggedEnd();
+  }
+
+  @Override
+  protected void loggedCancel() {
+
   }
 }

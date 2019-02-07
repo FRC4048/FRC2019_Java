@@ -50,7 +50,7 @@ public class Elevator extends Subsystem {
   private final double ELEVATOR_HATCH_D = 3;
   private final double ELEVATOR_HATCH_F = 0;
 
-  private final int ELEVATOR_ACCEL = 375/* 281 */; // RPM Of motor
+  private final int ELEVATOR_ACCEL = 375/* 281 */; // RPM Of motor we can use these values to set max speed during the movement
   private final int ELEVATOR_CRUISE_VELOCITY = 375/* 281 */; // ^
   private double elevatorSetpoint;
 
@@ -58,6 +58,7 @@ public class Elevator extends Subsystem {
   private double elevatorI;
   private double elevatorD;
   private double elevatorF;
+
   private final boolean CARGO_MODE = true;
   private final boolean HATCH_MODE = false;
 
@@ -70,12 +71,9 @@ public class Elevator extends Subsystem {
     elevatorMotor.configPeakOutputForward(ELEVATOR_UP_SCALE_FACTOR, TIMEOUT);
     elevatorMotor.configPeakOutputReverse(-ELEVATOR_DOWN_SCALE_FACTOR, TIMEOUT);
     elevatorMotor.setNeutralMode(NeutralMode.Brake);
-
-    elevatorMotor.configAllowableClosedloopError(0, 4, TIMEOUT);
     elevatorMotor.selectProfileSlot(0, 0);
     elevatorMotor.configAllowableClosedloopError(0, 4, TIMEOUT);
-    MechanicalMode mechanicalMode = new MechanicalMode();
-    int elevatorMode = mechanicalMode.getMode();
+    int elevatorMode = Robot.mechanicalMode.getMode();
     switch(elevatorMode){
       case RobotMap.CARGO_RETURN_CODE:
         setPID(CARGO_MODE);
@@ -85,10 +83,6 @@ public class Elevator extends Subsystem {
         break;
     }
     
-    elevatorMotor.config_kP(0, elevatorP, TIMEOUT);
-    elevatorMotor.config_kI(0, elevatorI, TIMEOUT);
-    elevatorMotor.config_kD(0, elevatorD, TIMEOUT);
-    elevatorMotor.config_kF(0, elevatorF, TIMEOUT);
     elevatorMotor.configMotionAcceleration(ELEVATOR_ACCEL, TIMEOUT);
     elevatorMotor.configMotionCruiseVelocity(ELEVATOR_CRUISE_VELOCITY, TIMEOUT);
     elevatorMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
@@ -124,12 +118,7 @@ public class Elevator extends Subsystem {
 
   public boolean elevatorAtPos(ElevatorPosition elevatorPosition) {
     double position = elevatorPosition.getPosition();
-    return Math.abs(getError()) < ELEVATOR_POSITION_ERROR
-        && Math.abs(getTrajectoryPos() - position) < ELEVATOR_POSITION_ERROR;
-  }
-
-  public int getTrajectoryPos() {
-    return elevatorMotor.getActiveTrajectoryPosition();
+    return Math.abs(getError()) < ELEVATOR_POSITION_ERROR;
   }
 
   public int getError() {
@@ -156,11 +145,6 @@ public class Elevator extends Subsystem {
     elevatorSetpoint = getEncoder();
   }
 
-  // MANUAL CONTROL
-  public void setSpeed(double speed) {
-    elevatorMotor.set(ControlMode.PercentOutput, speed);
-  }
-
   public void fineTune(double speed) {
     elevatorSetpoint += speed;
   }
@@ -177,6 +161,11 @@ public class Elevator extends Subsystem {
       elevatorD = ELEVATOR_HATCH_D;
       elevatorF = ELEVATOR_HATCH_F;
     }
+    
+    elevatorMotor.config_kP(0, elevatorP, TIMEOUT);
+    elevatorMotor.config_kI(0, elevatorI, TIMEOUT);
+    elevatorMotor.config_kD(0, elevatorD, TIMEOUT);
+    elevatorMotor.config_kF(0, elevatorF, TIMEOUT);
+    
   }
-
 }
