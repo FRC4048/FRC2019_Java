@@ -261,8 +261,9 @@ public class Robot extends TimedRobot {
     // Disabled for now to look at watchdog timeouts
     final boolean writeToDashboard = false;
 
-    SmartDashboard.putNumber("Pressure Value", compressorSubsystem.getPressure());
-
+    if (RobotMap.ENABLE_COMPRESSOR) {
+      SmartDashboard.putNumber("Pressure Value", compressorSubsystem.getPressure());
+    }
     final long step0 = System.currentTimeMillis();
     if (RobotMap.ENABLE_DRIVETRAIN && writeToDashboard) {
       SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
