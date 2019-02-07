@@ -97,6 +97,7 @@ public class DrivetrainSensors extends Subsystem {
         limelight.setLedOff();
     }
 
+    /* Control the Limelight streaming mode */
     public void setStream(double option) {
         limelight.setStream(option);
     }

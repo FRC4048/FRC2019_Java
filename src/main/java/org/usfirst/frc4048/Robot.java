@@ -286,7 +286,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-    // diagnostics.reset();
+    diagnostics.reset();
   }
 
   /**
@@ -294,9 +294,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-
-    // diagnostics.refresh();
-
+    diagnostics.refresh();
     Scheduler.getInstance().run();
   }
 
