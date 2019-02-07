@@ -68,7 +68,7 @@ public class SmartShuffleboardTab {
             layout = tab.getLayout(layoutName);
         } catch (NoSuchElementException ex) {
             layout = tab.getLayout(layoutName, BuiltInLayouts.kList);
-            // layout initialization here
+            layout.withSize(2,4).withProperties(Map.of("Label position", "LEFT"));
         }
 
         SimpleWidget widget = widgetMap.get(fieldName);
