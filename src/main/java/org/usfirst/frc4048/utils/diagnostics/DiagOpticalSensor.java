@@ -29,8 +29,33 @@ public class DiagOpticalSensor implements Diagnosable {
         reset();
     }
 
+    /**
+     * Constructor FOR TESTING ONLY! DO NOT USE THIS FOR ANYTHING ELSE!
+     * 
+     * @param name                          - The sensor's name, which will be shown on Shuffleboard
+     * @param digitalInput                  - The DigitalInput pin the sensor is connected to
+     * @param DO_NOT_USE_THIS_TESTING_ONLY  - THIS IS ONLY FOR TESTING PURPOSES!
+     */
+    public DiagOpticalSensor(String name, DigitalInput digitalInput, boolean DO_NOT_USE_THIS_TESTING_ONLY){
+        this.name = name;
+        this.digitalInput = digitalInput;
+
+        reset();
+    }
+
     @Override
     public void refresh() {
+        
+        networkTableEntry.setBoolean(getDiagResult());
+    }
+
+    @Override
+    public void reset() {
+        seenFalse = seenTrue = false;
+    }
+
+    //Package protected method
+    boolean getDiagResult() {
         boolean currentValue = digitalInput.get();
         if (currentValue) {
             seenTrue = true;
@@ -38,11 +63,6 @@ public class DiagOpticalSensor implements Diagnosable {
             seenFalse = true;
         }
 
-        networkTableEntry.setBoolean(seenTrue && seenFalse);
-    }
-
-    @Override
-    public void reset() {
-        seenFalse = seenTrue = false;
+        return seenTrue && seenFalse;
     }
 }

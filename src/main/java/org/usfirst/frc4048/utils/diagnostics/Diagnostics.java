@@ -36,13 +36,15 @@ public class Diagnostics extends Subsystem {
         diagnosables = new ArrayList<>();
 
         // This simulates adding components by other subsystems...
+        /*
         addDiagnosable(new DiagSwitch("Switch1", new DigitalInput(1), shuffleBoardTab));
         addDiagnosable(new DiagPot("Pot1", 0.1, 0.9, new AnalogPotentiometer(0), shuffleBoardTab));
         addDiagnosable(new DiagEncoder("Encoder1", 100, new Encoder(5,6), shuffleBoardTab));
         
         addDiagnosable(new DiagOpticalSensor("OpticalSensor1", new DigitalInput(2), shuffleBoardTab));
-        addDiagnosable(new DiagOpticalRangeFinder("OpticalRangeFinder1", new OpticalRangeFinder(new AnalogInput(1)), shuffleBoardTab));
-        addDiagnosable(new DiagSonar("Sonar1", new Ultrasonic(3, 4), shuffleBoardTab));
+        addDiagnosable(new DiagOpticalRangeFinder("OpticalRangeFinder1", new OpticalRangeFinder(new AnalogInput(1)), shuffleBoardTab, 3.0, 12.0));
+        addDiagnosable(new DiagSonar("Sonar1", new Ultrasonic(3, 4), shuffleBoardTab, 3.0, 12.0));
+        */
     }
 
     @Override
