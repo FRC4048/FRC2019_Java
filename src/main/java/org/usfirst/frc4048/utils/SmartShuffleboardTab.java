@@ -9,6 +9,7 @@ package org.usfirst.frc4048.utils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -62,6 +63,14 @@ public class SmartShuffleboardTab {
  
     public void put(String fieldName, String layoutName, Object value)   //primitive
     {
+        ShuffleboardLayout layout;
+        try {
+            layout = tab.getLayout(layoutName);
+        } catch (NoSuchElementException ex) {
+            layout = tab.getLayout(layoutName, BuiltInLayouts.kList);
+            // layout initialization here
+        }
+
         SimpleWidget widget = widgetMap.get(fieldName);
         if (widget != null)
         {
@@ -70,7 +79,6 @@ public class SmartShuffleboardTab {
         }
         else
         {
-            ShuffleboardLayout layout = tab.getLayout(layoutName, BuiltInLayouts.kList);
             widget = layout.add(fieldName, value);
             widgetMap.put(fieldName, widget);
         }
