@@ -219,11 +219,15 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putData(new RotateAngleForAlignment());
     // SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.5, false));
     // SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
-    SmartDashboard.putData("Motion Magic Test 0.0", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
-    SmartDashboard.putData("Motion Magic Test 100.0", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
-    SmartDashboard.putData("Motion Magic Test 1500.0", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
-    SmartDashboard.putData("Motion Magic Test -4000.0", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
-    
+    SmartDashboard.putData("Elevtor Hatch Rocket Bottom", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
+    SmartDashboard.putData("ELevator Hatch Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
+    SmartDashboard.putData("Elevator Hatch Rocket High", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
+    SmartDashboard.putData("Elevator Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
+    SmartDashboard.putData("Elevator Cargo Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
+    SmartDashboard.putData("Elevator Cargo Rocket High", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
+    SmartDashboard.putData("Elevator Cargo Intake Pos", new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
+    SmartDashboard.putData("Elevator Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
+
     if(RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
 
