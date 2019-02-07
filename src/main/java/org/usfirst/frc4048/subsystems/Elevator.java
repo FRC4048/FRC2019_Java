@@ -117,7 +117,6 @@ public class Elevator extends Subsystem {
   }
 
   public boolean elevatorAtPos(ElevatorPosition elevatorPosition) {
-    double position = elevatorPosition.getPosition();
     return Math.abs(getError()) < ELEVATOR_POSITION_ERROR;
   }
 
