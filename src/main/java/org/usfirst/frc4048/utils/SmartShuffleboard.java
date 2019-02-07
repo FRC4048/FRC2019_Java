@@ -8,7 +8,9 @@
 package org.usfirst.frc4048.utils;
 
 import java.util.HashMap;
+import java.util.Map;
 
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 
 /**
@@ -16,50 +18,56 @@ import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
  */
 public class SmartShuffleboard {
 
-    private static HashMap<String, SmartShuffleboardTab> smartTabMap = new HashMap<String, SmartShuffleboardTab>(); 
+    private final static Map<String, SmartShuffleboardTab> smartTabMap = new HashMap<String, SmartShuffleboardTab>();
 
-    public static void add(String tabName, String fieldName, Object value)    // value is primitive
+    public static void put(String tabName, String fieldName, Object value)    // value is primitive
     {
-        SmartShuffleboardTab smartTab;
-
-        if (smartTabMap.containsKey(tabName))
-        {
-            smartTab = smartTabMap.get(tabName);
-        }
-        else
-        {
-            smartTab = new SmartShuffleboardTab(tabName);
-            smartTabMap.put(tabName, smartTab);
-        }
-        smartTab.add(fieldName, value);
+        SmartShuffleboardTab smartTab = getOrCreateTab(tabName);
+        smartTab.put(fieldName, value);
     }
 
-    public static void add(String tabName, String layoutName, String fieldName, Object value)    // value is primitive
+    public static void put(String tabName, String layoutName, String fieldName, Object value)    // value is primitive
     {
-        SmartShuffleboardTab smartTab;
-
-        if (smartTabMap.containsKey(tabName))
-        {
-            smartTab = smartTabMap.get(tabName);
-        }
-        else
-        {
-            smartTab = new SmartShuffleboardTab(tabName);
-            smartTabMap.put(tabName, smartTab);
-        }
-        smartTab.add(fieldName, layoutName, value);
+        SmartShuffleboardTab smartTab = getOrCreateTab(tabName);
+        smartTab.put(fieldName, layoutName, value);
     }
-
 
     public static SimpleWidget getWidget(String tabName, String fieldName)
     {
-        if (!smartTabMap.containsKey(tabName))
+        SmartShuffleboardTab tab = smartTabMap.get(tabName);
+
+        if (tab == null)
         {
             return null;
         }
         else
         {
-            return  smartTabMap.get(tabName).getWidget(fieldName);
+            return tab.getWidget(fieldName);
         }
     }
+
+    public static ShuffleboardLayout getLayout(String tabName, String layoutName)
+    {
+        SmartShuffleboardTab tab = smartTabMap.get(tabName);
+
+        if (tab == null)
+        {
+            return null;
+        }
+        else
+        {
+            return tab.getLayout(layoutName);
+        }
+    }
+
+    private static SmartShuffleboardTab getOrCreateTab(String tabName) {
+        SmartShuffleboardTab smartTab = smartTabMap.get(tabName);
+
+        if (smartTab == null) {
+            smartTab = new SmartShuffleboardTab(tabName);
+            smartTabMap.put(tabName, smartTab);
+        }
+        return smartTab;
+    }
+
 }

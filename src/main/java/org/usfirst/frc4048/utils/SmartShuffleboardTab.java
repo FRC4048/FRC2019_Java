@@ -8,6 +8,7 @@
 package org.usfirst.frc4048.utils;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -20,7 +21,7 @@ import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
  * Add your docs here.
  */
 public class SmartShuffleboardTab {
-    private HashMap<String, SimpleWidget> widgetMap = new HashMap();    // “field name” à widget
+    private Map<String, SimpleWidget> widgetMap = new HashMap();    // “field name” à widget
     private ShuffleboardTab tab;
      
     SmartShuffleboardTab(String tabName) 
@@ -44,42 +45,35 @@ public class SmartShuffleboardTab {
         }
     }
          
-    public void add(String fieldName, Object value)   //primitive
+    public void put(String fieldName, Object value)   //primitive
     {
-        if (widgetMap.containsKey(fieldName))
+        SimpleWidget widget = widgetMap.get(fieldName);
+        if (widget != null)
         {
-            NetworkTableEntry ntEntry= widgetMap.get(fieldName).getEntry();
+            NetworkTableEntry ntEntry= widget.getEntry();
             ntEntry.setValue(value);
         }
         else
         {
-            SimpleWidget widget = tab.add(fieldName, value); 
+            widget = tab.add(fieldName, value);
             widgetMap.put(fieldName, widget);
         }
     }
  
-    public void add(String fieldName, String layoutName, Object value)   //primitive
+    public void put(String fieldName, String layoutName, Object value)   //primitive
     {
-        ShuffleboardLayout layout;
-        try {
-            layout = tab.getLayout(layoutName);
-        }   
-        catch (Exception noSuchElementException)
+        SimpleWidget widget = widgetMap.get(fieldName);
+        if (widget != null)
         {
-            layout = tab.getLayout(layoutName, BuiltInLayouts.kList);
-        }
-
-        if (widgetMap.containsKey(fieldName))
-        {
-            NetworkTableEntry ntEntry= widgetMap.get(fieldName).getEntry();
+            NetworkTableEntry ntEntry= widget.getEntry();
             ntEntry.setValue(value);
         }
         else
         {
-            SimpleWidget widget = layout.add(fieldName, value); 
+            ShuffleboardLayout layout = tab.getLayout(layoutName, BuiltInLayouts.kList);
+            widget = layout.add(fieldName, value);
             widgetMap.put(fieldName, widget);
         }
     }
-
 
 }
