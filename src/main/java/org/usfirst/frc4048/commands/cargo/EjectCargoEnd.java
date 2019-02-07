@@ -42,7 +42,7 @@ public class EjectCargoEnd extends LoggedCommand {
 	// subsystems is scheduled to run
 	@Override
 	protected void loggedInterrupted() {
-        end();
+        loggedEnd();
     }
     
     @Override
