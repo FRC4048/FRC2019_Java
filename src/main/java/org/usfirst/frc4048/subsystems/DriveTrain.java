@@ -131,11 +131,12 @@ public class DriveTrain extends Subsystem {
 
     init();
 
-    swerveDrivetrain = new SwerveDrive(frontRightWheel, frontLeftWheel, rearLeftWheel, rearRightWheel, WIDTH, LENGTH);
-
     if (RobotMap.ENABLE_PIGEON_THREAD) {
       pigeonThread.start();
     }
+
+    swerveDrivetrain = new SwerveDrive(frontRightWheel, frontLeftWheel, rearLeftWheel, rearRightWheel, WIDTH, LENGTH);
+
   }
   
   public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVETRAIN) {
