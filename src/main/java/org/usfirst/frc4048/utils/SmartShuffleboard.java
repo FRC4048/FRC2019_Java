@@ -34,6 +34,22 @@ public class SmartShuffleboard {
         smartTab.add(fieldName, value);
     }
 
+    public static void add(String tabName, String layoutName, String fieldName, Object value)    // value is primitive
+    {
+        SmartShuffleboardTab smartTab;
+
+        if (smartTabMap.containsKey(tabName))
+        {
+            smartTab = smartTabMap.get(tabName);
+        }
+        else
+        {
+            smartTab = new SmartShuffleboardTab(tabName);
+            smartTabMap.put(tabName, smartTab);
+        }
+        smartTab.add(fieldName, layoutName, value);
+    }
+
 
     public static SimpleWidget getWidget(String tabName, String fieldName)
     {
