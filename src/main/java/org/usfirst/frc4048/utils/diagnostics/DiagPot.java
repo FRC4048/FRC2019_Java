@@ -39,8 +39,29 @@ public class DiagPot implements Diagnosable {
         reset();
     }
 
+    /**
+     * Do not use for testing only
+     */
+    public DiagPot(String name, double minVoltage, double maxVoltage, AnalogPotentiometer pot, boolean DO_NOT_USE_FOR_TESTING_ONLY) {
+        this.name = name;
+        this.minVoltage = minVoltage;
+        this.maxVoltage = maxVoltage;
+        this.pot = pot;
+
+        reset();
+    }
+
     @Override
     public void refresh() {
+        networkTableEntry.setBoolean(getDiagResult());
+    }
+
+    @Override
+    public void reset() {
+        seenMinVoltage = seenMaxVoltage = false;
+    }
+
+    boolean getDiagResult() {
         double potValue = pot.get();
         if (potValue >= maxVoltage) {
             seenMaxVoltage = true;
@@ -48,11 +69,6 @@ public class DiagPot implements Diagnosable {
             seenMinVoltage = true;
         }
 
-        networkTableEntry.setBoolean(seenMaxVoltage && seenMinVoltage);
-    }
-
-    @Override
-    public void reset() {
-        seenMinVoltage = seenMaxVoltage = false;
+        return seenMaxVoltage && seenMinVoltage;
     }
 }
