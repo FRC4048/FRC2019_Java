@@ -39,6 +39,8 @@ interface RobotMapFor2018Robot {
 
   public static final boolean ENABLE_DRIVETRAIN = true;
 
+  public static final boolean ENABLE_ELEVATOR = true;
+
   public static final boolean ENABLE_CARGO_SUBSYSTEM = false; //this should be true when we actually get the robot
 
   public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = true; //this should be true when we actually get the robot

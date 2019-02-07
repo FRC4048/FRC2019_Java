@@ -29,6 +29,7 @@ import org.usfirst.frc4048.subsystems.Climber;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
+import org.usfirst.frc4048.utils.ElevatorPosition;
 import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
 import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.commands.drive.DriveDistanceMaintainAngle;
@@ -42,7 +43,7 @@ import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
 import org.usfirst.frc4048.commands.drive.RotateAngle;
 import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
-
+import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.utils.Logging;
@@ -50,6 +51,9 @@ import org.usfirst.frc4048.utils.MechanicalMode;
 import org.usfirst.frc4048.subsystems.PowerDistPanel;
 import org.usfirst.frc4048.utils.WorkQueue;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
+// import org.usfirst.frc4048.utils.LimeLightVision;
+import org.usfirst.frc4048.subsystems.Elevator;
+
 import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
 
 /**
@@ -68,6 +72,7 @@ public class Robot extends TimedRobot {
   public static double timeOfStart = 0;
   public static CompressorSubsystem compressorSubsystem;
   public static DrivetrainSensors drivetrainSensors;
+  public static Elevator elevator;
   public static CargoSubsystem cargoSubsystem;
   public static HatchPanelSubsystem hatchPanelSubsystem;
   public static Climber climber;
@@ -95,7 +100,9 @@ public class Robot extends TimedRobot {
       compressorSubsystem = new CompressorSubsystem();
     }
     drivetrainSensors = new DrivetrainSensors();
-
+    if (RobotMap.ENABLE_ELEVATOR){
+      elevator = new Elevator();
+    }
     switch(mode){
       case RobotMap.CARGO_RETURN_CODE:
         if (RobotMap.ENABLE_CARGO_SUBSYSTEM) {
@@ -210,8 +217,20 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putData(new LimelightAlign());
     SmartDashboard.putData("Limelight On", new LimelightToggle(true));
     SmartDashboard.putData("Limelight Off", new LimelightToggle(false));
-
-    if (RobotMap.ENABLE_DRIVETRAIN) {
+    // SmartDashboard.putData(new RotateAngleForAlignment());
+    // SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.5, false));
+    // SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
+    if(RobotMap.ENABLE_ELEVATOR){
+      SmartDashboard.putData("Elevtor Hatch Rocket Bottom", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
+      SmartDashboard.putData("ELevator Hatch Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
+      SmartDashboard.putData("Elevator Hatch Rocket High", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
+      SmartDashboard.putData("Elevator Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
+      SmartDashboard.putData("Elevator Cargo Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
+      SmartDashboard.putData("Elevator Cargo Rocket High", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
+      SmartDashboard.putData("Elevator Cargo Intake Pos", new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
+      SmartDashboard.putData("Elevator Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
+    }
+    if(RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
 
       // Shuffleboard.getTab("Approach").add("90", new RotateAngle(90));
