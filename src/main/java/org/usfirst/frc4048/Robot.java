@@ -259,7 +259,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     // Disabled for now to look at watchdog timeouts
-    final boolean writeToDashboard = false;
+    final boolean writeToDashboard = true;
 
     if (RobotMap.ENABLE_COMPRESSOR) {
       SmartDashboard.putNumber("Pressure Value", compressorSubsystem.getPressure());

@@ -196,6 +196,9 @@ public class DriveTrain extends Subsystem {
         if (fstatus.bIsValid) {
           heading = fstatus.heading;
         }
+        else {
+          System.out.println("Pigeon reported invalid status");
+        }
         pigeon.getYawPitchRoll(ypr);
         pitch = ypr[1];
 
@@ -204,7 +207,7 @@ public class DriveTrain extends Subsystem {
           if (now > statusExpiration) {
             statusExpiration = now + (RobotMap.SHOW_PIGEON_STATUS_SECONDS * 1000);
             pigeon.getGeneralStatus(gstatus);
-            System.out.println(gstatus.toString());
+            System.out.println("PigeonStatus: " + gstatus.toString());
           }
       }
     }

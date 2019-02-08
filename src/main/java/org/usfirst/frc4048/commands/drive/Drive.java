@@ -57,7 +57,7 @@ public class Drive extends Command {
 		last_execute = System.currentTimeMillis() - start;
 	}
 
-	static public long last_execute = -1;
+	static public long last_execute = 0;
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
