@@ -4,6 +4,7 @@ import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.utils.Logging;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -47,7 +48,8 @@ public class PowerDistPanel extends Subsystem {
     	 */
 		loggingContext.writeData();
 		last_periodic = System.currentTimeMillis() - start;
-    }
+	}
+	
     public PowerDistributionPanel getPDP() {
 		return pdp;
 	}

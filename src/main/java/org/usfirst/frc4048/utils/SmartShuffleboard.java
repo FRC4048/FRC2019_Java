@@ -10,6 +10,7 @@ package org.usfirst.frc4048.utils;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 
@@ -42,6 +43,12 @@ public class SmartShuffleboard {
     {
         SmartShuffleboardTab smartTab = getOrCreateTab(tabName);
         smartTab.put(fieldName, layoutName, value);
+    }
+
+    public static void putCommand(String tabName, String fieldName, Command cmd)    // value is primitive
+    {
+        SmartShuffleboardTab smartTab = getOrCreateTab(tabName);
+        smartTab.putCommand(fieldName, cmd);
     }
 
     public static SimpleWidget getWidget(String tabName, String fieldName)

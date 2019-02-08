@@ -146,10 +146,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-    if (RobotMap.ENABLE_COMPRESSOR) {
-      SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
-      SmartDashboard.putNumber("Pressure", Robot.compressorSubsystem.getPressure());
-    }
   }
 
   /**
@@ -215,12 +211,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    // SmartDashboard.putData(new LimelightAlign());
-    SmartDashboard.putData("Limelight On", new LimelightToggle(true));
-    SmartDashboard.putData("Limelight Off", new LimelightToggle(false));
-    // SmartDashboard.putData(new RotateAngleForAlignment());
-    // SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.5, false));
-    // SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
+
     if(RobotMap.ENABLE_ELEVATOR){
       SmartDashboard.putData("Elevtor Hatch Rocket Bottom", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
       SmartDashboard.putData("ELevator Hatch Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
@@ -231,26 +222,9 @@ public class Robot extends TimedRobot {
       SmartDashboard.putData("Elevator Cargo Intake Pos", new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
       SmartDashboard.putData("Elevator Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
     }
+    
     if(RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
-
-      // Shuffleboard.getTab("Approach").add("90", new RotateAngle(90));
-      // Shuffleboard.getTab("Approach").add("-45", new RotateAngle(-45));
-      // Shuffleboard.getTab("Approach").add("0", new RotateAngle(0));
-      // Shuffleboard.getTab("Approach").add("10", new RotateAngle(10));
-      // Shuffleboard.getTab("Approach").add("-30", new RotateAngle(-30));
-
-      // Shuffleboard.getTab("Approach").add("TargetAlign", new
-      // DriveTargetCenter(10.0, -0.25));
-      // SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
-
-      // SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
-      SmartDashboard.putData(new DriveAlignGroup());
-      SmartDashboard.putData(new RotateAngle(0));
-      // SmartDashboard.putData(new RotateAngleForAlignment());
-      SmartDashboard.putData("Toggle Centric Mode", new CentricModeToggle());
-      SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.4, false));
-      SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
     }
   }
 
@@ -262,23 +236,9 @@ public class Robot extends TimedRobot {
     // Disabled for now to look at watchdog timeouts
     final boolean writeToDashboard = false;
 
-    if (RobotMap.ENABLE_COMPRESSOR) {
-      SmartDashboard.putNumber("Pressure Value", compressorSubsystem.getPressure());
-    }
     final long step0 = System.currentTimeMillis();
-    if (RobotMap.ENABLE_DRIVETRAIN && writeToDashboard) {
-      SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
-    }
     final long step1 = System.currentTimeMillis();
-    if (RobotMap.ENABLE_DRIVETRAIN && writeToDashboard) {
-      SmartDashboard.putData(new RotateAngle(90));
-    }
     final long step2 = System.currentTimeMillis();
-    if (RobotMap.ENABLE_DRIVETRAIN && writeToDashboard) {
-      SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
-      SmartDashboard.putData(new RotateAngle(90));
-      SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
-    }
     final long step3 = System.currentTimeMillis();
 
     Scheduler.getInstance().run();
@@ -300,8 +260,6 @@ public class Robot extends TimedRobot {
         System.out.println(sb);
       }
     }
-    SmartDashboard.putData("Limelight Streaming", new LimelightToggleStream());
-    SmartDashboard.putNumber("Limelight current streaming", drivetrainSensors.getStream());
   }
 
   @Override
