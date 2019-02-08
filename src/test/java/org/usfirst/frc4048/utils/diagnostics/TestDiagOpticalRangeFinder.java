@@ -16,13 +16,13 @@ public class TestDiagOpticalRangeFinder{
         DiagOpticalRangeFinder classUnderTest = new DiagOpticalRangeFinder("Optical Range Finder", mockOpticalRangeFinder, true, 3.0, 12.0);
 
         when(mockOpticalRangeFinder.getDistanceInInches()).thenReturn(7.0);
-        Assert.assertFalse(classUnderTest.getDiagResult());
+        Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
 
         when(mockOpticalRangeFinder.getDistanceInInches()).thenReturn(14.0);
-        Assert.assertFalse(classUnderTest.getDiagResult());
+        Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
 
         when(mockOpticalRangeFinder.getDistanceInInches()).thenReturn(1.0);
-        Assert.assertTrue(classUnderTest.getDiagResult());
+        Assert.assertTrue(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
     }
 
     @Test
@@ -32,15 +32,15 @@ public class TestDiagOpticalRangeFinder{
         DiagOpticalRangeFinder classUnderTest = new DiagOpticalRangeFinder("Optical Range Finder", mockOpticalRangeFinder, true, 3.0, 12.0);
 
         when(mockOpticalRangeFinder.getDistanceInInches()).thenReturn(7.0);
-        Assert.assertFalse(classUnderTest.getDiagResult());
+        Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
 
         when(mockOpticalRangeFinder.getDistanceInInches()).thenReturn(14.0);
-        Assert.assertFalse(classUnderTest.getDiagResult());
+        Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
 
         when(mockOpticalRangeFinder.getDistanceInInches()).thenReturn(1.0);
-        Assert.assertTrue(classUnderTest.getDiagResult());
+        Assert.assertTrue(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
 
         classUnderTest.reset();
-        Assert.assertFalse(classUnderTest.getDiagResult());
+        Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
     }
 }
