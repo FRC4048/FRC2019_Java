@@ -102,7 +102,7 @@ public class Elevator extends Subsystem {
     SmartDashboard.putNumber("Elevator setpoint", elevatorSetpoint);
     SmartDashboard.putNumber("Elevator Encoder", getEncoder());
     SmartDashboard.putNumber("Elevator Current", elevatorMotor.getOutputCurrent());
-    // moveElevator();
+    moveElevator();
   }
 
   @Override
@@ -112,10 +112,9 @@ public class Elevator extends Subsystem {
     // setDefaultCommand(new ElevatorMoveManual());
   }
 
-  public void moveElevator(ElevatorPosition elevatorPosition) {
-    double position = elevatorPosition.getPosition();
-    // double position = elevatorSetpoint;
-    elevatorMotor.set(ControlMode.MotionMagic, (int) position, DemandType.ArbitraryFeedForward, 0.0);
+  public void moveElevator() {
+    double position = elevatorSetpoint;
+    elevatorMotor.set(ControlMode.Position, (int) position);
   }
 
   public void elevatorToPosition(ElevatorPosition elevatorPosition) {
@@ -151,8 +150,7 @@ public class Elevator extends Subsystem {
   }
 
   public void fineTune(double speed) {
-    // elevatorSetpoint += speed;
-    elevatorMotor.set(ControlMode.PercentOutput, speed);
+    elevatorSetpoint += speed;
   }
 
   public void setPID(boolean isCargo) {

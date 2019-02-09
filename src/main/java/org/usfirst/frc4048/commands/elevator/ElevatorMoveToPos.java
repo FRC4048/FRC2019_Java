@@ -27,7 +27,7 @@ public class ElevatorMoveToPos extends LoggedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
-    Robot.elevator.moveElevator(elevatorPosition);
+    Robot.elevator.elevatorToPosition(elevatorPosition);
     setTimeout(5);
   }
 
