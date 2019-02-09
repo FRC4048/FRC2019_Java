@@ -45,10 +45,10 @@ public class Elevator extends Subsystem {
   private final double ELEVATOR_CARGO_D = 3;
   private final double ELEVATOR_CARGO_F = 0;
 
-  private final double ELEVATOR_HATCH_P = 3;
+  private final double ELEVATOR_HATCH_P = 1;
   private final double ELEVATOR_HATCH_I = 0;
   private final double ELEVATOR_HATCH_D = 0;
-  private final double ELEVATOR_HATCH_F = 0.01;
+  private final double ELEVATOR_HATCH_F = 0;
 
   private final int ELEVATOR_ACCEL = 18000; // RPM Of motor we can use these values to set max speed during the movement
   private final int ELEVATOR_CRUISE_VELOCITY = 18000; // ^
@@ -88,8 +88,8 @@ public class Elevator extends Subsystem {
         break;
     }
     
-    elevatorMotor.configMotionAcceleration(ELEVATOR_ACCEL, TIMEOUT);
-    elevatorMotor.configMotionCruiseVelocity(ELEVATOR_CRUISE_VELOCITY, TIMEOUT);
+    // elevatorMotor.configMotionAcceleration(ELEVATOR_ACCEL, TIMEOUT);
+    // elevatorMotor.configMotionCruiseVelocity(ELEVATOR_CRUISE_VELOCITY, TIMEOUT);
     elevatorMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     elevatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
 
