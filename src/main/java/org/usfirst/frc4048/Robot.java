@@ -211,18 +211,6 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-
-    if(RobotMap.ENABLE_ELEVATOR){
-      SmartDashboard.putData("Elevtor Hatch Rocket Bottom", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
-      SmartDashboard.putData("ELevator Hatch Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
-      SmartDashboard.putData("Elevator Hatch Rocket High", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
-      SmartDashboard.putData("Elevator Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
-      SmartDashboard.putData("Elevator Cargo Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
-      SmartDashboard.putData("Elevator Cargo Rocket High", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
-      SmartDashboard.putData("Elevator Cargo Intake Pos", new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
-      SmartDashboard.putData("Elevator Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
-    }
-    
     if(RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
     }
@@ -237,20 +225,13 @@ public class Robot extends TimedRobot {
     final boolean writeToDashboard = false;
 
     final long step0 = System.currentTimeMillis();
-    final long step1 = System.currentTimeMillis();
-    final long step2 = System.currentTimeMillis();
-    final long step3 = System.currentTimeMillis();
-
     Scheduler.getInstance().run();
-    final long step4 = System.currentTimeMillis();
+    final long step1 = System.currentTimeMillis();
 
     if (RobotMap.LOG_PERIODIC_TIME) {
-      if ((step4 - step0) >= 5) {
+      if ((step1 - step0) >= 5) {
         java.lang.StringBuilder sb = new StringBuilder();
-        sb.append("DriDis: ").append((step1 - step0));
-        sb.append(" RotAng: ").append((step2 - step1));
-        sb.append(" GetGyr: ").append((step3 - step2));
-        sb.append(" Sched: ").append((step4 - step3));
+        sb.append(" Sched: ").append((step1 - step0));
         sb.append(" PDP: ").append(pdp.last_periodic);
         if (RobotMap.ENABLE_DRIVETRAIN) {
           sb.append(" DrTr: ").append(drivetrain.last_periodic);

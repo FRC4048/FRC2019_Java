@@ -18,9 +18,12 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveManual;
+import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
 import org.usfirst.frc4048.utils.ElevatorPosition;
+import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.MechanicalMode;
 import org.usfirst.frc4048.utils.MotorUtils;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -92,11 +95,30 @@ public class Elevator extends Subsystem {
     elevatorSetpoint = getEncoder();
   }
 
+  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVETRAIN) {
+
+		protected void addAll() {
+		}
+  };
+
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Elevator setpoint", elevatorSetpoint);
-    SmartDashboard.putNumber("Elevator Encoder", getEncoder());
-    SmartDashboard.putNumber("Elevator Current", elevatorMotor.getOutputCurrent());
+    if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
+      // PUT SHUFFLEBOARD CODE HERE
+      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Bottom", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
+      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
+      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket High", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket High", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Intake Pos", new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
+
+      SmartShuffleboard.put("Elevator", "Setpoint", elevatorSetpoint);
+      SmartShuffleboard.put("Elevator", "Encoder", getEncoder());
+      SmartShuffleboard.put("Elevator", "Current", elevatorMotor.getOutputCurrent());
+    }
+
     moveElevator();
   }
 
