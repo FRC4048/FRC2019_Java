@@ -8,6 +8,12 @@
 package org.usfirst.frc4048;
 
 import org.usfirst.frc4048.commands.LogError;
+import org.usfirst.frc4048.commands.cargo.CargoEjectGroup;
+import org.usfirst.frc4048.commands.cargo.IntakeCargo;
+import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
+import org.usfirst.frc4048.commands.hatchpanel.HatchPanelIntake;
+import org.usfirst.frc4048.commands.hatchpanel.HatchPanelRelease;
+import org.usfirst.frc4048.utils.ElevatorPosition;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -86,6 +92,13 @@ public class OI {
       manualCargoCargoship = new JoystickButton(manualController, RobotMap.XBOX_B_BUTTON);
       cargoIntake = new JoystickButton(manualController, RobotMap.XBOX_RIGHT_BUMPER);
       cargoShoot = new JoystickButton(manualController, RobotMap.XBOX_LEFT_BUMPER);
+
+      manualCargoTopRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
+      manualCargoMidRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
+      manualCargoBotRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
+      manualCargoCargoship.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
+      cargoIntake.whenPressed(new IntakeCargo());
+      cargoShoot.whenPressed(new CargoEjectGroup());
       break;
     case RobotMap.HATCH_RETURN_CODE:
       manualHatchTopRocket = new JoystickButton(manualController, RobotMap.XBOX_Y_BUTTON);
@@ -93,10 +106,16 @@ public class OI {
       manualHatchBotRocket = new JoystickButton(manualController, RobotMap.XBOX_A_BUTTON);
       hatchIntake = new JoystickButton(manualController, RobotMap.XBOX_RIGHT_BUMPER);
       hatchDropoff = new JoystickButton(manualController, RobotMap.XBOX_LEFT_BUMPER);
+      
+      manualHatchTopRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
+      manualHatchMidRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
+      manualHatchBotRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
+      hatchIntake.whenPressed(new HatchPanelIntake());
+      hatchDropoff.whenPressed(new HatchPanelRelease());
       break;
     }
-    
-    driveSwitchMode = new JoystickButton(manualController, RobotMap.XBOX_BACK_BUTTON);
+
+    driveSwitchMode = new JoystickButton(rightJoy, 6);
 
     logError = new JoystickButton(controller, 3);
     logError.whenPressed(new LogError());
