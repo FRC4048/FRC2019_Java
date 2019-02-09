@@ -190,11 +190,10 @@ public class DriveTrain extends Subsystem {
       // Add commands:
       SmartShuffleboard.putCommand("Drive", "drive distance 10", new DriveDistance(10, 0.3, 0.0, 0.0));
       SmartShuffleboard.putCommand("Drive", "rotate 0", new RotateAngle(0));
-      SmartShuffleboard.putCommand("Drive", "rotate 90", new RotateAngle(90));
       SmartShuffleboard.putCommand("Drive", "DriveAlignGroup", new DriveAlignGroup());
-      SmartShuffleboard.putCommand("Drive", "Toggle Centric Mode", new CentricModeToggle());
       SmartShuffleboard.putCommand("Drive", "DriveAlignPhase2", new DriveAlignPhase2(0.3, 0.4, false));
       SmartShuffleboard.putCommand("Drive", "DriveAlignPhase3", new DriveAlignPhase3(0.25, false));
+      SmartShuffleboard.putCommand("Drive", "Toggle Centric Mode", new CentricModeToggle());
 
       // Add other fields:
       SmartShuffleboard.put("Drive", "Encoders", "FR", steerFR.getSelectedSensorPosition(0));
@@ -208,6 +207,8 @@ public class DriveTrain extends Subsystem {
       SmartShuffleboard.put("Drive", "Abs Encoders", "RL abs", analogInputRearLeft.getValue());
 
       SmartShuffleboard.put("Drive", "Gyro", getGyro()); 
+      SmartShuffleboard.put("Drive", "Centric mode", swerveDrivetrain.getModeRobot().name()); 
+
     }
 
     loggingContext.writeData();

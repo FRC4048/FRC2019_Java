@@ -7,54 +7,23 @@
 
 package org.usfirst.frc4048;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
-import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
-import org.usfirst.frc4048.commands.drive.DriveDistance;
-import org.usfirst.frc4048.commands.pneumatics.ExampleSolenoidCommand;
 import org.usfirst.frc4048.subsystems.CargoSubsystem;
 import org.usfirst.frc4048.subsystems.Climber;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
-import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
-import org.usfirst.frc4048.utils.ElevatorPosition;
 import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
-import org.usfirst.frc4048.utils.LimeLightVision;
-import org.usfirst.frc4048.commands.drive.DriveDistanceMaintainAngle;
-import org.usfirst.frc4048.commands.cargo.AutoCargoEjectGroup;
-import org.usfirst.frc4048.commands.cargo.CargoEjectGroup;
-import org.usfirst.frc4048.commands.cargo.IntakeCargo;
-// import org.usfirst.frc4048.commands.DriveTargetCenter;
-// import org.usfirst.frc4048.commands.LimelightAlign;
-import org.usfirst.frc4048.commands.drive.CentricModeToggle;
-import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
-import org.usfirst.frc4048.commands.limelight.LimelightToggleStream;
-import org.usfirst.frc4048.commands.limelight.LimelightToggle;
-import org.usfirst.frc4048.commands.drive.RotateAngle;
-import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
-import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
-import org.usfirst.frc4048.subsystems.DriveTrain;
-import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.MechanicalMode;
 import org.usfirst.frc4048.subsystems.PowerDistPanel;
 import org.usfirst.frc4048.utils.WorkQueue;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
-// import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.subsystems.Elevator;
-
 import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
 
 /**
@@ -126,7 +95,6 @@ public class Robot extends TimedRobot {
 
     // OI must be initialized last
     oi = new OI();
-    // Robot.drivetrainSensors.ledOn();
     SmartDashboard.putData("Auto mode", m_chooser);
 
     WorkQueue wq = new WorkQueue(512);
