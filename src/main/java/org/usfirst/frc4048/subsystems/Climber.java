@@ -10,7 +10,9 @@ package org.usfirst.frc4048.subsystems;
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.utils.AngleFinder;
+import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.OpticalRangeFinder;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -38,11 +40,31 @@ public class Climber extends Subsystem {
     angleFinder = initClimberAngleFinder();
   }
 
+  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVETRAIN) {
+
+		protected void addAll() {
+		}
+  };
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
+
+  @Override
+  public void periodic() {
+    final long start = System.currentTimeMillis();
+
+    // Put code here to be run every loop
+    if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
+      // PUT SHUFFLEBOARD CODE HERE
+    }
+    loggingContext.writeData();
+
+    last_periodic = System.currentTimeMillis() - start;
+  }
+  public long last_periodic = -1;
 
   public double getAngle() {
     return angleFinder.calcAngleInDegrees();
