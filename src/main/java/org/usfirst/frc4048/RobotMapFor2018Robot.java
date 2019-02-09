@@ -78,6 +78,8 @@ interface RobotMapFor2018Robot {
   public static final int ELEVATOR_MOTOR_ID = 11;
   public static final int CARGO_INTAKE_MOTOR_ID = 12;
 
+  public static final int WINCH_CAN_ID = 13;
+
 
   //ANALOG INPUTS
   public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID = 0;

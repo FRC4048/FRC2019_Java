@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
 import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
 import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
 import org.usfirst.frc4048.commands.drive.DriveDistance;
@@ -29,9 +30,8 @@ import org.usfirst.frc4048.subsystems.Climber;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
-import org.usfirst.frc4048.utils.ElevatorPosition;
+import org.usfirst.frc4048.utils.*;
 import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
-import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.commands.drive.DriveDistanceMaintainAngle;
 import org.usfirst.frc4048.commands.cargo.AutoCargoEjectGroup;
 import org.usfirst.frc4048.commands.cargo.CargoEjectGroup;
@@ -47,10 +47,7 @@ import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.utils.LimeLightVision;
-import org.usfirst.frc4048.utils.Logging;
-import org.usfirst.frc4048.utils.MechanicalMode;
 import org.usfirst.frc4048.subsystems.PowerDistPanel;
-import org.usfirst.frc4048.utils.WorkQueue;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
 // import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.subsystems.Elevator;
@@ -228,6 +225,12 @@ public class Robot extends TimedRobot {
     
     if(RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
+    }
+
+    if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
+      SmartShuffleboard.putCommand("Climber", "Forward", new ClimbWinchManual(0.5));
+      SmartShuffleboard.putCommand("Climber", "Backwards", new ClimbWinchManual(-0.5));
+      SmartShuffleboard.putCommand("Climber", "Stop", new ClimbWinchManual(0.0));
     }
   }
 
