@@ -141,6 +141,9 @@ interface RobotMapForTestbed {
   public static final int CARGO_RETURN_CODE = 1;
   public static final int NOTHING_RETURN_CODE = 2;
 
+  /*
+  * TODO Add correct values for PDP on testbed
+  */
   //PDP IDS
   public static final int PDP_ID_CARGO_INTAKE = 0; //Just a test value for now; will be changed on the real robot.
   public static final int PDP_STEERING_FR = 0;
@@ -151,6 +154,9 @@ interface RobotMapForTestbed {
   public static final int PDP_DRIVE_FL = 0;
   public static final int PDP_DRIVE_RL = 0;
   public static final int PDP_DRIVE_RR = 0;
+  public static final int PDP_LIMELIGHT = 0;
+  public static final int PDP_CLIMBER_WINCH = 0;
+  public static final int PDP_ELEVATOR_MOTOR = 0;
 
   //MOTOR STALL CURRENT THRESHOLDS
   public static final double CURRENT_THRESHOLD_CARGO_INTAKE = 15.0;

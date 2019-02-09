@@ -42,7 +42,9 @@ public class PowerDistPanel extends Subsystem {
 			add("FL Drive", pdp.getCurrent(RobotMap.PDP_DRIVE_FL));
 			add("RL Drive", pdp.getCurrent(RobotMap.PDP_DRIVE_RL));
 			add("RR Drive", pdp.getCurrent(RobotMap.PDP_DRIVE_RR));
+			add("Limelight", pdp.getCurrent(RobotMap.PDP_LIMELIGHT));
 			add("Cargo Intake", RobotMap.PDP_ID_CARGO_INTAKE);
+			add("Elevator Motor", pdp.getCurrent(RobotMap.PDP_ELEVATOR_MOTOR));
 		}
 	};
 
