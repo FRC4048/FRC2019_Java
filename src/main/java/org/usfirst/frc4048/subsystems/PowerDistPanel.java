@@ -34,6 +34,14 @@ public class PowerDistPanel extends Subsystem {
 		protected void addAll() {
 			add("Total Voltage", pdp.getVoltage());
 			add("Total Current", pdp.getTotalCurrent());
+			add("FR Steer", pdp.getCurrent(RobotMap.PDP_STEERING_FR));
+			add("FL Steer", pdp.getCurrent(RobotMap.PDP_STEERING_FL));
+			add("RL Steer", pdp.getCurrent(RobotMap.PDP_STEERING_RL));
+			add("RR Steer", pdp.getCurrent(RobotMap.PDP_STEERING_RR));
+			add("FR Drive", pdp.getCurrent(RobotMap.PDP_DRIVE_FR));
+			add("FL Drive", pdp.getCurrent(RobotMap.PDP_DRIVE_FL));
+			add("RL Drive", pdp.getCurrent(RobotMap.PDP_DRIVE_RL));
+			add("RR Drive", pdp.getCurrent(RobotMap.PDP_DRIVE_RR));
 			add("Cargo Intake", RobotMap.PDP_ID_CARGO_INTAKE);
 		}
 	};
