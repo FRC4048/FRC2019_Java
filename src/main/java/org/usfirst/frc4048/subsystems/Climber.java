@@ -40,9 +40,10 @@ public class Climber extends Subsystem {
     angleFinder = initClimberAngleFinder();
   }
 
-  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVETRAIN) {
+  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.CLIMBER) {
 
 		protected void addAll() {
+      add("Angle", getAngle());
 		}
   };
 
@@ -78,22 +79,22 @@ public class Climber extends Subsystem {
     climberPiston.set(state);
   }
 
-    /**
-     * Initialize the climber angle finder. Standalone function since it involves
-     * multiple steps.
-     */
-    private static AngleFinder initClimberAngleFinder() {
-      final AnalogInput leftRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_LEFT_ID);
-      final AnalogInput rightRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_RIGHT_ID);
-      final AnalogInput all[] = { leftRangeInput, rightRangeInput };
-      for (AnalogInput x : all) {
-        // These AnalogInput settings provided stable and fast results.
-        x.setOversampleBits(RobotMap.CLIMBER_DISTANCE_SENSOR_OVERSAMPLE_BITS);
-        x.setAverageBits(RobotMap.CLIMBER_DISTANCE_SENSOR_AVERAGE_BITS);
-      }
-
-      final OpticalRangeFinder leftRangeFinder = new OpticalRangeFinder(leftRangeInput);
-      final OpticalRangeFinder rightRangeFinder = new OpticalRangeFinder(rightRangeInput);
-      return new AngleFinder(leftRangeFinder, rightRangeFinder, RobotMap.INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS);
+  /**
+   * Initialize the climber angle finder. Standalone function since it involves
+   * multiple steps.
+   */
+  private static AngleFinder initClimberAngleFinder() {
+    final AnalogInput leftRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_LEFT_ID);
+    final AnalogInput rightRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_RIGHT_ID);
+    final AnalogInput all[] = { leftRangeInput, rightRangeInput };
+    for (AnalogInput x : all) {
+      // These AnalogInput settings provided stable and fast results.
+      x.setOversampleBits(RobotMap.CLIMBER_DISTANCE_SENSOR_OVERSAMPLE_BITS);
+      x.setAverageBits(RobotMap.CLIMBER_DISTANCE_SENSOR_AVERAGE_BITS);
     }
+
+    final OpticalRangeFinder leftRangeFinder = new OpticalRangeFinder(leftRangeInput);
+    final OpticalRangeFinder rightRangeFinder = new OpticalRangeFinder(rightRangeInput);
+    return new AngleFinder(leftRangeFinder, rightRangeFinder, RobotMap.INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS);
+  }
 }

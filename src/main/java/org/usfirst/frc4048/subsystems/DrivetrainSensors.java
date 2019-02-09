@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 import org.usfirst.frc4048.utils.LimeLightVision;
+import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.OpticalRangeFinder;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
 
@@ -38,6 +39,29 @@ public class DrivetrainSensors extends Subsystem {
 
         limelight = new LimeLightVision();
     }
+
+    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVE_SENSORS) {
+
+        protected void addAll() {
+            add("Distance", getUltrasonicDistance());
+
+            CameraDistance targetDistance = getTargetDistance();
+            add("LimelightValidTarget", targetDistance != null);
+
+            if(targetDistance != null) {
+                CameraAngles angles = getCameraAngles();
+                add("Camera Angle Tx", angles.getTx());
+                add("Camera Angle Ty", angles.getTy());
+                add("LimelightForward", targetDistance.getForward());
+                add("LimelightSideways", targetDistance.getSideways());
+            } else {
+                add("Camera Angle Tx", "NO TARGET");
+                add("Camera Angle Ty", "NO TARGET");
+                add("LimelightForward", "NO TARGET");
+                add("LimelightSideways", "NO TARGET");
+            }
+        }
+    };
 
     @Override
     public void initDefaultCommand() {
@@ -66,6 +90,7 @@ public class DrivetrainSensors extends Subsystem {
                 SmartShuffleboard.put("DrivetrainSensors", "LimelightSideways", targetDistance.getSideways());
             }
         }
+        loggingContext.writeData();
 
         last_periodic = System.currentTimeMillis() - start;
     }

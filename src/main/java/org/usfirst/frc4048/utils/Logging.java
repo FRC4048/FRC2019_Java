@@ -22,7 +22,7 @@ public class Logging {
 	}
 
 	public static enum Subsystems {
-		ELEVATOR, HATCHPANEL, CARGO, DRIVETRAIN, POWERDISTPANEL
+		ELEVATOR, HATCHPANEL, CARGO, DRIVETRAIN, DRIVE_SENSORS, POWERDISTPANEL, CLIMBER, COMPRESSOR
 	}
 
 	private boolean writeLoggingGap = false;

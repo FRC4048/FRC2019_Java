@@ -32,8 +32,10 @@ public class PowerDistPanel extends Subsystem {
 
 		@Override
 		protected void addAll() {
+			add("Total Voltage", pdp.getVoltage());
+			add("Total Current", pdp.getTotalCurrent());
+			add("Cargo Intake", RobotMap.PDP_ID_CARGO_INTAKE);
 		}
-
 	};
 
     

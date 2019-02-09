@@ -143,6 +143,18 @@ public class DriveTrain extends Subsystem {
   public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVETRAIN) {
 
 		protected void addAll() {
+      add("FR Encoder", steerFR.getSelectedSensorPosition(0));
+      add("FL Encoder", steerFL.getSelectedSensorPosition(0));
+      add("RR Encoder", steerRR.getSelectedSensorPosition(0));
+      add("RL Encoder", steerRL.getSelectedSensorPosition(0));
+
+      add("FR Abs", analogInputFrontRight.getValue());
+      add("FL Abs", analogInputFrontLeft.getValue());
+      add("RR Abs", analogInputRearRight.getValue());
+      add("RL Abs", analogInputRearLeft.getValue());
+
+      add("Gyro", getGyro());
+      add("Centric Mode", swerveDrivetrain.getModeRobot().name());
 		}
   };
 
