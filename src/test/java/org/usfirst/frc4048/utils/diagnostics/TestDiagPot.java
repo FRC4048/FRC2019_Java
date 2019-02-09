@@ -17,13 +17,13 @@ public class TestDiagPot {
         DiagPot classUnderTest = new DiagPot("pot", 1.0, 2.0, mockPot, true);
 
         when(mockPot.get()).thenReturn(1.5);
-        Assert.assertFalse(classUnderTest.getDiagResult());
+        Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
 
         when(mockPot.get()).thenReturn(1.0);
-        Assert.assertFalse(classUnderTest.getDiagResult());
+        Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
 
         when(mockPot.get()).thenReturn(2.5);
-        Assert.assertTrue(classUnderTest.getDiagResult());
+        Assert.assertTrue(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
     }
 
     @Test
@@ -33,11 +33,11 @@ public class TestDiagPot {
         DiagPot classUnderTest = new DiagPot("pot", 1.0, 2.0,mockPot, true);
 
         when(mockPot.get()).thenReturn(1.0);
-        Assert.assertFalse(classUnderTest.getDiagResult());
+        Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
         when(mockPot.get()).thenReturn(2.0);
-        Assert.assertTrue(classUnderTest.getDiagResult());
+        Assert.assertTrue(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
 
         classUnderTest.reset();
-        Assert.assertFalse(classUnderTest.getDiagResult());
+        Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
     }
 }

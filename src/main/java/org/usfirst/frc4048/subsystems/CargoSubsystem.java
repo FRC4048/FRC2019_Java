@@ -3,6 +3,8 @@ package org.usfirst.frc4048.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import org.usfirst.frc4048.RobotMap;
+import org.usfirst.frc4048.utils.Logging;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -27,11 +29,34 @@ public class CargoSubsystem extends Subsystem {
         opticalSensor = new DigitalInput(RobotMap.CARGO_OPTICAL_SENSOR_ID);
     }
 
+    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVETRAIN) {
+
+		protected void addAll() {
+		}
+    };
+
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
     }
+
+    @Override
+    public void periodic() {
+      final long start = System.currentTimeMillis();
+  
+      // Put code here to be run every loop
+      if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
+        // PUT SHUFFLEBOARD CODE HERE
+        SmartShuffleboard.put("Cargo", "Left Pressed", !leftLimit.get());
+        SmartShuffleboard.put("Cargo", "Right Pressed", !rightLimit.get());
+        SmartShuffleboard.put("Cargo", "Optical Triggered", !opticalSensor.get());
+      }
+      loggingContext.writeData();
+  
+      last_periodic = System.currentTimeMillis() - start;
+    }
+    public long last_periodic = -1;
 
     public boolean leftLimitPressed() {
         return !leftLimit.get();

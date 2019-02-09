@@ -45,6 +45,13 @@ interface RobotMapForTestbed {
    */
   public static final boolean LOG_PERIODIC_TIME = true;
 
+  /**
+  * Enable shuffleboard debug tabs
+  */
+  public static final boolean SHUFFLEBOARD_DEBUG_MODE = true;
+
+
+
   public static final double SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK = 0.0942478739;
 
   //CAN ID

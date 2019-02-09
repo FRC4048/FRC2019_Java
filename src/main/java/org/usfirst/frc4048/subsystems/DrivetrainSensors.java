@@ -8,19 +8,20 @@
 package org.usfirst.frc4048.subsystems;
 
 import org.usfirst.frc4048.RobotMap;
+import org.usfirst.frc4048.commands.limelight.LimelightToggle;
+import org.usfirst.frc4048.commands.limelight.LimelightToggleStream;
 import org.usfirst.frc4048.utils.AngleFinder;
 import org.usfirst.frc4048.utils.CameraAngles;
 import org.usfirst.frc4048.utils.CameraDistance;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.utils.OpticalRangeFinder;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 /**
  * This subsystem holds the sensors the robot uses for navigation
@@ -30,13 +31,6 @@ public class DrivetrainSensors extends Subsystem {
     private Ultrasonic ultrasonic;
 
     private LimeLightVision limelight;
-
-    private NetworkTableEntry unltrasonicEntry = Shuffleboard.getTab("DrivetrainSensors").add("Ultrasonic Distance", 0.0).getEntry();
-    private NetworkTableEntry limelightValidTargetEntry = Shuffleboard.getTab("DrivetrainSensors").add("LimelightValidTarget", false).getEntry();
-    private NetworkTableEntry limelightXEntry = Shuffleboard.getTab("DrivetrainSensors").add("LimelightX", 0.0).getEntry();
-    private NetworkTableEntry LimelightYEntry = Shuffleboard.getTab("DrivetrainSensors").add("LimelightY", 0.0).getEntry();
-    private NetworkTableEntry limelightForwardEntry = Shuffleboard.getTab("DrivetrainSensors").add("LimelightForward", 0.0).getEntry();
-    private NetworkTableEntry limelightSidewaysEntry = Shuffleboard.getTab("DrivetrainSensors").add("LimelightSideways", 0.0).getEntry();
 
     public DrivetrainSensors() {
         ultrasonic = new Ultrasonic(RobotMap.ALIGNMENT_ULTRASONIC_ID[0], RobotMap.ALIGNMENT_ULTRASONIC_ID[1]);
@@ -56,15 +50,22 @@ public class DrivetrainSensors extends Subsystem {
         final long start = System.currentTimeMillis();
 
         // Put code here to be run every loop
-        CameraDistance targetDistance = getTargetDistance();
-        limelightValidTargetEntry.setBoolean(targetDistance != null);
-        if (targetDistance != null) {
-            limelightForwardEntry.setDouble(targetDistance.getForward());
-            limelightSidewaysEntry.setDouble(targetDistance.getSideways());
-        }
 
-        // unltrasonicEntry.setDouble(ultrasonic.getRangeInches());
-        SmartDashboard.putNumber("Ultrasonic", getUltrasonicDistance());
+        if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
+            // Add commands:
+            SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight On", new LimelightToggle(true));
+            SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Off", new LimelightToggle(false));
+            SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Stream Toggle", new LimelightToggleStream());
+
+            // Add other fields:
+            SmartShuffleboard.put("DrivetrainSensors", "Ultrasonic", getUltrasonicDistance());
+            CameraDistance targetDistance = getTargetDistance();
+            SmartShuffleboard.put("DrivetrainSensors", "LimelightValidTarget", targetDistance != null);
+            if (targetDistance != null) {
+                SmartShuffleboard.put("DrivetrainSensors", "LimelightForward", targetDistance.getForward());
+                SmartShuffleboard.put("DrivetrainSensors", "LimelightSideways", targetDistance.getSideways());
+            }
+        }
 
         last_periodic = System.currentTimeMillis() - start;
     }
@@ -95,5 +96,14 @@ public class DrivetrainSensors extends Subsystem {
 
     public void ledOff() {
         limelight.setLedOff();
+    }
+
+    /* Control the Limelight streaming mode */
+    public void setStream(double option) {
+        limelight.setStream(option);
+    }
+
+    public double getStream() {
+        return limelight.getStream();
     }
 }

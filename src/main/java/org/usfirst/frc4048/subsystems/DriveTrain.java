@@ -18,12 +18,18 @@ import com.ctre.phoenix.sensors.PigeonIMU.GeneralStatus;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
 import org.usfirst.frc4048.swerve.drive.SwerveDrive;
 import org.usfirst.frc4048.utils.Logging;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 import org.usfirst.frc4048.RobotMap;
+import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.Drive;
+import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
+import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
+import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
+import org.usfirst.frc4048.commands.drive.DriveDistance;
+import org.usfirst.frc4048.commands.drive.RotateAngle;
 
 /**
  * Add your docs here.
@@ -148,10 +154,7 @@ public class DriveTrain extends Subsystem {
 
 		protected void addAll() {
 		}
-
-    	
-    
-    };
+  };
 
   @Override
   public void initDefaultCommand() {
@@ -221,10 +224,34 @@ public class DriveTrain extends Subsystem {
     final long start = System.currentTimeMillis();
 
     // Put code here to be run every loop
-    outputAbsEncValues();
     if (!RobotMap.ENABLE_PIGEON_THREAD) {
       pigeonData.update();
     }
+
+    if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
+      // Add commands:
+      SmartShuffleboard.putCommand("Drive", "drive distance 10", new DriveDistance(10, 0.3, 0.0, 0.0));
+      SmartShuffleboard.putCommand("Drive", "rotate 0", new RotateAngle(0));
+      SmartShuffleboard.putCommand("Drive", "rotate 90", new RotateAngle(90));
+      SmartShuffleboard.putCommand("Drive", "DriveAlignGroup", new DriveAlignGroup());
+      SmartShuffleboard.putCommand("Drive", "Toggle Centric Mode", new CentricModeToggle());
+      SmartShuffleboard.putCommand("Drive", "DriveAlignPhase2", new DriveAlignPhase2(0.3, 0.4, false));
+      SmartShuffleboard.putCommand("Drive", "DriveAlignPhase3", new DriveAlignPhase3(0.25, false));
+
+      // Add other fields:
+      SmartShuffleboard.put("Drive", "Encoders", "FR", steerFR.getSelectedSensorPosition(0));
+      SmartShuffleboard.put("Drive", "Encoders", "FL", steerFL.getSelectedSensorPosition(0));
+      SmartShuffleboard.put("Drive", "Encoders", "RR", steerRR.getSelectedSensorPosition(0));
+      SmartShuffleboard.put("Drive", "Encoders", "RL", steerRL.getSelectedSensorPosition(0));
+  
+      SmartShuffleboard.put("Drive", "Abs Encoders", "FR abs", analogInputFrontRight.getValue());
+      SmartShuffleboard.put("Drive", "Abs Encoders", "FL abs", analogInputFrontLeft.getValue());
+      SmartShuffleboard.put("Drive", "Abs Encoders", "RR abs", analogInputRearRight.getValue());
+      SmartShuffleboard.put("Drive", "Abs Encoders", "RL abs", analogInputRearLeft.getValue());
+
+      SmartShuffleboard.put("Drive", "Gyro", getGyro()); 
+    }
+
     loggingContext.writeData();
 
     last_periodic = System.currentTimeMillis() - start;
@@ -315,21 +342,6 @@ public class DriveTrain extends Subsystem {
 
   public double getPitch() {
     return pigeonData.pitch;
-  }
-
-  /**
-   * Outputs absolute encoder positions
-   */
-  public void outputAbsEncValues() {
-    SmartDashboard.putNumber("Front Right Enc", steerFR.getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Front Left Enc", steerFL.getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Rear Left Enc", steerRL.getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Rear Right Enc", steerRR.getSelectedSensorPosition(0));
-
-    SmartDashboard.putNumber("Front Right Abs", analogInputFrontRight.getValue());
-    SmartDashboard.putNumber("Front Left Abs", analogInputFrontLeft.getValue());
-    SmartDashboard.putNumber("Rear Left Abs", analogInputRearLeft.getValue());
-    SmartDashboard.putNumber("Rear Right Abs", analogInputRearRight.getValue());
   }
 
   /**
