@@ -236,33 +236,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    // Disabled for now to look at watchdog timeouts
-    final boolean writeToDashboard = false;
-
-    final long step0 = System.currentTimeMillis();
-    final long step1 = System.currentTimeMillis();
-    final long step2 = System.currentTimeMillis();
-    final long step3 = System.currentTimeMillis();
-
+    timer.init();
     Scheduler.getInstance().run();
-    final long step4 = System.currentTimeMillis();
+    timer.completed(this, "Sched");
 
-    if (RobotMap.LOG_PERIODIC_TIME) {
-      if ((step4 - step0) >= 5) {
-        java.lang.StringBuilder sb = new StringBuilder();
-        sb.append("DriDis: ").append((step1 - step0));
-        sb.append(" RotAng: ").append((step2 - step1));
-        sb.append(" GetGyr: ").append((step3 - step2));
-        sb.append(" Sched: ").append((step4 - step3));
-        sb.append(" PDP: ").append(pdp.last_periodic);
-        if (RobotMap.ENABLE_DRIVETRAIN) {
-          sb.append(" DrTr: ").append(drivetrain.last_periodic);
-        }
-        sb.append(" DrTrSen: ").append(drivetrainSensors.last_periodic);
-        sb.append(" DrCmd: ").append(org.usfirst.frc4048.commands.drive.Drive.last_execute);
-        System.out.println(sb);
+    if (RobotMap.LOG_PERIODIC_TIME > 0) {
+      if (timer.total() >= RobotMap.LOG_PERIODIC_TIME) {
+        System.out.println(timer.toString());
       }
     }
+    timer.term();
   }
 
   @Override
@@ -277,6 +260,77 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
     diagnostics.refresh();
     Scheduler.getInstance().run();
+  }
+
+  public static class Timer {
+    private boolean enabled;
+		private final String id;
+		private int last = 0;
+		private final long time[];
+    private final String info[];
+    private final String caller[];
+    private final int max;
+
+		Timer(final int max, final String id) {
+      this.enabled = false;
+      this.last = 0;
+      this.max = max-1;
+      this.id = id;
+      this.time = new long[max];
+      this.info = new String[max];
+      this.caller = new String[max];
+    }
+    
+    public long total() {
+      return time[last] - time[0];
+    }
+
+		public void completed(final Object caller, final String info) {
+      if (enabled) {
+        if (last < max) {
+          last += 1;
+          this.time[last] = System.currentTimeMillis();
+          this.caller[last] = caller.getClass().getSimpleName();
+          this.info[last] = info;
+        }
+        else {
+          System.out.println(String.format("Timer Max=%d Last=%d", max, last));
+        }
+      }
+    }
+
+		private void init() {
+      enabled = true;
+			last = 0;
+			time[last] = System.currentTimeMillis();
+			info[last] = "start";
+    }
+    
+    private void term() {
+      enabled = false;
+      last = 0;
+    }
+
+		public String toString()
+		{
+			final StringBuilder sb = new StringBuilder();
+      sb.append(id).append(": ").append(total());
+      String lastCaller = "";
+			for (int i=1; i<=last; i++) {
+        if (!lastCaller.equals(caller[i])) {
+          sb.append(" [").append(caller[i]).append("]");
+          lastCaller = caller[i];
+        }
+				sb.append(" ").append(info[i]).append("+").append(time[i]-time[i-1]);
+			}
+			return sb.toString();
+		}
+  }
+
+  private final static Timer timer = new Timer(100, "teleop");
+  static public void completed(final Object caller, final String work) {
+    if (RobotMap.LOG_PERIODIC_TIME > 0)
+      timer.completed(caller, work);
   }
 
 }

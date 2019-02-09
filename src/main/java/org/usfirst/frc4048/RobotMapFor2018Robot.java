@@ -48,9 +48,11 @@ interface RobotMapFor2018Robot {
   public static final boolean ENABLE_CLIMBER_SUBSYSTEM = false;
 
   /**
-   * Enables loging of timing data related to watchdog timeouts.
+   * Enables logging of timing data related to watchdog timeouts. Set to 0 to disable, otherwise, set to the 
+   * minimum number of milliseconds that will be logged. For example, if 15, then don't log any timing data less
+   * than 15 milliseconds.
    */
-  public static final boolean LOG_PERIODIC_TIME = false;
+  public static final int LOG_PERIODIC_TIME = 15;
 
   /**
   * Enable shuffleboard debug tabs
@@ -94,7 +96,7 @@ interface RobotMapFor2018Robot {
   //DIGITAL INPUTS
   public static final int CARGO_LIMIT_SWITCH_LEFT_ID = 1;
   public static final int CARGO_LIMIT_SWITCH_RIGHT_ID = 2;
-  public static final int CARGO_OPTICAL_SENSOR_ID = 4;
+  public static final int CARGO_OPTICAL_SENSOR_ID = 0;
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
   public static final int[] ALIGNMENT_ULTRASONIC_ID = {3,4};
