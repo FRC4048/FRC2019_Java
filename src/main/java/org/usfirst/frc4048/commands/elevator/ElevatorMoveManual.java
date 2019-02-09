@@ -30,9 +30,11 @@ public class ElevatorMoveManual extends Command {
   @Override
   protected void execute() {
     if(Robot.oi.getRightTrigger() > 0.0 + TRIGGER_MARGIN_VALUE) {
-      Robot.elevator.fineTune(Robot.oi.getRightTrigger()*FINETUNE_PROPORTION);
+      Robot.elevator.fineTune(Robot.oi.getRightTrigger());
     } else if(Robot.oi.getLeftTrigger() > 0.0 + TRIGGER_MARGIN_VALUE) {
-      Robot.elevator.fineTune(-Robot.oi.getLeftTrigger()*FINETUNE_PROPORTION);
+      Robot.elevator.fineTune(-Robot.oi.getLeftTrigger());
+    } else {
+      Robot.elevator.fineTune(0.0);
     }
   }
 

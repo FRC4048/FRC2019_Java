@@ -38,22 +38,22 @@ public class Elevator extends Subsystem {
   private final double ELEVATOR_POSITION_ERROR = 0;
 
   private final double ELEVATOR_UP_SCALE_FACTOR = 0.6;
-  private final double ELEVATOR_DOWN_SCALE_FACTOR = 0.35;
+  private final double ELEVATOR_DOWN_SCALE_FACTOR = 0.4;
 
   private final double ELEVATOR_CARGO_P = 10;
   private final double ELEVATOR_CARGO_I = 0;
   private final double ELEVATOR_CARGO_D = 3;
   private final double ELEVATOR_CARGO_F = 0;
 
-  private final double ELEVATOR_HATCH_P = 100;
-  private final double ELEVATOR_HATCH_I = 3;
-  private final double ELEVATOR_HATCH_D = 1;
-  private final double ELEVATOR_HATCH_F = 0;
+  private final double ELEVATOR_HATCH_P = 3;
+  private final double ELEVATOR_HATCH_I = 0;
+  private final double ELEVATOR_HATCH_D = 0;
+  private final double ELEVATOR_HATCH_F = 0.01;
 
-  private final int ELEVATOR_ACCEL = 281/* 281 */; // RPM Of motor we can use these values to set max speed during the movement
-  private final int ELEVATOR_CRUISE_VELOCITY = 281/* 281 */; // ^
+  private final int ELEVATOR_ACCEL = 18000; // RPM Of motor we can use these values to set max speed during the movement
+  private final int ELEVATOR_CRUISE_VELOCITY = 18000; // ^
   
-  private final int ENCODER_CLOSED_LOOP_ERROR = 12000;
+  private final int ENCODER_CLOSED_LOOP_ERROR = 12000; //1 inch
 
   private double elevatorSetpoint;
 
@@ -75,7 +75,7 @@ public class Elevator extends Subsystem {
     elevatorMotor.configPeakOutputReverse(-ELEVATOR_DOWN_SCALE_FACTOR, TIMEOUT);
     elevatorMotor.setNeutralMode(NeutralMode.Brake);
     elevatorMotor.selectProfileSlot(0, 0);
-    elevatorMotor.setInverted(true);
+    elevatorMotor.setInverted(false); 
     elevatorMotor.configAllowableClosedloopError(0, ENCODER_CLOSED_LOOP_ERROR, TIMEOUT); //This is the margin of error on the encoder value while doing closed loop functions. This will change
     // int elevatorMode = Robot.mechanicalMode.getMode();
     int elevatorMode = RobotMap.HATCH_RETURN_CODE;
@@ -88,8 +88,8 @@ public class Elevator extends Subsystem {
         break;
     }
     
-    // elevatorMotor.configMotionAcceleration(ELEVATOR_ACCEL, TIMEOUT);
-    // elevatorMotor.configMotionCruiseVelocity(ELEVATOR_CRUISE_VELOCITY, TIMEOUT);
+    elevatorMotor.configMotionAcceleration(ELEVATOR_ACCEL, TIMEOUT);
+    elevatorMotor.configMotionCruiseVelocity(ELEVATOR_CRUISE_VELOCITY, TIMEOUT);
     elevatorMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     elevatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
 
@@ -101,21 +101,21 @@ public class Elevator extends Subsystem {
   public void periodic() {
     SmartDashboard.putNumber("Elevator setpoint", elevatorSetpoint);
     SmartDashboard.putNumber("Elevator Encoder", getEncoder());
-    System.out.println("Elevator Encoder: " + getEncoder());
     SmartDashboard.putNumber("Elevator Current", elevatorMotor.getOutputCurrent());
-    moveElevator();
+    // moveElevator();
   }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new ElevatorMoveManual());
+    // setDefaultCommand(new ElevatorMoveManual());
   }
 
-  public void moveElevator() {
-    double position = elevatorSetpoint;
-    elevatorMotor.set(ControlMode.Position, (int) position);
+  public void moveElevator(ElevatorPosition elevatorPosition) {
+    double position = elevatorPosition.getPosition();
+    // double position = elevatorSetpoint;
+    elevatorMotor.set(ControlMode.MotionMagic, (int) position, DemandType.ArbitraryFeedForward, 0.0);
   }
 
   public void elevatorToPosition(ElevatorPosition elevatorPosition) {
@@ -151,7 +151,8 @@ public class Elevator extends Subsystem {
   }
 
   public void fineTune(double speed) {
-    elevatorSetpoint += speed;
+    // elevatorSetpoint += speed;
+    elevatorMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public void setPID(boolean isCargo) {
