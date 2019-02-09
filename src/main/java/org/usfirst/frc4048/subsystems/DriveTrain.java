@@ -197,15 +197,15 @@ public class DriveTrain extends Subsystem {
       SmartShuffleboard.putCommand("Drive", "DriveAlignPhase3", new DriveAlignPhase3(0.25, false));
 
       // Add other fields:
-      SmartShuffleboard.put("Drive", "Encoders", "Front Right", steerFR.getSelectedSensorPosition(0));
-      SmartShuffleboard.put("Drive", "Encoders", "Front Left", steerFL.getSelectedSensorPosition(0));
-      SmartShuffleboard.put("Drive", "Encoders", "Rear Right", steerRR.getSelectedSensorPosition(0));
-      SmartShuffleboard.put("Drive", "Encoders", "Rear Left", steerRL.getSelectedSensorPosition(0));
+      SmartShuffleboard.put("Drive", "Encoders", "FR", steerFR.getSelectedSensorPosition(0));
+      SmartShuffleboard.put("Drive", "Encoders", "FL", steerFL.getSelectedSensorPosition(0));
+      SmartShuffleboard.put("Drive", "Encoders", "RR", steerRR.getSelectedSensorPosition(0));
+      SmartShuffleboard.put("Drive", "Encoders", "RL", steerRL.getSelectedSensorPosition(0));
   
-      SmartShuffleboard.put("Drive", "Abs Encoders", "Front Right", analogInputFrontRight.getValue());
-      SmartShuffleboard.put("Drive", "Abs Encoders", "Front Left", analogInputFrontLeft.getValue());
-      SmartShuffleboard.put("Drive", "Abs Encoders", "Rear Right", analogInputRearRight.getValue());
-      SmartShuffleboard.put("Drive", "Abs Encoders", "Rear Left", analogInputRearLeft.getValue());
+      SmartShuffleboard.put("Drive", "Abs Encoders", "FR abs", analogInputFrontRight.getValue());
+      SmartShuffleboard.put("Drive", "Abs Encoders", "FL abs", analogInputFrontLeft.getValue());
+      SmartShuffleboard.put("Drive", "Abs Encoders", "RR abs", analogInputRearRight.getValue());
+      SmartShuffleboard.put("Drive", "Abs Encoders", "RL abs", analogInputRearLeft.getValue());
 
       SmartShuffleboard.put("Drive", "Gyro", getGyro()); 
     }
