@@ -60,6 +60,13 @@ public class OI {
   private JoystickButton manualCargoMidRocket;
   private JoystickButton manualCargoBotRocket;
   private JoystickButton manualCargoCargoship;
+  
+  private JoystickButton cargoIntake;
+  private JoystickButton cargoShoot;
+  private JoystickButton hatchIntake;
+  private JoystickButton hatchDropoff;
+  
+  private JoystickButton driveSwitchMode;
 
   public OI() {
     leftJoy = new Joystick(0);
@@ -77,13 +84,20 @@ public class OI {
       manualCargoMidRocket = new JoystickButton(manualController, RobotMap.XBOX_X_BUTTON);
       manualCargoBotRocket = new JoystickButton(manualController, RobotMap.XBOX_A_BUTTON);
       manualCargoCargoship = new JoystickButton(manualController, RobotMap.XBOX_B_BUTTON);
+      cargoIntake = new JoystickButton(manualController, RobotMap.XBOX_RIGHT_BUMPER);
+      cargoShoot = new JoystickButton(manualController, RobotMap.XBOX_LEFT_BUMPER);
       break;
     case RobotMap.HATCH_RETURN_CODE:
       manualHatchTopRocket = new JoystickButton(manualController, RobotMap.XBOX_Y_BUTTON);
       manualHatchMidRocket = new JoystickButton(manualController, RobotMap.XBOX_X_BUTTON);
       manualHatchBotRocket = new JoystickButton(manualController, RobotMap.XBOX_A_BUTTON);
+      hatchIntake = new JoystickButton(manualController, RobotMap.XBOX_RIGHT_BUMPER);
+      hatchDropoff = new JoystickButton(manualController, RobotMap.XBOX_LEFT_BUMPER);
       break;
     }
+    
+    driveSwitchMode = new JoystickButton(manualController, RobotMap.XBOX_BACK_BUTTON);
+
     logError = new JoystickButton(controller, 3);
     logError.whenPressed(new LogError());
   }
