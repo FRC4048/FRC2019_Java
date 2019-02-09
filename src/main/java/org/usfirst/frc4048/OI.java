@@ -46,43 +46,60 @@ public class OI {
   // Start the command when the button is released and let it run the command
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
-  private JoystickButton logError; 
-  private Joystick controller; 
+  private JoystickButton logError;
+  private Joystick controller;
   private Joystick leftJoy;
   private Joystick rightJoy;
-  private Joystick manualControler;
+  private Joystick manualController;
   private XboxController manualXboxController;
+
+  private JoystickButton manualHatchTopRocket;
+  private JoystickButton manualHatchMidRocket;
+  private JoystickButton manualHatchBotRocket;
+  private JoystickButton manualCargoTopRocket;
+  private JoystickButton manualCargoMidRocket;
+  private JoystickButton manualCargoBotRocket;
+  private JoystickButton manualCargoCargoship;
 
   public OI() {
     leftJoy = new Joystick(0);
     rightJoy = new Joystick(1);
     controller = new Joystick(2);
-    manualControler = new Joystick(3);
+    manualController = new Joystick(3);
     manualXboxController = new XboxController(3);
 
-    //Put all button inputs that are based off of the mechanism they are tied to in this switch statement
+    // Put all button inputs that are based off of the mechanism they are tied to in
+    // this switch statement
     int mode = Robot.mechanicalMode.getMode();
-    switch(mode) {
-      case RobotMap.CARGO_RETURN_CODE:
-        break;
-      case RobotMap.HATCH_RETURN_CODE:
-        break;
+    switch (mode) {
+    case RobotMap.CARGO_RETURN_CODE:
+      manualCargoTopRocket = new JoystickButton(manualController, RobotMap.XBOX_Y_BUTTON);
+      manualCargoMidRocket = new JoystickButton(manualController, RobotMap.XBOX_X_BUTTON);
+      manualCargoBotRocket = new JoystickButton(manualController, RobotMap.XBOX_A_BUTTON);
+      manualCargoCargoship = new JoystickButton(manualController, RobotMap.XBOX_B_BUTTON);
+      break;
+    case RobotMap.HATCH_RETURN_CODE:
+      manualHatchTopRocket = new JoystickButton(manualController, RobotMap.XBOX_Y_BUTTON);
+      manualHatchMidRocket = new JoystickButton(manualController, RobotMap.XBOX_X_BUTTON);
+      manualHatchBotRocket = new JoystickButton(manualController, RobotMap.XBOX_A_BUTTON);
+      break;
     }
     logError = new JoystickButton(controller, 3);
     logError.whenPressed(new LogError());
   }
 
-
   public Joystick getLeftJoy() {
     return leftJoy;
   }
+
   public Joystick getRightJoy() {
     return rightJoy;
   }
 
   public double getLeftTrigger() {
-    return manualXboxController.getTriggerAxis(Hand.kLeft);  
+    return manualXboxController.getTriggerAxis(Hand.kLeft);
   }
+
   public double getRightTrigger() {
     return manualXboxController.getTriggerAxis(Hand.kRight);
   }
