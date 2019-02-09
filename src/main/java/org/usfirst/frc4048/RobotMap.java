@@ -12,6 +12,10 @@ package org.usfirst.frc4048;
 
 // public interface RobotMap extends RobotMapForTestbed {
 public interface RobotMap extends RobotMapFor2018Robot {
+  /**
+  * Logger will log every number of iteations specified here
+  */
+  public static final int LOGGING_FREQ = 5;
 
   // Add constants that are not specific to the Robot hardware or behavior.
   // Use one of the RobotMapForXXXXX classes to add

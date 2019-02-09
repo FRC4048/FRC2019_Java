@@ -22,6 +22,7 @@ import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
 import org.usfirst.frc4048.swerve.drive.SwerveDrive;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
+import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.Drive;
@@ -140,13 +141,13 @@ public class DriveTrain extends Subsystem {
     rearLeftWheel = new CanTalonSwerveEnclosure("RearLeftWheel", driveRL, steerRL, GEAR_RATIO);
     rearRightWheel = new CanTalonSwerveEnclosure("RearRightWheel", driveRR, steerRR, GEAR_RATIO);
 
-    init();
-
     if (RobotMap.ENABLE_PIGEON_THREAD) {
       pigeonThread.start();
     }
 
     swerveDrivetrain = new SwerveDrive(frontRightWheel, frontLeftWheel, rearLeftWheel, rearRightWheel, WIDTH, LENGTH);
+
+    init();
 
   }
   
@@ -210,7 +211,9 @@ public class DriveTrain extends Subsystem {
           if (now > statusExpiration) {
             statusExpiration = now + (RobotMap.SHOW_PIGEON_STATUS_SECONDS * 1000);
             pigeon.getGeneralStatus(gstatus);
-            System.out.println("PigeonStatus: " + gstatus.toString());
+            if (gstatus.lastError.value != 0) {
+              System.out.println("PigeonStatus: " + gstatus.toString());
+            }
           }
       }
     }
@@ -221,12 +224,12 @@ public class DriveTrain extends Subsystem {
 
   @Override
   public void periodic() {
-    final long start = System.currentTimeMillis();
 
     // Put code here to be run every loop
     if (!RobotMap.ENABLE_PIGEON_THREAD) {
       pigeonData.update();
     }
+    Robot.completed(this, "pigeon");
 
     if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
       // Add commands:
@@ -253,10 +256,8 @@ public class DriveTrain extends Subsystem {
     }
 
     loggingContext.writeData();
-
-    last_periodic = System.currentTimeMillis() - start;
+    Robot.completed(this, "logging");
   }
-  public long last_periodic = -1;
 
 
   // Put methods for controlling this subsystem
