@@ -89,15 +89,10 @@ public class SmartShuffleboardTab {
     }
     public void putCommand(String fieldName, Command cmd) 
     {
-        if (commandSet.contains(fieldName))
+        if (!commandSet.contains(fieldName))
         {
-            System.out.print("SmartShuffleboardTab Warning: Commands should be added only once: ");
-            System.out.println(cmd.getName());
-        }
-        else {
             tab.add(fieldName, cmd);
             commandSet.add(fieldName);
         }
     }
-
 }
