@@ -35,7 +35,7 @@ import org.usfirst.frc4048.commands.drive.RotateAngle;
 /**
  * Add your docs here.
  */
-public class DriveTrain extends Subsystem {
+public class DriveTrain extends Subsystem implements RobotMap {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
@@ -104,6 +104,13 @@ public class DriveTrain extends Subsystem {
   /* whoever needs to use the gyro will get the stored value through the getGyro() method. */
   private final PigeonData pigeonData = new PigeonData();
 
+  /**
+   * Reading the Talon encoder values can be relatively slow. When enabled, this
+   * thread will read the encoder values and provide the values to the Swerve
+   * Drive.
+   */
+  private final SteerEncoderThread steerEncoderThread;
+
   public DriveTrain() {
     driveFL = new WPI_TalonSRX(RobotMap.FRONT_LEFT_DRIVE_MOTOR_ID);
     driveFR = new WPI_TalonSRX(RobotMap.FRONT_RIGHT_DRIVE_MOTOR_ID);
@@ -135,13 +142,26 @@ public class DriveTrain extends Subsystem {
     analogInputFrontRight = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID);
     analogInputRearLeft = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_REAR_LEFT_ID);
     analogInputRearRight = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_REAR_RIGHT_ID);
+    
+    final SteerEncoder encFL = new SteerEncoder(steerFL);
+    final SteerEncoder encFR = new SteerEncoder(steerFR);
+    final SteerEncoder encRL = new SteerEncoder(steerRL);
+    final SteerEncoder encRR = new SteerEncoder(steerRR);
+    
+    if (ENABLE_STEER_ENCODER_THREAD) {
+      steerEncoderThread = new SteerEncoderThread(encFL, encFR, encRL, encRR);
+      steerEncoderThread.start();
+    }
+    else {
+      steerEncoderThread = null;
+    }
 
-    frontLeftWheel = new CanTalonSwerveEnclosure("FrontLeftWheel", driveFL, steerFL, GEAR_RATIO);
-    frontRightWheel = new CanTalonSwerveEnclosure("FrontRightWheel", driveFR, steerFR, GEAR_RATIO);
-    rearLeftWheel = new CanTalonSwerveEnclosure("RearLeftWheel", driveRL, steerRL, GEAR_RATIO);
-    rearRightWheel = new CanTalonSwerveEnclosure("RearRightWheel", driveRR, steerRR, GEAR_RATIO);
+    frontLeftWheel = new CanTalonSwerveEnclosure("FrontLeftWheel", driveFL, steerFL, encFL, GEAR_RATIO);
+    frontRightWheel = new CanTalonSwerveEnclosure("FrontRightWheel", driveFR, steerFR, encFR, GEAR_RATIO);
+    rearLeftWheel = new CanTalonSwerveEnclosure("RearLeftWheel", driveRL, steerRL, encRL, GEAR_RATIO);
+    rearRightWheel = new CanTalonSwerveEnclosure("RearRightWheel", driveRR, steerRR, encRR, GEAR_RATIO);
 
-    if (RobotMap.ENABLE_PIGEON_THREAD) {
+    if (ENABLE_PIGEON_THREAD) {
       pigeonThread.start();
     }
 
@@ -149,6 +169,68 @@ public class DriveTrain extends Subsystem {
 
     init();
 
+  }
+  
+  /**
+   * Thread that reads all the steering encoders at predetermined cycles on a
+   * separate thread.
+   * 
+   * @see RobotMap.ENABLE_STEER_ENCODER_THREAD
+   * @see RobotMap.STEER_ENCODER_READ_DELAY_MS
+   */
+  class SteerEncoderThread extends Thread {
+    final SteerEncoder _encoders[];
+
+    SteerEncoderThread(final SteerEncoder... encoders) {
+      _encoders = encoders;
+    }
+
+    public void run() {
+      for (;;) {
+        final long start_time = System.currentTimeMillis();
+        for (int i = 0; i < _encoders.length; i++)
+          _encoders[i].update();
+
+        // Subtract the amount of time that it took to read the encoders from
+        // the total delay time we want. This should give us
+        // consistently updated readings.
+        final long delta_time = System.currentTimeMillis() - start_time;
+        final long sleep_time = STEER_ENCODER_READ_DELAY_MS - delta_time;
+        if (sleep_time > 0) {
+          try {
+            Thread.sleep(sleep_time);
+          } catch (InterruptedException e) {
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * This class provides the encoder reading from the steer motor. It either
+   * provides an immediate reading from the Talon or the last read value when the
+   * {@link SteerEncoderThread} ran. This is controlled by the RobotMap setting.
+   */
+  static private class SteerEncoder implements CanTalonSwerveEnclosure.SteerMotorSensorReader {
+    private final WPI_TalonSRX _talon;
+    private int _lastValue;
+
+    SteerEncoder(final WPI_TalonSRX talon) {
+      _talon = talon;
+      _lastValue = 0;
+    }
+
+    @Override
+    public int getSelectedSensorPosition() {
+      if (!RobotMap.ENABLE_STEER_ENCODER_THREAD) {
+        update();
+      }
+      return _lastValue;
+    }
+
+    private void update() {
+      _lastValue = _talon.getSelectedSensorPosition(0);
+    }
   }
   
   public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVETRAIN) {

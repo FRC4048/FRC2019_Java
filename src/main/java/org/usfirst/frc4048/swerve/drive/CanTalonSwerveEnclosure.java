@@ -10,16 +10,41 @@ public class CanTalonSwerveEnclosure extends BaseEnclosure implements SwerveEncl
 
     private WPI_TalonSRX driveMotor;
 	private WPI_TalonSRX steerMotor;
+	private final SteerMotorSensorReader _steerMotorSensorReader;
 	
 	private boolean reverseEncoder = false;
 	private boolean reverseSteer = false;
 	
-	public CanTalonSwerveEnclosure(String name, WPI_TalonSRX driveMotor, WPI_TalonSRX steerMotor, double gearRatio)
-	{
+	/**
+	 * This interface class is used for reading the steer sensor position. It exists
+	 * so the reading of the sensor can be done on a separate thread.
+	 */
+	public interface SteerMotorSensorReader {
+		int getSelectedSensorPosition();
+	}
+	
+	public CanTalonSwerveEnclosure(String name, WPI_TalonSRX driveMotor, WPI_TalonSRX steerMotor, double gearRatio) {
+		this(name, driveMotor, steerMotor, null, gearRatio);
+	}
+	
+	public CanTalonSwerveEnclosure(String name, WPI_TalonSRX driveMotor, WPI_TalonSRX steerMotor,
+			SteerMotorSensorReader steerMotorSensorReader, double gearRatio) {
 		super(name, gearRatio);
-		
+
 		this.driveMotor = driveMotor;
 		this.steerMotor = steerMotor;
+
+		if (steerMotorSensorReader == null) {
+			_steerMotorSensorReader = new SteerMotorSensorReader() {
+				@Override
+				public int getSelectedSensorPosition() {
+					return steerMotor.getSelectedSensorPosition(0);
+				}
+
+			};
+		} else {
+			_steerMotorSensorReader = steerMotorSensorReader;
+		}
 	}
 	
 	@Override
@@ -46,7 +71,7 @@ public class CanTalonSwerveEnclosure extends BaseEnclosure implements SwerveEncl
 	public int getEncPosition()
 	{
 		int reverse = reverseEncoder ? -1 : 1;
-		return reverse * steerMotor.getSelectedSensorPosition(0);
+		return reverse * _steerMotorSensorReader.getSelectedSensorPosition();
 	}
 	
 	@Override

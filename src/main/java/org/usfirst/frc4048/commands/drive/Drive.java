@@ -50,8 +50,6 @@ public class Drive extends Command {
 			rcw *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
 		}
 		Robot.completed(this, "getMode");
-		SmartDashboard.putNumber("rotation", rcw);
-		Robot.completed(this, "dashboard");
 		
 		Robot.drivetrain.move(fwd, str, rcw);
 		Robot.completed(this,"move");
