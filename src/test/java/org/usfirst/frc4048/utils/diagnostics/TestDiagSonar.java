@@ -17,13 +17,13 @@ public class TestDiagSonar{
         DiagSonar classUnderTest = new DiagSonar("switch", mockUltasonic, true, 3.0, 12.0);
 
         when(mockUltasonic.getRangeInches()).thenReturn(7.0);
-        Assert.assertFalse(classUnderTest.getDiagResult());
+        Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
 
         when(mockUltasonic.getRangeInches()).thenReturn(14.0);
-        Assert.assertFalse(classUnderTest.getDiagResult());
+        Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
 
         when(mockUltasonic.getRangeInches()).thenReturn(1.0);
-        Assert.assertTrue(classUnderTest.getDiagResult());
+        Assert.assertTrue(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
     }
 
     @Test
@@ -33,15 +33,15 @@ public class TestDiagSonar{
         DiagSonar classUnderTest = new DiagSonar("switch", mockUltasonic, true, 3.0, 12.0);
 
         when(mockUltasonic.getRangeInches()).thenReturn(7.0);
-        Assert.assertFalse(classUnderTest.getDiagResult());
+        Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
 
         when(mockUltasonic.getRangeInches()).thenReturn(14.0);
-        Assert.assertFalse(classUnderTest.getDiagResult());
+        Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
 
         when(mockUltasonic.getRangeInches()).thenReturn(1.0);
-        Assert.assertTrue(classUnderTest.getDiagResult());
+        Assert.assertTrue(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
 
         classUnderTest.reset();
-        Assert.assertFalse(classUnderTest.getDiagResult());
+        Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
     }
 }
