@@ -12,6 +12,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.PigeonIMU.FusionStatus;
+import com.ctre.phoenix.sensors.PigeonIMU.GeneralStatus;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -20,6 +22,7 @@ import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
 import org.usfirst.frc4048.swerve.drive.SwerveDrive;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
+import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.Drive;
@@ -44,7 +47,14 @@ public class DriveTrain extends Subsystem {
   private WPI_TalonSRX steerFR;
   private WPI_TalonSRX steerRL;
   private WPI_TalonSRX steerRR;
+
+  /**
+   * Note that access to the pigeon should be done inside a synhronized block because the
+   * reading will be done in a separate thread. If you're reading values, use the pigeonData
+   * class member.
+   */
   private PigeonIMU pigeon;
+
   private Encoder encoder;
 
   private AnalogInput analogInputFrontRight;
@@ -131,13 +141,14 @@ public class DriveTrain extends Subsystem {
     rearLeftWheel = new CanTalonSwerveEnclosure("RearLeftWheel", driveRL, steerRL, GEAR_RATIO);
     rearRightWheel = new CanTalonSwerveEnclosure("RearRightWheel", driveRR, steerRR, GEAR_RATIO);
 
-    init();
-
-    swerveDrivetrain = new SwerveDrive(frontRightWheel, frontLeftWheel, rearLeftWheel, rearRightWheel, WIDTH, LENGTH);
-
     if (RobotMap.ENABLE_PIGEON_THREAD) {
       pigeonThread.start();
     }
+
+    swerveDrivetrain = new SwerveDrive(frontRightWheel, frontLeftWheel, rearLeftWheel, rearRightWheel, WIDTH, LENGTH);
+
+    init();
+
   }
   
   public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVETRAIN) {
@@ -168,46 +179,71 @@ public class DriveTrain extends Subsystem {
   private final Thread pigeonThread = new Thread() {
     public void run() {
       for (;;) {
+        final long start_time = System.currentTimeMillis();
         pigeonData.update();
-        // final double heading = pigeon.getFusedHeading();
-        // final long headingAt = System.currentTimeMillis();
-        // final long timeDiff = Math.abs(headingAt - pigeonCurrentAngleAt);
-        // final double angleDiff = Math.abs(heading - pigeonCurrentAngle);
-        // if (angleDiff > 0.3 && timeDiff < 5)
-        //   System.out.println(String.format("pigeonThread: TimeDiff %d,   angleDiff %.1f", timeDiff, angleDiff));
+
+        // Subtract the amount of time that it took to read the pigeon from
+        // the total delay time we want. This should give us
+        // consistently updated readings.
+        final long delta_time = System.currentTimeMillis() - start_time;
+        final long sleep_time = RobotMap.PIGEON_READ_DELAY_MS - delta_time;
+        if (sleep_time > 0) {
+          try {
+            Thread.sleep(sleep_time);
+          }
+          catch (InterruptedException e) {
+          }
+        }
       }
     }
   };
 
   private class PigeonData {
-    private long time = 0;
+    private final double[] ypr = new double[3];
+    private final FusionStatus fstatus = new FusionStatus();
+    private final GeneralStatus gstatus = new GeneralStatus();
+    private long statusExpiration = 0;
     private double heading = 0;
+    private double pitch = 0;
 
     void update() {
-      heading = pigeon.getFusedHeading();
-      time = System.currentTimeMillis();  
+      synchronized(pigeon) {
+        pigeon.getFusedHeading(fstatus);
+        if (fstatus.bIsValid) {
+          heading = fstatus.heading;
+        }
+        else {
+          System.out.println("Pigeon reported invalid status");
+        }
+        pigeon.getYawPitchRoll(ypr);
+        pitch = ypr[1];
+
+        if (RobotMap.SHOW_PIGEON_STATUS_SECONDS > 0) {
+          final long now = System.currentTimeMillis();
+          if (now > statusExpiration) {
+            statusExpiration = now + (RobotMap.SHOW_PIGEON_STATUS_SECONDS * 1000);
+            pigeon.getGeneralStatus(gstatus);
+            if (gstatus.lastError.value != 0) {
+              System.out.println("PigeonStatus: " + gstatus.toString());
+            }
+          }
+      }
     }
   }
+}
+
+
 
   @Override
   public void periodic() {
-    final long start = System.currentTimeMillis();
 
     // Put code here to be run every loop
     if (!RobotMap.ENABLE_PIGEON_THREAD) {
       pigeonData.update();
     }
+    Robot.completed(this, "pigeon");
 
     if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
-      // Add commands:
-      SmartShuffleboard.putCommand("Drive", "drive distance 10", new DriveDistance(10, 0.3, 0.0, 0.0));
-      SmartShuffleboard.putCommand("Drive", "rotate 0", new RotateAngle(0));
-      SmartShuffleboard.putCommand("Drive", "DriveAlignGroup", new DriveAlignGroup());
-      SmartShuffleboard.putCommand("Drive", "DriveAlignPhase2", new DriveAlignPhase2(0.3, 0.4, false));
-      SmartShuffleboard.putCommand("Drive", "DriveAlignPhase3", new DriveAlignPhase3(0.25, false));
-      SmartShuffleboard.putCommand("Drive", "Toggle Centric Mode", new CentricModeToggle());
-
-      // Add other fields:
       SmartShuffleboard.put("Drive", "Encoders", "FR", steerFR.getSelectedSensorPosition(0));
       SmartShuffleboard.put("Drive", "Encoders", "FL", steerFL.getSelectedSensorPosition(0));
       SmartShuffleboard.put("Drive", "Encoders", "RR", steerRR.getSelectedSensorPosition(0));
@@ -224,17 +260,14 @@ public class DriveTrain extends Subsystem {
     }
 
     loggingContext.writeData();
-
-    last_periodic = System.currentTimeMillis() - start;
+    Robot.completed(this, "logging");
   }
-  public long last_periodic = -1;
 
 
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   public void init() {
-    pigeon.setYaw(0, TIMEOUT);
-    pigeon.setFusedHeading(0, TIMEOUT);
+    setGyro(0);
 
     initSteerMotor(steerFR);
     initSteerMotor(steerFL);
@@ -301,8 +334,10 @@ public class DriveTrain extends Subsystem {
 
   @SuppressWarnings("unused")
   private void setGyro(double angle) {
-    pigeon.setYaw(angle, TIMEOUT);
-    pigeon.setFusedHeading(angle, TIMEOUT);
+    synchronized(pigeon) {
+      pigeon.setYaw(angle, TIMEOUT);
+      pigeon.setFusedHeading(angle, TIMEOUT);
+    }
   }
 
   public double getGyro() {
@@ -311,10 +346,7 @@ public class DriveTrain extends Subsystem {
   }
 
   public double getPitch() {
-    double[] ypr = new double[3];
-    pigeon.getYawPitchRoll(ypr);
-    double pitch = ypr[1];
-    return pitch;
+    return pigeonData.pitch;
   }
 
   /**

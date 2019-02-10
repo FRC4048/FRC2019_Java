@@ -38,7 +38,7 @@ interface RobotMapForTestbed {
 
   public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = false;
 
-  public static final boolean ENABLE_CLIMBER_SUBSYSTEM = false;
+  public static final boolean ENABLE_CLIMBER_SUBSYSTEM = true;
 
     /**
    * Enables loging of timing data related to watchdog timeouts.
@@ -69,6 +69,8 @@ interface RobotMapForTestbed {
   public static final int PCM_CAN_ID = 10;  
   public static final int ELEVATOR_MOTOR_ID = 11;
   public static final int CARGO_INTAKE_MOTOR_ID = 12;
+
+  public static final int WINCH_CAN_ID = 13;
 
 
   //ANALOG INPUTS

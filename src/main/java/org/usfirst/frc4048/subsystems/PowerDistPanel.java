@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class PowerDistPanel extends Subsystem {
-	public long last_periodic = -1;
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -50,7 +49,6 @@ public class PowerDistPanel extends Subsystem {
 
     
     public void periodic() {
-		final long start = System.currentTimeMillis();
     	/*
     	 * Logging:
     	 *  Battery Voltage
@@ -59,7 +57,7 @@ public class PowerDistPanel extends Subsystem {
     	 *  
     	 */
 		loggingContext.writeData();
-		last_periodic = System.currentTimeMillis() - start;
+		Robot.completed(this, "pdp");
 	}
 	
     public PowerDistributionPanel getPDP() {

@@ -7,6 +7,7 @@
 
 package org.usfirst.frc4048.subsystems;
 
+import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
 import org.usfirst.frc4048.commands.limelight.LimelightToggleStream;
@@ -71,17 +72,9 @@ public class DrivetrainSensors extends Subsystem {
 
     @Override
     public void periodic() {
-        final long start = System.currentTimeMillis();
-
         // Put code here to be run every loop
 
         if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
-            // Add commands:
-            SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight On", new LimelightToggle(true));
-            SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Off", new LimelightToggle(false));
-            SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Stream Toggle", new LimelightToggleStream());
-
-            // Add other fields:
             SmartShuffleboard.put("DrivetrainSensors", "Ultrasonic", getUltrasonicDistance());
             CameraDistance targetDistance = getTargetDistance();
             SmartShuffleboard.put("DrivetrainSensors", "LimelightValidTarget", targetDistance != null);
@@ -92,11 +85,8 @@ public class DrivetrainSensors extends Subsystem {
         }
         loggingContext.writeData();
 
-        last_periodic = System.currentTimeMillis() - start;
+        Robot.completed(this, "log");
     }
-
-    public long last_periodic = -1;
-
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
