@@ -7,33 +7,43 @@
 
 package org.usfirst.frc4048;
 
+import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
+import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
+import org.usfirst.frc4048.commands.drive.CentricModeToggle;
+import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
+import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
+import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
+import org.usfirst.frc4048.commands.drive.DriveDistance;
+import org.usfirst.frc4048.commands.drive.RotateAngle;
+import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
+import org.usfirst.frc4048.commands.limelight.LimelightToggle;
+import org.usfirst.frc4048.commands.limelight.LimelightToggleStream;
+import org.usfirst.frc4048.subsystems.CargoSubsystem;
+import org.usfirst.frc4048.subsystems.Climber;
+import org.usfirst.frc4048.subsystems.CompressorSubsystem;
+import org.usfirst.frc4048.subsystems.DriveTrain;
+import org.usfirst.frc4048.subsystems.DrivetrainSensors;
+import org.usfirst.frc4048.subsystems.Elevator;
+import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
+import org.usfirst.frc4048.subsystems.PowerDistPanel;
+import org.usfirst.frc4048.utils.ElevatorPosition;
+import org.usfirst.frc4048.utils.Logging;
+import org.usfirst.frc4048.utils.MechanicalMode;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
+import org.usfirst.frc4048.utils.WorkQueue;
+import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc4048.subsystems.CargoSubsystem;
-import org.usfirst.frc4048.subsystems.Climber;
-import org.usfirst.frc4048.subsystems.CompressorSubsystem;
-import org.usfirst.frc4048.subsystems.DriveTrain;
-import org.usfirst.frc4048.utils.*;
-import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
-import org.usfirst.frc4048.commands.cargo.AutoCargoEjectGroup;
-import org.usfirst.frc4048.commands.cargo.CargoEjectGroup;
-import org.usfirst.frc4048.commands.cargo.IntakeCargo;
-import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
-// import org.usfirst.frc4048.commands.DriveTargetCenter;
-// import org.usfirst.frc4048.commands.LimelightAlign;
-import org.usfirst.frc4048.commands.drive.*;
-import org.usfirst.frc4048.commands.limelight.LimelightToggleStream;
-import org.usfirst.frc4048.commands.limelight.LimelightToggle;
-import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
-import org.usfirst.frc4048.subsystems.DriveTrain;
-import org.usfirst.frc4048.subsystems.PowerDistPanel;
-import org.usfirst.frc4048.subsystems.DrivetrainSensors;
-import org.usfirst.frc4048.subsystems.Elevator;
-import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -57,6 +67,16 @@ public class Robot extends TimedRobot {
   public static Climber climber;
   public static Diagnostics diagnostics;
   public static MechanicalMode mechanicalMode;
+  
+  /**
+   * Robot thread scheduler. Initialized with a static thread pool.
+   * 
+   * @See {@link #scheduleTask(Runnable, long)}
+   * @See {@link #cancelAllTasks()}
+   */
+  private final static ScheduledExecutorService executor = Executors.newScheduledThreadPool(3);
+  private final static ArrayList<ScheduledFuture<?>> tasks = new ArrayList<ScheduledFuture<?>>(); 
+
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -67,6 +87,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    cancelAllTasks();
+    
     mechanicalMode = new MechanicalMode();
     int mode = mechanicalMode.getMode();
 
@@ -185,9 +207,10 @@ public class Robot extends TimedRobot {
       commonInit("teleopInit");
   }
   
+  private final static String LINE = "-----------------------------------";
+  
   public void commonInit(final String logingLabel) {
-    final String line = "-----------------------------------"; 
-    logging.traceMessage(Logging.MessageLevel.INFORMATION, line + logingLabel + line);
+    logging.traceMessage(Logging.MessageLevel.INFORMATION, LINE, logingLabel, LINE);
     logging.writeAllTitles();
 
     // This makes sure that the autonomous stops running when
@@ -338,10 +361,27 @@ public class Robot extends TimedRobot {
 	}
 
 	private final static Timer timer = new Timer(100, "teleop");
-
+	
 	static public void completed(final Object caller, final String work) {
 		if (RobotMap.LOG_PERIODIC_TIME > 0)
 			timer.completed(caller, work);
 	}
+	
+	/**
+	 * Schedule a Thread to run with a fixed delay between runs.
+	 */
+	static public void scheduleTask(final Runnable task, final long intervalMS) {
+	  tasks.add(executor.scheduleWithFixedDelay(task, 0, intervalMS, TimeUnit.MILLISECONDS));
+	}
+	
+	/**
+	 * Cancel all scheduled threads.
+	 */
+    private void cancelAllTasks() {
+      for (final ScheduledFuture<?> task : tasks) {
+        task.cancel(true);
+      }
+      tasks.removeAll(tasks);
+    }
 
 }

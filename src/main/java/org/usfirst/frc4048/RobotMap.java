@@ -35,6 +35,6 @@ public interface RobotMap extends RobotMapFor2018Robot {
    */
   public static final boolean ENABLE_STEER_ENCODER_THREAD = true;
   
-  public static final long STEER_ENCODER_READ_DELAY_MS = 11;
+  public static final long STEER_ENCODER_THREAD_INTERVAL_MS = 11;
 
 }

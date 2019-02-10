@@ -7,6 +7,18 @@
 
 package org.usfirst.frc4048.subsystems;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.RobotMap;
+import org.usfirst.frc4048.commands.drive.Drive;
+import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
+import org.usfirst.frc4048.swerve.drive.SwerveDrive;
+import org.usfirst.frc4048.utils.Logging;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -18,19 +30,6 @@ import com.ctre.phoenix.sensors.PigeonIMU.GeneralStatus;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
-import org.usfirst.frc4048.swerve.drive.SwerveDrive;
-import org.usfirst.frc4048.utils.Logging;
-import org.usfirst.frc4048.utils.SmartShuffleboard;
-import org.usfirst.frc4048.Robot;
-import org.usfirst.frc4048.RobotMap;
-import org.usfirst.frc4048.commands.drive.CentricModeToggle;
-import org.usfirst.frc4048.commands.drive.Drive;
-import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
-import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
-import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
-import org.usfirst.frc4048.commands.drive.DriveDistance;
-import org.usfirst.frc4048.commands.drive.RotateAngle;
 
 /**
  * Add your docs here.
@@ -103,13 +102,8 @@ public class DriveTrain extends Subsystem implements RobotMap {
   /* We will be reading it and storing it here in the periodic method and whoever needs    */
   /* whoever needs to use the gyro will get the stored value through the getGyro() method. */
   private final PigeonData pigeonData = new PigeonData();
-
-  /**
-   * Reading the Talon encoder values can be relatively slow. When enabled, this
-   * thread will read the encoder values and provide the values to the Swerve
-   * Drive.
-   */
-  private final SteerEncoderThread steerEncoderThread;
+  
+  private final SteerEncoder steerEncoders[];
 
   public DriveTrain() {
     driveFL = new WPI_TalonSRX(RobotMap.FRONT_LEFT_DRIVE_MOTOR_ID);
@@ -147,13 +141,10 @@ public class DriveTrain extends Subsystem implements RobotMap {
     final SteerEncoder encFR = new SteerEncoder(steerFR);
     final SteerEncoder encRL = new SteerEncoder(steerRL);
     final SteerEncoder encRR = new SteerEncoder(steerRR);
+    steerEncoders = toArray(encFL, encFR, encRL, encRR);
     
     if (ENABLE_STEER_ENCODER_THREAD) {
-      steerEncoderThread = new SteerEncoderThread(encFL, encFR, encRL, encRR);
-      steerEncoderThread.start();
-    }
-    else {
-      steerEncoderThread = null;
+    	Robot.scheduleTask(new SteerEncoderThread(), STEER_ENCODER_THREAD_INTERVAL_MS);
     }
 
     frontLeftWheel = new CanTalonSwerveEnclosure("FrontLeftWheel", driveFL, steerFL, encFL, GEAR_RATIO);
@@ -162,7 +153,7 @@ public class DriveTrain extends Subsystem implements RobotMap {
     rearRightWheel = new CanTalonSwerveEnclosure("RearRightWheel", driveRR, steerRR, encRR, GEAR_RATIO);
 
     if (ENABLE_PIGEON_THREAD) {
-      pigeonThread.start();
+    	Robot.scheduleTask(new PigeonThread(), PIGEON_READ_DELAY_MS);
     }
 
     swerveDrivetrain = new SwerveDrive(frontRightWheel, frontLeftWheel, rearLeftWheel, rearRightWheel, WIDTH, LENGTH);
@@ -171,38 +162,19 @@ public class DriveTrain extends Subsystem implements RobotMap {
 
   }
   
+  private static SteerEncoder[] toArray(final SteerEncoder ... encoders) {
+    return encoders;
+  }
+  
   /**
    * Thread that reads all the steering encoders at predetermined cycles on a
-   * separate thread.
-   * 
-   * @see RobotMap.ENABLE_STEER_ENCODER_THREAD
-   * @see RobotMap.STEER_ENCODER_READ_DELAY_MS
+   * separate thread. The read cycle is determined by the value when the thread is
+   * scheduled.
    */
-  class SteerEncoderThread extends Thread {
-    final SteerEncoder _encoders[];
-
-    SteerEncoderThread(final SteerEncoder... encoders) {
-      _encoders = encoders;
-    }
-
+  private class SteerEncoderThread implements Runnable {
     public void run() {
-      for (;;) {
-        final long start_time = System.currentTimeMillis();
-        for (int i = 0; i < _encoders.length; i++)
-          _encoders[i].update();
-
-        // Subtract the amount of time that it took to read the encoders from
-        // the total delay time we want. This should give us
-        // consistently updated readings.
-        final long delta_time = System.currentTimeMillis() - start_time;
-        final long sleep_time = STEER_ENCODER_READ_DELAY_MS - delta_time;
-        if (sleep_time > 0) {
-          try {
-            Thread.sleep(sleep_time);
-          } catch (InterruptedException e) {
-          }
-        }
-      }
+      for (final SteerEncoder e : steerEncoders)
+        e.update();
     }
   }
 
@@ -222,9 +194,6 @@ public class DriveTrain extends Subsystem implements RobotMap {
 
     @Override
     public int getSelectedSensorPosition() {
-      if (!RobotMap.ENABLE_STEER_ENCODER_THREAD) {
-        update();
-      }
       return _lastValue;
     }
 
@@ -258,25 +227,9 @@ public class DriveTrain extends Subsystem implements RobotMap {
     setDefaultCommand(new Drive());
   }
 
-  private final Thread pigeonThread = new Thread() {
+  private class PigeonThread implements Runnable {
     public void run() {
-      for (;;) {
-        final long start_time = System.currentTimeMillis();
-        pigeonData.update();
-
-        // Subtract the amount of time that it took to read the pigeon from
-        // the total delay time we want. This should give us
-        // consistently updated readings.
-        final long delta_time = System.currentTimeMillis() - start_time;
-        final long sleep_time = RobotMap.PIGEON_READ_DELAY_MS - delta_time;
-        if (sleep_time > 0) {
-          try {
-            Thread.sleep(sleep_time);
-          }
-          catch (InterruptedException e) {
-          }
-        }
-      }
+      pigeonData.update();
     }
   };
 
@@ -319,11 +272,17 @@ public class DriveTrain extends Subsystem implements RobotMap {
   @Override
   public void periodic() {
 
-    // Put code here to be run every loop
-    if (!RobotMap.ENABLE_PIGEON_THREAD) {
+    if (!ENABLE_PIGEON_THREAD) {
       pigeonData.update();
+      Robot.completed(this, "pigeon");
     }
-    Robot.completed(this, "pigeon");
+
+    if (!ENABLE_STEER_ENCODER_THREAD) {
+      for (final SteerEncoder e : steerEncoders) {
+        e.update();
+      }
+      Robot.completed(this, "strenc");
+    }
 
     if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
       SmartShuffleboard.put("Drive", "Encoders", "FR", steerFR.getSelectedSensorPosition(0));

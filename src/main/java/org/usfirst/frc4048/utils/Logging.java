@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
-import java.util.TimerTask;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
@@ -40,7 +39,6 @@ public class Logging implements RobotMap {
      * thread.
      */
     private static final int LOGGING_QUEUE_DEPTH = 512;
-	private final java.util.Timer executor;
 	private final long period;
 	private final WorkQueue wq;
 	public final static DecimalFormat df5 = new DecimalFormat(".#####");
@@ -56,11 +54,10 @@ public class Logging implements RobotMap {
 	}
 
 	public Logging(long period, WorkQueue wq) {
-	    this.executor = new java.util.Timer();
 		this.period = period;
 		this.wq = wq;
-		startThread();
-	}
+		Robot.scheduleTask(new ConsolePrintTask(), period);
+		}
 	
 	abstract static public class LoggingContext {
 		private int counter = 0;
@@ -142,10 +139,6 @@ public class Logging implements RobotMap {
 		}
 	}
 
-	private void startThread() {
-		this.executor.schedule(new ConsolePrintTask(wq, this), 0L, this.period);
-	}
-
 	private void traceMessage(final StringBuilder sb) {
 		if (writeLoggingGap) {
 			if (wq.append("LOGGING GAP!!"))
@@ -197,16 +190,8 @@ public class Logging implements RobotMap {
       }
     }
 
-	private class ConsolePrintTask extends TimerTask {
-		PrintWriter log;
-		final WorkQueue wq;
-		//final Logging l;
-
-		private ConsolePrintTask(WorkQueue wq, Logging l) {
-			//this.l = l;
-			this.wq = wq;
-			log = null;
-		}
+	private class ConsolePrintTask implements Runnable {
+		private PrintWriter log = null;
 
 		public void print() {
 			// Log all events, we want this done also when the robot is disabled
