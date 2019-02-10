@@ -361,27 +361,27 @@ public class Robot extends TimedRobot {
 	}
 
 	private final static Timer timer = new Timer(100, "teleop");
-	
+
 	static public void completed(final Object caller, final String work) {
 		if (RobotMap.LOG_PERIODIC_TIME > 0)
 			timer.completed(caller, work);
 	}
-	
+
 	/**
 	 * Schedule a Thread to run with a fixed delay between runs.
 	 */
 	static public void scheduleTask(final Runnable task, final long intervalMS) {
-	  tasks.add(executor.scheduleWithFixedDelay(task, 0, intervalMS, TimeUnit.MILLISECONDS));
+		tasks.add(executor.scheduleWithFixedDelay(task, 0, intervalMS, TimeUnit.MILLISECONDS));
 	}
-	
+
 	/**
 	 * Cancel all scheduled threads.
 	 */
-    private void cancelAllTasks() {
-      for (final ScheduledFuture<?> task : tasks) {
-        task.cancel(true);
-      }
-      tasks.removeAll(tasks);
-    }
+	private void cancelAllTasks() {
+		for (final ScheduledFuture<?> task : tasks) {
+			task.cancel(true);
+		}
+		tasks.removeAll(tasks);
+	}
 
 }

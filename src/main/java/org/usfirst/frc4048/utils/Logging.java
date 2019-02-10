@@ -44,7 +44,7 @@ public class Logging implements RobotMap {
 	public final static DecimalFormat df5 = new DecimalFormat(".#####");
 	public final static DecimalFormat df4 = new DecimalFormat(".####");
 	public final static DecimalFormat df3 = new DecimalFormat(".###");
-	private final static ArrayList<LoggingContext> logginContexts = new ArrayList<LoggingContext>();
+	private final static ArrayList<LoggingContext> loggingContexts = new ArrayList<LoggingContext>();
 	
 	/**
 	 * Initialize logger with default settings.
@@ -69,7 +69,7 @@ public class Logging implements RobotMap {
 		
 		public LoggingContext(final Subsystems subsystem) {
 			this.subsystem = subsystem;
-			logginContexts.add(this);
+			loggingContexts.add(this);
 		}
 		
 		abstract protected void addAll();
@@ -174,7 +174,7 @@ public class Logging implements RobotMap {
      * the contexts in the same order so the titles and data are corresponding.
      */
     public void writeAllData() {
-      for (final LoggingContext lc : logginContexts) {
+      for (final LoggingContext lc : loggingContexts) {
         lc.writeData();
       }
     }
@@ -185,7 +185,7 @@ public class Logging implements RobotMap {
      * the contexts in the same order so the titles and data are corresponding.
      */
     public void writeAllTitles() {
-      for (final LoggingContext lc : logginContexts) {
+      for (final LoggingContext lc : loggingContexts) {
         lc.writeTitles();
       }
     }
