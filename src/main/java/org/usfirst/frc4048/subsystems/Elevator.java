@@ -37,23 +37,23 @@ public class Elevator extends Subsystem {
 
   private final double ELEVATOR_POSITION_ERROR = 0;
 
-  private final double ELEVATOR_UP_SCALE_FACTOR = 0.6;
-  private final double ELEVATOR_DOWN_SCALE_FACTOR = 0.4;
+  private final double ELEVATOR_UP_SCALE_FACTOR = 0.9;
+  private final double ELEVATOR_DOWN_SCALE_FACTOR = 0.5;
 
-  private final double ELEVATOR_CARGO_P = 10;
+  private final double ELEVATOR_CARGO_P = 0;
   private final double ELEVATOR_CARGO_I = 0;
-  private final double ELEVATOR_CARGO_D = 3;
+  private final double ELEVATOR_CARGO_D = 0;
   private final double ELEVATOR_CARGO_F = 0;
 
-  private final double ELEVATOR_HATCH_P = 1;
-  private final double ELEVATOR_HATCH_I = 0;
+  private final double ELEVATOR_HATCH_P = 5;
+  private final double ELEVATOR_HATCH_I = 1;
   private final double ELEVATOR_HATCH_D = 0;
   private final double ELEVATOR_HATCH_F = 0;
 
   private final int ELEVATOR_ACCEL = 18000; // RPM Of motor we can use these values to set max speed during the movement
   private final int ELEVATOR_CRUISE_VELOCITY = 18000; // ^
   
-  private final int ENCODER_CLOSED_LOOP_ERROR = 12000; //1 inch
+  private final int ENCODER_CLOSED_LOOP_ERROR = 13000; //1 inch
 
   private double elevatorSetpoint;
 
@@ -75,7 +75,8 @@ public class Elevator extends Subsystem {
     elevatorMotor.configPeakOutputReverse(-ELEVATOR_DOWN_SCALE_FACTOR, TIMEOUT);
     elevatorMotor.setNeutralMode(NeutralMode.Brake);
     elevatorMotor.selectProfileSlot(0, 0);
-    elevatorMotor.setInverted(false); 
+    elevatorMotor.setInverted(true); 
+    elevatorMotor.setSensorPhase(true);
     elevatorMotor.configAllowableClosedloopError(0, ENCODER_CLOSED_LOOP_ERROR, TIMEOUT); //This is the margin of error on the encoder value while doing closed loop functions. This will change
     // int elevatorMode = Robot.mechanicalMode.getMode();
     int elevatorMode = RobotMap.HATCH_RETURN_CODE;
@@ -170,6 +171,10 @@ public class Elevator extends Subsystem {
     elevatorMotor.config_kI(0, elevatorI, TIMEOUT);
     elevatorMotor.config_kD(0, elevatorD, TIMEOUT);
     elevatorMotor.config_kF(0, elevatorF, TIMEOUT);
+
+    SmartDashboard.putNumber("elevator p", elevatorP);
+    SmartDashboard.putNumber("elevator i", elevatorI);
+    SmartDashboard.putNumber("elevator d", elevatorD);
     
   }
 }

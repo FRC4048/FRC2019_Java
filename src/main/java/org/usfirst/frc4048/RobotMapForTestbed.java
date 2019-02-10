@@ -60,7 +60,7 @@ interface RobotMapForTestbed {
 
   public static final int DRIVE_PIGEON_ID = 9;
   public static final int PCM_CAN_ID = 10;  
-  public static final int ELEVATOR_MOTOR_ID = 11;
+  public static final int ELEVATOR_MOTOR_ID = 7;
   public static final int CARGO_INTAKE_MOTOR_ID = 12;
 
 
