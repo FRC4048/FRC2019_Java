@@ -44,6 +44,7 @@ interface RobotMapForTestbed {
    * Enables loging of timing data related to watchdog timeouts.
    */
   public static final boolean LOG_PERIODIC_TIME = true;
+  public static final boolean LOG_PERIODIC_TIME_TO_CONSOLE = true;
 
   /**
   * Enable shuffleboard debug tabs
