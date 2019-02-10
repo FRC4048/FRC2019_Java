@@ -28,7 +28,18 @@ public class Logging implements RobotMap {
 	}
 
 	private boolean writeLoggingGap = false;
-	//private static final int MSG_QUEUE_DEPTH = 512;
+	
+    /**
+     * Time period in milliseconds between writing to the log file by the dedicated
+     * logging thread.
+     */
+    private static final int LOGGING_PERIOD = 100;
+    
+    /**
+     * Maximum size of the work queue for sending messages to the dedicated logging
+     * thread.
+     */
+    private static final int LOGGING_QUEUE_DEPTH = 512;
 	private final java.util.Timer executor;
 	private final long period;
 	private final WorkQueue wq;
@@ -36,11 +47,19 @@ public class Logging implements RobotMap {
 	public final static DecimalFormat df4 = new DecimalFormat(".####");
 	public final static DecimalFormat df3 = new DecimalFormat(".###");
 	private final static ArrayList<LoggingContext> logginContexts = new ArrayList<LoggingContext>();
+	
+	/**
+	 * Initialize logger with default settings.
+	 */
+	public Logging() {
+	  this(LOGGING_PERIOD, new WorkQueue(LOGGING_QUEUE_DEPTH));
+	}
 
 	public Logging(long period, WorkQueue wq) {
 	    this.executor = new java.util.Timer();
 		this.period = period;
 		this.wq = wq;
+		startThread();
 	}
 	
 	abstract static public class LoggingContext {
@@ -123,7 +142,7 @@ public class Logging implements RobotMap {
 		}
 	}
 
-	public void startThread() {
+	private void startThread() {
 		this.executor.schedule(new ConsolePrintTask(wq, this), 0L, this.period);
 	}
 
