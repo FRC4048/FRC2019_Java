@@ -148,8 +148,22 @@ interface RobotMapFor2018Robot {
   public static final int CARGO_RETURN_CODE = 1;
   public static final int NOTHING_RETURN_CODE = 2;
   
+  /*
+  * TODO Add correct values for 2018 test robot
+  */
   //PDP IDS
   public static final int PDP_ID_CARGO_INTAKE = 13; //Just a test value for now; will be changed on the real robot.
+  public static final int PDP_STEERING_FR = 11;
+  public static final int PDP_STEERING_FL = 4;
+  public static final int PDP_STEERING_RL = 5;
+  public static final int PDP_STEERING_RR = 10;
+  public static final int PDP_DRIVE_FR = 15;
+  public static final int PDP_DRIVE_FL = 0;
+  public static final int PDP_DRIVE_RL = 1;
+  public static final int PDP_DRIVE_RR = 14;
+  public static final int PDP_LIMELIGHT = 2;
+  public static final int PDP_CLIMBER_WINCH = 3;
+  public static final int PDP_ELEVATOR_MOTOR = 6;
 
   //MOTOR STALL CURRENT THRESHOLDS
   public static final double CURRENT_THRESHOLD_CARGO_INTAKE = 15.0;

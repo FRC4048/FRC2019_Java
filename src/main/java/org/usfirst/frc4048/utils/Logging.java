@@ -22,7 +22,7 @@ public class Logging {
 	}
 
 	public static enum Subsystems {
-		ELEVATOR, HATCHPANEL, CARGO, DRIVETRAIN, POWERDISTPANEL
+		ELEVATOR, HATCHPANEL, CARGO, DRIVETRAIN, DRIVE_SENSORS, POWERDISTPANEL, CLIMBER, COMPRESSOR
 	}
 
 	private boolean writeLoggingGap = false;
@@ -154,10 +154,17 @@ public class Logging {
 	public void printHeadings() {
 		final LoggingContext list[];
 
-		// Might need to print these subsystem headings later
-		// Robot.claw.loggingContext, Robot.wrist.loggingContext, Robot.intake.loggingContext,
-		if(!RobotMap.ENABLE_DRIVETRAIN) {
-			final LoggingContext temp[] = { Robot.drivetrain.loggingContext, Robot.pdp.loggingContext  };
+		if(RobotMap.ENABLE_DRIVETRAIN) {
+			final LoggingContext temp[] = { 
+				Robot.drivetrain.loggingContext, 
+				Robot.pdp.loggingContext,
+				Robot.cargoSubsystem.loggingContext,
+				Robot.climber.loggingContext,
+				Robot.compressorSubsystem.loggingContext,
+				Robot.drivetrainSensors.loggingContext,
+				Robot.elevator.loggingContext,
+				Robot.hatchPanelSubsystem.loggingContext,
+			};
 			list = temp;
 		} else {
 			final LoggingContext temp[] = { Robot.pdp.loggingContext };

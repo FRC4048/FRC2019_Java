@@ -68,11 +68,9 @@ public abstract class BaseEnclosure implements SwerveEnclosure {
 		double longDiff = Math.abs(wa - ea);
 		
 		double diff = Math.min(longDiff, 1.0-longDiff);
-		//SmartDashboard.putNumber("Encoder Difference", diff);
 		
 		if(diff > 0.25) return true;
 		else return false;
-		//return false;
 	}
 	
 	private double convertAngle(double angle, double encoderValue)

@@ -29,9 +29,14 @@ public class CargoSubsystem extends Subsystem {
         opticalSensor = new DigitalInput(RobotMap.CARGO_OPTICAL_SENSOR_ID);
     }
 
-    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVETRAIN) {
+    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.CARGO) {
 
 		protected void addAll() {
+            add("Left Pressed", !leftLimit.get());
+            add("Right Pressed", !rightLimit.get());
+            add("Optical Triggered", !opticalSensor.get());
+            add("Cargo Speed", getCargoSpeed());
+            add("Piston State", getCargoPiston());
 		}
     };
 
@@ -97,7 +102,6 @@ public class CargoSubsystem extends Subsystem {
     public boolean getCargoPiston(){
         return ejectPiston.get();
     }
-
 
     public double getCargoCurrent(){
         return intakeRoller.getOutputCurrent();
