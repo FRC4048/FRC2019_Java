@@ -244,7 +244,11 @@ public class Robot extends TimedRobot {
 
     if (RobotMap.LOG_PERIODIC_TIME > 0) {
       if (timer.total() >= RobotMap.LOG_PERIODIC_TIME) {
-        System.out.println(timer.toString());
+        final String details = timer.toString();
+        if (RobotMap.LOG_PERIODIC_TIME_TO_CONSOLE) {
+          System.out.println(details);
+        }
+        logging.traceMessage(Logging.MessageLevel.TIMER, details);
       }
     }
     timer.term();

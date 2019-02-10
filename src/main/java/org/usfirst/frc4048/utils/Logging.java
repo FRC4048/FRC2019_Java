@@ -19,7 +19,8 @@ import edu.wpi.first.wpilibj.Timer;
 public class Logging implements RobotMap {
 
 	public static enum MessageLevel {
-		 INFORMATION
+		 INFORMATION,
+		 TIMER
 	}
 
 	public static enum Subsystems {
