@@ -1,10 +1,15 @@
 package org.usfirst.frc4048.swerve.drive;
 
+import org.usfirst.frc4048.Robot;
+
 /**
- * Base class for enclosure. Implements common behavior that helps with the robot driving:
- * - Move method that takes into account current position and optimizes the movement to reduce angle rotation
- * - Allows the wheel to make full rotation (when reaching full rotation don't go back to 0, rather keep rotation in same direction)
- * This class uses abstract lower-level implementations of setSpeed and setAngle to be implemented by hardware-specific sub-classes
+ * Base class for enclosure. Implements common behavior that helps with the
+ * robot driving: - Move method that takes into account current position and
+ * optimizes the movement to reduce angle rotation - Allows the wheel to make
+ * full rotation (when reaching full rotation don't go back to 0, rather keep
+ * rotation in same direction) This class uses abstract lower-level
+ * implementations of setSpeed and setAngle to be implemented by
+ * hardware-specific sub-classes
  */
 public abstract class BaseEnclosure implements SwerveEnclosure {
 
@@ -21,6 +26,7 @@ public abstract class BaseEnclosure implements SwerveEnclosure {
 	public void move(double speed, double angle)
 	{
 		int encPosition = getEncPosition();
+		Robot.completed(this, "encpos");
 		angle = convertAngle(angle, encPosition);
 		
 		if(shouldReverse(angle, encPosition))
@@ -62,11 +68,9 @@ public abstract class BaseEnclosure implements SwerveEnclosure {
 		double longDiff = Math.abs(wa - ea);
 		
 		double diff = Math.min(longDiff, 1.0-longDiff);
-		//SmartDashboard.putNumber("Encoder Difference", diff);
 		
 		if(diff > 0.25) return true;
 		else return false;
-		//return false;
 	}
 	
 	private double convertAngle(double angle, double encoderValue)

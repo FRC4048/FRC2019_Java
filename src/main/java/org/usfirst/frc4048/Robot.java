@@ -7,54 +7,32 @@
 
 package org.usfirst.frc4048;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
-import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
-import org.usfirst.frc4048.commands.drive.DriveDistance;
-import org.usfirst.frc4048.commands.pneumatics.ExampleSolenoidCommand;
 import org.usfirst.frc4048.subsystems.CargoSubsystem;
 import org.usfirst.frc4048.subsystems.Climber;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
-import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
-import org.usfirst.frc4048.utils.ElevatorPosition;
+import org.usfirst.frc4048.utils.*;
 import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
-import org.usfirst.frc4048.utils.LimeLightVision;
-import org.usfirst.frc4048.commands.drive.DriveDistanceMaintainAngle;
 import org.usfirst.frc4048.commands.cargo.AutoCargoEjectGroup;
 import org.usfirst.frc4048.commands.cargo.CargoEjectGroup;
 import org.usfirst.frc4048.commands.cargo.IntakeCargo;
+import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
 // import org.usfirst.frc4048.commands.DriveTargetCenter;
 // import org.usfirst.frc4048.commands.LimelightAlign;
-import org.usfirst.frc4048.commands.drive.CentricModeToggle;
-import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
+import org.usfirst.frc4048.commands.drive.*;
 import org.usfirst.frc4048.commands.limelight.LimelightToggleStream;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
-import org.usfirst.frc4048.commands.drive.RotateAngle;
-import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
 import org.usfirst.frc4048.subsystems.DriveTrain;
-import org.usfirst.frc4048.utils.LimeLightVision;
-import org.usfirst.frc4048.utils.Logging;
-import org.usfirst.frc4048.utils.MechanicalMode;
 import org.usfirst.frc4048.subsystems.PowerDistPanel;
-import org.usfirst.frc4048.utils.WorkQueue;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
-// import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.subsystems.Elevator;
-
 import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
 
 /**
@@ -116,7 +94,7 @@ public class Robot extends TimedRobot {
         }
         break;
       default:
-        DriverStation.getInstance().reportError("-----Unable to determine robot has the Hatch Panel or Cargo assembly mounted-----", true);
+        DriverStation.reportError("-----Unable to determine robot has the Hatch Panel or Cargo assembly mounted-----", true);
         break;
     }
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
@@ -126,7 +104,6 @@ public class Robot extends TimedRobot {
 
     // OI must be initialized last
     oi = new OI();
-    // Robot.drivetrainSensors.ledOn();
     SmartDashboard.putData("Auto mode", m_chooser);
 
     WorkQueue wq = new WorkQueue(512);
@@ -146,10 +123,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-    if (RobotMap.ENABLE_COMPRESSOR) {
-      SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
-      SmartDashboard.putNumber("Pressure", Robot.compressorSubsystem.getPressure());
-    }
   }
 
   /**
@@ -215,42 +188,12 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    // SmartDashboard.putData(new LimelightAlign());
-    SmartDashboard.putData("Limelight On", new LimelightToggle(true));
-    SmartDashboard.putData("Limelight Off", new LimelightToggle(false));
-    // SmartDashboard.putData(new RotateAngleForAlignment());
-    // SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.5, false));
-    // SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
-    if(RobotMap.ENABLE_ELEVATOR){
-      SmartDashboard.putData("Elevtor Hatch Rocket Bottom", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
-      SmartDashboard.putData("ELevator Hatch Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
-      SmartDashboard.putData("Elevator Hatch Rocket High", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
-      SmartDashboard.putData("Elevator Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
-      SmartDashboard.putData("Elevator Cargo Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
-      SmartDashboard.putData("Elevator Cargo Rocket High", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
-      SmartDashboard.putData("Elevator Cargo Intake Pos", new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
-      SmartDashboard.putData("Elevator Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
-    }
     if(RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
+    }
 
-      // Shuffleboard.getTab("Approach").add("90", new RotateAngle(90));
-      // Shuffleboard.getTab("Approach").add("-45", new RotateAngle(-45));
-      // Shuffleboard.getTab("Approach").add("0", new RotateAngle(0));
-      // Shuffleboard.getTab("Approach").add("10", new RotateAngle(10));
-      // Shuffleboard.getTab("Approach").add("-30", new RotateAngle(-30));
-
-      // Shuffleboard.getTab("Approach").add("TargetAlign", new
-      // DriveTargetCenter(10.0, -0.25));
-      // SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
-
-      // SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
-      SmartDashboard.putData(new DriveAlignGroup());
-      SmartDashboard.putData(new RotateAngle(0));
-      // SmartDashboard.putData(new RotateAngleForAlignment());
-      SmartDashboard.putData("Toggle Centric Mode", new CentricModeToggle());
-      SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.4, false));
-      SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
+    if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
+      putCommandsOnShuffleboard();
     }
   }
 
@@ -259,49 +202,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    // Disabled for now to look at watchdog timeouts
-    final boolean writeToDashboard = false;
-
-    if (RobotMap.ENABLE_COMPRESSOR) {
-      SmartDashboard.putNumber("Pressure Value", compressorSubsystem.getPressure());
-    }
-    final long step0 = System.currentTimeMillis();
-    if (RobotMap.ENABLE_DRIVETRAIN && writeToDashboard) {
-      SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
-    }
-    final long step1 = System.currentTimeMillis();
-    if (RobotMap.ENABLE_DRIVETRAIN && writeToDashboard) {
-      SmartDashboard.putData(new RotateAngle(90));
-    }
-    final long step2 = System.currentTimeMillis();
-    if (RobotMap.ENABLE_DRIVETRAIN && writeToDashboard) {
-      SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
-      SmartDashboard.putData(new RotateAngle(90));
-      SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
-    }
-    final long step3 = System.currentTimeMillis();
-
+    timer.init();
     Scheduler.getInstance().run();
-    final long step4 = System.currentTimeMillis();
+    timer.completed(this, "Sched");
 
-    if (RobotMap.LOG_PERIODIC_TIME) {
-      if ((step4 - step0) >= 5) {
-        java.lang.StringBuilder sb = new StringBuilder();
-        sb.append("DriDis: ").append((step1 - step0));
-        sb.append(" RotAng: ").append((step2 - step1));
-        sb.append(" GetGyr: ").append((step3 - step2));
-        sb.append(" Sched: ").append((step4 - step3));
-        sb.append(" PDP: ").append(pdp.last_periodic);
-        if (RobotMap.ENABLE_DRIVETRAIN) {
-          sb.append(" DrTr: ").append(drivetrain.last_periodic);
-        }
-        sb.append(" DrTrSen: ").append(drivetrainSensors.last_periodic);
-        sb.append(" DrCmd: ").append(org.usfirst.frc4048.commands.drive.Drive.last_execute);
-        System.out.println(sb);
+    if (RobotMap.LOG_PERIODIC_TIME > 0) {
+      if (timer.total() >= RobotMap.LOG_PERIODIC_TIME) {
+        System.out.println(timer.toString());
       }
     }
-    SmartDashboard.putData("Limelight Streaming", new LimelightToggleStream());
-    SmartDashboard.putNumber("Limelight current streaming", drivetrainSensors.getStream());
+    timer.term();
   }
 
   @Override
@@ -316,6 +226,110 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
     diagnostics.refresh();
     Scheduler.getInstance().run();
+  }
+
+
+  private void putCommandsOnShuffleboard() {
+    if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
+      SmartShuffleboard.putCommand("Climber", "Forward", new ClimbWinchManual(0.5));
+      SmartShuffleboard.putCommand("Climber", "Backwards", new ClimbWinchManual(-0.5));
+      SmartShuffleboard.putCommand("Climber", "Stop", new ClimbWinchManual(0.0));
+    }
+    if (RobotMap.ENABLE_DRIVETRAIN) {
+      SmartShuffleboard.putCommand("Drive", "drive distance 10", new DriveDistance(10, 0.3, 0.0, 0.0));
+      SmartShuffleboard.putCommand("Drive", "rotate 0", new RotateAngle(0));
+      SmartShuffleboard.putCommand("Drive", "DriveAlignGroup", new DriveAlignGroup());
+      SmartShuffleboard.putCommand("Drive", "DriveAlignPhase2", new DriveAlignPhase2(0.3, 0.4, false));
+      SmartShuffleboard.putCommand("Drive", "DriveAlignPhase3", new DriveAlignPhase3(0.25, false));
+      SmartShuffleboard.putCommand("Drive", "Toggle Centric Mode", new CentricModeToggle());
+    }
+
+    SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight On", new LimelightToggle(true));
+    SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Off", new LimelightToggle(false));
+    SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Stream Toggle", new LimelightToggleStream());
+    
+    if (RobotMap.ENABLE_ELEVATOR) {
+      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Bottom", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
+      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
+      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket High", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket High", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Intake Pos", new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
+    }
+
+  }
+
+  public static class Timer {
+    private boolean enabled;
+		private final String id;
+		private int last = 0;
+		private final long time[];
+    private final String info[];
+    private final String caller[];
+    private final int max;
+
+		Timer(final int max, final String id) {
+      this.enabled = false;
+      this.last = 0;
+      this.max = max-1;
+      this.id = id;
+      this.time = new long[max];
+      this.info = new String[max];
+      this.caller = new String[max];
+    }
+    
+    public long total() {
+      return time[last] - time[0];
+    }
+
+		public void completed(final Object caller, final String info) {
+      if (enabled) {
+        if (last < max) {
+          last += 1;
+          this.time[last] = System.currentTimeMillis();
+          this.caller[last] = caller.getClass().getSimpleName();
+          this.info[last] = info;
+        }
+        else {
+          System.out.println(String.format("Timer Max=%d Last=%d", max, last));
+        }
+      }
+    }
+
+		private void init() {
+      enabled = true;
+			last = 0;
+			time[last] = System.currentTimeMillis();
+			info[last] = "start";
+    }
+    
+    private void term() {
+      enabled = false;
+      last = 0;
+    }
+
+		public String toString()
+		{
+			final StringBuilder sb = new StringBuilder();
+      sb.append(id).append(": ").append(total());
+      String lastCaller = "";
+			for (int i=1; i<=last; i++) {
+        if (!lastCaller.equals(caller[i])) {
+          sb.append(" [").append(caller[i]).append("]");
+          lastCaller = caller[i];
+        }
+				sb.append(" ").append(info[i]).append("+").append(time[i]-time[i-1]);
+			}
+			return sb.toString();
+		}
+  }
+
+  private final static Timer timer = new Timer(100, "teleop");
+  static public void completed(final Object caller, final String work) {
+    if (RobotMap.LOG_PERIODIC_TIME > 0)
+      timer.completed(caller, work);
   }
 
 }

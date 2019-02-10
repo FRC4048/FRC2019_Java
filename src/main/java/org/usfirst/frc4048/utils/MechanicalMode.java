@@ -29,13 +29,13 @@ public class MechanicalMode {
 
     public int getMode() {
         if(hatchInput.get() && !cargoInput.get()) {
-            SmartDashboard.putString("Mechanical Mode", "HATCH");
+            SmartShuffleboard.put("Driver", "Mechanical Mode", "HATCH");
             return RobotMap.HATCH_RETURN_CODE;
         } else if(!hatchInput.get() && cargoInput.get()) { 
-            SmartDashboard.putString("Mechanical Mode", "CARGO");
+            SmartShuffleboard.put("Driver", "Mechanical Mode", "CARGO");
             return RobotMap.CARGO_RETURN_CODE;
         } else {
-            SmartDashboard.putString("Mechanical Mode", "INVALID");
+            SmartShuffleboard.put("Driver", "Mechanical Mode", "INVALID");
             return RobotMap.NOTHING_RETURN_CODE;
         }
     }

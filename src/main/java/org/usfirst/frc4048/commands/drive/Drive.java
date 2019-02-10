@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.swerve.math.CentricMode;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 public class Drive extends Command {
 
@@ -23,10 +24,10 @@ public class Drive extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		final long start = System.currentTimeMillis();
         fwd = -Robot.oi.getLeftJoy().getY();
         str = Robot.oi.getLeftJoy().getX();
-        rcw = Robot.oi.getRightJoy().getX();
+		rcw = Robot.oi.getRightJoy().getX();
+		Robot.completed(this, "getJoy");
         
         //Square the values for finer movement
     	if(fwd < 0)
@@ -49,15 +50,16 @@ public class Drive extends Command {
 			str *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
 			rcw *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
 		}
-		SmartDashboard.putNumber("rotation", rcw);	
-		
 
+		Robot.completed(this, "getMode");
+        if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
+			SmartShuffleboard.put("DrivetrainSensors", "drive-cmd-rotation", rcw);
+			Robot.completed(this, "dashboard");
+		}
+		
 		Robot.drivetrain.move(fwd, str, rcw);
-		
-		last_execute = System.currentTimeMillis() - start;
+		Robot.completed(this,"move");
 	}
-
-	static public long last_execute = -1;
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
