@@ -40,6 +40,7 @@ import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -57,8 +58,6 @@ public class Robot extends TimedRobot {
   public static DriveTrain drivetrain;
   public static Logging logging;
   public static PowerDistPanel pdp;
-  public static WorkQueue wq;
-  public static double timeOfStart = 0;
   public static CompressorSubsystem compressorSubsystem;
   public static DrivetrainSensors drivetrainSensors;
   public static Elevator elevator;
@@ -209,8 +208,8 @@ public class Robot extends TimedRobot {
   
   private final static String LINE = "-----------------------------------";
   
-  public void commonInit(final String logingLabel) {
-    logging.traceMessage(Logging.MessageLevel.INFORMATION, LINE, logingLabel, LINE);
+  public void commonInit(final String loggingLabel) {
+    logging.traceMessage(Logging.MessageLevel.INFORMATION, LINE, loggingLabel, LINE);
     logging.writeAllTitles();
 
     // This makes sure that the autonomous stops running when

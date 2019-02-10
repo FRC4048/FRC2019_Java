@@ -202,7 +202,7 @@ public class DriveTrain extends Subsystem implements RobotMap {
     }
   }
   
-  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVETRAIN) {
+  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
 
 		protected void addAll() {
       add("FR Encoder", steerFR.getSelectedSensorPosition(0));

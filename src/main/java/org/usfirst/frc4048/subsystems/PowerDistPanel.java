@@ -24,7 +24,7 @@ public class PowerDistPanel extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-	public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.POWERDISTPANEL) {
+	public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
 
 		@Override
 		protected void addAll() {

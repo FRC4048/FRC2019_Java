@@ -29,7 +29,7 @@ public class CargoSubsystem extends Subsystem {
         opticalSensor = new DigitalInput(RobotMap.CARGO_OPTICAL_SENSOR_ID);
     }
 
-    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.CARGO) {
+    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
 
 		protected void addAll() {
             add("Left Pressed", !leftLimit.get());
