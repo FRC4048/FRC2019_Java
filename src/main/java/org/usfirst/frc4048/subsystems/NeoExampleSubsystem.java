@@ -42,7 +42,7 @@ public class NeoExampleSubsystem extends Subsystem {
     pidController.setOutputRange(-0.5, 0.5);
   }
 
-  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.CLIMBER) {
+  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
 
 		protected void addAll() {
 		}
@@ -64,7 +64,6 @@ public class NeoExampleSubsystem extends Subsystem {
       SmartShuffleboard.put("Climber", "Encoder", encoder.getPosition());
 
     }
-    loggingContext.writeData();
 
     last_periodic = System.currentTimeMillis() - start;
   }
