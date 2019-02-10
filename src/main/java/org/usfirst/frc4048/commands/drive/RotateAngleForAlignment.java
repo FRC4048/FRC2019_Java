@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 public class RotateAngleForAlignment extends LoggedCommand {
   private static final double rightRocketSideAngle = 90.0;
   private static final double rightRocketBackAngle = 151.25;
-  private static final double rightRocketFrontAngle = 61.25;
+  private static final double rightRocketFrontAngle = 28.75;
   private static final double leftRocketSideAngle = 270;
   private static final double leftRocketBackAngle = 241.25;
   private static final double leftRocketFrontAngle = 331.25;
