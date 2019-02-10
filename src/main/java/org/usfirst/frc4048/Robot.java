@@ -168,7 +168,8 @@ public class Robot extends TimedRobot {
 //      m_autonomousCommand.start();
 //    }
 //    
-    teleopInit();
+    commonInit("autonomousInit");
+
   }
 
   /**
@@ -183,6 +184,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+      commonInit("teleopInit");
+  }
+  
+  public void commonInit(final String logingLabel) {
+    final String line = "-----------------------------------"; 
+    logging.traceMessage(Logging.MessageLevel.INFORMATION, line + logingLabel + line);
+    logging.writeAllTitles();
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -206,6 +215,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     timer.init();
+    logging.writeAllData();
+    timer.completed(this, "log");
+    
     Scheduler.getInstance().run();
     timer.completed(this, "Sched");
 

@@ -64,7 +64,6 @@ public class Climber extends Subsystem {
     if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
       // PUT SHUFFLEBOARD CODE HERE
     }
-    loggingContext.writeData();
 
     last_periodic = System.currentTimeMillis() - start;
   }

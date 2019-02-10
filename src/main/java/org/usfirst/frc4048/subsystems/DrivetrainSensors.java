@@ -83,8 +83,6 @@ public class DrivetrainSensors extends Subsystem {
                 SmartShuffleboard.put("DrivetrainSensors", "LimelightSideways", targetDistance.getSideways());
             }
         }
-        loggingContext.writeData();
-
         Robot.completed(this, "log");
     }
 

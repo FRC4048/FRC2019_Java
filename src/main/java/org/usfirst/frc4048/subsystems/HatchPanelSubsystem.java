@@ -53,7 +53,6 @@ public class HatchPanelSubsystem extends Subsystem {
   
   @Override
   public void periodic() {
-    loggingContext.writeData();
   }
 
 public boolean getLeftLimit(){

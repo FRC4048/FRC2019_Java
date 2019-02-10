@@ -341,8 +341,6 @@ public class DriveTrain extends Subsystem implements RobotMap {
 
     }
 
-    loggingContext.writeData();
-    Robot.completed(this, "logging");
   }
 
 

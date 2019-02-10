@@ -114,7 +114,6 @@ public class Elevator extends Subsystem {
       SmartShuffleboard.put("Elevator", "Encoder", getEncoder());
       SmartShuffleboard.put("Elevator", "Current", elevatorMotor.getOutputCurrent());
     }
-    loggingContext.writeData();
     moveElevator();
   }
 

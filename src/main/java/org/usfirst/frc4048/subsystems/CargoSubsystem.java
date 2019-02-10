@@ -57,7 +57,6 @@ public class CargoSubsystem extends Subsystem {
         SmartShuffleboard.put("Cargo", "Right Pressed", !rightLimit.get());
         SmartShuffleboard.put("Cargo", "Optical Triggered", !opticalSensor.get());
       }
-      loggingContext.writeData();
   
       last_periodic = System.currentTimeMillis() - start;
     }

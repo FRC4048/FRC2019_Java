@@ -6,16 +6,18 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.TimerTask;
+
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 
-public class Logging {
+public class Logging implements RobotMap {
 
 	public static enum MessageLevel {
 		 INFORMATION
@@ -26,15 +28,17 @@ public class Logging {
 	}
 
 	private boolean writeLoggingGap = false;
-	private static final int MSG_QUEUE_DEPTH = 512;
-	private java.util.Timer executor;
-	private long period;
-	private WorkQueue wq;
-	public static DecimalFormat df5 = new DecimalFormat(".#####");
-	public static DecimalFormat df4 = new DecimalFormat(".####");
-	public static DecimalFormat df3 = new DecimalFormat(".###");
+	//private static final int MSG_QUEUE_DEPTH = 512;
+	private final java.util.Timer executor;
+	private final long period;
+	private final WorkQueue wq;
+	public final static DecimalFormat df5 = new DecimalFormat(".#####");
+	public final static DecimalFormat df4 = new DecimalFormat(".####");
+	public final static DecimalFormat df3 = new DecimalFormat(".###");
+	private final static ArrayList<LoggingContext> logginContexts = new ArrayList<LoggingContext>();
 
 	public Logging(long period, WorkQueue wq) {
+	    this.executor = new java.util.Timer();
 		this.period = period;
 		this.wq = wq;
 	}
@@ -49,28 +53,29 @@ public class Logging {
 		
 		public LoggingContext(final Subsystems subsystem) {
 			this.subsystem = subsystem;
+			logginContexts.add(this);
 		}
 		
 		abstract protected void addAll();
 		
-		final void writeHeadings() {
+		private final void writeTitles() {
 			writeTitles = true;
 			writeData();
 			writeTitles = false;
 		}
 		
-		public final void writeData() {
+		private final void writeData() {
 			if ((DriverStation.getInstance().isEnabled() && (counter % RobotMap.LOGGING_FREQ == 0)) || writeTitles) {
 				sb.setLength(0);
 				sb.append(df3.format(Timer.getFPGATimestamp()));
-				sb.append(",");
+				sb.append(COMMA);
 				if(DriverStation.getInstance().isDisabled())
 					sb.append(0);
 				else
 					sb.append(df3.format(Timer.getFPGATimestamp() - Robot.timeOfStart));
-				sb.append(",");
+				sb.append(COMMA);
 				sb.append(subsystem.name());
-				sb.append(",");
+				sb.append(COMMA);
 				addAll();
 				Robot.logging.traceMessage(sb);
 			}
@@ -118,7 +123,6 @@ public class Logging {
 	}
 
 	public void startThread() {
-		this.executor = new java.util.Timer();
 		this.executor.schedule(new ConsolePrintTask(wq, this), 0L, this.period);
 	}
 
@@ -150,39 +154,36 @@ public class Logging {
 		}
 		traceMessage(sb);
 	}
-
-	public void printHeadings() {
-		final LoggingContext list[];
-
-		if(RobotMap.ENABLE_DRIVETRAIN) {
-			final LoggingContext temp[] = { 
-				Robot.drivetrain.loggingContext, 
-				Robot.pdp.loggingContext,
-				Robot.cargoSubsystem.loggingContext,
-				Robot.climber.loggingContext,
-				Robot.compressorSubsystem.loggingContext,
-				Robot.drivetrainSensors.loggingContext,
-				Robot.elevator.loggingContext,
-				Robot.hatchPanelSubsystem.loggingContext,
-			};
-			list = temp;
-		} else {
-			final LoggingContext temp[] = { Robot.pdp.loggingContext };
-			list = temp;
-		}
-				
-		for (final LoggingContext c : list) {
-			c.writeHeadings();
-		}
-	}
+	
+    /**
+     * Iterate through all known logging contexts and write the data for each of
+     * them. The #writeAllData and #writeAllTitles functions must iterate through
+     * the contexts in the same order so the titles and data are corresponding.
+     */
+    public void writeAllData() {
+      for (final LoggingContext lc : logginContexts) {
+        lc.writeData();
+      }
+    }
+  
+    /**
+     * Iterate through all known logging contexts and write the title for each of
+     * them. The #writeAllData and #writeAllTitles functions must iterate through
+     * the contexts in the same order so the titles and data are corresponding.
+     */
+    public void writeAllTitles() {
+      for (final LoggingContext lc : logginContexts) {
+        lc.writeTitles();
+      }
+    }
 
 	private class ConsolePrintTask extends TimerTask {
 		PrintWriter log;
 		final WorkQueue wq;
-		final Logging l;
+		//final Logging l;
 
 		private ConsolePrintTask(WorkQueue wq, Logging l) {
-			this.l = l;
+			//this.l = l;
 			this.wq = wq;
 			log = null;
 		}

@@ -56,7 +56,6 @@ public class CompressorSubsystem extends Subsystem {
       SmartShuffleboard.put("Compressor", "Current", getCurrent());
       SmartShuffleboard.put("Compressor", "Pressure", getPressure());    
     }
-    loggingContext.writeData();
 
     last_periodic = System.currentTimeMillis() - start;
   }

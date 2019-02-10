@@ -1,10 +1,7 @@
 package org.usfirst.frc4048.subsystems;
 
-import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
-import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.utils.Logging;
-import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -56,8 +53,6 @@ public class PowerDistPanel extends Subsystem {
     	 *  Swerve Steer Motors
     	 *  
     	 */
-		loggingContext.writeData();
-		Robot.completed(this, "pdp");
 	}
 	
     public PowerDistributionPanel getPDP() {
