@@ -65,6 +65,7 @@ public class Logging implements RobotMap {
 		}
 		
 		private final void writeData() {
+		    counter += 1;
 			if ((DriverStation.getInstance().isEnabled() && (counter % RobotMap.LOGGING_FREQ == 0)) || writeTitles) {
 				sb.setLength(0);
 				sb.append(df3.format(Timer.getFPGATimestamp()));
