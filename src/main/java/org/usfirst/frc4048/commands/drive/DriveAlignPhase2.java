@@ -11,10 +11,10 @@ import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
 import org.usfirst.frc4048.swerve.math.CentricMode;
 import org.usfirst.frc4048.utils.CameraDistance;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveAlignPhase2 extends LoggedCommand {
   private double angle;
@@ -46,8 +46,8 @@ public class DriveAlignPhase2 extends LoggedCommand {
       this.pMax *= -1;
       this.pMin *= -1;
     }
-    SmartDashboard.putNumber("pMax", pMax);
-    SmartDashboard.putNumber("pMin", pMin);
+    SmartShuffleboard.put("DrivetrainSensors", "drive-align-phase-2", "pMax", pMax);
+    SmartShuffleboard.put("DrivetrainSensors", "drive-align-phase-2", "pMin", pMin);
   }
 
   // Called just before this Command runs the first time
@@ -77,11 +77,10 @@ public class DriveAlignPhase2 extends LoggedCommand {
 
     }
 
-    SmartDashboard.putNumber("Forward Distance", forward);
-    SmartDashboard.putNumber("Horizontal Distnace", horizontal);
-    SmartDashboard.putNumber("Angle", Math.toDegrees(angle));
-    SmartDashboard.putNumber("Move Distance", moveDistance);
-
+    SmartShuffleboard.put("DrivetrainSensors", "drive-align-phase-2", "Forward Distance", forward);
+    SmartShuffleboard.put("DrivetrainSensors", "drive-align-phase-2", "Horizontal Distance", horizontal);
+    SmartShuffleboard.put("DrivetrainSensors", "drive-align-phase-2", "Angle", Math.toDegrees(angle));
+    SmartShuffleboard.put("DrivetrainSensors", "drive-align-phase-2", "Move Distance", moveDistance);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -97,7 +96,7 @@ public class DriveAlignPhase2 extends LoggedCommand {
 
     double traveledDistance = Math.abs(Robot.drivetrain.getDistance() - initialDrivetrainDistance);
     double distanceLeft = moveDistance - traveledDistance;
-    // SmartDashboard.putNumber("Distance Left", distanceLeft);
+    // SmartShuffleboard.put("DrivetrainSensors", "drive-align-phase-2", "Distance Left", distanceLeft);
     if (distanceLeft <= 0) {
       done = true;
       return;
@@ -113,9 +112,9 @@ public class DriveAlignPhase2 extends LoggedCommand {
     double pFwd = power * Math.cos(angle);
     double pDir = power * Math.sin(angle);
 
-    // SmartDashboard.putNumber("power", power);    
-    // SmartDashboard.putNumber("pFwd", pFwd);
-    // SmartDashboard.putNumber("pDir", pDir);
+    SmartShuffleboard.put("DrivetrainSensors", "drive-align-phase-2", "power", power);
+    SmartShuffleboard.put("DrivetrainSensors", "drive-align-phase-2", "pFwd", pFwd);
+    SmartShuffleboard.put("DrivetrainSensors", "drive-align-phase-2", "pDir", pDir);
     double currAngle = Robot.drivetrain.getGyro();
     double rot = calcRot(initialAngle, currAngle);
 
@@ -171,7 +170,7 @@ public class DriveAlignPhase2 extends LoggedCommand {
       return pMax;
     }
     double pidRatio = distanceLeft / PID_DISTANCE;
-    SmartDashboard.putNumber("pidRatio", pidRatio);
+    SmartShuffleboard.put("DrivetrainSensors", "drive-align-phase-2", "pidRatio", pidRatio);
     if (Math.abs(pidRatio * pMax) < Math.abs(pMin)) {
       return pMin;
     } else {

@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.swerve.math.CentricMode;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 public class Drive extends Command {
 
@@ -49,7 +50,12 @@ public class Drive extends Command {
 			str *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
 			rcw *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
 		}
+
 		Robot.completed(this, "getMode");
+        if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
+			SmartShuffleboard.put("DrivetrainSensors", "drive-cmd-rotation", rcw);
+			Robot.completed(this, "dashboard");
+		}
 		
 		Robot.drivetrain.move(fwd, str, rcw);
 		Robot.completed(this,"move");

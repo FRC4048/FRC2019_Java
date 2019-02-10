@@ -3,10 +3,10 @@ package org.usfirst.frc4048.commands.drive;
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
 import org.usfirst.frc4048.swerve.math.CentricMode;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveDistanceMaintainAngle extends LoggedCommand {
 	private final double MAX_ERROR = 40.0; // Distance, in Inches, for the PID portion of the path
@@ -70,7 +70,7 @@ public class DriveDistanceMaintainAngle extends LoggedCommand {
 
 		double traveledDistance = Math.abs(Robot.drivetrain.getDistance() - initialDrivetrainDistance);
 		double distanceLeft = totalDistance - traveledDistance;
-		SmartDashboard.putNumber("Distance Left", distanceLeft);
+		SmartShuffleboard.put("DrivetrainSensors", "drive-maintain-angle", "Distance Left", distanceLeft);
 		if (distanceLeft <= 0) {
 			done = true;
 			return;
@@ -85,17 +85,17 @@ public class DriveDistanceMaintainAngle extends LoggedCommand {
 		double power = pidCalc(distanceLeft, pMax, pMin);
 		double pFwd = power * Math.cos(headingAngle);
 		double pDir = power * Math.sin(headingAngle);
-		SmartDashboard.putNumber("power", power);
-		SmartDashboard.putNumber("pFwd", pFwd);
-		SmartDashboard.putNumber("pDir", pDir);
+		SmartShuffleboard.put("DrivetrainSensors", "drive-maintain-angle", "power", power);
+		SmartShuffleboard.put("DrivetrainSensors", "drive-maintain-angle", "pFwd", pFwd);
+		SmartShuffleboard.put("DrivetrainSensors", "drive-maintain-angle", "pDir", pDir);
 		double currAngle = Robot.drivetrain.getGyro();
 		double rot = calcRot(startAngle, currAngle);
 
 		Robot.drivetrain.move(pFwd, pDir, rot);
-		SmartDashboard.putNumber("power", power);
-		SmartDashboard.putNumber("fwd", pFwd);
-		SmartDashboard.putNumber("dir", pDir);
-		SmartDashboard.putNumber("rot", rot);
+		SmartShuffleboard.put("DrivetrainSensors", "drive-maintain-angle", "power", power);
+		SmartShuffleboard.put("DrivetrainSensors", "drive-maintain-angle", "fwd", pFwd);
+		SmartShuffleboard.put("DrivetrainSensors", "drive-maintain-angle", "dir", pDir);
+		SmartShuffleboard.put("DrivetrainSensors", "drive-maintain-angle", "rot", rot);
 	}
 
 	private double calcRot(double startAngle, double currAngle) {
@@ -123,7 +123,7 @@ public class DriveDistanceMaintainAngle extends LoggedCommand {
 			return pMax;
 		}
 		double pidRatio = distanceLeft / MAX_ERROR;
-		SmartDashboard.putNumber("pidRatio", pidRatio);
+		SmartShuffleboard.put("DrivetrainSensors", "drive-maintain-angle", "pidRatio", pidRatio);
 		if (pidRatio < Math.abs(pMin)) {
 			return pMin;
 		} else {

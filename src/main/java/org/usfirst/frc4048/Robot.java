@@ -7,51 +7,32 @@
 
 package org.usfirst.frc4048;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
-import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
-import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
-import org.usfirst.frc4048.commands.drive.DriveDistance;
-import org.usfirst.frc4048.commands.pneumatics.ExampleSolenoidCommand;
 import org.usfirst.frc4048.subsystems.CargoSubsystem;
 import org.usfirst.frc4048.subsystems.Climber;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
-import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
 import org.usfirst.frc4048.utils.*;
 import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
-import org.usfirst.frc4048.commands.drive.DriveDistanceMaintainAngle;
 import org.usfirst.frc4048.commands.cargo.AutoCargoEjectGroup;
 import org.usfirst.frc4048.commands.cargo.CargoEjectGroup;
 import org.usfirst.frc4048.commands.cargo.IntakeCargo;
+import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
 // import org.usfirst.frc4048.commands.DriveTargetCenter;
 // import org.usfirst.frc4048.commands.LimelightAlign;
-import org.usfirst.frc4048.commands.drive.CentricModeToggle;
-import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
+import org.usfirst.frc4048.commands.drive.*;
 import org.usfirst.frc4048.commands.limelight.LimelightToggleStream;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
-import org.usfirst.frc4048.commands.drive.RotateAngle;
-import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
 import org.usfirst.frc4048.subsystems.DriveTrain;
-import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.subsystems.PowerDistPanel;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
-// import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.subsystems.Elevator;
-
 import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
 
 /**
@@ -113,7 +94,7 @@ public class Robot extends TimedRobot {
         }
         break;
       default:
-        DriverStation.getInstance().reportError("-----Unable to determine robot has the Hatch Panel or Cargo assembly mounted-----", true);
+        DriverStation.reportError("-----Unable to determine robot has the Hatch Panel or Cargo assembly mounted-----", true);
         break;
     }
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
@@ -123,7 +104,6 @@ public class Robot extends TimedRobot {
 
     // OI must be initialized last
     oi = new OI();
-    // Robot.drivetrainSensors.ledOn();
     SmartDashboard.putData("Auto mode", m_chooser);
 
     WorkQueue wq = new WorkQueue(512);
@@ -211,26 +191,12 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-
-    if(RobotMap.ENABLE_ELEVATOR){
-      SmartDashboard.putData("Elevtor Hatch Rocket Bottom", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
-      SmartDashboard.putData("ELevator Hatch Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
-      SmartDashboard.putData("Elevator Hatch Rocket High", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
-      SmartDashboard.putData("Elevator Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
-      SmartDashboard.putData("Elevator Cargo Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
-      SmartDashboard.putData("Elevator Cargo Rocket High", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
-      SmartDashboard.putData("Elevator Cargo Intake Pos", new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
-      SmartDashboard.putData("Elevator Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
-    }
-    
     if(RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
     }
 
-    if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
-      SmartShuffleboard.putCommand("Climber", "Forward", new ClimbWinchManual(0.5));
-      SmartShuffleboard.putCommand("Climber", "Backwards", new ClimbWinchManual(-0.5));
-      SmartShuffleboard.putCommand("Climber", "Stop", new ClimbWinchManual(0.0));
+    if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
+      putCommandsOnShuffleboard();
     }
   }
 
@@ -263,6 +229,39 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
     diagnostics.refresh();
     Scheduler.getInstance().run();
+  }
+
+
+  private void putCommandsOnShuffleboard() {
+    if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
+      SmartShuffleboard.putCommand("Climber", "Forward", new ClimbWinchManual(0.5));
+      SmartShuffleboard.putCommand("Climber", "Backwards", new ClimbWinchManual(-0.5));
+      SmartShuffleboard.putCommand("Climber", "Stop", new ClimbWinchManual(0.0));
+    }
+    if (RobotMap.ENABLE_DRIVETRAIN) {
+      SmartShuffleboard.putCommand("Drive", "drive distance 10", new DriveDistance(10, 0.3, 0.0, 0.0));
+      SmartShuffleboard.putCommand("Drive", "rotate 0", new RotateAngle(0));
+      SmartShuffleboard.putCommand("Drive", "DriveAlignGroup", new DriveAlignGroup());
+      SmartShuffleboard.putCommand("Drive", "DriveAlignPhase2", new DriveAlignPhase2(0.3, 0.4, false));
+      SmartShuffleboard.putCommand("Drive", "DriveAlignPhase3", new DriveAlignPhase3(0.25, false));
+      SmartShuffleboard.putCommand("Drive", "Toggle Centric Mode", new CentricModeToggle());
+    }
+
+    SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight On", new LimelightToggle(true));
+    SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Off", new LimelightToggle(false));
+    SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Stream Toggle", new LimelightToggleStream());
+    
+    if (RobotMap.ENABLE_ELEVATOR) {
+      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Bottom", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
+      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
+      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket High", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket High", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Intake Pos", new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
+    }
+
   }
 
   public static class Timer {

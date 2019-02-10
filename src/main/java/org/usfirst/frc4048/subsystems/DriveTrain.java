@@ -236,6 +236,18 @@ public class DriveTrain extends Subsystem implements RobotMap {
   public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVETRAIN) {
 
 		protected void addAll() {
+      add("FR Encoder", steerFR.getSelectedSensorPosition(0));
+      add("FL Encoder", steerFL.getSelectedSensorPosition(0));
+      add("RR Encoder", steerRR.getSelectedSensorPosition(0));
+      add("RL Encoder", steerRL.getSelectedSensorPosition(0));
+
+      add("FR Abs", analogInputFrontRight.getValue());
+      add("FL Abs", analogInputFrontLeft.getValue());
+      add("RR Abs", analogInputRearRight.getValue());
+      add("RL Abs", analogInputRearLeft.getValue());
+
+      add("Gyro", getGyro());
+      add("Centric Mode", swerveDrivetrain.getModeRobot().name());
 		}
   };
 
@@ -314,16 +326,6 @@ public class DriveTrain extends Subsystem implements RobotMap {
     Robot.completed(this, "pigeon");
 
     if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
-      // Add commands:
-      SmartShuffleboard.putCommand("Drive", "drive distance 10", new DriveDistance(10, 0.3, 0.0, 0.0));
-      SmartShuffleboard.putCommand("Drive", "rotate 0", new RotateAngle(0));
-      SmartShuffleboard.putCommand("Drive", "rotate 90", new RotateAngle(90));
-      SmartShuffleboard.putCommand("Drive", "DriveAlignGroup", new DriveAlignGroup());
-      SmartShuffleboard.putCommand("Drive", "Toggle Centric Mode", new CentricModeToggle());
-      SmartShuffleboard.putCommand("Drive", "DriveAlignPhase2", new DriveAlignPhase2(0.3, 0.4, false));
-      SmartShuffleboard.putCommand("Drive", "DriveAlignPhase3", new DriveAlignPhase3(0.25, false));
-
-      // Add other fields:
       SmartShuffleboard.put("Drive", "Encoders", "FR", steerFR.getSelectedSensorPosition(0));
       SmartShuffleboard.put("Drive", "Encoders", "FL", steerFL.getSelectedSensorPosition(0));
       SmartShuffleboard.put("Drive", "Encoders", "RR", steerRR.getSelectedSensorPosition(0));
@@ -335,6 +337,8 @@ public class DriveTrain extends Subsystem implements RobotMap {
       SmartShuffleboard.put("Drive", "Abs Encoders", "RL abs", analogInputRearLeft.getValue());
 
       SmartShuffleboard.put("Drive", "Gyro", getGyro()); 
+      SmartShuffleboard.put("Drive", "Centric mode", swerveDrivetrain.getModeRobot().name()); 
+
     }
 
     loggingContext.writeData();
