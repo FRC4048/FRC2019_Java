@@ -7,6 +7,7 @@
 
 package org.usfirst.frc4048.subsystems;
 
+import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.PressureSensor;
@@ -49,17 +50,14 @@ public class CompressorSubsystem extends Subsystem {
  
   @Override
   public void periodic() {
-    final long start = System.currentTimeMillis();
 
     // Put code here to be run every loop
     if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
       SmartShuffleboard.put("Compressor", "Current", getCurrent());
       SmartShuffleboard.put("Compressor", "Pressure", getPressure());    
+      Robot.completed(this, "shuf");
     }
-
-    last_periodic = System.currentTimeMillis() - start;
   }
-  public long last_periodic = -1;
 
   /**
    * This returns true if the pressure is too low

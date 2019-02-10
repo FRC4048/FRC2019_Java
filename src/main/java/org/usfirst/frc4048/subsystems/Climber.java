@@ -58,16 +58,12 @@ public class Climber extends Subsystem {
 
   @Override
   public void periodic() {
-    final long start = System.currentTimeMillis();
-
     // Put code here to be run every loop
     if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
       // PUT SHUFFLEBOARD CODE HERE
+      Robot.completed(this, "shuf");
     }
-
-    last_periodic = System.currentTimeMillis() - start;
   }
-  public long last_periodic = -1;
 
   public double getAngle() {
     return angleFinder.calcAngleInDegrees();

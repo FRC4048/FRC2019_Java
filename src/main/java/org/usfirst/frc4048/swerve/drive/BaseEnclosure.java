@@ -40,9 +40,11 @@ public abstract class BaseEnclosure implements SwerveEnclosure {
 		}
 		
 		setSpeed(speed);
+		Robot.completed(this, "setspeed");
 		
 		if(speed != 0.0) {
 			setAngle(angle); 
+	        Robot.completed(this, "setangle");
 		}
 	}
 

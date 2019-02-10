@@ -82,8 +82,8 @@ public class DrivetrainSensors extends Subsystem {
                 SmartShuffleboard.put("DrivetrainSensors", "LimelightForward", targetDistance.getForward());
                 SmartShuffleboard.put("DrivetrainSensors", "LimelightSideways", targetDistance.getSideways());
             }
+            Robot.completed(this, "shuf");
         }
-        Robot.completed(this, "log");
     }
 
     // Put methods for controlling this subsystem

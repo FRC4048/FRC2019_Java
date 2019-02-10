@@ -297,7 +297,7 @@ public class DriveTrain extends Subsystem implements RobotMap {
 
       SmartShuffleboard.put("Drive", "Gyro", getGyro()); 
       SmartShuffleboard.put("Drive", "Centric mode", swerveDrivetrain.getModeRobot().name()); 
-
+      Robot.completed(this, "shuf");
     }
 
   }
