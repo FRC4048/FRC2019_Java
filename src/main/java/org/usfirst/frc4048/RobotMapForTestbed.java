@@ -93,12 +93,13 @@ interface RobotMapForTestbed {
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
   public static final int HATCH_DIGITAL_INPUT_ID = 7;
   public static final int CARGO_DIGITAL_INPUT_ID = 8;
-  
+  public static final int PIVOT_LIMIT_SWITCH_LEFT_ID = 9;
+  public static final int PIVOT_LIMIT_SWITCH_RIGHT_ID = 10;
 
   public static final int[] ALIGNMENT_ULTRASONIC_ID = {2,3};
 
   //PWM
-  public static final int WINCH_MOTOR_ID = 1;
+  public static final int PIVOT_MOTOR_ID = 0;
 
   //PCM
   public static final int CARGO_PISTON_ID = 0;

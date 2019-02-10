@@ -19,6 +19,7 @@ import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.utils.*;
 import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
+import org.usfirst.frc4048.subsystems.Pivot;
 import org.usfirst.frc4048.commands.cargo.AutoCargoEjectGroup;
 import org.usfirst.frc4048.commands.cargo.CargoEjectGroup;
 import org.usfirst.frc4048.commands.cargo.IntakeCargo;
@@ -57,6 +58,7 @@ public class Robot extends TimedRobot {
   public static Climber climber;
   public static Diagnostics diagnostics;
   public static MechanicalMode mechanicalMode;
+  public static Pivot pivot;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -101,7 +103,7 @@ public class Robot extends TimedRobot {
       climber = new Climber();
     }
     diagnostics = new Diagnostics();
-
+    pivot = new Pivot();
     // OI must be initialized last
     oi = new OI();
     SmartDashboard.putData("Auto mode", m_chooser);
