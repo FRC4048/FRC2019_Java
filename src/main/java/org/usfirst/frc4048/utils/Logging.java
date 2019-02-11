@@ -46,7 +46,7 @@ public class Logging implements RobotMap {
   private final static char QUOTE = '"';
 
   private final static ArrayList<LoggingContext> loggingContexts = new ArrayList<LoggingContext>();
-  private static double initTime = 0;
+  private static double startTime = 0;
 
   /**
    * Initialize logger with default settings.
@@ -57,9 +57,14 @@ public class Logging implements RobotMap {
 
   public Logging(long period, WorkQueue wq) {
     this.wq = wq;
-    initTime = Timer.getFPGATimestamp();
+    startTime = Timer.getFPGATimestamp();
     Robot.scheduleTask(new ConsolePrintTask(), period);
   }
+  
+  public void setStartTime() {
+    startTime = Timer.getFPGATimestamp();
+  }
+
 
   abstract static public class LoggingContext {
     private int counter = 0;
@@ -94,7 +99,7 @@ public class Logging implements RobotMap {
         if (DriverStation.getInstance().isDisabled())
           sb.append(0);
         else
-          sb.append(df3.format(now - initTime));
+          sb.append(df3.format(now - startTime));
         sb.append(COMMA);
         sb.append(subsystem);
         sb.append(COMMA);
@@ -157,7 +162,7 @@ public class Logging implements RobotMap {
     if (DriverStation.getInstance().isDisabled())
       sb.append(0);
     else
-      sb.append(df3.format(now - initTime));
+      sb.append(df3.format(now - startTime));
     sb.append(COMMA);
     sb.append(ml.name());
     sb.append(COMMA);
@@ -247,4 +252,5 @@ public class Logging implements RobotMap {
       print();
     }
   }
+
 }

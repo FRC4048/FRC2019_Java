@@ -151,7 +151,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    logging.traceMessage(Logging.MessageLevel.INFORMATION,
+				"---------------------------- Robot Disabled ----------------------------");
     // Robot.drivetrainSensors.ledOff();
+    
   }
 
   @Override
@@ -173,21 +176,19 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-//    m_autonomousCommand = m_chooser.getSelected();
-//
-//    /*
-//     * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
-//     * switch(autoSelected) { case "My Auto": autonomousCommand = new
-//     * MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new
-//     * ExampleCommand(); break; }
-//     */
-//
-//    // schedule the autonomous command (example)
-//    if (m_autonomousCommand != null) {
-//      m_autonomousCommand.start();
-//    }
-//    
+    logging.setStartTime();
     commonInit("autonomousInit");
+
+    logging.traceMessage(Logging.MessageLevel.INFORMATION,
+				"---------------------------- Autonomous mode starting ----------------------------");
+    m_autonomousCommand = m_chooser.getSelected();
+
+    /*
+     * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
+     * switch(autoSelected) { case "My Auto": autonomousCommand = new
+     * MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new
+     * ExampleCommand(); break; }
+     */
 
   }
 
@@ -216,6 +217,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    logging.traceMessage(Logging.MessageLevel.INFORMATION,
+				"---------------------------- Teleop mode starting ----------------------------");
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

@@ -249,6 +249,7 @@ public class DriveTrain extends Subsystem implements RobotMap {
         }
         else {
           System.out.println("Pigeon reported invalid status");
+          Robot.logging.traceMessage(Logging.MessageLevel.INFORMATION, "-------------Pigeon reported invalid status--------------");
         }
         pigeon.getYawPitchRoll(ypr);
         pitch = ypr[1];
@@ -260,6 +261,7 @@ public class DriveTrain extends Subsystem implements RobotMap {
             pigeon.getGeneralStatus(gstatus);
             if (gstatus.lastError.value != 0) {
               System.out.println("PigeonStatus: " + gstatus.toString());
+              Robot.logging.traceMessage(Logging.MessageLevel.INFORMATION, "PigeonStatus: " + gstatus.toString());
             }
           }
       }
