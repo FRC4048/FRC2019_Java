@@ -11,6 +11,7 @@ import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
 import org.usfirst.frc4048.swerve.math.CentricMode;
 import org.usfirst.frc4048.utils.CameraDistance;
+import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -61,6 +62,7 @@ public class DriveAlignPhase2 extends LoggedCommand {
       angle = 0;
       moveDistance = 0;
       System.out.println("----------------------No target detected----------------------");
+      Robot.logging.traceMessage(Logging.MessageLevel.INFORMATION, "----------------------No target detected----------------------");
       done = true;
     } else {
       forward = targetDistance.getForward();

@@ -132,7 +132,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    logging.traceMessage(Logging.MessageLevel.INFORMATION,
+				"---------------------------- Robot Disabled ----------------------------");
     // Robot.drivetrainSensors.ledOff();
+    
   }
 
   @Override
@@ -154,6 +157,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    timeOfStart = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
+    logging.traceMessage(Logging.MessageLevel.INFORMATION,
+				"---------------------------- Autonomous mode starting ----------------------------");
     m_autonomousCommand = m_chooser.getSelected();
 
     /*
@@ -184,6 +190,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    logging.traceMessage(Logging.MessageLevel.INFORMATION,
+				"---------------------------- Teleop mode starting ----------------------------");
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
