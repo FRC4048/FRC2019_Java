@@ -10,6 +10,8 @@ package org.usfirst.frc4048;
 import org.usfirst.frc4048.commands.LogError;
 import org.usfirst.frc4048.commands.cargo.CargoEjectGroup;
 import org.usfirst.frc4048.commands.cargo.IntakeCargo;
+import org.usfirst.frc4048.commands.drive.CentricModeToggle;
+import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
 import org.usfirst.frc4048.commands.hatchpanel.HatchPanelIntake;
 import org.usfirst.frc4048.commands.hatchpanel.HatchPanelRelease;
@@ -72,6 +74,8 @@ public class OI {
   private JoystickButton hatchIntake;
   private JoystickButton hatchDropoff;
   
+  private JoystickButton alignWithVision;
+
   private JoystickButton driveSwitchMode;
 
   public OI() {
@@ -115,9 +119,13 @@ public class OI {
       break;
     }
 
+    alignWithVision = new JoystickButton(controller, RobotMap.XBOX_START_BUTTON);
+    alignWithVision.whenPressed(new DriveAlignGroup());
+    
     driveSwitchMode = new JoystickButton(rightJoy, 6);
+    driveSwitchMode.whenPressed(new CentricModeToggle());
 
-    logError = new JoystickButton(controller, 3);
+    logError = new JoystickButton(leftJoy, 6);
     logError.whenPressed(new LogError());
   }
 
