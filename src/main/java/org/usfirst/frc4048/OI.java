@@ -15,6 +15,9 @@ import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
 import org.usfirst.frc4048.commands.hatchpanel.HatchPanelIntake;
 import org.usfirst.frc4048.commands.hatchpanel.HatchPanelRelease;
+import org.usfirst.frc4048.triggers.LeftDPADTrigger;
+import org.usfirst.frc4048.triggers.RightDPADTrigger;
+import org.usfirst.frc4048.triggers.XboxTriggerRight;
 import org.usfirst.frc4048.utils.ElevatorPosition;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -58,22 +61,24 @@ public class OI {
   private Joystick controller;
   private Joystick leftJoy;
   private Joystick rightJoy;
-  private Joystick manualController;
-  private XboxController manualXboxController;
+  private XboxController xboxController;
+  private final XboxTriggerRight xboxTriggerRight;
+  private final RightDPADTrigger rightDPADTrigger;
+  private final LeftDPADTrigger leftDPADTrigger;
 
-  private JoystickButton manualHatchTopRocket;
-  private JoystickButton manualHatchMidRocket;
-  private JoystickButton manualHatchBotRocket;
-  private JoystickButton manualCargoTopRocket;
-  private JoystickButton manualCargoMidRocket;
-  private JoystickButton manualCargoBotRocket;
-  private JoystickButton manualCargoCargoship;
-  
+  private JoystickButton hatchTopRocket;
+  private JoystickButton hatchMidRocket;
+  private JoystickButton hatchBotRocket;
+  private JoystickButton cargoTopRocket;
+  private JoystickButton cargoMidRocket;
+  private JoystickButton cargoBotRocket;
+  private JoystickButton cargoCargoship;
+
   private JoystickButton cargoIntake;
   private JoystickButton cargoShoot;
   private JoystickButton hatchIntake;
   private JoystickButton hatchDropoff;
-  
+
   private JoystickButton alignWithVision;
 
   private JoystickButton driveSwitchMode;
@@ -82,38 +87,41 @@ public class OI {
     leftJoy = new Joystick(0);
     rightJoy = new Joystick(1);
     controller = new Joystick(2);
-    manualController = new Joystick(3);
-    manualXboxController = new XboxController(3);
+    xboxController = new XboxController(2);
+    xboxTriggerRight = new XboxTriggerRight(xboxController);
+    rightDPADTrigger = new RightDPADTrigger(xboxController);
+    leftDPADTrigger = new LeftDPADTrigger(xboxController);
 
     // Put all button inputs that are based off of the mechanism they are tied to in
     // this switch statement
     int mode = Robot.mechanicalMode.getMode();
     switch (mode) {
     case RobotMap.CARGO_RETURN_CODE:
-      manualCargoTopRocket = new JoystickButton(manualController, RobotMap.XBOX_Y_BUTTON);
-      manualCargoMidRocket = new JoystickButton(manualController, RobotMap.XBOX_X_BUTTON);
-      manualCargoBotRocket = new JoystickButton(manualController, RobotMap.XBOX_A_BUTTON);
-      manualCargoCargoship = new JoystickButton(manualController, RobotMap.XBOX_B_BUTTON);
-      cargoIntake = new JoystickButton(manualController, RobotMap.XBOX_RIGHT_BUMPER);
-      cargoShoot = new JoystickButton(manualController, RobotMap.XBOX_LEFT_BUMPER);
+      cargoTopRocket = new JoystickButton(controller, RobotMap.XBOX_Y_BUTTON);
+      cargoMidRocket = new JoystickButton(controller, RobotMap.XBOX_X_BUTTON);
+      cargoBotRocket = new JoystickButton(controller, RobotMap.XBOX_A_BUTTON);
+      cargoCargoship = new JoystickButton(controller, RobotMap.XBOX_B_BUTTON);
+      cargoIntake = new JoystickButton(controller, RobotMap.XBOX_RIGHT_BUMPER);
+      cargoShoot = new JoystickButton(controller, RobotMap.XBOX_LEFT_BUMPER);
 
-      manualCargoTopRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
-      manualCargoMidRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
-      manualCargoBotRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
-      manualCargoCargoship.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
+      xboxTriggerRight.whenActive(new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
+      cargoTopRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
+      cargoMidRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
+      cargoBotRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
+      cargoCargoship.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
       cargoIntake.whenPressed(new IntakeCargo());
       cargoShoot.whenPressed(new CargoEjectGroup());
       break;
     case RobotMap.HATCH_RETURN_CODE:
-      manualHatchTopRocket = new JoystickButton(manualController, RobotMap.XBOX_Y_BUTTON);
-      manualHatchMidRocket = new JoystickButton(manualController, RobotMap.XBOX_X_BUTTON);
-      manualHatchBotRocket = new JoystickButton(manualController, RobotMap.XBOX_A_BUTTON);
-      hatchIntake = new JoystickButton(manualController, RobotMap.XBOX_RIGHT_BUMPER);
-      hatchDropoff = new JoystickButton(manualController, RobotMap.XBOX_LEFT_BUMPER);
-      
-      manualHatchTopRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
-      manualHatchMidRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
-      manualHatchBotRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
+      hatchTopRocket = new JoystickButton(controller, RobotMap.XBOX_Y_BUTTON);
+      hatchMidRocket = new JoystickButton(controller, RobotMap.XBOX_X_BUTTON);
+      hatchBotRocket = new JoystickButton(controller, RobotMap.XBOX_A_BUTTON);
+      hatchIntake = new JoystickButton(controller, RobotMap.XBOX_RIGHT_BUMPER);
+      hatchDropoff = new JoystickButton(controller, RobotMap.XBOX_LEFT_BUMPER);
+
+      hatchTopRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
+      hatchMidRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
+      hatchBotRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
       hatchIntake.whenPressed(new HatchPanelIntake());
       hatchDropoff.whenPressed(new HatchPanelRelease());
       break;
@@ -121,12 +129,13 @@ public class OI {
 
     alignWithVision = new JoystickButton(controller, RobotMap.XBOX_START_BUTTON);
     alignWithVision.whenPressed(new DriveAlignGroup());
-    
+
     driveSwitchMode = new JoystickButton(rightJoy, 6);
     driveSwitchMode.whenPressed(new CentricModeToggle());
 
     logError = new JoystickButton(leftJoy, 6);
     logError.whenPressed(new LogError());
+
   }
 
   public Joystick getLeftJoy() {
@@ -135,13 +144,5 @@ public class OI {
 
   public Joystick getRightJoy() {
     return rightJoy;
-  }
-
-  public double getLeftTrigger() {
-    return manualXboxController.getTriggerAxis(Hand.kLeft);
-  }
-
-  public double getRightTrigger() {
-    return manualXboxController.getTriggerAxis(Hand.kRight);
   }
 }
