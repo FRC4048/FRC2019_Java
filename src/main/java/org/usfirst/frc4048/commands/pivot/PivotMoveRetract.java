@@ -12,10 +12,10 @@ import org.usfirst.frc4048.commands.LoggedCommand;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class PivotMoveIn extends LoggedCommand {
+public class PivotMoveRetract extends LoggedCommand {
   private static final double IN_SPEED = -1;
-  public PivotMoveIn() {
-    super("PivotMoveIn");
+  public PivotMoveRetract() {
+    super("PivotMoveRetract");
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.pivot);
@@ -42,6 +42,10 @@ public class PivotMoveIn extends LoggedCommand {
   // Called once after isFinished returns true
   @Override
   protected void loggedEnd() {
+    if(Robot.pivot.getRightSwitch()) {
+      Robot.pivot.movePiston(false);
+    }
+    Robot.pivot.setSpeed(0.0);
   }
 
   // Called when another command which requires one or more of the same
@@ -53,6 +57,6 @@ public class PivotMoveIn extends LoggedCommand {
 
   @Override
   protected void loggedCancel() {
-
+    loggedEnd();
   }
 }

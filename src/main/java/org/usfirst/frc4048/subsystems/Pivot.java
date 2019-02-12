@@ -10,6 +10,7 @@ package org.usfirst.frc4048.subsystems;
 import org.usfirst.frc4048.RobotMap;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -22,11 +23,12 @@ public class Pivot extends Subsystem {
   private Spark pivotMotor;
   private DigitalInput limitSwitchLeft;
   private DigitalInput limitSwitchRight;
-
+  private Solenoid lockPiston;
   public Pivot() {
     pivotMotor = new Spark(RobotMap.PIVOT_MOTOR_ID);
     limitSwitchLeft = new DigitalInput(RobotMap.PIVOT_LIMIT_SWITCH_LEFT_ID);
     limitSwitchRight = new DigitalInput(RobotMap.PIVOT_LIMIT_SWITCH_RIGHT_ID);
+    lockPiston = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.PIVOT_PISTON_ID);
   }
 
   @Override
@@ -45,5 +47,9 @@ public class Pivot extends Subsystem {
 
   public boolean getRightSwitch() {
     return limitSwitchRight.get();
+  }
+
+  public void movePiston(boolean state) {
+    lockPiston.set(state);
   }
 }
