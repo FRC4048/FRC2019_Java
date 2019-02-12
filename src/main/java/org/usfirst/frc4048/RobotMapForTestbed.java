@@ -68,10 +68,7 @@ interface RobotMapForTestbed {
   public static final int DRIVE_PIGEON_ID = 9;
   public static final int PCM_CAN_ID = 10;  
   public static final int ELEVATOR_MOTOR_ID = 11;
-  public static final int CARGO_INTAKE_MOTOR_ID = 12;
-
-  public static final int WINCH_CAN_ID = 13;
-
+  public static final int WINCH_CAN_ID = 12;
 
   //ANALOG INPUTS
   public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID = 0;
@@ -81,8 +78,6 @@ interface RobotMapForTestbed {
   
   public static final int CLIMBER_DISTANCE_SENSOR_LEFT_ID = 4;
   public static final int CLIMBER_DISTANCE_SENSOR_RIGHT_ID = 5;
-  public static final int ALIGNMENT_DISTANCE_SENSOR_ID = 6;
-
   public static final int COMPRESSOR_PRESSURE_SENSOR = 2;
 
   //DIGITAL INPUTS
@@ -93,19 +88,21 @@ interface RobotMapForTestbed {
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
   public static final int HATCH_DIGITAL_INPUT_ID = 7;
   public static final int CARGO_DIGITAL_INPUT_ID = 8;
-  
+  public static final int PIVOT_LIMIT_SWITCH_LEFT_ID = 9;
+  public static final int PIVOT_LIMIT_SWITCH_RIGHT_ID = 10;
 
   public static final int[] ALIGNMENT_ULTRASONIC_ID = {2,3};
 
   //PWM
-  public static final int WINCH_MOTOR_ID = 1;
-
+  public static final int PIVOT_MOTOR_ID = 0;
+  public static final int CARGO_WINCH_ID = 1;
+  
   //PCM
   public static final int CARGO_PISTON_ID = 0;
   public static final int HATCH_PANEL_PISTON_ID = 1;
-  public static final int HATCH_PANEL_WRIST_PISTON_ID = 2;
-  public static final int INTAKES_WRIST_PISTON_ID = 3;
-  public static final int CLIMBER_PISTONS_ID = 4;
+  public static final int INTAKES_WRIST_PISTON_ID = 2;
+  public static final int CLIMBER_PISTONS_ID = 3;
+  public static final int PIVOT_PISTON_ID = 4;
 
   //OI
   public static final int XBOX_A_BUTTON = 1;
