@@ -95,7 +95,7 @@ interface RobotMapForTestbed {
 
   //PWM
   public static final int PIVOT_MOTOR_ID = 0;
-  public static final int CARGO_WINCH_ID = 1;
+  public static final int CARGO_MOTOR_ID = 1;
   
   //PCM
   public static final int CARGO_PISTON_ID = 0;

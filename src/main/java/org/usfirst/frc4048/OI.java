@@ -15,6 +15,8 @@ import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
 import org.usfirst.frc4048.commands.hatchpanel.HatchPanelIntake;
 import org.usfirst.frc4048.commands.hatchpanel.HatchPanelRelease;
+import org.usfirst.frc4048.commands.pivot.PivotMoveDeploy;
+import org.usfirst.frc4048.commands.pivot.PivotMoveRetract;
 import org.usfirst.frc4048.triggers.LeftDPADTrigger;
 import org.usfirst.frc4048.triggers.RightDPADTrigger;
 import org.usfirst.frc4048.triggers.XboxTriggerRight;
@@ -126,6 +128,9 @@ public class OI {
       hatchDropoff.whenPressed(new HatchPanelRelease());
       break;
     }
+
+    leftDPADTrigger.whenActive(new PivotMoveRetract());
+    rightDPADTrigger.whenActive(new PivotMoveDeploy());
 
     alignWithVision = new JoystickButton(controller, RobotMap.XBOX_START_BUTTON);
     alignWithVision.whenPressed(new DriveAlignGroup());
