@@ -35,12 +35,10 @@ import org.usfirst.frc4048.utils.ElevatorPosition;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.MechanicalMode;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
-import org.usfirst.frc4048.utils.WorkQueue;
 import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -66,7 +64,7 @@ public class Robot extends TimedRobot {
   public static Climber climber;
   public static Diagnostics diagnostics;
   public static MechanicalMode mechanicalMode;
-  
+
   /**
    * Robot thread scheduler. Initialized with a static thread pool.
    * 
@@ -74,8 +72,7 @@ public class Robot extends TimedRobot {
    * @See {@link #cancelAllTasks()}
    */
   private final static ScheduledExecutorService executor = Executors.newScheduledThreadPool(3);
-  private final static ArrayList<ScheduledFuture<?>> tasks = new ArrayList<ScheduledFuture<?>>(); 
-
+  private final static ArrayList<ScheduledFuture<?>> tasks = new ArrayList<ScheduledFuture<?>>();
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -87,7 +84,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     cancelAllTasks();
-    
+
     mechanicalMode = new MechanicalMode();
     int mode = mechanicalMode.getMode();
 
@@ -100,34 +97,33 @@ public class Robot extends TimedRobot {
       compressorSubsystem = new CompressorSubsystem();
     }
     drivetrainSensors = new DrivetrainSensors();
-    if (RobotMap.ENABLE_ELEVATOR){
+    if (RobotMap.ENABLE_ELEVATOR) {
       elevator = new Elevator();
     }
-    switch(mode){
-      case RobotMap.CARGO_RETURN_CODE:
-        if (RobotMap.ENABLE_CARGO_SUBSYSTEM) {
-          cargoSubsystem = new CargoSubsystem();
-        }
-        break;
-      case RobotMap.HATCH_RETURN_CODE:
-        if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM) {
-          hatchPanelSubsystem = new HatchPanelSubsystem();
-        }
-        break;
-      default:
-        DriverStation.reportError("-----Unable to determine robot has the Hatch Panel or Cargo assembly mounted-----", true);
-        break;
+    switch (mode) {
+    case RobotMap.CARGO_RETURN_CODE:
+      if (RobotMap.ENABLE_CARGO_SUBSYSTEM) {
+        cargoSubsystem = new CargoSubsystem();
+      }
+      break;
+    case RobotMap.HATCH_RETURN_CODE:
+      if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM) {
+        hatchPanelSubsystem = new HatchPanelSubsystem();
+      }
+      break;
+    default:
+      DriverStation.reportError("-----Unable to determine robot has the Hatch Panel or Cargo assembly mounted-----", true);
+      break;
     }
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
       climber = new Climber();
     }
     diagnostics = new Diagnostics();
+    logging = new Logging();
 
     // OI must be initialized last
     oi = new OI();
     SmartDashboard.putData("Auto mode", m_chooser);
-
-    logging = new Logging();
   }
 
   /**
@@ -152,9 +148,9 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     logging.traceMessage(Logging.MessageLevel.INFORMATION,
-				"---------------------------- Robot Disabled ----------------------------");
+        "---------------------------- Robot Disabled ----------------------------");
     // Robot.drivetrainSensors.ledOff();
-    
+
   }
 
   @Override
@@ -179,8 +175,6 @@ public class Robot extends TimedRobot {
     logging.setStartTime();
     commonInit("autonomousInit");
 
-    logging.traceMessage(Logging.MessageLevel.INFORMATION,
-				"---------------------------- Autonomous mode starting ----------------------------");
     m_autonomousCommand = m_chooser.getSelected();
 
     /*
@@ -204,11 +198,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-      commonInit("teleopInit");
+    commonInit("teleopInit");
   }
-  
+
   private final static String LINE = "-----------------------------------";
-  
+
   public void commonInit(final String loggingLabel) {
     logging.traceMessage(Logging.MessageLevel.INFORMATION, LINE, loggingLabel, LINE);
     logging.writeAllTitles();
@@ -217,13 +211,11 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    logging.traceMessage(Logging.MessageLevel.INFORMATION,
-				"---------------------------- Teleop mode starting ----------------------------");
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
 
-    if(RobotMap.ENABLE_DRIVETRAIN) {
+    if (RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
     }
 
@@ -240,7 +232,7 @@ public class Robot extends TimedRobot {
     timer.init();
     logging.writeAllData();
     timer.completed(this, "log");
-    
+
     Scheduler.getInstance().run();
     timer.completed(this, "Sched");
 
@@ -270,7 +262,6 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   }
 
-
   private void putCommandsOnShuffleboard() {
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
       SmartShuffleboard.putCommand("Climber", "Forward", new ClimbWinchManual(0.5));
@@ -289,7 +280,7 @@ public class Robot extends TimedRobot {
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight On", new LimelightToggle(true));
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Off", new LimelightToggle(false));
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Stream Toggle", new LimelightToggleStream());
-    
+
     if (RobotMap.ENABLE_ELEVATOR) {
       SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Bottom", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
       SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
@@ -303,91 +294,105 @@ public class Robot extends TimedRobot {
 
   }
 
-	public static class Timer {
-		private boolean enabled;
-		private final String id;
-		private int last = 0;
-		private final long time[];
-		private final String info[];
-		private final String caller[];
-		private final int max;
+  public static class Timer {
+    private boolean enabled;
+    private final String id;
+    private int last = 0;
+    private final long time[];
+    private final String info[];
+    private final String caller[];
+    private final int max;
 
-		Timer(final int max, final String id) {
-			this.enabled = false;
-			this.last = 0;
-			this.max = max - 1;
-			this.id = id;
-			this.time = new long[max];
-			this.info = new String[max];
-			this.caller = new String[max];
-		}
+    Timer(final int max, final String id) {
+      this.enabled = false;
+      this.last = 0;
+      this.max = max - 1;
+      this.id = id;
+      this.time = new long[max];
+      this.info = new String[max];
+      this.caller = new String[max];
+    }
 
-		public long total() {
-			return time[last] - time[0];
-		}
+    public long total() {
+      if (enabled)
+        return time[last] - time[0];
+      else
+        return -1;
+    }
 
-		public void completed(final Object caller, final String info) {
-			if (enabled) {
-				if (last < max) {
-					last += 1;
-					this.time[last] = System.currentTimeMillis();
-					this.caller[last] = caller.getClass().getSimpleName();
-					this.info[last] = info;
-				} else {
-					System.out.println(String.format("Timer Max=%d Last=%d", max, last));
-				}
-			}
-		}
+    public void completed(final Object caller, final String info) {
+      if (enabled) {
+        if (last < max) {
+          last += 1;
+          this.time[last] = System.currentTimeMillis();
+          this.caller[last] = caller.getClass().getSimpleName();
+          this.info[last] = info;
+        } else {
+          System.out.println(String.format("Timer Max=%d Last=%d", max, last));
+        }
+      }
+    }
 
-		private void init() {
-			enabled = true;
-			last = 0;
-			time[last] = System.currentTimeMillis();
-			info[last] = "start";
-		}
+    private void init() {
+      enabled = (RobotMap.LOG_PERIODIC_TIME > 0);
+      if (enabled) {
+        last = 0;
+        time[last] = System.currentTimeMillis();
+        info[last] = "start";
+      }
+    }
 
-		private void term() {
-			enabled = false;
-			last = 0;
-		}
+    private void term() {
+      enabled = false;
+      last = 0;
+    }
 
-		public String toString() {
-			final StringBuilder sb = new StringBuilder();
-			sb.append(id).append(": ").append(total());
-			String lastCaller = "";
-			for (int i = 1; i <= last; i++) {
-				if (!lastCaller.equals(caller[i])) {
-					sb.append(" [").append(caller[i]).append("]");
-					lastCaller = caller[i];
-				}
-				sb.append(" ").append(info[i]).append("+").append(time[i] - time[i - 1]);
-			}
-			return sb.toString();
-		}
-	}
+    public String toString() {
+      if (enabled) {
+        final StringBuilder sb = new StringBuilder();
+        sb.append(id).append(": ").append(total());
+        String lastCaller = "";
+        for (int i = 1; i <= last; i++) {
+          if (!lastCaller.equals(caller[i])) {
+            sb.append(" [").append(caller[i]).append("]");
+            lastCaller = caller[i];
+          }
+          sb.append(" ").append(info[i]).append("+").append(time[i] - time[i - 1]);
+        }
+        return sb.toString();
+      } else {
+        return "n/a";
+      }
+    }
+  }
 
-	private final static Timer timer = new Timer(100, "teleop");
+  private final static Timer timer = new Timer(100, "teleop");
 
-	static public void completed(final Object caller, final String work) {
-		if (RobotMap.LOG_PERIODIC_TIME > 0)
-			timer.completed(caller, work);
-	}
+  /**
+   * Record a work unit that was completed. As part of the periodic processing
+   * each component can report what work was completed and at the end of the
+   * periodic time will be reported using Timer.toString() by each successive
+   * step.
+   */
+  static public void completed(final Object caller, final String work) {
+    timer.completed(caller, work);
+  }
 
-	/**
-	 * Schedule a Thread to run with a fixed delay between runs.
-	 */
-	static public void scheduleTask(final Runnable task, final long intervalMS) {
-		tasks.add(executor.scheduleWithFixedDelay(task, 0, intervalMS, TimeUnit.MILLISECONDS));
-	}
+  /**
+   * Schedule a Thread to run with a fixed delay between runs.
+   */
+  static public void scheduleTask(final Runnable task, final long intervalMS) {
+    tasks.add(executor.scheduleWithFixedDelay(task, 0, intervalMS, TimeUnit.MILLISECONDS));
+  }
 
-	/**
-	 * Cancel all scheduled threads.
-	 */
-	private void cancelAllTasks() {
-		for (final ScheduledFuture<?> task : tasks) {
-			task.cancel(true);
-		}
-		tasks.removeAll(tasks);
-	}
+  /**
+   * Cancel all scheduled threads.
+   */
+  private void cancelAllTasks() {
+    for (final ScheduledFuture<?> task : tasks) {
+      task.cancel(true);
+    }
+    tasks.removeAll(tasks);
+  }
 
 }
