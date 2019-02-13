@@ -44,7 +44,7 @@ public class CanTalonSwerveEnclosure extends BaseEnclosure implements SwerveEncl
 	}
 	
 	@Override
-	public int getEncPosition()
+	protected int getEncPosition()
 	{
 		int reverse = reverseEncoder ? -1 : 1;
 		return reverse * steerMotor.getSelectedSensorPosition(0);
