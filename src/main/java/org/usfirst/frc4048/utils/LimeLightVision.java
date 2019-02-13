@@ -11,7 +11,7 @@ public class LimeLightVision {
 
     public static final int LED_ON = 3;
     public static final int LED_OFF = 1;
-
+    
     NetworkTable table;
     NetworkTableEntry tv;
     NetworkTableEntry tx;
@@ -19,6 +19,7 @@ public class LimeLightVision {
     NetworkTableEntry ta;
     NetworkTableEntry ts;
     NetworkTableEntry tl;
+    NetworkTableEntry stream;
 
     public LimeLightVision() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -28,6 +29,7 @@ public class LimeLightVision {
         ta = table.getEntry("ta");
         ts = table.getEntry("ts");
         tl = table.getEntry("tl");
+        stream = table.getEntry("stream");
     }
 
     LimeLightVision(boolean DO_NOT_USE_FOR_TESTING_ONLY) {
@@ -76,6 +78,23 @@ public class LimeLightVision {
 
     public void setLedOff() {
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(LED_OFF);
+    }
+
+    /**
+     * The Limelight camera has 3 streaming modes if a second USB camera is plugged in.
+     * 0 = both, side by side
+     * 1 = Limelight stream with USB camera in the corner
+     * 2 = USB camera stream with Limelight in the corner
+     */
+    public void setStream(double option) {
+        if (option >= 0.0 && option <= 2.0)
+        {
+           stream.setDouble(option);
+        }
+    }
+
+    public double getStream() {
+        return stream.getDouble(0.0);
     }
 
     /**

@@ -8,7 +8,9 @@
 package org.usfirst.frc4048.subsystems;
 
 import org.usfirst.frc4048.RobotMap;
+import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.PressureSensor;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
@@ -30,12 +32,36 @@ public class CompressorSubsystem extends Subsystem {
     compressor.setClosedLoopControl(true);
   }
 
+  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.COMPRESSOR) {
+
+		protected void addAll() {
+      add("Pressure", getPressure());
+      add("Pressure Switch", getPressureSwitch());
+      add("Current", getCurrent());
+		}
+  };
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
  
+  @Override
+  public void periodic() {
+    final long start = System.currentTimeMillis();
+
+    // Put code here to be run every loop
+    if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
+      SmartShuffleboard.put("Compressor", "Current", getCurrent());
+      SmartShuffleboard.put("Compressor", "Pressure", getPressure());    
+    }
+    loggingContext.writeData();
+
+    last_periodic = System.currentTimeMillis() - start;
+  }
+  public long last_periodic = -1;
+
   /**
    * This returns true if the pressure is too low
    * @return

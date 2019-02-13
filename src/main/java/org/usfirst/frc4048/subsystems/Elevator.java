@@ -18,9 +18,12 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveManual;
+import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
 import org.usfirst.frc4048.utils.ElevatorPosition;
+import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.MechanicalMode;
 import org.usfirst.frc4048.utils.MotorUtils;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -98,11 +101,26 @@ public class Elevator extends Subsystem {
     elevatorSetpoint = getEncoder();
   }
 
+  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.ELEVATOR) {
+
+		protected void addAll() {
+      add("Top Switch", getTopSwitch());
+      add("Bottom Switch", getBotSwitch());
+      add("Setpoinnt", elevatorSetpoint);
+      add("Encoder", getEncoder());
+      add("Current", elevatorMotor.getOutputCurrent());
+      add("PID Error", getError());
+		}
+  };
+
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Elevator setpoint", elevatorSetpoint);
-    SmartDashboard.putNumber("Elevator Encoder", getEncoder());
-    SmartDashboard.putNumber("Elevator Current", elevatorMotor.getOutputCurrent());
+    if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
+      SmartShuffleboard.put("Elevator", "Setpoint", elevatorSetpoint);
+      SmartShuffleboard.put("Elevator", "Encoder", getEncoder());
+      SmartShuffleboard.put("Elevator", "Current", elevatorMotor.getOutputCurrent());
+    }
+    loggingContext.writeData();
     moveElevator();
   }
 

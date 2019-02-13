@@ -7,10 +7,14 @@
 
 package org.usfirst.frc4048.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.utils.AngleFinder;
+import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.OpticalRangeFinder;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -23,7 +27,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Climber extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  private Spark winch;
+  private CANSparkMax winch;
   private Solenoid climberPiston;
   private AnalogInput leftDistanceSensorAnalogInput;
   private AnalogInput rightDistanceSensorAnalogInput;
@@ -33,16 +37,38 @@ public class Climber extends Subsystem {
 
   private final double RANGE_FINDER_DISTANCE_APART = 20;
   public Climber() {
-    winch = new Spark(RobotMap.WINCH_MOTOR_ID);
+    winch = new CANSparkMax(RobotMap.WINCH_CAN_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
     climberPiston = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.CLIMBER_PISTONS_ID);
     angleFinder = initClimberAngleFinder();
+    winch.setIdleMode(CANSparkMax.IdleMode.kBrake);
   }
+
+  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.CLIMBER) {
+
+		protected void addAll() {
+      add("Angle", getAngle());
+		}
+  };
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
+
+  @Override
+  public void periodic() {
+    final long start = System.currentTimeMillis();
+
+    // Put code here to be run every loop
+    if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
+      // PUT SHUFFLEBOARD CODE HERE
+    }
+    loggingContext.writeData();
+
+    last_periodic = System.currentTimeMillis() - start;
+  }
+  public long last_periodic = -1;
 
   public double getAngle() {
     return angleFinder.calcAngleInDegrees();
@@ -56,22 +82,22 @@ public class Climber extends Subsystem {
     climberPiston.set(state);
   }
 
-    /**
-     * Initialize the climber angle finder. Standalone function since it involves
-     * multiple steps.
-     */
-    private static AngleFinder initClimberAngleFinder() {
-      final AnalogInput leftRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_LEFT_ID);
-      final AnalogInput rightRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_RIGHT_ID);
-      final AnalogInput all[] = { leftRangeInput, rightRangeInput };
-      for (AnalogInput x : all) {
-        // These AnalogInput settings provided stable and fast results.
-        x.setOversampleBits(RobotMap.CLIMBER_DISTANCE_SENSOR_OVERSAMPLE_BITS);
-        x.setAverageBits(RobotMap.CLIMBER_DISTANCE_SENSOR_AVERAGE_BITS);
-      }
-
-      final OpticalRangeFinder leftRangeFinder = new OpticalRangeFinder(leftRangeInput);
-      final OpticalRangeFinder rightRangeFinder = new OpticalRangeFinder(rightRangeInput);
-      return new AngleFinder(leftRangeFinder, rightRangeFinder, RobotMap.INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS);
+  /**
+   * Initialize the climber angle finder. Standalone function since it involves
+   * multiple steps.
+   */
+  private static AngleFinder initClimberAngleFinder() {
+    final AnalogInput leftRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_LEFT_ID);
+    final AnalogInput rightRangeInput = new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_RIGHT_ID);
+    final AnalogInput all[] = { leftRangeInput, rightRangeInput };
+    for (AnalogInput x : all) {
+      // These AnalogInput settings provided stable and fast results.
+      x.setOversampleBits(RobotMap.CLIMBER_DISTANCE_SENSOR_OVERSAMPLE_BITS);
+      x.setAverageBits(RobotMap.CLIMBER_DISTANCE_SENSOR_AVERAGE_BITS);
     }
+
+    final OpticalRangeFinder leftRangeFinder = new OpticalRangeFinder(leftRangeInput);
+    final OpticalRangeFinder rightRangeFinder = new OpticalRangeFinder(rightRangeInput);
+    return new AngleFinder(leftRangeFinder, rightRangeFinder, RobotMap.INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS);
+  }
 }

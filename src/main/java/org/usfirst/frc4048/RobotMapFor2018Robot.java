@@ -48,9 +48,16 @@ interface RobotMapFor2018Robot {
   public static final boolean ENABLE_CLIMBER_SUBSYSTEM = false;
 
   /**
-   * Enables loging of timing data related to watchdog timeouts.
+   * Enables logging of timing data related to watchdog timeouts. Set to 0 to disable, otherwise, set to the 
+   * minimum number of milliseconds that will be logged. For example, if 15, then don't log any timing data less
+   * than 15 milliseconds.
    */
-  public static final boolean LOG_PERIODIC_TIME = false;
+  public static final int LOG_PERIODIC_TIME = 15;
+
+  /**
+  * Enable shuffleboard debug tabs
+  */
+  public static final boolean SHUFFLEBOARD_DEBUG_MODE = true;
 
 
   public static final double SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK = 0.0942478739;
@@ -71,6 +78,8 @@ interface RobotMapFor2018Robot {
   public static final int ELEVATOR_MOTOR_ID = 11;
   public static final int CARGO_INTAKE_MOTOR_ID = 12;
 
+  public static final int WINCH_CAN_ID = 13;
+
 
   //ANALOG INPUTS
   public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID = 0;
@@ -87,14 +96,17 @@ interface RobotMapFor2018Robot {
   //DIGITAL INPUTS
   public static final int CARGO_LIMIT_SWITCH_LEFT_ID = 1;
   public static final int CARGO_LIMIT_SWITCH_RIGHT_ID = 2;
-  public static final int CARGO_OPTICAL_SENSOR_ID = 4;
+  public static final int CARGO_OPTICAL_SENSOR_ID = 0;
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
   public static final int[] ALIGNMENT_ULTRASONIC_ID = {3,4};
   public static final int HATCH_DIGITAL_INPUT_ID = 7;
   public static final int CARGO_DIGITAL_INPUT_ID = 8;
+  public static final int PIVOT_LIMIT_SWITCH_LEFT_ID = 9;
+  public static final int PIVOT_LIMIT_SWITCH_RIGHT_ID = 10;
+  
   //PWM
-  public static final int WINCH_MOTOR_ID = 1;
+  public static final int PIVOT_MOTOR_ID = 0;
 
   //PCM
   public static final int CARGO_PISTON_ID = 0;
@@ -102,6 +114,7 @@ interface RobotMapFor2018Robot {
   public static final int HATCH_PANEL_WRIST_PISTON_ID = 2;
   public static final int INTAKES_WRIST_PISTON_ID = 3;
   public static final int CLIMBER_PISTONS_ID = 4;
+  public static final int PIVOT_PISTON = 5;
 
   //OI
   public static final int XBOX_A_BUTTON = 1;
@@ -139,8 +152,22 @@ interface RobotMapFor2018Robot {
   public static final int CARGO_RETURN_CODE = 1;
   public static final int NOTHING_RETURN_CODE = 2;
   
+  /*
+  * TODO Add correct values for 2018 test robot
+  */
   //PDP IDS
   public static final int PDP_ID_CARGO_INTAKE = 13; //Just a test value for now; will be changed on the real robot.
+  public static final int PDP_STEERING_FR = 11;
+  public static final int PDP_STEERING_FL = 4;
+  public static final int PDP_STEERING_RL = 5;
+  public static final int PDP_STEERING_RR = 10;
+  public static final int PDP_DRIVE_FR = 15;
+  public static final int PDP_DRIVE_FL = 0;
+  public static final int PDP_DRIVE_RL = 1;
+  public static final int PDP_DRIVE_RR = 14;
+  public static final int PDP_LIMELIGHT = 2;
+  public static final int PDP_CLIMBER_WINCH = 3;
+  public static final int PDP_ELEVATOR_MOTOR = 6;
 
   //MOTOR STALL CURRENT THRESHOLDS
   public static final double CURRENT_THRESHOLD_CARGO_INTAKE = 15.0;
