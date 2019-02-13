@@ -14,6 +14,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
+// import org.usfirst.frc4048.commands.DriveTargetCenter;
+// import org.usfirst.frc4048.commands.LimelightAlign;
 import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
@@ -30,6 +32,7 @@ import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
 import org.usfirst.frc4048.subsystems.Elevator;
 import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
+import org.usfirst.frc4048.subsystems.Pivot;
 import org.usfirst.frc4048.subsystems.PowerDistPanel;
 import org.usfirst.frc4048.utils.ElevatorPosition;
 import org.usfirst.frc4048.utils.Logging;
@@ -64,6 +67,7 @@ public class Robot extends TimedRobot {
   public static Diagnostics diagnostics;
   public static MechanicalMode mechanicalMode;
   private final static Timer timer = new Timer(100);
+  public static Pivot pivot;
   
   /**
    * Robot thread scheduler. Initialized with a static thread pool.
@@ -117,12 +121,13 @@ public class Robot extends TimedRobot {
       climber = new Climber();
     }
     diagnostics = new Diagnostics();
+    pivot = new Pivot();
+    logging = new Logging();
 
     // OI must be initialized last
     oi = new OI();
 //    SmartDashboard.putData("Auto mode", m_chooser);
 
-    logging = new Logging();
   }
 
   /**
