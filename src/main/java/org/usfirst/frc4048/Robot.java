@@ -35,16 +35,12 @@ import org.usfirst.frc4048.utils.ElevatorPosition;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.MechanicalMode;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
-import org.usfirst.frc4048.utils.WorkQueue;
-import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
 import org.usfirst.frc4048.utils.Timer;
+import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -54,6 +50,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
+  private final static String LINE = "-----------------------------------";
   public static OI oi;
   public static DriveTrain drivetrain;
   public static Logging logging;
@@ -66,6 +63,7 @@ public class Robot extends TimedRobot {
   public static Climber climber;
   public static Diagnostics diagnostics;
   public static MechanicalMode mechanicalMode;
+  private final static Timer timer = new Timer(100);
   
   /**
    * Robot thread scheduler. Initialized with a static thread pool.
@@ -76,9 +74,6 @@ public class Robot extends TimedRobot {
   private final static ScheduledExecutorService executor = Executors.newScheduledThreadPool(3);
   private final static ArrayList<ScheduledFuture<?>> tasks = new ArrayList<ScheduledFuture<?>>(); 
 
-
-  Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -125,7 +120,7 @@ public class Robot extends TimedRobot {
 
     // OI must be initialized last
     oi = new OI();
-    SmartDashboard.putData("Auto mode", m_chooser);
+//    SmartDashboard.putData("Auto mode", m_chooser);
 
     logging = new Logging();
   }
@@ -179,9 +174,9 @@ public class Robot extends TimedRobot {
     logging.setStartTime();
     commonInit("autonomousInit");
 
-    logging.traceMessage(Logging.MessageLevel.INFORMATION,
-				"---------------------------- Autonomous mode starting ----------------------------");
-    m_autonomousCommand = m_chooser.getSelected();
+    //    logging.traceMessage(Logging.MessageLevel.INFORMATION,
+    //				"---------------------------- Autonomous mode starting ----------------------------");
+    //    m_autonomousCommand = m_chooser.getSelected();
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
@@ -207,21 +202,9 @@ public class Robot extends TimedRobot {
       commonInit("teleopInit");
   }
   
-  private final static String LINE = "-----------------------------------";
-  
   public void commonInit(final String loggingLabel) {
     logging.traceMessage(Logging.MessageLevel.INFORMATION, LINE, loggingLabel, LINE);
     logging.writeAllTitles();
-
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    logging.traceMessage(Logging.MessageLevel.INFORMATION,
-				"---------------------------- Teleop mode starting ----------------------------");
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
 
     if(RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
@@ -237,7 +220,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    timer.init();
+    timer.init("teleopPeriodic");
     logging.writeAllData();
     timer.completed(this, "log");
     
@@ -303,8 +286,6 @@ public class Robot extends TimedRobot {
 
   }
 
-	private final static Timer timer = new Timer(100, "teleop");
-	
 	public static Timer timer() {
 	  return timer;
 	}

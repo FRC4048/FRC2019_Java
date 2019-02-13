@@ -7,13 +7,10 @@
 
 package org.usfirst.frc4048.subsystems;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.commands.drive.Drive;
+import org.usfirst.frc4048.swerve.drive.BaseEnclosure;
 import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
 import org.usfirst.frc4048.swerve.drive.SwerveDrive;
 import org.usfirst.frc4048.utils.Logging;
@@ -34,7 +31,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  * Add your docs here.
  */
-public class DriveTrain extends Subsystem implements RobotMap {
+public class DriveTrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
@@ -103,7 +100,7 @@ public class DriveTrain extends Subsystem implements RobotMap {
   /* whoever needs to use the gyro will get the stored value through the getGyro() method. */
   private final PigeonData pigeonData = new PigeonData();
   
-  private final SteerEncoder steerEncoders[];
+  private final BaseEnclosure wheelEnclosures[];
 
   public DriveTrain() {
     driveFL = new WPI_TalonSRX(RobotMap.FRONT_LEFT_DRIVE_MOTOR_ID);
@@ -137,23 +134,18 @@ public class DriveTrain extends Subsystem implements RobotMap {
     analogInputRearLeft = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_REAR_LEFT_ID);
     analogInputRearRight = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_REAR_RIGHT_ID);
     
-    final SteerEncoder encFL = new SteerEncoder(steerFL);
-    final SteerEncoder encFR = new SteerEncoder(steerFR);
-    final SteerEncoder encRL = new SteerEncoder(steerRL);
-    final SteerEncoder encRR = new SteerEncoder(steerRR);
-    steerEncoders = toArray(encFL, encFR, encRL, encRR);
-    
-    if (ENABLE_STEER_ENCODER_THREAD) {
-    	Robot.scheduleTask(new SteerEncoderThread(), STEER_ENCODER_THREAD_INTERVAL_MS);
-    }
+    frontLeftWheel = new CanTalonSwerveEnclosure("FrontLeftWheel", driveFL, steerFL, GEAR_RATIO, Robot.timer());
+    frontRightWheel = new CanTalonSwerveEnclosure("FrontRightWheel", driveFR, steerFR, GEAR_RATIO, Robot.timer());
+    rearLeftWheel = new CanTalonSwerveEnclosure("RearLeftWheel", driveRL, steerRL, GEAR_RATIO, Robot.timer());
+    rearRightWheel = new CanTalonSwerveEnclosure("RearRightWheel", driveRR, steerRR, GEAR_RATIO, Robot.timer());
+    wheelEnclosures = new BaseEnclosure[] { frontLeftWheel, frontRightWheel, rearLeftWheel, rearRightWheel };
 
-    frontLeftWheel = new CanTalonSwerveEnclosure("FrontLeftWheel", driveFL, steerFL, encFL, GEAR_RATIO);
-    frontRightWheel = new CanTalonSwerveEnclosure("FrontRightWheel", driveFR, steerFR, encFR, GEAR_RATIO);
-    rearLeftWheel = new CanTalonSwerveEnclosure("RearLeftWheel", driveRL, steerRL, encRL, GEAR_RATIO);
-    rearRightWheel = new CanTalonSwerveEnclosure("RearRightWheel", driveRR, steerRR, encRR, GEAR_RATIO);
+    if (RobotMap.ENABLE_WHEEL_ENCODER_THREAD) {
+      Robot.scheduleTask(new WheelEncoderThread(), RobotMap.WHEEL_ENCODER_THREAD_INTERVAL_MS);
+  }
 
-    if (ENABLE_PIGEON_THREAD) {
-    	Robot.scheduleTask(new PigeonThread(), PIGEON_READ_DELAY_MS);
+    if (RobotMap.ENABLE_PIGEON_THREAD) {
+    	Robot.scheduleTask(new PigeonThread(), RobotMap.PIGEON_READ_DELAY_MS);
     }
 
     swerveDrivetrain = new SwerveDrive(frontRightWheel, frontLeftWheel, rearLeftWheel, rearRightWheel, WIDTH, LENGTH);
@@ -162,53 +154,25 @@ public class DriveTrain extends Subsystem implements RobotMap {
 
   }
   
-  private static SteerEncoder[] toArray(final SteerEncoder ... encoders) {
-    return encoders;
-  }
-  
   /**
-   * Thread that reads all the steering encoders at predetermined cycles on a
+   * Thread that reads all the wheel encoders at predetermined cycles on a
    * separate thread. The read cycle is determined by the value when the thread is
    * scheduled.
    */
-  private class SteerEncoderThread implements Runnable {
+  private class WheelEncoderThread implements Runnable {
     public void run() {
-      for (final SteerEncoder e : steerEncoders)
-        e.update();
-    }
-  }
-
-  /**
-   * This class provides the encoder reading from the steer motor. It either
-   * provides an immediate reading from the Talon or the last read value when the
-   * {@link SteerEncoderThread} ran. This is controlled by the RobotMap setting.
-   */
-  static private class SteerEncoder implements CanTalonSwerveEnclosure.SteerMotorSensorReader {
-    private final WPI_TalonSRX _talon;
-    private int _lastValue;
-
-    SteerEncoder(final WPI_TalonSRX talon) {
-      _talon = talon;
-      _lastValue = 0;
-    }
-
-    @Override
-    public int getSelectedSensorPosition() {
-      return _lastValue;
-    }
-
-    private void update() {
-      _lastValue = _talon.getSelectedSensorPosition(0);
+      for (final BaseEnclosure e : wheelEnclosures)
+        e.readEncPosition();
     }
   }
   
   public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
 
-		protected void addAll() {
-      add("FR Encoder", steerFR.getSelectedSensorPosition(0));
-      add("FL Encoder", steerFL.getSelectedSensorPosition(0));
-      add("RR Encoder", steerRR.getSelectedSensorPosition(0));
-      add("RL Encoder", steerRL.getSelectedSensorPosition(0));
+    protected void addAll() {
+      add("FR Encoder", frontRightWheel.getLastEncPosition());
+      add("FL Encoder", frontLeftWheel.getLastEncPosition());
+      add("RR Encoder", rearRightWheel.getLastEncPosition());
+      add("RL Encoder", rearLeftWheel.getLastEncPosition());
 
       add("FR Abs", analogInputFrontRight.getValue());
       add("FL Abs", analogInputFrontLeft.getValue());
@@ -217,7 +181,7 @@ public class DriveTrain extends Subsystem implements RobotMap {
 
       add("Gyro", getGyro());
       add("Centric Mode", swerveDrivetrain.getModeRobot().name());
-		}
+    }
   };
 
   @Override
@@ -274,23 +238,22 @@ public class DriveTrain extends Subsystem implements RobotMap {
   @Override
   public void periodic() {
 
-    if (!ENABLE_PIGEON_THREAD) {
+    if (!RobotMap.ENABLE_PIGEON_THREAD) {
       pigeonData.update();
       Robot.completed(this, "pigeon");
     }
 
-    if (!ENABLE_STEER_ENCODER_THREAD) {
-      for (final SteerEncoder e : steerEncoders) {
-        e.update();
-      }
-      Robot.completed(this, "strenc");
+    if (!RobotMap.ENABLE_WHEEL_ENCODER_THREAD) {
+      for (final BaseEnclosure e : wheelEnclosures)
+        e.readEncPosition();
+      Robot.completed(this, "readenc");
     }
 
     if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
-      SmartShuffleboard.put("Drive", "Encoders", "FR", steerFR.getSelectedSensorPosition(0));
-      SmartShuffleboard.put("Drive", "Encoders", "FL", steerFL.getSelectedSensorPosition(0));
-      SmartShuffleboard.put("Drive", "Encoders", "RR", steerRR.getSelectedSensorPosition(0));
-      SmartShuffleboard.put("Drive", "Encoders", "RL", steerRL.getSelectedSensorPosition(0));
+      SmartShuffleboard.put("Drive", "Encoders", "FR", frontRightWheel.getLastEncPosition());
+      SmartShuffleboard.put("Drive", "Encoders", "FL", frontLeftWheel.getLastEncPosition());
+      SmartShuffleboard.put("Drive", "Encoders", "RR", rearRightWheel.getLastEncPosition());
+      SmartShuffleboard.put("Drive", "Encoders", "RL", rearLeftWheel.getLastEncPosition());
   
       SmartShuffleboard.put("Drive", "Abs Encoders", "FR abs", analogInputFrontRight.getValue());
       SmartShuffleboard.put("Drive", "Abs Encoders", "FL abs", analogInputFrontLeft.getValue());

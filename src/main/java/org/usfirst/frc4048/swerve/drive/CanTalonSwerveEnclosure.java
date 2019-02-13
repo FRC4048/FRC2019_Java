@@ -1,5 +1,7 @@
 package org.usfirst.frc4048.swerve.drive;
 
+import org.usfirst.frc4048.utils.Timer;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -10,41 +12,15 @@ public class CanTalonSwerveEnclosure extends BaseEnclosure implements SwerveEncl
 
     private WPI_TalonSRX driveMotor;
 	private WPI_TalonSRX steerMotor;
-	private final SteerMotorSensorReader _steerMotorSensorReader;
 	
 	private boolean reverseEncoder = false;
 	private boolean reverseSteer = false;
 	
-	/**
-	 * This interface class is used for reading the steer sensor position. It exists
-	 * so the reading of the sensor can be done on a separate thread.
-	 */
-	public interface SteerMotorSensorReader {
-		int getSelectedSensorPosition();
-	}
-	
-	public CanTalonSwerveEnclosure(String name, WPI_TalonSRX driveMotor, WPI_TalonSRX steerMotor, double gearRatio) {
-		this(name, driveMotor, steerMotor, null, gearRatio);
-	}
-	
-	public CanTalonSwerveEnclosure(String name, WPI_TalonSRX driveMotor, WPI_TalonSRX steerMotor,
-			SteerMotorSensorReader steerMotorSensorReader, double gearRatio) {
-		super(name, gearRatio);
-
+    public CanTalonSwerveEnclosure(String name, WPI_TalonSRX driveMotor, WPI_TalonSRX steerMotor, double gearRatio,
+           final Timer timer) {
+        super(name, gearRatio, timer);
 		this.driveMotor = driveMotor;
 		this.steerMotor = steerMotor;
-
-		if (steerMotorSensorReader == null) {
-			_steerMotorSensorReader = new SteerMotorSensorReader() {
-				@Override
-				public int getSelectedSensorPosition() {
-					return steerMotor.getSelectedSensorPosition(0);
-				}
-
-			};
-		} else {
-			_steerMotorSensorReader = steerMotorSensorReader;
-		}
 	}
 	
 	@Override
@@ -71,7 +47,7 @@ public class CanTalonSwerveEnclosure extends BaseEnclosure implements SwerveEncl
 	public int getEncPosition()
 	{
 		int reverse = reverseEncoder ? -1 : 1;
-		return reverse * _steerMotorSensorReader.getSelectedSensorPosition();
+		return reverse * steerMotor.getSelectedSensorPosition(0);
 	}
 	
 	@Override

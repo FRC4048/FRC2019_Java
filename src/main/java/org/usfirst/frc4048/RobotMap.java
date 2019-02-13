@@ -33,8 +33,8 @@ public interface RobotMap extends RobotMapFor2018Robot {
    * Enable reading of the steer encoder position on a separate thread. This
    * should reduce the period cycle time.
    */
-  public static final boolean ENABLE_STEER_ENCODER_THREAD = true;
+  public static final boolean ENABLE_WHEEL_ENCODER_THREAD = true;
   
-  public static final long STEER_ENCODER_THREAD_INTERVAL_MS = 11;
+  public static final long WHEEL_ENCODER_THREAD_INTERVAL_MS = 11;
 
 }
