@@ -38,9 +38,9 @@ public class Elevator extends Subsystem {
 
   private final int TIMEOUT = 100;
 
-  private final double ELEVATOR_POSITION_ERROR = 0;
+  private final double ELEVATOR_POSITION_ERROR = 250; //about 1 inch
 
-  private final double ELEVATOR_UP_SCALE_FACTOR = 0.9;
+  private final double ELEVATOR_UP_SCALE_FACTOR = 1.0;
   private final double ELEVATOR_DOWN_SCALE_FACTOR = 0.5;
 
   private final double ELEVATOR_CARGO_P = 0;
@@ -53,10 +53,7 @@ public class Elevator extends Subsystem {
   private final double ELEVATOR_HATCH_D = 0;
   private final double ELEVATOR_HATCH_F = 0;
 
-  private final int ELEVATOR_ACCEL = 18000; // RPM Of motor we can use these values to set max speed during the movement
-  private final int ELEVATOR_CRUISE_VELOCITY = 18000; // ^
-  
-  private final int ENCODER_CLOSED_LOOP_ERROR = 13000; //1 inch
+  private final int ENCODER_CLOSED_LOOP_ERROR = 250; //about 1 inch
 
   private double elevatorSetpoint;
 
@@ -81,8 +78,7 @@ public class Elevator extends Subsystem {
     elevatorMotor.setInverted(true); 
     elevatorMotor.setSensorPhase(true);
     elevatorMotor.configAllowableClosedloopError(0, ENCODER_CLOSED_LOOP_ERROR, TIMEOUT); //This is the margin of error on the encoder value while doing closed loop functions. This will change
-    // int elevatorMode = Robot.mechanicalMode.getMode();
-    int elevatorMode = RobotMap.HATCH_RETURN_CODE;
+    int elevatorMode = Robot.mechanicalMode.getMode();
     switch(elevatorMode){
       case RobotMap.CARGO_RETURN_CODE:
         setPID(CARGO_MODE);

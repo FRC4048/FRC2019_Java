@@ -107,7 +107,7 @@ interface RobotMapForTestbed {
   public static final int HATCH_PANEL_WRIST_PISTON_ID = 2;
   public static final int INTAKES_WRIST_PISTON_ID = 3;
   public static final int CLIMBER_PISTONS_ID = 4;
-  public static final int PIVOT_PISTON = 5;
+  public static final int PIVOT_PISTON_ID = 5;
 
   //OI
   public static final int XBOX_A_BUTTON = 1;
