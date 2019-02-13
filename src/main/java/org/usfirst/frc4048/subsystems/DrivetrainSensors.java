@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 import org.usfirst.frc4048.utils.LimeLightVision;
+import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.OpticalRangeFinder;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
 
@@ -40,6 +41,29 @@ public class DrivetrainSensors extends Subsystem {
         limelight = new LimeLightVision();
     }
 
+    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVE_SENSORS) {
+
+        protected void addAll() {
+            add("Distance", getUltrasonicDistance());
+
+            CameraDistance targetDistance = getTargetDistance();
+            add("LimelightValidTarget", targetDistance != null);
+
+            if(targetDistance != null) {
+                CameraAngles angles = getCameraAngles();
+                add("Camera Angle Tx", angles.getTx());
+                add("Camera Angle Ty", angles.getTy());
+                add("LimelightForward", targetDistance.getForward());
+                add("LimelightSideways", targetDistance.getSideways());
+            } else {
+                add("Camera Angle Tx", "NO TARGET");
+                add("Camera Angle Ty", "NO TARGET");
+                add("LimelightForward", "NO TARGET");
+                add("LimelightSideways", "NO TARGET");
+            }
+        }
+    };
+
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -51,12 +75,6 @@ public class DrivetrainSensors extends Subsystem {
         // Put code here to be run every loop
 
         if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
-            // Add commands:
-            SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight On", new LimelightToggle(true));
-            SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Off", new LimelightToggle(false));
-            SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Stream Toggle", new LimelightToggleStream());
-
-            // Add other fields:
             SmartShuffleboard.put("DrivetrainSensors", "Ultrasonic", getUltrasonicDistance());
             CameraDistance targetDistance = getTargetDistance();
             SmartShuffleboard.put("DrivetrainSensors", "LimelightValidTarget", targetDistance != null);
@@ -65,6 +83,8 @@ public class DrivetrainSensors extends Subsystem {
                 SmartShuffleboard.put("DrivetrainSensors", "LimelightSideways", targetDistance.getSideways());
             }
         }
+        loggingContext.writeData();
+
         Robot.completed(this, "log");
     }
 

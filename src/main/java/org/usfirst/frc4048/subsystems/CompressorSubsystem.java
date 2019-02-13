@@ -32,9 +32,12 @@ public class CompressorSubsystem extends Subsystem {
     compressor.setClosedLoopControl(true);
   }
 
-  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVETRAIN) {
+  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.COMPRESSOR) {
 
 		protected void addAll() {
+      add("Pressure", getPressure());
+      add("Pressure Switch", getPressureSwitch());
+      add("Current", getCurrent());
 		}
   };
 
