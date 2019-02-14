@@ -66,7 +66,7 @@ public class TestRobotMapConsistency {
     private String getStaticFinalFieldName(Field field) {
         int modifiers = field.getModifiers();
         if ((Modifier.isPublic(modifiers)) && (Modifier.isStatic(modifiers)) && Modifier.isFinal(modifiers)) {
-            return field.getName();
+            return field.getName() + ":" + field.getType().toString();
         } else {
             return null;
         }

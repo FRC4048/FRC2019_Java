@@ -41,7 +41,7 @@ public class DrivetrainSensors extends Subsystem {
         limelight = new LimeLightVision();
     }
 
-    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVE_SENSORS) {
+    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
 
         protected void addAll() {
             add("Distance", getUltrasonicDistance());
@@ -82,10 +82,8 @@ public class DrivetrainSensors extends Subsystem {
                 SmartShuffleboard.put("DrivetrainSensors", "LimelightForward", targetDistance.getForward());
                 SmartShuffleboard.put("DrivetrainSensors", "LimelightSideways", targetDistance.getSideways());
             }
+            Robot.completed(this, "shuf");
         }
-        loggingContext.writeData();
-
-        Robot.completed(this, "log");
     }
 
     // Put methods for controlling this subsystem

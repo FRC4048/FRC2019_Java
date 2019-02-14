@@ -2,17 +2,19 @@ package org.usfirst.frc4048.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class CargoSubsystem extends Subsystem {
 
-    private WPI_TalonSRX intakeRoller;
+    private Spark intakeRoller;
     private DigitalInput rightLimit;
     private DigitalInput leftLimit;
     private DigitalInput opticalSensor;
@@ -22,14 +24,14 @@ public class CargoSubsystem extends Subsystem {
     public final double CARGO_OUTPUT_SPEED = 1.0;
 
     public CargoSubsystem() {
-        intakeRoller = new WPI_TalonSRX(RobotMap.CARGO_INTAKE_MOTOR_ID);
+        intakeRoller = new Spark(RobotMap.CARGO_MOTOR_ID);
         leftLimit = new DigitalInput(RobotMap.CARGO_LIMIT_SWITCH_LEFT_ID);
         rightLimit = new DigitalInput(RobotMap.CARGO_LIMIT_SWITCH_RIGHT_ID);
         ejectPiston = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.CARGO_PISTON_ID);
         opticalSensor = new DigitalInput(RobotMap.CARGO_OPTICAL_SENSOR_ID);
     }
 
-    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.CARGO) {
+    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
 
 		protected void addAll() {
             add("Left Pressed", !leftLimit.get());
@@ -48,7 +50,6 @@ public class CargoSubsystem extends Subsystem {
 
     @Override
     public void periodic() {
-      final long start = System.currentTimeMillis();
   
       // Put code here to be run every loop
       if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
@@ -56,12 +57,9 @@ public class CargoSubsystem extends Subsystem {
         SmartShuffleboard.put("Cargo", "Left Pressed", !leftLimit.get());
         SmartShuffleboard.put("Cargo", "Right Pressed", !rightLimit.get());
         SmartShuffleboard.put("Cargo", "Optical Triggered", !opticalSensor.get());
+        Robot.completed(this, "shuf");
       }
-      loggingContext.writeData();
-  
-      last_periodic = System.currentTimeMillis() - start;
     }
-    public long last_periodic = -1;
 
     public boolean leftLimitPressed() {
         return !leftLimit.get();
@@ -104,6 +102,6 @@ public class CargoSubsystem extends Subsystem {
     }
 
     public double getCargoCurrent(){
-        return intakeRoller.getOutputCurrent();
+        return Robot.pdp.getPDP().getCurrent(RobotMap.PDP_ID_CARGO_INTAKE);
     }
 }

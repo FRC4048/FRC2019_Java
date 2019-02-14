@@ -17,7 +17,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
-import org.usfirst.frc4048.commands.elevator.ElevatorMoveManual;
+// import org.usfirst.frc4048.commands.elevator.ElevatorMoveManual;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
 import org.usfirst.frc4048.utils.ElevatorPosition;
 import org.usfirst.frc4048.utils.Logging;
@@ -95,7 +95,7 @@ public class Elevator extends Subsystem {
     elevatorSetpoint = getEncoder();
   }
 
-  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.ELEVATOR) {
+  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
 
 		protected void addAll() {
       add("Top Switch", getTopSwitch());
@@ -114,7 +114,6 @@ public class Elevator extends Subsystem {
       SmartShuffleboard.put("Elevator", "Encoder", getEncoder());
       SmartShuffleboard.put("Elevator", "Current", elevatorMotor.getOutputCurrent());
     }
-    loggingContext.writeData();
     moveElevator();
   }
 
@@ -122,7 +121,7 @@ public class Elevator extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new ElevatorMoveManual());
+    // setDefaultCommand(new ElevatorMoveManual());
   }
 
   public void moveElevator() {

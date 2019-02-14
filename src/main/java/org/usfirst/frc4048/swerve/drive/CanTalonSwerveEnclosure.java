@@ -1,5 +1,7 @@
 package org.usfirst.frc4048.swerve.drive;
 
+import org.usfirst.frc4048.utils.Timer;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -14,10 +16,9 @@ public class CanTalonSwerveEnclosure extends BaseEnclosure implements SwerveEncl
 	private boolean reverseEncoder = false;
 	private boolean reverseSteer = false;
 	
-	public CanTalonSwerveEnclosure(String name, WPI_TalonSRX driveMotor, WPI_TalonSRX steerMotor, double gearRatio)
-	{
-		super(name, gearRatio);
-		
+    public CanTalonSwerveEnclosure(String name, WPI_TalonSRX driveMotor, WPI_TalonSRX steerMotor, double gearRatio,
+           final Timer timer) {
+        super(name, gearRatio, timer);
 		this.driveMotor = driveMotor;
 		this.steerMotor = steerMotor;
 	}
@@ -43,7 +44,7 @@ public class CanTalonSwerveEnclosure extends BaseEnclosure implements SwerveEncl
 	}
 	
 	@Override
-	public int getEncPosition()
+	protected int getEncPosition()
 	{
 		int reverse = reverseEncoder ? -1 : 1;
 		return reverse * steerMotor.getSelectedSensorPosition(0);

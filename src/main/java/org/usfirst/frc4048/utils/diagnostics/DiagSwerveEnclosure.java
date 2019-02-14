@@ -18,6 +18,6 @@ public class DiagSwerveEnclosure extends DiagDistanceTraveled {
 
     @Override
     protected int getCurrentValue() {
-        return enclosure.getEncPosition();
+        return enclosure.getLastEncPosition();
     }
 }

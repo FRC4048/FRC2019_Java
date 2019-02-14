@@ -35,7 +35,7 @@ public class HatchPanelSubsystem extends Subsystem {
     hatchPanelPiston = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.HATCH_PANEL_PISTON_ID);
   }
 
-  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.HATCHPANEL) {
+  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
     
     protected void addAll() {
       add("Left Limit", getLeftLimit());
@@ -53,7 +53,6 @@ public class HatchPanelSubsystem extends Subsystem {
   
   @Override
   public void periodic() {
-    loggingContext.writeData();
   }
 
 public boolean getLeftLimit(){
