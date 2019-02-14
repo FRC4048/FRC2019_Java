@@ -95,7 +95,7 @@ public class Elevator extends Subsystem {
     elevatorSetpoint = getEncoder();
   }
 
-  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.ELEVATOR) {
+  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
 
 		protected void addAll() {
       add("Top Switch", getTopSwitch());
@@ -114,7 +114,6 @@ public class Elevator extends Subsystem {
       SmartShuffleboard.put("Elevator", "Encoder", getEncoder());
       SmartShuffleboard.put("Elevator", "Current", elevatorMotor.getOutputCurrent());
     }
-    loggingContext.writeData();
     moveElevator();
   }
 

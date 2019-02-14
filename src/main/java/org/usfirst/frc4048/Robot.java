@@ -7,34 +7,43 @@
 
 package org.usfirst.frc4048;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
+import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
+// import org.usfirst.frc4048.commands.DriveTargetCenter;
+// import org.usfirst.frc4048.commands.LimelightAlign;
+import org.usfirst.frc4048.commands.drive.CentricModeToggle;
+import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
+import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
+import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
+import org.usfirst.frc4048.commands.drive.DriveDistance;
+import org.usfirst.frc4048.commands.drive.RotateAngle;
+import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
+import org.usfirst.frc4048.commands.limelight.LimelightToggle;
+import org.usfirst.frc4048.commands.limelight.LimelightToggleStream;
 import org.usfirst.frc4048.subsystems.CargoSubsystem;
 import org.usfirst.frc4048.subsystems.Climber;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
-import org.usfirst.frc4048.utils.*;
-import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
-import org.usfirst.frc4048.subsystems.Pivot;
-import org.usfirst.frc4048.commands.cargo.AutoCargoEjectGroup;
-import org.usfirst.frc4048.commands.cargo.CargoEjectGroup;
-import org.usfirst.frc4048.commands.cargo.IntakeCargo;
-import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
-// import org.usfirst.frc4048.commands.DriveTargetCenter;
-// import org.usfirst.frc4048.commands.LimelightAlign;
-import org.usfirst.frc4048.commands.drive.*;
-import org.usfirst.frc4048.commands.limelight.LimelightToggleStream;
-import org.usfirst.frc4048.commands.limelight.LimelightToggle;
-import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
-import org.usfirst.frc4048.subsystems.DriveTrain;
-import org.usfirst.frc4048.subsystems.PowerDistPanel;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
 import org.usfirst.frc4048.subsystems.Elevator;
+import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
+import org.usfirst.frc4048.subsystems.Pivot;
+import org.usfirst.frc4048.subsystems.PowerDistPanel;
+import org.usfirst.frc4048.utils.ElevatorPosition;
+import org.usfirst.frc4048.utils.Logging;
+import org.usfirst.frc4048.utils.MechanicalMode;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
+import org.usfirst.frc4048.utils.Timer;
 import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -44,12 +53,11 @@ import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
  * project.
  */
 public class Robot extends TimedRobot {
+  private final static String LINE = "-----------------------------------";
   public static OI oi;
   public static DriveTrain drivetrain;
   public static Logging logging;
   public static PowerDistPanel pdp;
-  public static WorkQueue wq;
-  public static double timeOfStart = 0;
   public static CompressorSubsystem compressorSubsystem;
   public static DrivetrainSensors drivetrainSensors;
   public static Elevator elevator;
@@ -58,10 +66,18 @@ public class Robot extends TimedRobot {
   public static Climber climber;
   public static Diagnostics diagnostics;
   public static MechanicalMode mechanicalMode;
+  private final static Timer timer = new Timer(100);
   public static Pivot pivot;
+  
+  /**
+   * Robot thread scheduler. Initialized with a static thread pool.
+   * 
+   * @See {@link #scheduleTask(Runnable, long)}
+   * @See {@link #cancelAllTasks()}
+   */
+  private final static ScheduledExecutorService executor = Executors.newScheduledThreadPool(3);
+  private final static ArrayList<ScheduledFuture<?>> tasks = new ArrayList<ScheduledFuture<?>>(); 
 
-  Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -69,6 +85,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    cancelAllTasks();
+    
     mechanicalMode = new MechanicalMode();
     int mode = mechanicalMode.getMode();
 
@@ -104,13 +122,12 @@ public class Robot extends TimedRobot {
     }
     diagnostics = new Diagnostics();
     pivot = new Pivot();
+    logging = new Logging();
+
     // OI must be initialized last
     oi = new OI();
-    SmartDashboard.putData("Auto mode", m_chooser);
+//    SmartDashboard.putData("Auto mode", m_chooser);
 
-    WorkQueue wq = new WorkQueue(512);
-    logging = new Logging(100, wq);
-    logging.startThread(); // Starts the logger
   }
 
   /**
@@ -159,10 +176,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    timeOfStart = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
-    logging.traceMessage(Logging.MessageLevel.INFORMATION,
-				"---------------------------- Autonomous mode starting ----------------------------");
-    m_autonomousCommand = m_chooser.getSelected();
+    logging.setStartTime();
+    commonInit("autonomousInit");
+
+    //    logging.traceMessage(Logging.MessageLevel.INFORMATION,
+    //				"---------------------------- Autonomous mode starting ----------------------------");
+    //    m_autonomousCommand = m_chooser.getSelected();
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
@@ -171,10 +190,6 @@ public class Robot extends TimedRobot {
      * ExampleCommand(); break; }
      */
 
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
-    }
   }
 
   /**
@@ -182,21 +197,19 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-
-    Scheduler.getInstance().run();
+//
+//    Scheduler.getInstance().run();
+    teleopPeriodic();
   }
 
   @Override
   public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    logging.traceMessage(Logging.MessageLevel.INFORMATION,
-				"---------------------------- Teleop mode starting ----------------------------");
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
+      commonInit("teleopInit");
+  }
+  
+  public void commonInit(final String loggingLabel) {
+    logging.traceMessage(Logging.MessageLevel.INFORMATION, LINE, loggingLabel, LINE);
+    logging.writeAllTitles();
 
     if(RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
@@ -212,13 +225,20 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    timer.init();
+    timer.init("teleopPeriodic");
+    logging.writeAllData();
+    timer.completed(this, "log");
+    
     Scheduler.getInstance().run();
     timer.completed(this, "Sched");
 
     if (RobotMap.LOG_PERIODIC_TIME > 0) {
       if (timer.total() >= RobotMap.LOG_PERIODIC_TIME) {
-        System.out.println(timer.toString());
+        final String details = timer.toString();
+        if (RobotMap.LOG_PERIODIC_TIME_TO_CONSOLE) {
+          System.out.println(details);
+        }
+        logging.traceMessage(Logging.MessageLevel.TIMER, details);
       }
     }
     timer.term();
@@ -271,75 +291,30 @@ public class Robot extends TimedRobot {
 
   }
 
-  public static class Timer {
-    private boolean enabled;
-		private final String id;
-		private int last = 0;
-		private final long time[];
-    private final String info[];
-    private final String caller[];
-    private final int max;
+	public static Timer timer() {
+	  return timer;
+	}
 
-		Timer(final int max, final String id) {
-      this.enabled = false;
-      this.last = 0;
-      this.max = max-1;
-      this.id = id;
-      this.time = new long[max];
-      this.info = new String[max];
-      this.caller = new String[max];
-    }
-    
-    public long total() {
-      return time[last] - time[0];
-    }
+	static public void completed(final Object caller, final String work) {
+		if (RobotMap.LOG_PERIODIC_TIME > 0)
+			timer.completed(caller, work);
+	}
 
-		public void completed(final Object caller, final String info) {
-      if (enabled) {
-        if (last < max) {
-          last += 1;
-          this.time[last] = System.currentTimeMillis();
-          this.caller[last] = caller.getClass().getSimpleName();
-          this.info[last] = info;
-        }
-        else {
-          System.out.println(String.format("Timer Max=%d Last=%d", max, last));
-        }
-      }
-    }
+	/**
+	 * Schedule a Thread to run with a fixed delay between runs.
+	 */
+	static public void scheduleTask(final Runnable task, final long intervalMS) {
+		tasks.add(executor.scheduleWithFixedDelay(task, 0, intervalMS, TimeUnit.MILLISECONDS));
+	}
 
-		private void init() {
-      enabled = true;
-			last = 0;
-			time[last] = System.currentTimeMillis();
-			info[last] = "start";
-    }
-    
-    private void term() {
-      enabled = false;
-      last = 0;
-    }
-
-		public String toString()
-		{
-			final StringBuilder sb = new StringBuilder();
-      sb.append(id).append(": ").append(total());
-      String lastCaller = "";
-			for (int i=1; i<=last; i++) {
-        if (!lastCaller.equals(caller[i])) {
-          sb.append(" [").append(caller[i]).append("]");
-          lastCaller = caller[i];
-        }
-				sb.append(" ").append(info[i]).append("+").append(time[i]-time[i-1]);
-			}
-			return sb.toString();
+	/**
+	 * Cancel all scheduled threads.
+	 */
+	private void cancelAllTasks() {
+		for (final ScheduledFuture<?> task : tasks) {
+			task.cancel(true);
 		}
-  }
-
-  private final static Timer timer = new Timer(100, "teleop");
-  static public void completed(final Object caller, final String work) {
-    if (RobotMap.LOG_PERIODIC_TIME > 0)
-      timer.completed(caller, work);
-  }
+		tasks.removeAll(tasks);
+	}
 
 }

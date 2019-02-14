@@ -43,7 +43,7 @@ public class Climber extends Subsystem {
     winch.setIdleMode(CANSparkMax.IdleMode.kBrake);
   }
 
-  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.CLIMBER) {
+  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
 
 		protected void addAll() {
       add("Angle", getAngle());
@@ -58,17 +58,12 @@ public class Climber extends Subsystem {
 
   @Override
   public void periodic() {
-    final long start = System.currentTimeMillis();
-
     // Put code here to be run every loop
     if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
       // PUT SHUFFLEBOARD CODE HERE
+      Robot.completed(this, "shuf");
     }
-    loggingContext.writeData();
-
-    last_periodic = System.currentTimeMillis() - start;
   }
-  public long last_periodic = -1;
 
   public double getAngle() {
     return angleFinder.calcAngleInDegrees();

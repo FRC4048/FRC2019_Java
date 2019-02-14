@@ -11,6 +11,8 @@ import com.revrobotics.*;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+
+import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.utils.AngleFinder;
 import org.usfirst.frc4048.utils.Logging;
@@ -42,7 +44,7 @@ public class NeoExampleSubsystem extends Subsystem {
     pidController.setOutputRange(-0.5, 0.5);
   }
 
-  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.CLIMBER) {
+  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
 
 		protected void addAll() {
 		}
@@ -56,19 +58,13 @@ public class NeoExampleSubsystem extends Subsystem {
 
   @Override
   public void periodic() {
-    final long start = System.currentTimeMillis();
-
     // Put code here to be run every loop
     if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
       // PUT SHUFFLEBOARD CODE HERE
       SmartShuffleboard.put("Climber", "Encoder", encoder.getPosition());
-
+      Robot.completed(this, "shuf");
     }
-    loggingContext.writeData();
-
-    last_periodic = System.currentTimeMillis() - start;
   }
-  public long last_periodic = -1;
 
   public void controlNeo(double speed) {
     winch.set(speed);

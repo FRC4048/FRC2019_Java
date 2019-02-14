@@ -12,31 +12,31 @@ public class TestDiagSwerveEnclosure {
     @Test
     public void testSwerveInitially() throws Exception {
         CanTalonSwerveEnclosure mockEnclosure = Mockito.mock(CanTalonSwerveEnclosure.class);
-        when(mockEnclosure.getEncPosition()).thenReturn(1);
+        when(mockEnclosure.getLastEncPosition()).thenReturn(1);
 
         DiagSwerveEnclosure classUnderTest = new DiagSwerveEnclosure("enclosure", 100, mockEnclosure, true);
 
-        when(mockEnclosure.getEncPosition()).thenReturn(51);
+        when(mockEnclosure.getLastEncPosition()).thenReturn(51);
         Assert.assertFalse(classUnderTest.getDiagResult());
 
-        when(mockEnclosure.getEncPosition()).thenReturn(-50);
+        when(mockEnclosure.getLastEncPosition()).thenReturn(-50);
         Assert.assertFalse(classUnderTest.getDiagResult());
 
-        when(mockEnclosure.getEncPosition()).thenReturn(101);
+        when(mockEnclosure.getLastEncPosition()).thenReturn(101);
         Assert.assertTrue(classUnderTest.getDiagResult());
 
-        when(mockEnclosure.getEncPosition()).thenReturn(50);
+        when(mockEnclosure.getLastEncPosition()).thenReturn(50);
         Assert.assertTrue(classUnderTest.getDiagResult());
     }
 
     @Test
     public void testSwerveAfterReset() throws Exception {
         CanTalonSwerveEnclosure mockEnclosure = Mockito.mock(CanTalonSwerveEnclosure.class);
-        when(mockEnclosure.getEncPosition()).thenReturn(1);
+        when(mockEnclosure.getLastEncPosition()).thenReturn(1);
 
         DiagSwerveEnclosure classUnderTest = new DiagSwerveEnclosure("enclosure", 100, mockEnclosure, true);
 
-        when(mockEnclosure.getEncPosition()).thenReturn(101);
+        when(mockEnclosure.getLastEncPosition()).thenReturn(101);
         Assert.assertTrue(classUnderTest.getDiagResult());
 
         classUnderTest.reset();
