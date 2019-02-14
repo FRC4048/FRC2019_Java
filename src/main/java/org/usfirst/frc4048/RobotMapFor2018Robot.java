@@ -78,10 +78,7 @@ interface RobotMapFor2018Robot {
   public static final int DRIVE_PIGEON_ID = 9;
   public static final int PCM_CAN_ID = 10;  
   public static final int ELEVATOR_MOTOR_ID = 11;
-  public static final int CARGO_INTAKE_MOTOR_ID = 12;
-
-  public static final int WINCH_CAN_ID = 13;
-
+  public static final int WINCH_CAN_ID = 12;
 
   //ANALOG INPUTS
   public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID = 0;
@@ -91,14 +88,12 @@ interface RobotMapFor2018Robot {
   
   public static final int CLIMBER_DISTANCE_SENSOR_LEFT_ID = 4;
   public static final int CLIMBER_DISTANCE_SENSOR_RIGHT_ID = 5;
-  public static final int ALIGNMENT_DISTANCE_SENSOR_ID = 6;
-
-  public static final int COMPRESSOR_PRESSURE_SENSOR = 7;
+  public static final int COMPRESSOR_PRESSURE_SENSOR = 6;
 
   //DIGITAL INPUTS
-  public static final int CARGO_LIMIT_SWITCH_LEFT_ID = 1;
-  public static final int CARGO_LIMIT_SWITCH_RIGHT_ID = 2;
-  public static final int CARGO_OPTICAL_SENSOR_ID = 0;
+  public static final int CARGO_LIMIT_SWITCH_LEFT_ID = 0;
+  public static final int CARGO_LIMIT_SWITCH_RIGHT_ID = 1;
+  public static final int CARGO_OPTICAL_SENSOR_ID = 2;
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
   public static final int[] ALIGNMENT_ULTRASONIC_ID = {3,4};
@@ -108,15 +103,14 @@ interface RobotMapFor2018Robot {
   public static final int PIVOT_LIMIT_SWITCH_RIGHT_ID = 10;
   
   //PWM
-  public static final int PIVOT_MOTOR_ID = 0;
+  public static final int PIVOT_MOTOR_ID = 1;
+  public static final int CARGO_MOTOR_ID = 0;
 
   //PCM
   public static final int CARGO_PISTON_ID = 0;
-  public static final int HATCH_PANEL_PISTON_ID = 1;
-  public static final int HATCH_PANEL_WRIST_PISTON_ID = 2;
-  public static final int INTAKES_WRIST_PISTON_ID = 3;
-  public static final int CLIMBER_PISTONS_ID = 4;
-  public static final int PIVOT_PISTON_ID = 5;
+  public static final int HATCH_PANEL_PISTON_ID = 0;
+  public static final int CLIMBER_PISTONS_ID = 1;
+  public static final int PIVOT_PISTON_ID = 2;
 
   //OI
   public static final int XBOX_A_BUTTON = 1;
@@ -158,7 +152,7 @@ interface RobotMapFor2018Robot {
   * TODO Add correct values for 2018 test robot
   */
   //PDP IDS
-  public static final int PDP_ID_CARGO_INTAKE = 13; //Just a test value for now; will be changed on the real robot.
+  public static final int PDP_ID_CARGO_INTAKE = 9;
   public static final int PDP_STEERING_FR = 11;
   public static final int PDP_STEERING_FL = 4;
   public static final int PDP_STEERING_RL = 5;
