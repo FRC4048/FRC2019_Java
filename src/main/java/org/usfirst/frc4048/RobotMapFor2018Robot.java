@@ -54,10 +54,12 @@ interface RobotMapFor2018Robot {
    */
   public static final int LOG_PERIODIC_TIME = 15;
 
+  public static final boolean LOG_PERIODIC_TIME_TO_CONSOLE = true;
+
   /**
   * Enable shuffleboard debug tabs
   */
-  public static final boolean SHUFFLEBOARD_DEBUG_MODE = true;
+  public static final boolean SHUFFLEBOARD_DEBUG_MODE = false;
 
 
   public static final double SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK = 0.0942478739;
@@ -103,7 +105,7 @@ interface RobotMapFor2018Robot {
   //PWM
   public static final int PIVOT_MOTOR_ID = 1;
   public static final int CARGO_MOTOR_ID = 0;
-  
+
   //PCM
   public static final int CARGO_PISTON_ID = 0;
   public static final int HATCH_PANEL_PISTON_ID = 0;

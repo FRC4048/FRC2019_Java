@@ -54,7 +54,7 @@ public class Drive extends Command {
 		Robot.completed(this, "getMode");
         if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
 			SmartShuffleboard.put("DrivetrainSensors", "drive-cmd-rotation", rcw);
-			Robot.completed(this, "dashboard");
+			Robot.completed(this, "shuf");
 		}
 		
 		Robot.drivetrain.move(fwd, str, rcw);

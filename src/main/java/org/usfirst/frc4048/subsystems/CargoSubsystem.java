@@ -31,7 +31,7 @@ public class CargoSubsystem extends Subsystem {
         opticalSensor = new DigitalInput(RobotMap.CARGO_OPTICAL_SENSOR_ID);
     }
 
-    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.CARGO) {
+    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
 
 		protected void addAll() {
             add("Left Pressed", !leftLimit.get());
@@ -50,7 +50,6 @@ public class CargoSubsystem extends Subsystem {
 
     @Override
     public void periodic() {
-      final long start = System.currentTimeMillis();
   
       // Put code here to be run every loop
       if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
@@ -58,12 +57,9 @@ public class CargoSubsystem extends Subsystem {
         SmartShuffleboard.put("Cargo", "Left Pressed", !leftLimit.get());
         SmartShuffleboard.put("Cargo", "Right Pressed", !rightLimit.get());
         SmartShuffleboard.put("Cargo", "Optical Triggered", !opticalSensor.get());
+        Robot.completed(this, "shuf");
       }
-      loggingContext.writeData();
-  
-      last_periodic = System.currentTimeMillis() - start;
     }
-    public long last_periodic = -1;
 
     public boolean leftLimitPressed() {
         return !leftLimit.get();

@@ -1,6 +1,5 @@
 package org.usfirst.frc4048.utils.diagnostics;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
@@ -8,15 +7,9 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
  * A diagnostics class for digital encoder. The diagnostics will turn green once the encoder has traveled at least a given
  * distance from its initial position (measured at initialization or after a reset)
  */
-public class DiagEncoder implements Diagnosable {
+public class DiagEncoder extends DiagDistanceTraveled {
 
-    private String name;
-    private int requiredTravel;
     private Encoder encoder;
-    private NetworkTableEntry networkTableEntry;
-
-    private int initialValue;
-    private boolean traveledDistance;
 
     /**
      * Constructor
@@ -27,12 +20,8 @@ public class DiagEncoder implements Diagnosable {
      * @param shuffleboardTab - the Shuffleboard tab to add the tile to
      */
     public DiagEncoder(String name, int requiredTravel, Encoder encoder, ShuffleboardTab shuffleboardTab) {
-        this.name = name;
-        this.requiredTravel = requiredTravel;
+        super(name, requiredTravel, shuffleboardTab);
         this.encoder = encoder;
-
-        networkTableEntry = shuffleboardTab.add(name, false).getEntry();
-
         reset();
     }
 
@@ -40,31 +29,13 @@ public class DiagEncoder implements Diagnosable {
      * Do not use for testing only
      */
     public DiagEncoder(String name, int requiredTravel, Encoder encoder, boolean DO_NOT_USE_FOR_TESTING_ONLY) {
-        this.name = name;
-        this.requiredTravel = requiredTravel;
+        super(name, requiredTravel, true);
         this.encoder = encoder;
-
         reset();
     }
 
     @Override
-    public void refresh() {
-        networkTableEntry.setBoolean(getDiagResult());
-    }
-
-    @Override
-    public void reset() {
-        traveledDistance = false;
-        initialValue = encoder.get();
-    }
-
-    boolean getDiagResult() {
-        int encoderValue = encoder.get();
-
-        if (Math.abs(encoderValue - initialValue) >= requiredTravel) {
-            traveledDistance = true;
-        }
-
-        return this.traveledDistance;
+    protected int getCurrentValue() {
+        return encoder.get();
     }
 }

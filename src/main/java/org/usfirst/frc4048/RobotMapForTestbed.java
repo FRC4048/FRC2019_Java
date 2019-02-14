@@ -43,7 +43,8 @@ interface RobotMapForTestbed {
     /**
    * Enables loging of timing data related to watchdog timeouts.
    */
-  public static final boolean LOG_PERIODIC_TIME = true;
+  public static final int LOG_PERIODIC_TIME = 15;
+  public static final boolean LOG_PERIODIC_TIME_TO_CONSOLE = true;
 
   /**
   * Enable shuffleboard debug tabs
@@ -96,7 +97,7 @@ interface RobotMapForTestbed {
   //PWM
   public static final int PIVOT_MOTOR_ID = 0;
   public static final int CARGO_MOTOR_ID = 1;
-  
+
   //PCM
   public static final int CARGO_PISTON_ID = 0;
   public static final int HATCH_PANEL_PISTON_ID = 0;
