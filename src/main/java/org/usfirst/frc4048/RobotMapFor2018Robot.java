@@ -46,7 +46,8 @@ interface RobotMapFor2018Robot {
   public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = false; //this should be true when we actually get the robot
 
   public static final boolean ENABLE_CLIMBER_SUBSYSTEM = false;
-
+  
+  public static final boolean ENABLE_PIVOT_SUBSYSTEM = false;
   /**
    * Enables logging of timing data related to watchdog timeouts. Set to 0 to disable, otherwise, set to the 
    * minimum number of milliseconds that will be logged. For example, if 15, then don't log any timing data less

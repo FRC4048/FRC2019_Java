@@ -129,8 +129,10 @@ public class OI {
       break;
     }
 
-    leftDPADTrigger.whenActive(new PivotMoveRetract());
-    rightDPADTrigger.whenActive(new PivotMoveDeploy());
+    if (RobotMap.ENABLE_PIVOT_SUBSYSTEM) {
+      leftDPADTrigger.whenActive(new PivotMoveRetract());
+      rightDPADTrigger.whenActive(new PivotMoveDeploy());
+    }
 
     alignWithVision = new JoystickButton(controller, RobotMap.XBOX_START_BUTTON);
     alignWithVision.whenPressed(new DriveAlignGroup());
