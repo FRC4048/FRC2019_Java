@@ -140,7 +140,7 @@ interface RobotMapFor2018Robot {
   public static final double CAMERA_HEIGHT = 43.5; // Inches, height of Limelight
   public static final double TARGET_HEIGHT_CARGO = 36.5; // Inches, height of field target
   public static final double TARGET_HEIGHT_HATCH = 32.0;
-  public static final double CAMERA_ANGLE = -29.44; // Degrees, angle that the camera is mounted at
+  public static final double CAMERA_ANGLE = -17; // Degrees, angle that the camera is mounted at
 
   public static final double ROBOT_CENTRIC_SCALE_RATIO = 0.3;
 

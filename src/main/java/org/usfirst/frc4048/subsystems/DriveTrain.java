@@ -76,10 +76,10 @@ public class DriveTrain extends Subsystem {
   private final boolean REVERSE_ENCODER = true;
   private final boolean REVERSE_OUTPUT = true;
 
-  private final int FR_ZERO = 1057;//1037;
-  private final int FL_ZERO = 1790;//1767;
-  private final int RL_ZERO = 2455;//1456;//1456;
-  private final int RR_ZERO = 1487;//2444;
+  private final int FR_ZERO = 3663;//1037;
+  private final int FL_ZERO = 1818;//1767;
+  private final int RL_ZERO = 1248;//1456;//1456;
+  private final int RR_ZERO = 1491;//2444;
 
   private final double P = 10;
   private final double I = 0;
