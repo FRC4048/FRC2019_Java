@@ -99,7 +99,7 @@ interface RobotMapForTestbed {
   
   //PCM
   public static final int CARGO_PISTON_ID = 0;
-  public static final int HATCH_PANEL_PISTON_ID = 1;
+  public static final int HATCH_PANEL_PISTON_ID = 0;
   public static final int CLIMBER_PISTONS_ID = 3;
   public static final int PIVOT_PISTON_ID = 4;
 
