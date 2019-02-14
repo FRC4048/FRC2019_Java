@@ -252,6 +252,7 @@ public class Robot extends TimedRobot {
       SmartShuffleboard.putCommand("Drive", "DriveAlignPhase2", new DriveAlignPhase2(0.3, 0.4, false));
       SmartShuffleboard.putCommand("Drive", "DriveAlignPhase3", new DriveAlignPhase3(0.25, false));
       SmartShuffleboard.putCommand("Drive", "Toggle Centric Mode", new CentricModeToggle());
+      SmartShuffleboard.putCommand("Drive", "ROtate angle align", new RotateAngleForAlignment());
     }
 
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight On", new LimelightToggle(true));

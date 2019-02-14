@@ -114,7 +114,7 @@ interface RobotMapFor2018Robot {
   public static final int HATCH_PANEL_WRIST_PISTON_ID = 2;
   public static final int INTAKES_WRIST_PISTON_ID = 3;
   public static final int CLIMBER_PISTONS_ID = 4;
-  public static final int PIVOT_PISTON = 5;
+  public static final int PIVOT_PISTON_ID = 5;
 
   //OI
   public static final int XBOX_A_BUTTON = 1;
@@ -144,7 +144,7 @@ interface RobotMapFor2018Robot {
   public static final double CAMERA_HEIGHT = 43.5; // Inches, height of Limelight
   public static final double TARGET_HEIGHT_CARGO = 36.5; // Inches, height of field target
   public static final double TARGET_HEIGHT_HATCH = 32.0;
-  public static final double CAMERA_ANGLE = -29.44; // Degrees, angle that the camera is mounted at
+  public static final double CAMERA_ANGLE = -17; // Degrees, angle that the camera is mounted at
 
   public static final double ROBOT_CENTRIC_SCALE_RATIO = 0.3;
 
