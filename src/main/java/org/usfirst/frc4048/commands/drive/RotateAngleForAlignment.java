@@ -8,6 +8,7 @@
 package org.usfirst.frc4048.commands.drive;
 
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.commands.LoggedCommand;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -22,8 +23,10 @@ public class RotateAngleForAlignment extends LoggedCommand {
   private static final double leftRocketFrontAngle = 331.25;
   private static final double cargoFrontAngle = 0.0;
   private static final double loadingStationAngle = 180.0;
-  private static final double[] depositAngles = new double[]{rightRocketSideAngle, rightRocketBackAngle, rightRocketFrontAngle, 
+  private static final double[] hatchDepositAngles = new double[]{rightRocketSideAngle, rightRocketBackAngle, rightRocketFrontAngle, 
           leftRocketSideAngle, leftRocketBackAngle,  leftRocketFrontAngle, cargoFrontAngle, loadingStationAngle};
+  private static final double[] cargoDepositAngles = new double[]{rightRocketSideAngle, leftRocketSideAngle, 
+          cargoFrontAngle, loadingStationAngle};
 
   /*
   \  <-- Back Angle
@@ -48,7 +51,7 @@ public class RotateAngleForAlignment extends LoggedCommand {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void loggedExecute() {
-    double angleToMoveTo = calculateAngle(Robot.drivetrain.getGyro());
+    double angleToMoveTo = calculateAngle(Robot.drivetrain.getGyro(), Robot.mechanicalMode.getMode());
     Scheduler.getInstance().add(new RotateAngle(angleToMoveTo));
   }
 
@@ -71,10 +74,21 @@ public class RotateAngleForAlignment extends LoggedCommand {
   }
 
 
-  public double calculateAngle(double currAngle) {
+  public double calculateAngle(double currAngle, int mode) {
     double currentDistance = 0;
     double closestDistance= 360;
     int closestIndex = 0;
+    double[] currentDepositAngles;
+
+    if (mode == RobotMap.CARGO_RETURN_CODE) {
+      currentDepositAngles = cargoDepositAngles;
+    }
+    else if (mode == RobotMap.HATCH_RETURN_CODE) {
+      currentDepositAngles = hatchDepositAngles;
+    }
+    else {
+      return 0;
+    }
 
     /* Make sure the angle is positive and less tha 360 */
     currAngle = currAngle % 360;
@@ -83,16 +97,16 @@ public class RotateAngleForAlignment extends LoggedCommand {
     }
 
     /* find the angle that is closest to the current robot angle */
-    for (int i = 0; i < depositAngles.length; i++)
+    for (int i = 0; i < currentDepositAngles.length; i++)
     {
-      currentDistance = findAngleDistance(currAngle, depositAngles[i]);
+      currentDistance = findAngleDistance(currAngle, currentDepositAngles[i]);
       if (currentDistance < closestDistance)
       {
         closestDistance = currentDistance;
         closestIndex = i;
       }
     }
-    return depositAngles[closestIndex];
+    return currentDepositAngles[closestIndex];
   }
 
   
