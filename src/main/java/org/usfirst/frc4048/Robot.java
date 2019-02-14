@@ -13,6 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import org.usfirst.frc4048.commands.UnCradleIntake;
 import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
 // import org.usfirst.frc4048.commands.DriveTargetCenter;
 // import org.usfirst.frc4048.commands.LimelightAlign;
@@ -178,7 +179,9 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     logging.setStartTime();
     commonInit("autonomousInit");
-
+    if(RobotMap.ENABLE_BEGIN_MATCH_GROUPCOMMAND){
+      Scheduler.getInstance().add(new UnCradleIntake());
+    }
     //    logging.traceMessage(Logging.MessageLevel.INFORMATION,
     //				"---------------------------- Autonomous mode starting ----------------------------");
     //    m_autonomousCommand = m_chooser.getSelected();
