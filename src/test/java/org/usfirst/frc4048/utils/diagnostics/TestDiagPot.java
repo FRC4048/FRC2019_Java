@@ -14,7 +14,7 @@ public class TestDiagPot {
     public void testPotInitially() throws Exception {
         AnalogPotentiometer mockPot = Mockito.mock(AnalogPotentiometer.class);
 
-        DiagPot classUnderTest = new DiagPot("pot", 1.0, 2.0, mockPot, true);
+        DiagPot classUnderTest = new DiagPot("pot", 1.0, 2.0, mockPot);
 
         when(mockPot.get()).thenReturn(1.5);
         Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
@@ -30,7 +30,7 @@ public class TestDiagPot {
     public void testPotAfterReset() throws Exception {
         AnalogPotentiometer mockPot = Mockito.mock(AnalogPotentiometer.class);
 
-        DiagPot classUnderTest = new DiagPot("pot", 1.0, 2.0,mockPot, true);
+        DiagPot classUnderTest = new DiagPot("pot", 1.0, 2.0,mockPot);
 
         when(mockPot.get()).thenReturn(1.0);
         Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));

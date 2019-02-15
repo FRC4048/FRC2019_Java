@@ -16,24 +16,21 @@ public abstract class DiagDistanceTraveled implements Diagnosable {
     private boolean traveledDistance;
 
 
-    public DiagDistanceTraveled(String name, int requiredTravel, ShuffleboardTab shuffleboardTab) {
-        this.name = name;
-        this.requiredTravel = requiredTravel;
-
-        networkTableEntry = shuffleboardTab.add(name, false).getEntry();
-    }
-
-    /**
-     * Do not use for testing only
-     */
-    public DiagDistanceTraveled(String name, int requiredTravel, boolean DO_NOT_USE_FOR_TESTING_ONLY) {
+    public DiagDistanceTraveled(String name, int requiredTravel) {
         this.name = name;
         this.requiredTravel = requiredTravel;
     }
 
     @Override
+    public void setShuffleBoardTab(ShuffleboardTab shuffleBoardTab) {
+        networkTableEntry = shuffleBoardTab.add(name, false).getEntry();
+    }
+
+    @Override
     public void refresh() {
-        networkTableEntry.setBoolean(getDiagResult());
+        if (networkTableEntry != null) {
+            networkTableEntry.setBoolean(getDiagResult());
+        }
     }
 
     @Override

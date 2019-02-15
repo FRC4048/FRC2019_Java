@@ -24,6 +24,7 @@ import org.usfirst.frc4048.utils.LimeLightVision;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.OpticalRangeFinder;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
+import org.usfirst.frc4048.utils.diagnostics.DiagSonar;
 
 /**
  * This subsystem holds the sensors the robot uses for navigation
@@ -39,6 +40,8 @@ public class DrivetrainSensors extends Subsystem {
         ultrasonic.setAutomaticMode(true);
 
         limelight = new LimeLightVision();
+
+        Robot.diagnostics.addDiagnosable(new DiagSonar("Drive Sonar", ultrasonic, 10, 20));
     }
 
     public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {

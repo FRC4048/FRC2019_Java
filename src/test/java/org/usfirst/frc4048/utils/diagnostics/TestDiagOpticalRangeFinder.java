@@ -13,7 +13,7 @@ public class TestDiagOpticalRangeFinder{
     public void testOpticalRangeFinderInitially() throws Exception {
         OpticalRangeFinder mockOpticalRangeFinder = Mockito.mock(OpticalRangeFinder.class);
 
-        DiagOpticalRangeFinder classUnderTest = new DiagOpticalRangeFinder("Optical Range Finder", mockOpticalRangeFinder, true, 3.0, 12.0);
+        DiagOpticalRangeFinder classUnderTest = new DiagOpticalRangeFinder("Optical Range Finder", mockOpticalRangeFinder,3.0, 12.0);
 
         when(mockOpticalRangeFinder.getDistanceInInches()).thenReturn(7.0);
         Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
@@ -29,7 +29,7 @@ public class TestDiagOpticalRangeFinder{
     public void testOpticalRangeFinderAfterReset() throws Exception {
         OpticalRangeFinder mockOpticalRangeFinder = Mockito.mock(OpticalRangeFinder.class);
 
-        DiagOpticalRangeFinder classUnderTest = new DiagOpticalRangeFinder("Optical Range Finder", mockOpticalRangeFinder, true, 3.0, 12.0);
+        DiagOpticalRangeFinder classUnderTest = new DiagOpticalRangeFinder("Optical Range Finder", mockOpticalRangeFinder, 3.0, 12.0);
 
         when(mockOpticalRangeFinder.getDistanceInInches()).thenReturn(7.0);
         Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));

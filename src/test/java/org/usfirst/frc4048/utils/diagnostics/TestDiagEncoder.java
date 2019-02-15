@@ -15,7 +15,7 @@ public class TestDiagEncoder {
         Encoder mockEncoder = Mockito.mock(Encoder.class);
         when(mockEncoder.get()).thenReturn(1);
 
-        DiagEncoder classUnderTest = new DiagEncoder("encoder", 100, mockEncoder, true);
+        DiagEncoder classUnderTest = new DiagEncoder("encoder", 100, mockEncoder);
 
         when(mockEncoder.get()).thenReturn(51);
         Assert.assertFalse(classUnderTest.getDiagResult());
@@ -35,7 +35,7 @@ public class TestDiagEncoder {
         Encoder mockEncoder = Mockito.mock(Encoder.class);
         when(mockEncoder.get()).thenReturn(1);
 
-        DiagEncoder classUnderTest = new DiagEncoder("encoder", 100, mockEncoder, true);
+        DiagEncoder classUnderTest = new DiagEncoder("encoder", 100, mockEncoder);
 
         when(mockEncoder.get()).thenReturn(101);
         Assert.assertTrue(classUnderTest.getDiagResult());
