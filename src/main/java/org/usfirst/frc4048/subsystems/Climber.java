@@ -15,6 +15,7 @@ import org.usfirst.frc4048.utils.AngleFinder;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.OpticalRangeFinder;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
+import org.usfirst.frc4048.utils.diagnostics.DiagOpticalRangeFinder;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -96,6 +97,11 @@ public class Climber extends Subsystem {
 
     final OpticalRangeFinder leftRangeFinder = new OpticalRangeFinder(leftRangeInput);
     final OpticalRangeFinder rightRangeFinder = new OpticalRangeFinder(rightRangeInput);
+    
+    Robot.diagnostics.addDiagnosable(new DiagOpticalRangeFinder("Left Range Finder", leftRangeFinder, 5, 10));
+    Robot.diagnostics.addDiagnosable(new DiagOpticalRangeFinder("Right Range Finder", rightRangeFinder, 5, 10));
+  
     return new AngleFinder(leftRangeFinder, rightRangeFinder, RobotMap.INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS);
+  
   }
 }
