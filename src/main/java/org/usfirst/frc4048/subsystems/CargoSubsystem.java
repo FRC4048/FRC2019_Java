@@ -6,6 +6,8 @@ import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
+import org.usfirst.frc4048.utils.diagnostics.DiagOpticalSensor;
+import org.usfirst.frc4048.utils.diagnostics.DiagSwitch;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -29,6 +31,10 @@ public class CargoSubsystem extends Subsystem {
         rightLimit = new DigitalInput(RobotMap.CARGO_LIMIT_SWITCH_RIGHT_ID);
         ejectPiston = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.CARGO_PISTON_ID);
         opticalSensor = new DigitalInput(RobotMap.CARGO_OPTICAL_SENSOR_ID);
+
+        Robot.diagnostics.addDiagnosable(new DiagSwitch("Cargo Limit Switch Left", leftLimit));
+        Robot.diagnostics.addDiagnosable(new DiagSwitch("Cargo Limit Switch Right", rightLimit));
+        Robot.diagnostics.addDiagnosable(new DiagOpticalSensor("Cargo Optical Sensor", opticalSensor));
     }
 
     public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
