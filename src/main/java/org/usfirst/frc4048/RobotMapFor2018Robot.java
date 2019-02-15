@@ -46,7 +46,9 @@ interface RobotMapFor2018Robot {
   public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = false; //this should be true when we actually get the robot
 
   public static final boolean ENABLE_CLIMBER_SUBSYSTEM = false;
-  
+
+  public static final boolean ENABLE_BEGIN_MATCH_GROUPCOMMAND = false;
+
   public static final boolean ENABLE_PIVOT_SUBSYSTEM = false;
   /**
    * Enables logging of timing data related to watchdog timeouts. Set to 0 to disable, otherwise, set to the 
