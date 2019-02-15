@@ -98,8 +98,8 @@ public class Climber extends Subsystem {
     final OpticalRangeFinder leftRangeFinder = new OpticalRangeFinder(leftRangeInput);
     final OpticalRangeFinder rightRangeFinder = new OpticalRangeFinder(rightRangeInput);
     
-    Robot.diagnostics.addDiagnosable(new DiagOpticalRangeFinder("Left Range Finder", leftRangeFinder, 2, 10));
-    Robot.diagnostics.addDiagnosable(new DiagOpticalRangeFinder("Right Range Finder", rightRangeFinder, 2, 10));
+    Robot.diagnostics.addDiagnosable(new DiagOpticalRangeFinder("Left Range Finder", leftRangeFinder, 5, 10));
+    Robot.diagnostics.addDiagnosable(new DiagOpticalRangeFinder("Right Range Finder", rightRangeFinder, 5, 10));
   
     return new AngleFinder(leftRangeFinder, rightRangeFinder, RobotMap.INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS);
   
