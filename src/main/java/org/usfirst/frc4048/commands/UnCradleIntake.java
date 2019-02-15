@@ -7,7 +7,12 @@
 
 package org.usfirst.frc4048.commands;
 
+import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
+import org.usfirst.frc4048.commands.pivot.PivotMoveDeploy;
+import org.usfirst.frc4048.utils.ElevatorPosition;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 public class UnCradleIntake extends CommandGroup {
   /**
@@ -30,5 +35,9 @@ public class UnCradleIntake extends CommandGroup {
     // e.g. if Command1 requires chassis, and Command2 requires arm,
     // a CommandGroup containing them would require both the chassis and the
     // arm.
+    addSequential(new ElevatorMoveToPos(ElevatorPosition.START_MATCH_POS));//brings elevator to about 15 inches above start
+    addSequential(new PivotMoveDeploy());//deploys the pivot
+    addSequential(new WaitCommand(0.5));
+    addSequential(new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));//brings it to bottom
   }
 }

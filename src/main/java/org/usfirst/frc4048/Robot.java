@@ -13,7 +13,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import org.usfirst.frc4048.commands.UnCradleIntake;
 import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
+import org.usfirst.frc4048.commands.climber.PistonTest;
 // import org.usfirst.frc4048.commands.DriveTargetCenter;
 // import org.usfirst.frc4048.commands.LimelightAlign;
 import org.usfirst.frc4048.commands.drive.CentricModeToggle;
@@ -42,6 +44,7 @@ import org.usfirst.frc4048.utils.SmartShuffleboard;
 import org.usfirst.frc4048.utils.Timer;
 import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -122,7 +125,9 @@ public class Robot extends TimedRobot {
       climber = new Climber();
     }
     diagnostics = new Diagnostics();
-    pivot = new Pivot();
+    if(RobotMap.ENABLE_PIVOT_SUBSYSTEM){
+      pivot = new Pivot();
+    }
     logging = new Logging();
 
     // OI must be initialized last
@@ -179,7 +184,9 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     logging.setStartTime();
     commonInit("autonomousInit");
-
+    if(RobotMap.ENABLE_BEGIN_MATCH_GROUPCOMMAND){
+      Scheduler.getInstance().add(new UnCradleIntake());
+    }
     //    logging.traceMessage(Logging.MessageLevel.INFORMATION,
     //				"---------------------------- Autonomous mode starting ----------------------------");
     //    m_autonomousCommand = m_chooser.getSelected();
@@ -265,6 +272,9 @@ public class Robot extends TimedRobot {
       SmartShuffleboard.putCommand("Climber", "Forward", new ClimbWinchManual(0.5));
       SmartShuffleboard.putCommand("Climber", "Backwards", new ClimbWinchManual(-0.5));
       SmartShuffleboard.putCommand("Climber", "Stop", new ClimbWinchManual(0.0));
+      SmartShuffleboard.putCommand("Climber", "Piston Forward", new PistonTest(DoubleSolenoid.Value.kForward));
+      SmartShuffleboard.putCommand("Climber", "Piston Rev", new PistonTest(DoubleSolenoid.Value.kReverse));
+      SmartShuffleboard.putCommand("Climber", "Piston Off", new PistonTest(DoubleSolenoid.Value.kOff));
     }
     if (RobotMap.ENABLE_DRIVETRAIN) {
       SmartShuffleboard.putCommand("Drive", "drive distance 10", new DriveDistance(10, 0.3, 0.0, 0.0));

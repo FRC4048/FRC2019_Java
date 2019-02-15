@@ -8,58 +8,44 @@
 package org.usfirst.frc4048.commands.climber;
 
 import org.usfirst.frc4048.Robot;
-import org.usfirst.frc4048.commands.LoggedCommand;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ClimbDropRamp extends LoggedCommand {
-  private boolean done;
-  public ClimbDropRamp() {
-    super("ClimberDropRamp");
+public class PistonTest extends Command {
+  DoubleSolenoid.Value state;
+  public PistonTest(DoubleSolenoid.Value state) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    this.state = state;
     requires(Robot.climber);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void loggedInitialize() {
-    setTimeout(2);
-    Robot.climber.movePiston(Value.kForward);
-    done = false;
+  protected void initialize() {
+    Robot.climber.movePiston(state);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void loggedExecute() {
-    //This is to free the piston once deployed
-    if(Robot.climber.getPositionSensor()) {
-      Robot.climber.movePiston(Value.kOff);
-      done = true;
-    }
+  protected void execute() {
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean loggedIsFinished() {
-    return done || isTimedOut();
+  protected boolean isFinished() {
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void loggedEnd() {
+  protected void end() {
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void loggedInterrupted() {
-    end();
-  }
-
-  @Override
-  protected void loggedCancel() {
-
+  protected void interrupted() {
   }
 }

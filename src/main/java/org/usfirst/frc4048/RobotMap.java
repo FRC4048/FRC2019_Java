@@ -11,7 +11,7 @@ package org.usfirst.frc4048;
  */
 
 // public interface RobotMap extends RobotMapForTestbed {
-public interface RobotMap extends RobotMapFor2018Robot {
+public interface RobotMap extends RobotMapForTestbed {
   /**
   * Logger will log every number of iteations specified here
   */

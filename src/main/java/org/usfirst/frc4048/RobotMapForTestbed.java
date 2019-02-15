@@ -40,6 +40,9 @@ interface RobotMapForTestbed {
 
   public static final boolean ENABLE_CLIMBER_SUBSYSTEM = true;
 
+  public static final boolean ENABLE_BEGIN_MATCH_GROUPCOMMAND = false;
+
+  public static final boolean ENABLE_PIVOT_SUBSYSTEM = false;
     /**
    * Enables loging of timing data related to watchdog timeouts.
    */
@@ -91,6 +94,7 @@ interface RobotMapForTestbed {
   public static final int CARGO_DIGITAL_INPUT_ID = 8;
   public static final int PIVOT_LIMIT_SWITCH_LEFT_ID = 9;
   public static final int PIVOT_LIMIT_SWITCH_RIGHT_ID = 10;
+  public static final int CLIMBER_POSITION_SENSOR_ID = 11;
 
   public static final int[] ALIGNMENT_ULTRASONIC_ID = {2,3};
 
@@ -101,7 +105,7 @@ interface RobotMapForTestbed {
   //PCM
   public static final int CARGO_PISTON_ID = 0;
   public static final int HATCH_PANEL_PISTON_ID = 0;
-  public static final int CLIMBER_PISTONS_ID = 3;
+  public static final int[] CLIMBER_PISTONS_ID = {0,1};
   public static final int PIVOT_PISTON_ID = 4;
 
   //OI
