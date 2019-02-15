@@ -118,12 +118,6 @@ public class Robot extends TimedRobot {
         }
         break;
       default:
-        if(RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM) {
-          hatchPanelSubsystem = new HatchPanelSubsystem();
-        }
-        DriverStation.reportError("-----Unable to determine robot has the Hatch Panel or Cargo assembly mounted-----", true);
-        DriverStation.reportError("-----DEFAULTED TO HATCH  SUBSYSTEM-----", true);
-        SmartShuffleboard.put("Competition", "ERROR", "COULD NOT DETERMINE THE MECHANISM ATTACHED DEFAULTED TO HATCH");
         break;
     }
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
