@@ -118,7 +118,6 @@ public class Robot extends TimedRobot {
         }
         break;
       default:
-        DriverStation.reportError("-----Unable to determine robot has the Hatch Panel or Cargo assembly mounted-----", true);
         break;
     }
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
