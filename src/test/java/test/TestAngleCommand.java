@@ -35,7 +35,7 @@ public class TestAngleCommand {
 
     @Test
     public void testAngle3() throws Exception {
-        Assert.assertEquals(61.25D, classUnderTest.calculateAngle(61.25), 0.001D);
+        Assert.assertEquals(28.75D, classUnderTest.calculateAngle(28.75D), 0.001D);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class TestAngleCommand {
 
     @Test
     public void testAngle6() throws Exception {
-        Assert.assertEquals(241.25D, classUnderTest.calculateAngle(241.25), 0.001D);
+        Assert.assertEquals(208.75D, classUnderTest.calculateAngle(208.75), 0.001D);
     }
 
     @Test
@@ -79,6 +79,6 @@ public class TestAngleCommand {
     
     @Test
     public void testAngle12() throws Exception {
-        Assert.assertEquals(241.25D, classUnderTest.calculateAngle(230), 0.001D);
+        Assert.assertEquals(208.75, classUnderTest.calculateAngle(230), 0.001D);
     }
 }
