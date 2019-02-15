@@ -122,7 +122,11 @@ public class Robot extends TimedRobot {
       climber = new Climber();
     }
     diagnostics = new Diagnostics();
-    pivot = new Pivot();
+
+    if (RobotMap.ENABLE_PIVOT)
+    {
+      pivot = new Pivot();
+    }
     logging = new Logging();
 
     // OI must be initialized last
@@ -289,6 +293,12 @@ public class Robot extends TimedRobot {
       SmartShuffleboard.putCommand("Elevator", "Cargo Rocket High", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
       SmartShuffleboard.putCommand("Elevator", "Cargo Intake Pos", new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
       SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
+    }
+
+    if (RobotMap.ENABLE_PIVOT)
+    {
+      SmartShuffleboard.putCommand("Pivot", "Pivot Deploy", new PivotMoveDeploy());
+      SmartShuffleboard.putCommand("Pivot", "Pivot Retract", new PivotMoveRetract());
     }
 
   }

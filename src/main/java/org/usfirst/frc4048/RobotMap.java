@@ -34,6 +34,8 @@ public interface RobotMap extends RobotMapFor2018Robot {
    * should reduce the period cycle time.
    */
   public static final boolean ENABLE_WHEEL_ENCODER_THREAD = true;
+
+  public static final boolean ENABLE_PIVOT = false;
   
   public static final long WHEEL_ENCODER_THREAD_INTERVAL_MS = 11;
 
