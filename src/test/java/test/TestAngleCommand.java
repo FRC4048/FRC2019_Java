@@ -10,6 +10,7 @@ package test;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
 
 /**
@@ -23,62 +24,117 @@ public class TestAngleCommand {
         classUnderTest = new RotateAngleForAlignment();
     }
     
+
+    /* Tests for HATCH rotations */
+
     @Test
     public void testAngle() throws Exception {
-        Assert.assertEquals(0.0D, classUnderTest.calculateAngle(0), 0.001D);
+        Assert.assertEquals(0.0D, classUnderTest.calculateAngle(0, RobotMap.HATCH_RETURN_CODE), 0.001D);
     }
 
     @Test
     public void testAngle2() throws Exception {
-        Assert.assertEquals(90.0D, classUnderTest.calculateAngle(90), 0.001D);
+        Assert.assertEquals(90.0D, classUnderTest.calculateAngle(90, RobotMap.HATCH_RETURN_CODE), 0.001D);
     }
 
     @Test
     public void testAngle3() throws Exception {
-        Assert.assertEquals(28.75D, classUnderTest.calculateAngle(28.75D), 0.001D);
+        Assert.assertEquals(28.75D, classUnderTest.calculateAngle(28.75D, RobotMap.HATCH_RETURN_CODE), 0.001D);
     }
 
     @Test
     public void testAngle4() throws Exception {
-        Assert.assertEquals(151.25D, classUnderTest.calculateAngle(151.25), 0.001D);
+        Assert.assertEquals(151.25D, classUnderTest.calculateAngle(151.25, RobotMap.HATCH_RETURN_CODE), 0.001D);
     }
 
     @Test
     public void testAngle5() throws Exception {
-        Assert.assertEquals(270.0D, classUnderTest.calculateAngle(270), 0.001D);
+        Assert.assertEquals(270.0D, classUnderTest.calculateAngle(270, RobotMap.HATCH_RETURN_CODE), 0.001D);
     }
 
     @Test
     public void testAngle6() throws Exception {
-        Assert.assertEquals(208.75D, classUnderTest.calculateAngle(208.75), 0.001D);
+        Assert.assertEquals(208.75D, classUnderTest.calculateAngle(208.75, RobotMap.HATCH_RETURN_CODE), 0.001D);
     }
 
     @Test
     public void testAngle7() throws Exception {
-        Assert.assertEquals(331.25D, classUnderTest.calculateAngle(331.25), 0.001D);
+        Assert.assertEquals(331.25D, classUnderTest.calculateAngle(331.25, RobotMap.HATCH_RETURN_CODE), 0.001D);
     }
     @Test
     public void testAngle8() throws Exception {
-        Assert.assertEquals(0.0D, classUnderTest.calculateAngle(3.0), 0.001D);
+        Assert.assertEquals(0.0D, classUnderTest.calculateAngle(3.0, RobotMap.HATCH_RETURN_CODE), 0.001D);
     }
     
     @Test
     public void testAngle9() throws Exception {
-        Assert.assertEquals(0.0D, classUnderTest.calculateAngle(357), 0.001D);
+        Assert.assertEquals(0.0D, classUnderTest.calculateAngle(357, RobotMap.HATCH_RETURN_CODE), 0.001D);
     }
 
     @Test
     public void testAngle10() throws Exception {
-        Assert.assertEquals(0.0D, classUnderTest.calculateAngle(-3), 0.001D);
+        Assert.assertEquals(0.0D, classUnderTest.calculateAngle(-3, RobotMap.HATCH_RETURN_CODE), 0.001D);
     }
     
     @Test
     public void testAngle11() throws Exception {
-        Assert.assertEquals(331.25D, classUnderTest.calculateAngle(312), 0.001D);
+        Assert.assertEquals(331.25D, classUnderTest.calculateAngle(312, RobotMap.HATCH_RETURN_CODE), 0.001D);
     }
     
     @Test
     public void testAngle12() throws Exception {
-        Assert.assertEquals(208.75, classUnderTest.calculateAngle(230), 0.001D);
+        Assert.assertEquals(208.75, classUnderTest.calculateAngle(230, RobotMap.HATCH_RETURN_CODE), 0.001D);
+    }
+
+/* Tests for CARGO rotations */
+
+    @Test
+    public void testAngle13() throws Exception {
+        Assert.assertEquals(0.0D, classUnderTest.calculateAngle(0, RobotMap.CARGO_RETURN_CODE), 0.001D);
+    }
+
+    @Test
+    public void testAngle14() throws Exception {
+        Assert.assertEquals(180.0D, classUnderTest.calculateAngle(180, RobotMap.CARGO_RETURN_CODE), 0.001D);
+    }
+
+    @Test
+    public void testAngle15() throws Exception {
+        Assert.assertEquals(180.0D, classUnderTest.calculateAngle(-180, RobotMap.CARGO_RETURN_CODE), 0.001D);
+    }
+
+    @Test
+    public void testAngle16() throws Exception {
+        Assert.assertEquals(0.0D, classUnderTest.calculateAngle(22, RobotMap.CARGO_RETURN_CODE), 0.001D);
+    }
+
+    @Test
+    public void testAngle17() throws Exception {
+        Assert.assertEquals(0.0D, classUnderTest.calculateAngle(-22, RobotMap.CARGO_RETURN_CODE), 0.001D);
+    }
+
+    @Test
+    public void testAngle18() throws Exception {
+        Assert.assertEquals(90.0D, classUnderTest.calculateAngle(95, RobotMap.CARGO_RETURN_CODE), 0.001D);
+    }
+
+    @Test
+    public void testAngle19() throws Exception {
+        Assert.assertEquals(180.0D, classUnderTest.calculateAngle(170, RobotMap.CARGO_RETURN_CODE), 0.001D);
+    }
+
+    @Test
+    public void testAngle20() throws Exception {
+        Assert.assertEquals(180.0D, classUnderTest.calculateAngle(-190, RobotMap.CARGO_RETURN_CODE), 0.001D);
+    }
+
+    @Test
+    public void testAngle21() throws Exception {
+        Assert.assertEquals(270.0D, classUnderTest.calculateAngle(250, RobotMap.CARGO_RETURN_CODE), 0.001D);
+    }
+
+    @Test
+    public void testAngle22() throws Exception {
+        Assert.assertEquals(0.0D, classUnderTest.calculateAngle(42, RobotMap.CARGO_RETURN_CODE), 0.001D);
     }
 }
