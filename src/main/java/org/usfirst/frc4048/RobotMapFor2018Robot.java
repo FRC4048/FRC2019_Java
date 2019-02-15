@@ -102,6 +102,7 @@ interface RobotMapFor2018Robot {
   public static final int CARGO_DIGITAL_INPUT_ID = 8;
   public static final int PIVOT_LIMIT_SWITCH_LEFT_ID = 9;
   public static final int PIVOT_LIMIT_SWITCH_RIGHT_ID = 10;
+  public static final int CLIMBER_POSITION_SENSOR_ID = 11;
   
   //PWM
   public static final int PIVOT_MOTOR_ID = 1;
@@ -110,8 +111,8 @@ interface RobotMapFor2018Robot {
   //PCM
   public static final int CARGO_PISTON_ID = 0;
   public static final int HATCH_PANEL_PISTON_ID = 0;
-  public static final int CLIMBER_PISTONS_ID = 1;
-  public static final int PIVOT_PISTON_ID = 2;
+  public static final int[] CLIMBER_PISTONS_ID = {1,2};
+  public static final int PIVOT_PISTON_ID = 3;
 
   //OI
   public static final int XBOX_A_BUTTON = 1;
