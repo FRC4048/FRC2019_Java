@@ -8,6 +8,7 @@
 package org.usfirst.frc4048.commands.elevator;
 
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.commands.LoggedCommand;
 import org.usfirst.frc4048.utils.ElevatorPosition;
 
@@ -20,7 +21,6 @@ public class ElevatorMoveToPos extends LoggedCommand {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     this.elevatorPosition = elevatorPosition;
-
     requires(Robot.elevator);
   }
 

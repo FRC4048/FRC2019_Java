@@ -36,11 +36,9 @@ public class MechanicalMode {
             SmartShuffleboard.put("Driver", "Mechanical Mode", "CARGO");
             return RobotMap.CARGO_RETURN_CODE;
         } else {
-            SmartShuffleboard.put("Driver", "Mechanical Mode", "INVALID");
             DriverStation.reportError("-----Unable to determine robot has the Hatch Panel or Cargo assembly mounted-----", true);
             DriverStation.reportError("-----DEFAULTED TO HATCH  SUBSYSTEM-----", true);
-            SmartShuffleboard.put("Competition", "ERROR", "COULD NOT DETERMINE THE MECHANISM ATTACHED DEFAULTED TO HATCH");
-        
+            SmartShuffleboard.put("Driver", "ERROR", "COULD NOT DETERMINE THE MECHANISM ATTACHED DEFAULTED TO HATCH");
             return RobotMap.HATCH_RETURN_CODE;
         }
     }
