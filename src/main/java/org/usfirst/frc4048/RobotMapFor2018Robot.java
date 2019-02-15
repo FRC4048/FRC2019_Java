@@ -48,6 +48,8 @@ interface RobotMapFor2018Robot {
   public static final boolean ENABLE_CLIMBER_SUBSYSTEM = false;
 
   public static final boolean ENABLE_BEGIN_MATCH_GROUPCOMMAND = false;
+
+  public static final boolean ENABLE_PIVOT_SUBSYSTEM = false;
   /**
    * Enables logging of timing data related to watchdog timeouts. Set to 0 to disable, otherwise, set to the 
    * minimum number of milliseconds that will be logged. For example, if 15, then don't log any timing data less
@@ -102,6 +104,7 @@ interface RobotMapFor2018Robot {
   public static final int CARGO_DIGITAL_INPUT_ID = 8;
   public static final int PIVOT_LIMIT_SWITCH_LEFT_ID = 9;
   public static final int PIVOT_LIMIT_SWITCH_RIGHT_ID = 10;
+  public static final int CLIMBER_POSITION_SENSOR_ID = 11;
   
   //PWM
   public static final int PIVOT_MOTOR_ID = 1;
@@ -110,8 +113,8 @@ interface RobotMapFor2018Robot {
   //PCM
   public static final int CARGO_PISTON_ID = 0;
   public static final int HATCH_PANEL_PISTON_ID = 0;
-  public static final int CLIMBER_PISTONS_ID = 1;
-  public static final int PIVOT_PISTON_ID = 2;
+  public static final int[] CLIMBER_PISTONS_ID = {1,2};
+  public static final int PIVOT_PISTON_ID = 3;
 
   //OI
   public static final int XBOX_A_BUTTON = 1;
@@ -141,7 +144,7 @@ interface RobotMapFor2018Robot {
   public static final double CAMERA_HEIGHT = 43.5; // Inches, height of Limelight
   public static final double TARGET_HEIGHT_CARGO = 36.5; // Inches, height of field target
   public static final double TARGET_HEIGHT_HATCH = 32.0;
-  public static final double CAMERA_ANGLE = -29.44; // Degrees, angle that the camera is mounted at
+  public static final double CAMERA_ANGLE = -17; // Degrees, angle that the camera is mounted at
 
   public static final double ROBOT_CENTRIC_SCALE_RATIO = 0.3;
 
