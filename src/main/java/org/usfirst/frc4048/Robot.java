@@ -126,7 +126,7 @@ public class Robot extends TimedRobot {
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
       climber = new Climber();
     }
-        pivot = new Pivot();
+
     if(RobotMap.ENABLE_PIVOT_SUBSYSTEM){
       pivot = new Pivot();
     }
