@@ -161,7 +161,7 @@ public class Robot extends TimedRobot {
 				"---------------------------- Robot Disabled ----------------------------");
     // Robot.drivetrainSensors.ledOff();
     new LimelightToggle(false);
-
+    Scheduler.getInstance().run();
   }
 
   @Override
