@@ -118,7 +118,12 @@ public class Robot extends TimedRobot {
         }
         break;
       default:
+        if(RobotMap.ENABLE_CARGO_SUBSYSTEM) {
+          cargoSubsystem = new CargoSubsystem();
+        }
         DriverStation.reportError("-----Unable to determine robot has the Hatch Panel or Cargo assembly mounted-----", true);
+        DriverStation.reportError("-----DEFAULTED TO CARGO SUBSYSTEM-----", true);
+        SmartShuffleboard.put("Competition", "ERROR", "COULD NOT DETERMINE THE MECHANISM ATTACHED DEFAULTED TO CARGO");
         break;
     }
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
