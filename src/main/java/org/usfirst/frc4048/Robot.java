@@ -122,7 +122,9 @@ public class Robot extends TimedRobot {
       climber = new Climber();
     }
     diagnostics = new Diagnostics();
-    pivot = new Pivot();
+    if(RobotMap.ENABLE_PIVOT_SUBSYSTEM){
+      pivot = new Pivot();
+    }
     logging = new Logging();
 
     // OI must be initialized last
