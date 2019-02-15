@@ -134,7 +134,6 @@ public class Robot extends TimedRobot {
     // OI must be initialized last
     oi = new OI();
 //    SmartDashboard.putData("Auto mode", m_chooser);
-
   }
 
   /**
@@ -161,7 +160,8 @@ public class Robot extends TimedRobot {
     logging.traceMessage(Logging.MessageLevel.INFORMATION,
 				"---------------------------- Robot Disabled ----------------------------");
     // Robot.drivetrainSensors.ledOff();
-    
+    new LimelightToggle(false);
+    Scheduler.getInstance().run();
   }
 
   @Override
@@ -219,6 +219,8 @@ public class Robot extends TimedRobot {
   public void commonInit(final String loggingLabel) {
     logging.traceMessage(Logging.MessageLevel.INFORMATION, LINE, loggingLabel, LINE);
     logging.writeAllTitles();
+
+    new LimelightToggle(true);
 
     if(RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();

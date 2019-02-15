@@ -37,7 +37,7 @@ public class DriveAlignGroup extends CommandGroup {
     addSequential(new WaitCommand(0.3));
     addSequential(new DriveAlignPhase2(0.25, 0.4, false)); //STEP 2
     addSequential(new DriveAlignPhase3(0.25, false)); //STEP 3
-    addSequential(new LimelightToggle(false));
+    addSequential(new CentricModeRobot());
   }
 }
  

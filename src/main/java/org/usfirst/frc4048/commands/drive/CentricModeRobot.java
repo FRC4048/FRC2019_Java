@@ -5,23 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands.limelight;
+package org.usfirst.frc4048.commands.drive;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class LimelightToggle extends LoggedCommand {
-
-  private boolean isLimelightOn;
-
-  public LimelightToggle(boolean isLimelightOn) {
-    super(String.format(" is running, on: %b", isLimelightOn));
+public class CentricModeRobot extends LoggedCommand {
+  public CentricModeRobot() {
+    super("CentricModeRobot");
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    this.isLimelightOn = isLimelightOn;
-    setRunWhenDisabled(true);
   }
 
   // Called just before this Command runs the first time
@@ -32,11 +27,7 @@ public class LimelightToggle extends LoggedCommand {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void loggedExecute() {
-    if (isLimelightOn) {
-      Robot.drivetrainSensors.ledOn();
-    } else {
-      Robot.drivetrainSensors.ledOff();
-    }
+    Robot.drivetrain.swerveDrivetrain.setModeRobot();
   }
 
   // Make this return true when this Command no longer needs to run execute()
