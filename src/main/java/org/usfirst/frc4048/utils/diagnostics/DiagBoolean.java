@@ -22,25 +22,8 @@ public abstract class DiagBoolean implements Diagnosable {
      *
      * @param name            the name of the unit. Will be used on the Shuffleboard
      * @param digitalInput    - the DigitalInput the switch is connected to
-     * @param shuffleboardTab - the Shuffleboard tab to add the tile to
      */
-    public DiagBoolean(String name, DigitalInput digitalInput, ShuffleboardTab shuffleboardTab) {
-        this.digitalInput = digitalInput;
-        this.name = name;
-
-        networkTableEntry = shuffleboardTab.add(name, false).getEntry();
-
-        reset();
-    }
-
-    /**
-     * Constructor FOR TESTING ONLY DO NOT USE
-     *
-     * @param name            the name of the unit. Will be used on the Shuffleboard
-     * @param digitalInput    - the DigitalInput the switch is connected to
-     * @param shuffleboardTab - the Shuffleboard tab to add the tile to
-     */
-    public DiagBoolean(String name, DigitalInput digitalInput, boolean FOR_TESTING_ONLY_DO_NOT_USE) {
+    public DiagBoolean(String name, DigitalInput digitalInput) {
         this.digitalInput = digitalInput;
         this.name = name;
 
@@ -48,8 +31,15 @@ public abstract class DiagBoolean implements Diagnosable {
     }
 
     @Override
+    public void setShuffleBoardTab(ShuffleboardTab shuffleBoardTab) {
+        networkTableEntry = shuffleBoardTab.add(name, false).getEntry();
+    }
+
+    @Override
     public void refresh() {
-        networkTableEntry.setBoolean(getDiagResult(digitalInput));
+        if (networkTableEntry != null) {
+            networkTableEntry.setBoolean(getDiagResult(digitalInput));
+        }
     }
 
     @Override

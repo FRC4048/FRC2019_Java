@@ -106,13 +106,17 @@ public class OI {
       cargoIntake = new JoystickButton(controller, RobotMap.XBOX_RIGHT_BUMPER);
       cargoShoot = new JoystickButton(controller, RobotMap.XBOX_LEFT_BUMPER);
 
-      xboxTriggerRight.whenActive(new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
-      cargoTopRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
-      cargoMidRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
-      cargoBotRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
-      cargoCargoship.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
-      cargoIntake.whenPressed(new IntakeCargo());
-      cargoShoot.whenPressed(new CargoEjectGroup());
+      if (RobotMap.ENABLE_ELEVATOR) {
+        xboxTriggerRight.whenActive(new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
+        cargoTopRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
+        cargoMidRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
+        cargoBotRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
+        cargoCargoship.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
+      }
+      if (RobotMap.ENABLE_CARGO_SUBSYSTEM) {
+        cargoIntake.whenPressed(new IntakeCargo());
+        cargoShoot.whenPressed(new CargoEjectGroup());
+      }
       break;
     case RobotMap.HATCH_RETURN_CODE:
       hatchTopRocket = new JoystickButton(controller, RobotMap.XBOX_Y_BUTTON);
@@ -121,16 +125,22 @@ public class OI {
       hatchIntake = new JoystickButton(controller, RobotMap.XBOX_RIGHT_BUMPER);
       hatchDropoff = new JoystickButton(controller, RobotMap.XBOX_LEFT_BUMPER);
 
-      hatchTopRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
-      hatchMidRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
-      hatchBotRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
-      hatchIntake.whenPressed(new HatchPanelIntake());
-      hatchDropoff.whenPressed(new HatchPanelRelease());
+      if (RobotMap.ENABLE_ELEVATOR) {
+        hatchTopRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
+        hatchMidRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
+        hatchBotRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
+      }
+      if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM) {
+        hatchIntake.whenPressed(new HatchPanelIntake());
+        hatchDropoff.whenPressed(new HatchPanelRelease());
+      }
       break;
     }
 
-    leftDPADTrigger.whenActive(new PivotMoveRetract());
-    rightDPADTrigger.whenActive(new PivotMoveDeploy());
+    if (RobotMap.ENABLE_PIVOT_SUBSYSTEM) {
+      leftDPADTrigger.whenActive(new PivotMoveRetract());
+      rightDPADTrigger.whenActive(new PivotMoveDeploy());
+    }
 
     alignWithVision = new JoystickButton(controller, RobotMap.XBOX_START_BUTTON);
     alignWithVision.whenPressed(new DriveAlignGroup());

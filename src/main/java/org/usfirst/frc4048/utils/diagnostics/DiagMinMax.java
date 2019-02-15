@@ -23,22 +23,8 @@ public abstract class DiagMinMax implements Diagnosable {
      * @param name            - the name of the unit. Will be used on the Shuffleboard
      * @param minValue        - the minimum value the object needs to hit to qualify for success
      * @param maxValue        - the maximum value the object needs to hit to qualify for success
-     * @param shuffleboardTab - the Shuffleboard tab to add the tile to
      */
-    public DiagMinMax(String name, double minValue, double maxValue, ShuffleboardTab shuffleboardTab) {
-        this.name = name;
-        this.minValue = minValue;
-        this.maxValue = maxValue;
-
-        networkTableEntry = shuffleboardTab.add(name, false).getEntry();
-
-        reset();
-    }
-
-    /**
-     * Do not use for testing only
-     */
-    public DiagMinMax(String name, double minValue, double maxValue, boolean DO_NOT_USE_FOR_TESTING_ONLY) {
+    public DiagMinMax(String name, double minValue, double maxValue) {
         this.name = name;
         this.minValue = minValue;
         this.maxValue = maxValue;
@@ -47,8 +33,15 @@ public abstract class DiagMinMax implements Diagnosable {
     }
 
     @Override
+    public void setShuffleBoardTab(ShuffleboardTab shuffleBoardTab) {
+        networkTableEntry = shuffleBoardTab.add(name, false).getEntry();
+    }
+
+    @Override
     public void refresh() {
-        networkTableEntry.setBoolean(getDiagResult(getSensorReading()));
+        if (networkTableEntry != null) {
+            networkTableEntry.setBoolean(getDiagResult(getSensorReading()));
+        }
     }
 
     @Override

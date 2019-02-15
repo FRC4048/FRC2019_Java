@@ -5,57 +5,47 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands.elevator;
+package org.usfirst.frc4048.commands.climber;
 
 import org.usfirst.frc4048.Robot;
-import org.usfirst.frc4048.RobotMap;
-import org.usfirst.frc4048.commands.LoggedCommand;
-import org.usfirst.frc4048.utils.ElevatorPosition;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ElevatorMoveToPos extends LoggedCommand {
-  private ElevatorPosition elevatorPosition;
-  public ElevatorMoveToPos(ElevatorPosition elevatorPosition) {
-    super("ElevatorMoveToPos: " + elevatorPosition.toString());
+public class PistonTest extends Command {
+  DoubleSolenoid.Value state;
+  public PistonTest(DoubleSolenoid.Value state) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    this.elevatorPosition = elevatorPosition;
-    requires(Robot.elevator);
+    this.state = state;
+    requires(Robot.climber);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void loggedInitialize() {
-    setTimeout(5);
+  protected void initialize() {
+    Robot.climber.movePiston(state);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void loggedExecute() {
-    Robot.elevator.elevatorToPosition(elevatorPosition);
+  protected void execute() {
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean loggedIsFinished() {
-    return isTimedOut() || Robot.elevator.elevatorAtPos(elevatorPosition) || !Robot.elevator.getTopSwitch() || !Robot.elevator.getBotSwitch();//we do this because on the test bed false is pushed down
+  protected boolean isFinished() {
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void loggedEnd() {
+  protected void end() {
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void loggedInterrupted() {
-    loggedEnd();
-  }
-
-  @Override
-  protected void loggedCancel() {
-
+  protected void interrupted() {
   }
 }

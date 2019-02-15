@@ -10,9 +10,11 @@ package org.usfirst.frc4048.commands.climber;
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ClimbDropRamp extends LoggedCommand {
+  private boolean done;
   public ClimbDropRamp() {
     super("ClimberDropRamp");
     // Use requires() here to declare subsystem dependencies
@@ -23,18 +25,25 @@ public class ClimbDropRamp extends LoggedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
+    setTimeout(2);
+    Robot.climber.movePiston(Value.kForward);
+    done = false;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void loggedExecute() {
-    Robot.climber.movePiston(true);
+    //This is to free the piston once deployed
+    if(Robot.climber.getPositionSensor()) {
+      Robot.climber.movePiston(Value.kOff);
+      done = true;
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean loggedIsFinished() {
-    return true;
+    return done || isTimedOut();
   }
 
   // Called once after isFinished returns true

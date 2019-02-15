@@ -1,6 +1,14 @@
 package org.usfirst.frc4048.utils.diagnostics;
 
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+
 public interface Diagnosable {
+
+    /**
+     * Set the tab for the diagnosable (this is done by the diagnostics infrastructure)
+     * @param shuffleBoardTab the tab to set
+     */
+    void setShuffleBoardTab(ShuffleboardTab shuffleBoardTab);
 
     /**
      * A method called periodically that will test the diagnosable value and update hte display
