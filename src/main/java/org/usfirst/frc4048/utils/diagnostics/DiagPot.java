@@ -20,18 +20,9 @@ public class DiagPot extends DiagMinMax {
      * @param minVoltage      - the minimum value the pot needs to hit to qualify for success
      * @param maxVoltage      - the maximum value the pot needs to hit to qualify for success
      * @param pot             - the pot instance to test
-     * @param shuffleboardTab - the Shuffleboard tab to add the tile to
      */
-    public DiagPot(String name, double minVoltage, double maxVoltage, AnalogPotentiometer pot, ShuffleboardTab shuffleboardTab) {
-        super(name, minVoltage, maxVoltage, shuffleboardTab);
-        this.pot = pot;
-    }
-
-    /**
-     * Do not use for testing only
-     */
-    public DiagPot(String name, double minVoltage, double maxVoltage, AnalogPotentiometer pot, boolean DO_NOT_USE_FOR_TESTING_ONLY) {
-        super(name, minVoltage, maxVoltage, DO_NOT_USE_FOR_TESTING_ONLY);
+    public DiagPot(String name, double minVoltage, double maxVoltage, AnalogPotentiometer pot) {
+        super(name, minVoltage, maxVoltage);
         this.pot = pot;
     }
 

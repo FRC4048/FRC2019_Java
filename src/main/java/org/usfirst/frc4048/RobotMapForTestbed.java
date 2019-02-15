@@ -40,7 +40,7 @@ interface RobotMapForTestbed {
 
   public static final boolean ENABLE_CLIMBER_SUBSYSTEM = true;
 
-    /**
+  /**
    * Enables loging of timing data related to watchdog timeouts.
    */
   public static final int LOG_PERIODIC_TIME = 15;

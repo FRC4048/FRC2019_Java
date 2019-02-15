@@ -13,7 +13,7 @@ public class TestDiagOpticalSensor{
     public void testOpticalSensorInitially() throws Exception {
         DigitalInput mockInput = Mockito.mock(DigitalInput.class);
 
-        DiagOpticalSensor classUnderTest = new DiagOpticalSensor("Optical Sensor", mockInput, true);
+        DiagOpticalSensor classUnderTest = new DiagOpticalSensor("Optical Sensor", mockInput);
 
         when(mockInput.get()).thenReturn(true);
         Assert.assertFalse(classUnderTest.getDiagResult(mockInput));
@@ -26,7 +26,7 @@ public class TestDiagOpticalSensor{
     public void testOpticalSensorAfterReset() throws Exception {
         DigitalInput mockInput = Mockito.mock(DigitalInput.class);
 
-        DiagOpticalSensor classUnderTest = new DiagOpticalSensor("Optical Sensor", mockInput, true);
+        DiagOpticalSensor classUnderTest = new DiagOpticalSensor("Optical Sensor", mockInput);
 
         when(mockInput.get()).thenReturn(true);
         Assert.assertFalse(classUnderTest.getDiagResult(mockInput));

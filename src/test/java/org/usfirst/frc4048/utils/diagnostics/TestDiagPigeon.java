@@ -14,7 +14,7 @@ public class TestDiagPigeon {
         PigeonIMU mockPigeon = Mockito.mock(PigeonIMU.class);
         when(mockPigeon.getFusedHeading()).thenReturn(1.0);
 
-        DiagPigeon classUnderTest = new DiagPigeon("pigeon", 100, mockPigeon, true);
+        DiagPigeon classUnderTest = new DiagPigeon("pigeon", 100, mockPigeon);
 
         when(mockPigeon.getFusedHeading()).thenReturn(51.0);
         Assert.assertFalse(classUnderTest.getDiagResult());
@@ -34,7 +34,7 @@ public class TestDiagPigeon {
         PigeonIMU mockPigeon = Mockito.mock(PigeonIMU.class);
         when(mockPigeon.getFusedHeading()).thenReturn(1.0);
 
-        DiagPigeon classUnderTest = new DiagPigeon("pigeon", 100, mockPigeon, true);
+        DiagPigeon classUnderTest = new DiagPigeon("pigeon", 100, mockPigeon);
 
         when(mockPigeon.getFusedHeading()).thenReturn(101.0);
         Assert.assertTrue(classUnderTest.getDiagResult());

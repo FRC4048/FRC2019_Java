@@ -87,7 +87,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     cancelAllTasks();
-    
+
+    diagnostics = new Diagnostics();
+
     mechanicalMode = new MechanicalMode();
     int mode = mechanicalMode.getMode();
 
@@ -121,8 +123,7 @@ public class Robot extends TimedRobot {
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
       climber = new Climber();
     }
-    diagnostics = new Diagnostics();
-    pivot = new Pivot();
+        pivot = new Pivot();
     logging = new Logging();
 
     // OI must be initialized last

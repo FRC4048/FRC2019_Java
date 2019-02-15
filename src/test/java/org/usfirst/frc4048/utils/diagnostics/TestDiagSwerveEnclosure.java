@@ -14,7 +14,7 @@ public class TestDiagSwerveEnclosure {
         CanTalonSwerveEnclosure mockEnclosure = Mockito.mock(CanTalonSwerveEnclosure.class);
         when(mockEnclosure.getLastEncPosition()).thenReturn(1);
 
-        DiagSwerveEnclosure classUnderTest = new DiagSwerveEnclosure("enclosure", 100, mockEnclosure, true);
+        DiagSwerveEnclosure classUnderTest = new DiagSwerveEnclosure("enclosure", 100, mockEnclosure);
 
         when(mockEnclosure.getLastEncPosition()).thenReturn(51);
         Assert.assertFalse(classUnderTest.getDiagResult());
@@ -34,7 +34,7 @@ public class TestDiagSwerveEnclosure {
         CanTalonSwerveEnclosure mockEnclosure = Mockito.mock(CanTalonSwerveEnclosure.class);
         when(mockEnclosure.getLastEncPosition()).thenReturn(1);
 
-        DiagSwerveEnclosure classUnderTest = new DiagSwerveEnclosure("enclosure", 100, mockEnclosure, true);
+        DiagSwerveEnclosure classUnderTest = new DiagSwerveEnclosure("enclosure", 100, mockEnclosure);
 
         when(mockEnclosure.getLastEncPosition()).thenReturn(101);
         Assert.assertTrue(classUnderTest.getDiagResult());

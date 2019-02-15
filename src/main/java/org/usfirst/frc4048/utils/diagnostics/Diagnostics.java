@@ -53,6 +53,7 @@ public class Diagnostics extends Subsystem {
     }
 
     public void addDiagnosable(Diagnosable diagnosable) {
+        diagnosable.setShuffleBoardTab(shuffleBoardTab);
         diagnosables.add(diagnosable);
     }
 

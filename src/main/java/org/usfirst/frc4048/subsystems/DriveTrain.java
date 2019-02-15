@@ -27,6 +27,8 @@ import com.ctre.phoenix.sensors.PigeonIMU.GeneralStatus;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.usfirst.frc4048.utils.diagnostics.DiagEncoder;
+import org.usfirst.frc4048.utils.diagnostics.DiagSwerveEnclosure;
 
 /**
  * Add your docs here.
@@ -113,6 +115,8 @@ public class DriveTrain extends Subsystem {
     steerRR = new WPI_TalonSRX(RobotMap.REAR_RIGHT_STEER_MOTOR_ID);
     pigeon = new PigeonIMU(RobotMap.DRIVE_PIGEON_ID);
     encoder = new Encoder(RobotMap.SWERVE_DRIVE_ENCODER_A_ID, RobotMap.SWERVE_DRIVE_ENCODER_B_ID);
+
+    Robot.diagnostics.addDiagnosable(new DiagEncoder("DistanceEncoder", 1000, encoder));
     
     driveFL.setNeutralMode(NeutralMode.Brake);
     driveFR.setNeutralMode(NeutralMode.Brake);
@@ -139,6 +143,11 @@ public class DriveTrain extends Subsystem {
     rearLeftWheel = new CanTalonSwerveEnclosure("RearLeftWheel", driveRL, steerRL, GEAR_RATIO, Robot.timer());
     rearRightWheel = new CanTalonSwerveEnclosure("RearRightWheel", driveRR, steerRR, GEAR_RATIO, Robot.timer());
     wheelEnclosures = new BaseEnclosure[] { frontLeftWheel, frontRightWheel, rearLeftWheel, rearRightWheel };
+
+    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosure("FL Wheel", 1000, frontLeftWheel));
+    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosure("FR Wheel", 1000, frontRightWheel));
+    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosure("RL Wheel", 1000, rearLeftWheel));
+    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosure("RR Wheel", 1000, rearRightWheel));
 
     if (RobotMap.ENABLE_WHEEL_ENCODER_THREAD) {
       Robot.scheduleTask(new WheelEncoderThread(), RobotMap.WHEEL_ENCODER_THREAD_INTERVAL_MS);

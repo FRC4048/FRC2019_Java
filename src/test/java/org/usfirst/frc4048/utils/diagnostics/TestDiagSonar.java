@@ -14,7 +14,7 @@ public class TestDiagSonar{
     public void testSonarInitially() throws Exception {
         Ultrasonic mockUltasonic = Mockito.mock(Ultrasonic.class);
 
-        DiagSonar classUnderTest = new DiagSonar("switch", mockUltasonic, true, 3.0, 12.0);
+        DiagSonar classUnderTest = new DiagSonar("switch", mockUltasonic, 3.0, 12.0);
 
         when(mockUltasonic.getRangeInches()).thenReturn(7.0);
         Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));
@@ -30,7 +30,7 @@ public class TestDiagSonar{
     public void testSonarAfterReset() throws Exception {
         Ultrasonic mockUltasonic = Mockito.mock(Ultrasonic.class);
 
-        DiagSonar classUnderTest = new DiagSonar("switch", mockUltasonic, true, 3.0, 12.0);
+        DiagSonar classUnderTest = new DiagSonar("switch", mockUltasonic, 3.0, 12.0);
 
         when(mockUltasonic.getRangeInches()).thenReturn(7.0);
         Assert.assertFalse(classUnderTest.getDiagResult(classUnderTest.getSensorReading()));

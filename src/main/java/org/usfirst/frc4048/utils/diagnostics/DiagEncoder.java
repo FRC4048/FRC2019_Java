@@ -17,19 +17,9 @@ public class DiagEncoder extends DiagDistanceTraveled {
      * @param name            - the name of the unit. Will be used on the Shuffleboard
      * @param requiredTravel  - the required difference between the initial position to qualify for success
      * @param encoder         - the encoder instance to test
-     * @param shuffleboardTab - the Shuffleboard tab to add the tile to
      */
-    public DiagEncoder(String name, int requiredTravel, Encoder encoder, ShuffleboardTab shuffleboardTab) {
-        super(name, requiredTravel, shuffleboardTab);
-        this.encoder = encoder;
-        reset();
-    }
-
-    /**
-     * Do not use for testing only
-     */
-    public DiagEncoder(String name, int requiredTravel, Encoder encoder, boolean DO_NOT_USE_FOR_TESTING_ONLY) {
-        super(name, requiredTravel, true);
+    public DiagEncoder(String name, int requiredTravel, Encoder encoder) {
+        super(name, requiredTravel);
         this.encoder = encoder;
         reset();
     }
