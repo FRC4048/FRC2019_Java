@@ -378,7 +378,7 @@ public class DriveTrain extends Subsystem {
 
   public double getDistance() {
     
-    return (driveFL.getEncoder().getPosition())/RobotMap.SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK;//this number will change
+    return (driveFL.getEncoder().getPosition())/RobotMap.SWERVE_DRIVE_NEO_DISTANCE_PER_TICK;//this number will change
   }
 
 
