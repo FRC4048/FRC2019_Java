@@ -272,9 +272,6 @@ public class Robot extends TimedRobot {
 
   private void putCommandsOnShuffleboard() {
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
-      SmartShuffleboard.putCommand("Climber", "Forward", new ClimbWinchManual(0.5));
-      SmartShuffleboard.putCommand("Climber", "Backwards", new ClimbWinchManual(-0.5));
-      SmartShuffleboard.putCommand("Climber", "Stop", new ClimbWinchManual(0.0));
       SmartShuffleboard.putCommand("Climber", "Piston Forward", new PistonTest(DoubleSolenoid.Value.kForward));
       SmartShuffleboard.putCommand("Climber", "Piston Rev", new PistonTest(DoubleSolenoid.Value.kReverse));
       SmartShuffleboard.putCommand("Climber", "Piston Off", new PistonTest(DoubleSolenoid.Value.kOff));
