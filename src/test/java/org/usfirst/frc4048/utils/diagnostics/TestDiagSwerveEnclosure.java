@@ -3,7 +3,7 @@ package org.usfirst.frc4048.utils.diagnostics;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.usfirst.frc4048.swerve.drive.SparkMAXSwerveEnclosure;
+import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
 
 import static org.mockito.Mockito.when;
 
@@ -11,10 +11,10 @@ public class TestDiagSwerveEnclosure {
 
     @Test
     public void testSwerveInitially() throws Exception {
-        SparkMAXSwerveEnclosure mockEnclosure = Mockito.mock(SparkMAXSwerveEnclosure.class);
+        CanTalonSwerveEnclosure mockEnclosure = Mockito.mock(CanTalonSwerveEnclosure.class);
         when(mockEnclosure.getLastEncPosition()).thenReturn(1);
 
-        DiagSwerveEnclosureSparkMAX classUnderTest = new DiagSwerveEnclosureSparkMAX("enclosure", 100, mockEnclosure);
+        DiagSwerveEnclosure classUnderTest = new DiagSwerveEnclosure("enclosure", 100, mockEnclosure);
 
         when(mockEnclosure.getLastEncPosition()).thenReturn(51);
         Assert.assertFalse(classUnderTest.getDiagResult());
@@ -31,10 +31,10 @@ public class TestDiagSwerveEnclosure {
 
     @Test
     public void testSwerveAfterReset() throws Exception {
-        SparkMAXSwerveEnclosure mockEnclosure = Mockito.mock(SparkMAXSwerveEnclosure.class);
+        CanTalonSwerveEnclosure mockEnclosure = Mockito.mock(CanTalonSwerveEnclosure.class);
         when(mockEnclosure.getLastEncPosition()).thenReturn(1);
 
-        DiagSwerveEnclosureSparkMAX classUnderTest = new DiagSwerveEnclosureSparkMAX("enclosure", 100, mockEnclosure);
+        DiagSwerveEnclosure classUnderTest = new DiagSwerveEnclosure("enclosure", 100, mockEnclosure);
 
         when(mockEnclosure.getLastEncPosition()).thenReturn(101);
         Assert.assertTrue(classUnderTest.getDiagResult());

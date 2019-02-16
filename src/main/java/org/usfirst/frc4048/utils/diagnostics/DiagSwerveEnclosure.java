@@ -1,12 +1,12 @@
 package org.usfirst.frc4048.utils.diagnostics;
 
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import org.usfirst.frc4048.swerve.drive.SparkMAXSwerveEnclosure;
+import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
 
-public class DiagSwerveEnclosureSparkMAX extends DiagDistanceTraveled {
-    private SparkMAXSwerveEnclosure enclosure;
+public class DiagSwerveEnclosure extends DiagDistanceTraveled {
+    private CanTalonSwerveEnclosure enclosure;
 
-    public DiagSwerveEnclosureSparkMAX(String name, int requiredTravel, SparkMAXSwerveEnclosure enclosure) {
+    public DiagSwerveEnclosure(String name, int requiredTravel, CanTalonSwerveEnclosure enclosure) {
         super(name, requiredTravel);
         this.enclosure = enclosure;
     }
