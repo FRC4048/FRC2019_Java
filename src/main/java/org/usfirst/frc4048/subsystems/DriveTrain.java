@@ -30,7 +30,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc4048.utils.diagnostics.DiagEncoder;
-import org.usfirst.frc4048.utils.diagnostics.DiagSwerveEnclosure;
+import org.usfirst.frc4048.utils.diagnostics.DiagSwerveEnclosureSparkMAX;
 
 /**
  * Add your docs here.
@@ -145,10 +145,10 @@ public class DriveTrain extends Subsystem {
     rearRightWheel = new SparkMAXSwerveEnclosure("RearRightWheel", driveRR, steerRR, GEAR_RATIO, Robot.timer());
     wheelEnclosures = new BaseEnclosure[] { frontLeftWheel, frontRightWheel, rearLeftWheel, rearRightWheel };
 
-    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosure("FL Wheel", 1000, frontLeftWheel));
-    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosure("FR Wheel", 1000, frontRightWheel));
-    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosure("RL Wheel", 1000, rearLeftWheel));
-    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosure("RR Wheel", 1000, rearRightWheel));
+    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosureSparkMAX("FL Wheel", 1000, frontLeftWheel));
+    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosureSparkMAX("FR Wheel", 1000, frontRightWheel));
+    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosureSparkMAX("RL Wheel", 1000, rearLeftWheel));
+    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosureSparkMAX("RR Wheel", 1000, rearRightWheel));
 
     if (RobotMap.ENABLE_WHEEL_ENCODER_THREAD) {
       Robot.scheduleTask(new WheelEncoderThread(), RobotMap.WHEEL_ENCODER_THREAD_INTERVAL_MS);
