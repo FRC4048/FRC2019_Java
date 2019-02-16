@@ -11,7 +11,7 @@ import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.commands.drive.Drive;
 import org.usfirst.frc4048.swerve.drive.BaseEnclosure;
-import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
+import org.usfirst.frc4048.swerve.drive.SparkMAXSwerveEnclosure;
 import org.usfirst.frc4048.swerve.drive.SwerveDrive;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
@@ -55,7 +55,7 @@ public class DriveTrain extends Subsystem {
    */
   private PigeonIMU pigeon;
 
-  private Encoder encoder;
+  // private Encoder encoder;
 
   private AnalogInput analogInputFrontRight;
   private AnalogInput analogInputFrontLeft;
@@ -63,10 +63,10 @@ public class DriveTrain extends Subsystem {
   private AnalogInput analogInputRearLeft;
 
   public SwerveDrive swerveDrivetrain;
-  private CanTalonSwerveEnclosure frontLeftWheel;
-  private CanTalonSwerveEnclosure frontRightWheel;
-  private CanTalonSwerveEnclosure rearLeftWheel;
-  private CanTalonSwerveEnclosure rearRightWheel;
+  private SparkMAXSwerveEnclosure frontLeftWheel;
+  private SparkMAXSwerveEnclosure frontRightWheel;
+  private SparkMAXSwerveEnclosure rearLeftWheel;
+  private SparkMAXSwerveEnclosure rearRightWheel;
 
   // Gear ratio of swerve wheels
   private final double GEAR_RATIO = (1988 / 1.2);
@@ -116,9 +116,9 @@ public class DriveTrain extends Subsystem {
     steerRL = new WPI_TalonSRX(RobotMap.REAR_LEFT_STEER_MOTOR_ID);
     steerRR = new WPI_TalonSRX(RobotMap.REAR_RIGHT_STEER_MOTOR_ID);
     pigeon = new PigeonIMU(RobotMap.DRIVE_PIGEON_ID);
-    encoder = new Encoder(RobotMap.SWERVE_DRIVE_ENCODER_A_ID, RobotMap.SWERVE_DRIVE_ENCODER_B_ID);
+    // encoder = new Encoder(RobotMap.SWERVE_DRIVE_ENCODER_A_ID, RobotMap.SWERVE_DRIVE_ENCODER_B_ID);
 
-    Robot.diagnostics.addDiagnosable(new DiagEncoder("DistanceEncoder", 1000, encoder));
+    // Robot.diagnostics.addDiagnosable(new DiagEncoder("DistanceEncoder", 1000, encoder));
     driveFL.setIdleMode(IdleMode.kBrake);
     driveFR.setIdleMode(IdleMode.kBrake);
     driveRL.setIdleMode(IdleMode.kBrake);
@@ -139,10 +139,10 @@ public class DriveTrain extends Subsystem {
     analogInputRearLeft = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_REAR_LEFT_ID);
     analogInputRearRight = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_REAR_RIGHT_ID);
     
-    frontLeftWheel = new CanTalonSwerveEnclosure("FrontLeftWheel", driveFL, steerFL, GEAR_RATIO, Robot.timer());
-    frontRightWheel = new CanTalonSwerveEnclosure("FrontRightWheel", driveFR, steerFR, GEAR_RATIO, Robot.timer());
-    rearLeftWheel = new CanTalonSwerveEnclosure("RearLeftWheel", driveRL, steerRL, GEAR_RATIO, Robot.timer());
-    rearRightWheel = new CanTalonSwerveEnclosure("RearRightWheel", driveRR, steerRR, GEAR_RATIO, Robot.timer());
+    frontLeftWheel = new SparkMAXSwerveEnclosure("FrontLeftWheel", driveFL, steerFL, GEAR_RATIO, Robot.timer());
+    frontRightWheel = new SparkMAXSwerveEnclosure("FrontRightWheel", driveFR, steerFR, GEAR_RATIO, Robot.timer());
+    rearLeftWheel = new SparkMAXSwerveEnclosure("RearLeftWheel", driveRL, steerRL, GEAR_RATIO, Robot.timer());
+    rearRightWheel = new SparkMAXSwerveEnclosure("RearRightWheel", driveRR, steerRR, GEAR_RATIO, Robot.timer());
     wheelEnclosures = new BaseEnclosure[] { frontLeftWheel, frontRightWheel, rearLeftWheel, rearRightWheel };
 
     Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosure("FL Wheel", 1000, frontLeftWheel));
@@ -342,8 +342,8 @@ public class DriveTrain extends Subsystem {
   }
 
   public void resetDriveEncoder() {
-    encoder.reset();
-    encoder.setDistancePerPulse(RobotMap.SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK);
+  //   encoder.reset();
+  //   encoder.setDistancePerPulse(RobotMap.SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK);
   }
 
   @SuppressWarnings("unused")
@@ -374,7 +374,7 @@ public class DriveTrain extends Subsystem {
   }
 
   public double getDistance() {
-    return encoder.getDistance();
+    return driveFL.getEncoder().getPosition();
   }
 
   /**
@@ -384,7 +384,7 @@ public class DriveTrain extends Subsystem {
    *         is negative
    */
   public boolean getEncoderDirection() {
-    return encoder.getDirection();
+    return false;//encoder.getDirection();
   }
 
   
