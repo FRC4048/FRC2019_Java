@@ -153,6 +153,9 @@ public class OI {
     logError = new JoystickButton(leftJoy, 6);
     logError.whenPressed(new LogError());
 
+    if(RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
+
+    }
   }
 
   public Joystick getLeftJoy() {
