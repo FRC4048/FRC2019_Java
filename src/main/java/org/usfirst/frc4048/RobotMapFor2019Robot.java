@@ -43,7 +43,7 @@ interface RobotMapFor2019Robot {
 
   public static final boolean ENABLE_CARGO_SUBSYSTEM = true; //this should be true when we actually get the robot
 
-  public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = false; //this should be true when we actually get the robot
+  public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = true; //this should be true when we actually get the robot
 
   public static final boolean ENABLE_CLIMBER_SUBSYSTEM = true;
 

@@ -334,10 +334,10 @@ public class DriveTrain extends Subsystem {
     // steerRL.setSelectedSensorPosition(0);
     // steerRR.setSelectedSensorPosition(0);
 
-    // steerFR.set(ControlMode.Position, 0);
-    // steerFL.set(ControlMode.Position, 0);
-    // steerRL.set(ControlMode.Position, 0);
-    // steerRR.set(ControlMode.Position, 0);
+    steerFR.set(ControlMode.Position, 0);
+    steerFL.set(ControlMode.Position, 0);
+    steerRL.set(ControlMode.Position, 0);
+    steerRR.set(ControlMode.Position, 0);
   }
 
   public void resetDriveEncoder() {
