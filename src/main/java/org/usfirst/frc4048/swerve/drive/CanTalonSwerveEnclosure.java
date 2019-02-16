@@ -4,19 +4,20 @@ import org.usfirst.frc4048.utils.Timer;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
 
 /**
  * An implementation of the SwerveEnclosure using CanTalon motors and encoders
  */
 public class CanTalonSwerveEnclosure extends BaseEnclosure implements SwerveEnclosure {
 
-    private WPI_TalonSRX driveMotor;
+    private CANSparkMax driveMotor;
 	private WPI_TalonSRX steerMotor;
 	
 	private boolean reverseEncoder = false;
 	private boolean reverseSteer = false;
 	
-    public CanTalonSwerveEnclosure(String name, WPI_TalonSRX driveMotor, WPI_TalonSRX steerMotor, double gearRatio,
+    public CanTalonSwerveEnclosure(String name, CANSparkMax driveMotor, WPI_TalonSRX steerMotor, double gearRatio,
            final Timer timer) {
         super(name, gearRatio, timer);
 		this.driveMotor = driveMotor;
@@ -33,7 +34,7 @@ public class CanTalonSwerveEnclosure extends BaseEnclosure implements SwerveEncl
 	@Override
 	public void setSpeed(double speed)
 	{
-		driveMotor.set(ControlMode.PercentOutput, speed);
+		driveMotor.set(speed);
 	}
 	
 	@Override
@@ -56,7 +57,7 @@ public class CanTalonSwerveEnclosure extends BaseEnclosure implements SwerveEncl
 		steerMotor.setSelectedSensorPosition(position, 0, 10);
 	}
 	
-	public WPI_TalonSRX getDriveMotor()
+	public CANSparkMax getDriveMotor()
 	{
 		return driveMotor;
 	}

@@ -15,7 +15,8 @@ import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
 import org.usfirst.frc4048.swerve.drive.SwerveDrive;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
-
+import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -23,6 +24,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.FusionStatus;
 import com.ctre.phoenix.sensors.PigeonIMU.GeneralStatus;
+import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -37,10 +39,10 @@ public class DriveTrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private WPI_TalonSRX driveFL;
-  private WPI_TalonSRX driveFR;
-  private WPI_TalonSRX driveRL;
-  private WPI_TalonSRX driveRR;
+  private CANSparkMax driveFL;
+  private CANSparkMax driveFR;
+  private CANSparkMax driveRL;
+  private CANSparkMax driveRR;
   private WPI_TalonSRX steerFL;
   private WPI_TalonSRX steerFR;
   private WPI_TalonSRX steerRL;
@@ -105,10 +107,10 @@ public class DriveTrain extends Subsystem {
   private final BaseEnclosure wheelEnclosures[];
 
   public DriveTrain() {
-    driveFL = new WPI_TalonSRX(RobotMap.FRONT_LEFT_DRIVE_MOTOR_ID);
-    driveFR = new WPI_TalonSRX(RobotMap.FRONT_RIGHT_DRIVE_MOTOR_ID);
-    driveRL = new WPI_TalonSRX(RobotMap.REAR_LEFT_DRIVE_MOTOR_ID);
-    driveRR = new WPI_TalonSRX(RobotMap.REAR_RIGHT_DRIVE_MOTOR_ID);
+    driveFL = new CANSparkMax(RobotMap.FRONT_LEFT_DRIVE_MOTOR_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
+    driveFR = new CANSparkMax(RobotMap.FRONT_RIGHT_DRIVE_MOTOR_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
+    driveRL = new CANSparkMax(RobotMap.REAR_LEFT_DRIVE_MOTOR_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
+    driveRR = new CANSparkMax(RobotMap.REAR_RIGHT_DRIVE_MOTOR_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
     steerFL = new WPI_TalonSRX(RobotMap.FRONT_LEFT_STEER_MOTOR_ID);
     steerFR = new WPI_TalonSRX(RobotMap.FRONT_RIGHT_STEER_MOTOR_ID);
     steerRL = new WPI_TalonSRX(RobotMap.REAR_LEFT_STEER_MOTOR_ID);
@@ -117,21 +119,20 @@ public class DriveTrain extends Subsystem {
     encoder = new Encoder(RobotMap.SWERVE_DRIVE_ENCODER_A_ID, RobotMap.SWERVE_DRIVE_ENCODER_B_ID);
 
     Robot.diagnostics.addDiagnosable(new DiagEncoder("DistanceEncoder", 1000, encoder));
+    driveFL.setIdleMode(IdleMode.kBrake);
+    driveFR.setIdleMode(IdleMode.kBrake);
+    driveRL.setIdleMode(IdleMode.kBrake);
+    driveRR.setIdleMode(IdleMode.kBrake);
     
-    driveFL.setNeutralMode(NeutralMode.Brake);
-    driveFR.setNeutralMode(NeutralMode.Brake);
-    driveRL.setNeutralMode(NeutralMode.Brake);
-    driveRR.setNeutralMode(NeutralMode.Brake);
+    // driveFL.setSafetyEnabled(true);
+    // driveFR.setSafetyEnabled(true);
+    // driveRL.setSafetyEnabled(true);
+    // driveRR.setSafetyEnabled(true);
 
-    driveFL.setSafetyEnabled(true);
-    driveFR.setSafetyEnabled(true);
-    driveRL.setSafetyEnabled(true);
-    driveRR.setSafetyEnabled(true);
-
-    driveFL.setExpiration(0.5);
-    driveFR.setExpiration(0.5);
-    driveRL.setExpiration(0.5);
-    driveRR.setExpiration(0.5);
+    // driveFL.setExpiration(0.5);
+    // driveFR.setExpiration(0.5);
+    // driveRL.setExpiration(0.5);
+    // driveRR.setExpiration(0.5);
 
     analogInputFrontLeft = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_FRONT_LEFT_ID);
     analogInputFrontRight = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID);
