@@ -16,10 +16,10 @@ public class TestDiagSwitch {
         DiagSwitch classUnderTest = new DiagSwitch("switch", mockInput);
 
         when(mockInput.get()).thenReturn(true);
-        Assert.assertFalse(classUnderTest.getDiagResult(mockInput));
+        Assert.assertFalse(classUnderTest.getDiagResult());
 
         when(mockInput.get()).thenReturn(false);
-        Assert.assertTrue(classUnderTest.getDiagResult(mockInput));
+        Assert.assertTrue(classUnderTest.getDiagResult());
     }
 
     @Test
@@ -29,11 +29,11 @@ public class TestDiagSwitch {
         DiagSwitch classUnderTest = new DiagSwitch("switch", mockInput);
 
         when(mockInput.get()).thenReturn(true);
-        Assert.assertFalse(classUnderTest.getDiagResult(mockInput));
+        Assert.assertFalse(classUnderTest.getDiagResult());
         when(mockInput.get()).thenReturn(false);
-        Assert.assertTrue(classUnderTest.getDiagResult(mockInput));
+        Assert.assertTrue(classUnderTest.getDiagResult());
 
         classUnderTest.reset();
-        Assert.assertFalse(classUnderTest.getDiagResult(mockInput));
+        Assert.assertFalse(classUnderTest.getDiagResult());
     }
 }

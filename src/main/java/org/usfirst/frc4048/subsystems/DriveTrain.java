@@ -24,6 +24,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.FusionStatus;
 import com.ctre.phoenix.sensors.PigeonIMU.GeneralStatus;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -49,12 +50,11 @@ public class DriveTrain extends Subsystem {
   private WPI_TalonSRX steerRR;
 
   /**
-   * Note that access to the pigeon should be done inside a synhronized block because the
-   * reading will be done in a separate thread. If you're reading values, use the pigeonData
-   * class member.
+   * Note that access to the pigeon should be done inside a synhronized block
+   * because the reading will be done in a separate thread. If you're reading
+   * values, use the pigeonData class member.
    */
   private PigeonIMU pigeon;
-
   // private Encoder encoder;
 
   private AnalogInput analogInputFrontRight;
@@ -80,10 +80,10 @@ public class DriveTrain extends Subsystem {
   private final boolean REVERSE_ENCODER = true;
   private final boolean REVERSE_OUTPUT = true;
 
-  private final int FR_ZERO = 3663;//1037;
-  private final int FL_ZERO = 1818;//1767;
-  private final int RL_ZERO = 1248;//1456;//1456;
-  private final int RR_ZERO = 1491;//2444;
+  private final int FR_ZERO = 3663;// 1037;
+  private final int FL_ZERO = 1818;// 1767;
+  private final int RL_ZERO = 1248;// 1456;//1456;
+  private final int RR_ZERO = 1491;// 2444;
 
   private final double P = 10;
   private final double I = 0;
@@ -99,11 +99,17 @@ public class DriveTrain extends Subsystem {
 
   private final int TIMEOUT = 100;
 
-  /* Reading gyro angle is relatively slow, anywhere between 4mSec and 20mSec.             */
-  /* We will be reading it and storing it here in the periodic method and whoever needs    */
-  /* whoever needs to use the gyro will get the stored value through the getGyro() method. */
+  /* Reading gyro angle is relatively slow, anywhere between 4mSec and 20mSec. */
+  /*
+   * We will be reading it and storing it here in the periodic method and whoever
+   * needs
+   */
+  /*
+   * whoever needs to use the gyro will get the stored value through the getGyro()
+   * method.
+   */
   private final PigeonData pigeonData = new PigeonData();
-  
+
   private final BaseEnclosure wheelEnclosures[];
 
   public DriveTrain() {
@@ -116,14 +122,16 @@ public class DriveTrain extends Subsystem {
     steerRL = new WPI_TalonSRX(RobotMap.REAR_LEFT_STEER_MOTOR_ID);
     steerRR = new WPI_TalonSRX(RobotMap.REAR_RIGHT_STEER_MOTOR_ID);
     pigeon = new PigeonIMU(RobotMap.DRIVE_PIGEON_ID);
-    // encoder = new Encoder(RobotMap.SWERVE_DRIVE_ENCODER_A_ID, RobotMap.SWERVE_DRIVE_ENCODER_B_ID);
-
-    // Robot.diagnostics.addDiagnosable(new DiagEncoder("DistanceEncoder", 1000, encoder));
+    // encoder = new Encoder(RobotMap.SWERVE_DRIVE_ENCODER_A_ID,
+    // RobotMap.SWERVE_DRIVE_ENCODER_B_ID);
+    
+    // Robot.diagnostics.addDiagnosable(new DiagEncoder("DistanceEncoder", 1000,
+    // encoder));
     driveFL.setIdleMode(IdleMode.kBrake);
     driveFR.setIdleMode(IdleMode.kBrake);
     driveRL.setIdleMode(IdleMode.kBrake);
     driveRR.setIdleMode(IdleMode.kBrake);
-    
+
     // driveFL.setSafetyEnabled(true);
     // driveFR.setSafetyEnabled(true);
     // driveRL.setSafetyEnabled(true);
@@ -138,7 +146,7 @@ public class DriveTrain extends Subsystem {
     analogInputFrontRight = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID);
     analogInputRearLeft = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_REAR_LEFT_ID);
     analogInputRearRight = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_REAR_RIGHT_ID);
-    
+
     frontLeftWheel = new SparkMAXSwerveEnclosure("FrontLeftWheel", driveFL, steerFL, GEAR_RATIO, Robot.timer());
     frontRightWheel = new SparkMAXSwerveEnclosure("FrontRightWheel", driveFR, steerFR, GEAR_RATIO, Robot.timer());
     rearLeftWheel = new SparkMAXSwerveEnclosure("RearLeftWheel", driveRL, steerRL, GEAR_RATIO, Robot.timer());
@@ -152,10 +160,10 @@ public class DriveTrain extends Subsystem {
 
     if (RobotMap.ENABLE_WHEEL_ENCODER_THREAD) {
       Robot.scheduleTask(new WheelEncoderThread(), RobotMap.WHEEL_ENCODER_THREAD_INTERVAL_MS);
-  }
+    }
 
     if (RobotMap.ENABLE_PIGEON_THREAD) {
-    	Robot.scheduleTask(new PigeonThread(), RobotMap.PIGEON_READ_DELAY_MS);
+      Robot.scheduleTask(new PigeonThread(), RobotMap.PIGEON_READ_DELAY_MS);
     }
 
     swerveDrivetrain = new SwerveDrive(frontRightWheel, frontLeftWheel, rearLeftWheel, rearRightWheel, WIDTH, LENGTH);
@@ -163,7 +171,7 @@ public class DriveTrain extends Subsystem {
     init();
 
   }
-  
+
   /**
    * Thread that reads all the wheel encoders at predetermined cycles on a
    * separate thread. The read cycle is determined by the value when the thread is
@@ -175,7 +183,7 @@ public class DriveTrain extends Subsystem {
         e.readEncPosition();
     }
   }
-  
+
   public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
 
     protected void addAll() {
@@ -216,14 +224,14 @@ public class DriveTrain extends Subsystem {
     private double pitch = 0;
 
     void update() {
-      synchronized(pigeon) {
+      synchronized (pigeon) {
         pigeon.getFusedHeading(fstatus);
         if (fstatus.bIsValid) {
           heading = fstatus.heading;
-        }
-        else {
+        } else {
           System.out.println("Pigeon reported invalid status");
-          Robot.logging.traceMessage(Logging.MessageLevel.INFORMATION, "-------------Pigeon reported invalid status--------------");
+          Robot.logging.traceMessage(Logging.MessageLevel.INFORMATION,
+              "-------------Pigeon reported invalid status--------------");
         }
         pigeon.getYawPitchRoll(ypr);
         pitch = ypr[1];
@@ -238,12 +246,10 @@ public class DriveTrain extends Subsystem {
               Robot.logging.traceMessage(Logging.MessageLevel.INFORMATION, "PigeonStatus: " + gstatus.toString());
             }
           }
+        }
       }
     }
   }
-}
-
-
 
   @Override
   public void periodic() {
@@ -264,19 +270,18 @@ public class DriveTrain extends Subsystem {
       SmartShuffleboard.put("Drive", "Encoders", "FL", frontLeftWheel.getLastEncPosition());
       SmartShuffleboard.put("Drive", "Encoders", "RR", rearRightWheel.getLastEncPosition());
       SmartShuffleboard.put("Drive", "Encoders", "RL", rearLeftWheel.getLastEncPosition());
-  
+
       SmartShuffleboard.put("Drive", "Abs Encoders", "FR abs", analogInputFrontRight.getValue());
       SmartShuffleboard.put("Drive", "Abs Encoders", "FL abs", analogInputFrontLeft.getValue());
       SmartShuffleboard.put("Drive", "Abs Encoders", "RR abs", analogInputRearRight.getValue());
       SmartShuffleboard.put("Drive", "Abs Encoders", "RL abs", analogInputRearLeft.getValue());
 
-      SmartShuffleboard.put("Drive", "Gyro", getGyro()); 
-      SmartShuffleboard.put("Drive", "Centric mode", swerveDrivetrain.getModeRobot().name()); 
+      SmartShuffleboard.put("Drive", "Gyro", getGyro());
+      SmartShuffleboard.put("Drive", "Centric mode", swerveDrivetrain.getModeRobot().name());
       Robot.completed(this, "shuf");
     }
 
   }
-
 
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
@@ -297,8 +302,6 @@ public class DriveTrain extends Subsystem {
     frontLeftWheel.setReverseSteerMotor(REVERSE_OUTPUT);
     rearLeftWheel.setReverseSteerMotor(REVERSE_OUTPUT);
     rearRightWheel.setReverseSteerMotor(REVERSE_OUTPUT);
-
-    resetDriveEncoder();
 
     resetQuadEncoder();
   }
@@ -326,10 +329,14 @@ public class DriveTrain extends Subsystem {
   }
 
   public void resetQuadEncoder() {
-    steerFR.setSelectedSensorPosition((int) ((analogInputFrontRight.getValue() - FR_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
-    steerFL.setSelectedSensorPosition((int) ((analogInputFrontLeft.getValue() - FL_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
-    steerRL.setSelectedSensorPosition((int) ((analogInputRearLeft.getValue() - RL_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
-    steerRR.setSelectedSensorPosition((int) ((analogInputRearRight.getValue() - RR_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
+    steerFR.setSelectedSensorPosition((int) ((analogInputFrontRight.getValue() - FR_ZERO) / 4000.0 * GEAR_RATIO), 0,
+        TIMEOUT);
+    steerFL.setSelectedSensorPosition((int) ((analogInputFrontLeft.getValue() - FL_ZERO) / 4000.0 * GEAR_RATIO), 0,
+        TIMEOUT);
+    steerRL.setSelectedSensorPosition((int) ((analogInputRearLeft.getValue() - RL_ZERO) / 4000.0 * GEAR_RATIO), 0,
+        TIMEOUT);
+    steerRR.setSelectedSensorPosition((int) ((analogInputRearRight.getValue() - RR_ZERO) / 4000.0 * GEAR_RATIO), 0,
+        TIMEOUT);
     // steerFR.setSelectedSensorPosition(0);
     // steerFL.setSelectedSensorPosition(0);
     // steerRL.setSelectedSensorPosition(0);
@@ -341,14 +348,10 @@ public class DriveTrain extends Subsystem {
     steerRR.set(ControlMode.Position, 0);
   }
 
-  public void resetDriveEncoder() {
-  //   encoder.reset();
-  //   encoder.setDistancePerPulse(RobotMap.SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK);
-  }
 
   @SuppressWarnings("unused")
   private void setGyro(double angle) {
-    synchronized(pigeon) {
+    synchronized (pigeon) {
       pigeon.setYaw(angle, TIMEOUT);
       pigeon.setFusedHeading(angle, TIMEOUT);
     }
@@ -374,20 +377,11 @@ public class DriveTrain extends Subsystem {
   }
 
   public double getDistance() {
-    return driveFL.getEncoder().getPosition();
+    
+    return (driveFL.getEncoder().getPosition())/RobotMap.SWERVE_DRIVE_NEO_DISTANCE_PER_TICK;//this number will change
   }
 
-  /**
-   * Outputs direction of encoder
-   * 
-   * @return - true if encoder direction is positive, false if encoder direction
-   *         is negative
-   */
-  public boolean getEncoderDirection() {
-    return false;//encoder.getDirection();
-  }
 
-  
   public void move(double fwd, double str, double rcw) {
     if (fwd <= LEFT_JOY_X_MAX_DEADZONE && fwd >= LEFT_JOY_X_MIN_DEADZONE)
       fwd = 0.0;

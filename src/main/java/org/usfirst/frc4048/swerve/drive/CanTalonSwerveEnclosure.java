@@ -12,7 +12,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import org.usfirst.frc4048.utils.Timer;
 
 /**
- * Add your docs here.
+ * An implementation of the SwerveEnclosure using SparkMAX motors and encoders
  */
 public class CanTalonSwerveEnclosure extends BaseEnclosure implements SwerveEnclosure {
     private WPI_TalonSRX driveMotor;

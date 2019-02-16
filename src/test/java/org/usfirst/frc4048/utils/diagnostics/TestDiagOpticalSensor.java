@@ -16,10 +16,10 @@ public class TestDiagOpticalSensor{
         DiagOpticalSensor classUnderTest = new DiagOpticalSensor("Optical Sensor", mockInput);
 
         when(mockInput.get()).thenReturn(true);
-        Assert.assertFalse(classUnderTest.getDiagResult(mockInput));
+        Assert.assertFalse(classUnderTest.getDiagResult());
 
         when(mockInput.get()).thenReturn(false);
-        Assert.assertTrue(classUnderTest.getDiagResult(mockInput));
+        Assert.assertTrue(classUnderTest.getDiagResult());
     }
 
     @Test
@@ -29,11 +29,11 @@ public class TestDiagOpticalSensor{
         DiagOpticalSensor classUnderTest = new DiagOpticalSensor("Optical Sensor", mockInput);
 
         when(mockInput.get()).thenReturn(true);
-        Assert.assertFalse(classUnderTest.getDiagResult(mockInput));
+        Assert.assertFalse(classUnderTest.getDiagResult());
         when(mockInput.get()).thenReturn(false);
-        Assert.assertTrue(classUnderTest.getDiagResult(mockInput));
+        Assert.assertTrue(classUnderTest.getDiagResult());
 
         classUnderTest.reset();
-        Assert.assertFalse(classUnderTest.getDiagResult(mockInput));
+        Assert.assertFalse(classUnderTest.getDiagResult());
     }
 }
