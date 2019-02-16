@@ -43,7 +43,7 @@ interface RobotMapFor2019Robot {
 
   public static final boolean ENABLE_CARGO_SUBSYSTEM = true; //this should be true when we actually get the robot
 
-  public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = true; //this should be true when we actually get the robot
+  public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = false; //this should be true when we actually get the robot
 
   public static final boolean ENABLE_CLIMBER_SUBSYSTEM = true;
 
@@ -62,7 +62,7 @@ interface RobotMapFor2019Robot {
   /**
   * Enable shuffleboard debug tabs
   */
-  public static final boolean SHUFFLEBOARD_DEBUG_MODE = false;
+  public static final boolean SHUFFLEBOARD_DEBUG_MODE = true;
 
 
   public static final double SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK = 0.0942478739;
