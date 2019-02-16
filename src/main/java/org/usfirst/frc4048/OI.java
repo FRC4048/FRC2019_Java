@@ -142,11 +142,13 @@ public class OI {
       rightDPADTrigger.whenActive(new PivotMoveDeploy());
     }
 
-    alignWithVision = new JoystickButton(controller, RobotMap.XBOX_START_BUTTON);
-    alignWithVision.whenPressed(new DriveAlignGroup());
+    if (RobotMap.ENABLE_DRIVETRAIN) {
+      alignWithVision = new JoystickButton(controller, RobotMap.XBOX_START_BUTTON);
+      alignWithVision.whenPressed(new DriveAlignGroup());
 
-    driveSwitchMode = new JoystickButton(rightJoy, 6);
-    driveSwitchMode.whenPressed(new CentricModeToggle());
+      driveSwitchMode = new JoystickButton(rightJoy, 6);
+      driveSwitchMode.whenPressed(new CentricModeToggle());
+    }
 
     logError = new JoystickButton(leftJoy, 6);
     logError.whenPressed(new LogError());
