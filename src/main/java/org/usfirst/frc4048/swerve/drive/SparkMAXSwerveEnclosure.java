@@ -7,7 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 
 /**
- * An implementation of the SwerveEnclosure using CanTalon motors and encoders
+ * An implementation of the SwerveEnclosure using SparkMAX motors and encoders
  */
 public class SparkMAXSwerveEnclosure extends BaseEnclosure implements SwerveEnclosure {
 
