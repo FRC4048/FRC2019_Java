@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import org.usfirst.frc4048.commands.UnCradleIntake;
 import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
 import org.usfirst.frc4048.commands.climber.PistonTest;
+import org.usfirst.frc4048.commands.drive.CentricModeRobot;
 // import org.usfirst.frc4048.commands.DriveTargetCenter;
 // import org.usfirst.frc4048.commands.LimelightAlign;
 import org.usfirst.frc4048.commands.drive.CentricModeToggle;
@@ -72,7 +73,7 @@ public class Robot extends TimedRobot {
   public static MechanicalMode mechanicalMode;
   private final static Timer timer = new Timer(100);
   public static Pivot pivot;
-  
+
   /**
    * Robot thread scheduler. Initialized with a static thread pool.
    * 
@@ -80,8 +81,7 @@ public class Robot extends TimedRobot {
    * @See {@link #cancelAllTasks()}
    */
   private final static ScheduledExecutorService executor = Executors.newScheduledThreadPool(3);
-  private final static ArrayList<ScheduledFuture<?>> tasks = new ArrayList<ScheduledFuture<?>>(); 
-
+  private final static ArrayList<ScheduledFuture<?>> tasks = new ArrayList<ScheduledFuture<?>>();
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -105,35 +105,35 @@ public class Robot extends TimedRobot {
       compressorSubsystem = new CompressorSubsystem();
     }
     drivetrainSensors = new DrivetrainSensors();
-    if (RobotMap.ENABLE_ELEVATOR){
+    if (RobotMap.ENABLE_ELEVATOR) {
       elevator = new Elevator();
     }
-    switch(mode){
-      case RobotMap.CARGO_RETURN_CODE:
-        if (RobotMap.ENABLE_CARGO_SUBSYSTEM) {
-          cargoSubsystem = new CargoSubsystem();
-        }
-        break;
-      case RobotMap.HATCH_RETURN_CODE:
-        if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM) {
-          hatchPanelSubsystem = new HatchPanelSubsystem();
-        }
-        break;
-      default:
-        break;
+    switch (mode) {
+    case RobotMap.CARGO_RETURN_CODE:
+      if (RobotMap.ENABLE_CARGO_SUBSYSTEM) {
+        cargoSubsystem = new CargoSubsystem();
+      }
+      break;
+    case RobotMap.HATCH_RETURN_CODE:
+      if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM) {
+        hatchPanelSubsystem = new HatchPanelSubsystem();
+      }
+      break;
+    default:
+      break;
     }
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
       climber = new Climber();
     }
 
-    if(RobotMap.ENABLE_PIVOT_SUBSYSTEM){
+    if (RobotMap.ENABLE_PIVOT_SUBSYSTEM) {
       pivot = new Pivot();
     }
     logging = new Logging();
 
     // OI must be initialized last
     oi = new OI();
-//    SmartDashboard.putData("Auto mode", m_chooser);
+    // SmartDashboard.putData("Auto mode", m_chooser);
   }
 
   /**
@@ -158,7 +158,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     logging.traceMessage(Logging.MessageLevel.INFORMATION,
-				"---------------------------- Robot Disabled ----------------------------");
+        "---------------------------- Robot Disabled ----------------------------");
     // Robot.drivetrainSensors.ledOff();
     new LimelightToggle(false);
     Scheduler.getInstance().run();
@@ -185,12 +185,13 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     logging.setStartTime();
     commonInit("autonomousInit");
-    if(RobotMap.ENABLE_BEGIN_MATCH_GROUPCOMMAND){
+    if (RobotMap.ENABLE_BEGIN_MATCH_GROUPCOMMAND) {
       Scheduler.getInstance().add(new UnCradleIntake());
     }
-    //    logging.traceMessage(Logging.MessageLevel.INFORMATION,
-    //				"---------------------------- Autonomous mode starting ----------------------------");
-    //    m_autonomousCommand = m_chooser.getSelected();
+    // logging.traceMessage(Logging.MessageLevel.INFORMATION,
+    // "---------------------------- Autonomous mode starting
+    // ----------------------------");
+    // m_autonomousCommand = m_chooser.getSelected();
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
@@ -198,7 +199,7 @@ public class Robot extends TimedRobot {
      * MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new
      * ExampleCommand(); break; }
      */
-
+    Scheduler.getInstance().add(new CentricModeRobot());
   }
 
   /**
@@ -206,23 +207,23 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-//
-//    Scheduler.getInstance().run();
+    //
+    // Scheduler.getInstance().run();
     teleopPeriodic();
   }
 
   @Override
   public void teleopInit() {
-      commonInit("teleopInit");
+    commonInit("teleopInit");
   }
-  
+
   public void commonInit(final String loggingLabel) {
     logging.traceMessage(Logging.MessageLevel.INFORMATION, LINE, loggingLabel, LINE);
     logging.writeAllTitles();
 
     new LimelightToggle(true);
 
-    if(RobotMap.ENABLE_DRIVETRAIN) {
+    if (RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
     }
 
@@ -239,7 +240,7 @@ public class Robot extends TimedRobot {
     timer.init("teleopPeriodic");
     logging.writeAllData();
     timer.completed(this, "log");
-    
+
     Scheduler.getInstance().run();
     timer.completed(this, "Sched");
 
@@ -269,7 +270,6 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   }
 
-
   private void putCommandsOnShuffleboard() {
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
       SmartShuffleboard.putCommand("Climber", "Forward", new ClimbWinchManual(0.5));
@@ -292,44 +292,52 @@ public class Robot extends TimedRobot {
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight On", new LimelightToggle(true));
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Off", new LimelightToggle(false));
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Stream Toggle", new LimelightToggleStream());
-    
+
     if (RobotMap.ENABLE_ELEVATOR) {
-      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Bottom", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
-      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
-      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket High", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
-      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
-      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
-      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket High", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
-      SmartShuffleboard.putCommand("Elevator", "Cargo Intake Pos", new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
-      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
+      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Bottom",
+          new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
+      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Mid",
+          new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
+      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket High",
+          new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low",
+          new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Mid",
+          new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket High",
+          new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Intake Pos",
+          new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low",
+          new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
     }
 
   }
 
-	public static Timer timer() {
-	  return timer;
-	}
+  public static Timer timer() {
+    return timer;
+  }
 
-	static public void completed(final Object caller, final String work) {
-		if (RobotMap.LOG_PERIODIC_TIME > 0)
-			timer.completed(caller, work);
-	}
+  static public void completed(final Object caller, final String work) {
+    if (RobotMap.LOG_PERIODIC_TIME > 0)
+      timer.completed(caller, work);
+  }
 
-	/**
-	 * Schedule a Thread to run with a fixed delay between runs.
-	 */
-	static public void scheduleTask(final Runnable task, final long intervalMS) {
-		tasks.add(executor.scheduleWithFixedDelay(task, 0, intervalMS, TimeUnit.MILLISECONDS));
-	}
+  /**
+   * Schedule a Thread to run with a fixed delay between runs.
+   */
+  static public void scheduleTask(final Runnable task, final long intervalMS) {
+    tasks.add(executor.scheduleWithFixedDelay(task, 0, intervalMS, TimeUnit.MILLISECONDS));
+  }
 
-	/**
-	 * Cancel all scheduled threads.
-	 */
-	private void cancelAllTasks() {
-		for (final ScheduledFuture<?> task : tasks) {
-			task.cancel(true);
-		}
-		tasks.removeAll(tasks);
-	}
+  /**
+   * Cancel all scheduled threads.
+   */
+  private void cancelAllTasks() {
+    for (final ScheduledFuture<?> task : tasks) {
+      task.cancel(true);
+    }
+    tasks.removeAll(tasks);
+  }
 
 }

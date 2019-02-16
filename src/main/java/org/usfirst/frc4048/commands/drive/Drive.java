@@ -1,5 +1,6 @@
 package org.usfirst.frc4048.commands.drive;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -45,7 +46,7 @@ public class Drive extends Command {
     	else
     		rcw *= rcw;
 		
-		if(Robot.drivetrain.swerveDrivetrain.getModeRobot() == CentricMode.ROBOT) {
+		if(Robot.drivetrain.swerveDrivetrain.getModeRobot() == CentricMode.ROBOT && !DriverStation.getInstance().isAutonomous()) {
 			fwd *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
 			str *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
 			rcw *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
