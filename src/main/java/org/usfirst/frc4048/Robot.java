@@ -22,7 +22,6 @@ import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
 import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
-import org.usfirst.frc4048.commands.drive.DriveDistanceNEO;
 import org.usfirst.frc4048.commands.drive.RotateAngle;
 import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
@@ -280,7 +279,6 @@ public class Robot extends TimedRobot {
       SmartShuffleboard.putCommand("Climber", "Piston Off", new PistonTest(DoubleSolenoid.Value.kOff));
     }
     if (RobotMap.ENABLE_DRIVETRAIN) {
-      SmartShuffleboard.putCommand("Drive", "drive distance 10", new DriveDistanceNEO(10, 0.3, 0.0, 0.0));
       SmartShuffleboard.putCommand("Drive", "rotate 0", new RotateAngle(0));
       SmartShuffleboard.putCommand("Drive", "DriveAlignGroup", new DriveAlignGroup());
       SmartShuffleboard.putCommand("Drive", "DriveAlignPhase2", new DriveAlignPhase2(0.3, 0.4, false));
