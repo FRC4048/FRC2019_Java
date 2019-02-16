@@ -24,6 +24,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.FusionStatus;
 import com.ctre.phoenix.sensors.PigeonIMU.GeneralStatus;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -54,7 +55,6 @@ public class DriveTrain extends Subsystem {
    * values, use the pigeonData class member.
    */
   private PigeonIMU pigeon;
-
   // private Encoder encoder;
 
   private AnalogInput analogInputFrontRight;
@@ -124,7 +124,7 @@ public class DriveTrain extends Subsystem {
     pigeon = new PigeonIMU(RobotMap.DRIVE_PIGEON_ID);
     // encoder = new Encoder(RobotMap.SWERVE_DRIVE_ENCODER_A_ID,
     // RobotMap.SWERVE_DRIVE_ENCODER_B_ID);
-
+    
     // Robot.diagnostics.addDiagnosable(new DiagEncoder("DistanceEncoder", 1000,
     // encoder));
     driveFL.setIdleMode(IdleMode.kBrake);
@@ -377,7 +377,8 @@ public class DriveTrain extends Subsystem {
   }
 
   public double getDistance() {
-    return driveFL.getEncoder().getPosition();
+    
+    return (driveFL.getEncoder().getPosition())/RobotMap.SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK;//this number will change
   }
 
 
