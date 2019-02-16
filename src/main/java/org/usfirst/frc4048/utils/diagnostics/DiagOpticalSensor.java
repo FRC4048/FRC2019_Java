@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
  */
 public class DiagOpticalSensor extends DiagBoolean {
 
+    private DigitalInput digitalInput;
+
     /**
      * Constructor
      * 
@@ -15,7 +17,12 @@ public class DiagOpticalSensor extends DiagBoolean {
      * @param digitalInput    - The DigitalInput pin the sensor is connected to
      */
     public DiagOpticalSensor(String name, DigitalInput digitalInput){
-        super(name, digitalInput);
+        super(name);
+        this.digitalInput = digitalInput;
     }
 
+    @Override
+    protected boolean getValue() {
+        return digitalInput.get();
+    }
 }

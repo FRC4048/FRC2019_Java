@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
  */
 public class DiagSwitch extends DiagBoolean{
 
+    private DigitalInput digitalInput;
+
     /**
      * Constructor
      *
@@ -15,7 +17,12 @@ public class DiagSwitch extends DiagBoolean{
      * @param digitalInput    - the DigitalInput the switch is connected to
      */
     public DiagSwitch(String name, DigitalInput digitalInput) {
-        super(name, digitalInput);
+        super(name);
+        this.digitalInput = digitalInput;
     }
 
+    @Override
+    protected boolean getValue() {
+        return digitalInput.get();
+    }
 }
