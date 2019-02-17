@@ -301,7 +301,7 @@ public class Robot extends TimedRobot {
       SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
     }
 
-    if (RobotMap.ENABLE_PIVOT)
+    if (RobotMap.ENABLE_PIVOT_SUBSYSTEM)
     {
       SmartShuffleboard.putCommand("Pivot", "Pivot Deploy", new PivotMoveDeploy());
       SmartShuffleboard.putCommand("Pivot", "Pivot Retract", new PivotMoveRetract());
