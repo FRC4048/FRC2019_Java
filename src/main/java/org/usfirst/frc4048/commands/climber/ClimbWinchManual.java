@@ -31,7 +31,7 @@ public class ClimbWinchManual extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(DriverStation.getInstance().getMatchTime() < 50 && Robot.oi.getXboxLeftJoystickY() < JOYSTICK_DEADZONE) {
+    if(/*DriverStation.getInstance().getMatchTime() < 50 &&*/ Robot.oi.getXboxLeftJoystickY() < JOYSTICK_DEADZONE) {
       Robot.climber.controlWinch(Robot.oi.getXboxLeftJoystickY());
     }
   }

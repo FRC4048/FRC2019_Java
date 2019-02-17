@@ -12,6 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import org.usfirst.frc4048.utils.DoubleSolenoidUtil;
 
 import org.usfirst.frc4048.commands.UnCradleIntake;
 import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
@@ -271,9 +272,9 @@ public class Robot extends TimedRobot {
 
   private void putCommandsOnShuffleboard() {
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
-      SmartShuffleboard.putCommand("Climber", "Piston Forward", new PistonTest(DoubleSolenoid.Value.kForward));
-      SmartShuffleboard.putCommand("Climber", "Piston Rev", new PistonTest(DoubleSolenoid.Value.kReverse));
-      SmartShuffleboard.putCommand("Climber", "Piston Off", new PistonTest(DoubleSolenoid.Value.kOff));
+      SmartShuffleboard.putCommand("Climber", "Piston Forward", new PistonTest(DoubleSolenoidUtil.State.forward));
+      SmartShuffleboard.putCommand("Climber", "Piston Rev", new PistonTest(DoubleSolenoidUtil.State.reverse));
+      SmartShuffleboard.putCommand("Climber", "Piston Off", new PistonTest(DoubleSolenoidUtil.State.off));
     }
     if (RobotMap.ENABLE_DRIVETRAIN) {
       SmartShuffleboard.putCommand("Drive", "rotate 0", new RotateAngle(0));
