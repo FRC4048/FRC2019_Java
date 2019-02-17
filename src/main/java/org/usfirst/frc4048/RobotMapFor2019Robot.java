@@ -49,7 +49,7 @@ interface RobotMapFor2019Robot {
 
   public static final boolean ENABLE_BEGIN_MATCH_GROUPCOMMAND = false;
 
-  public static final boolean ENABLE_PIVOT_SUBSYSTEM = true;
+  public static final boolean ENABLE_PIVOT_SUBSYSTEM = false;
   /**
    * Enables logging of timing data related to watchdog timeouts. Set to 0 to disable, otherwise, set to the 
    * minimum number of milliseconds that will be logged. For example, if 15, then don't log any timing data less
@@ -159,14 +159,14 @@ interface RobotMapFor2019Robot {
   */
   //PDP IDS
   public static final int PDP_ID_CARGO_INTAKE = 9;
-  public static final int PDP_STEERING_FR = 11;
-  public static final int PDP_STEERING_FL = 4;
-  public static final int PDP_STEERING_RL = 5;
-  public static final int PDP_STEERING_RR = 10;
-  public static final int PDP_DRIVE_FR = 15;
-  public static final int PDP_DRIVE_FL = 0;
+  public static final int PDP_STEERING_FR = 8;
+  public static final int PDP_STEERING_FL = 11;
+  public static final int PDP_STEERING_RL = 4;
+  public static final int PDP_STEERING_RR = 7;
+  public static final int PDP_DRIVE_FR = 13;
+  public static final int PDP_DRIVE_FL = 15;
   public static final int PDP_DRIVE_RL = 1;
-  public static final int PDP_DRIVE_RR = 14;
+  public static final int PDP_DRIVE_RR = 3;
   public static final int PDP_LIMELIGHT = 2;
   public static final int PDP_CLIMBER_WINCH = 3;
   public static final int PDP_ELEVATOR_MOTOR = 6;

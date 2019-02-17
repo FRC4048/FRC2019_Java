@@ -22,11 +22,14 @@ import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
 import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
+import org.usfirst.frc4048.commands.drive.ResetGyro;
 import org.usfirst.frc4048.commands.drive.RotateAngle;
 import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
 import org.usfirst.frc4048.commands.limelight.LimelightToggleStream;
+import org.usfirst.frc4048.commands.pivot.PivotMoveDeploy;
+import org.usfirst.frc4048.commands.pivot.PivotMoveRetract;
 import org.usfirst.frc4048.subsystems.CargoSubsystem;
 import org.usfirst.frc4048.subsystems.Climber;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
@@ -133,6 +136,8 @@ public class Robot extends TimedRobot {
     // OI must be initialized last
     oi = new OI();
 //    SmartDashboard.putData("Auto mode", m_chooser);
+
+    putCommandsInCompetition();
   }
 
   /**
@@ -146,7 +151,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-
+    
   }
 
   /**
@@ -228,6 +233,7 @@ public class Robot extends TimedRobot {
     if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
       putCommandsOnShuffleboard();
     }
+    
   }
 
   /**
@@ -281,7 +287,7 @@ public class Robot extends TimedRobot {
       SmartShuffleboard.putCommand("Drive", "DriveAlignPhase2", new DriveAlignPhase2(0.3, 0.4, false));
       SmartShuffleboard.putCommand("Drive", "DriveAlignPhase3", new DriveAlignPhase3(0.25, false));
       SmartShuffleboard.putCommand("Drive", "Toggle Centric Mode", new CentricModeToggle());
-      SmartShuffleboard.putCommand("Drive", "ROtate angle align", new RotateAngleForAlignment());
+      SmartShuffleboard.putCommand("Drive", "Rotate angle align", new RotateAngleForAlignment());
     }
 
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight On", new LimelightToggle(true));
@@ -299,6 +305,16 @@ public class Robot extends TimedRobot {
       SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
     }
 
+    if (RobotMap.ENABLE_PIVOT_SUBSYSTEM)
+    {
+      SmartShuffleboard.putCommand("Pivot", "Pivot Deploy", new PivotMoveDeploy());
+      SmartShuffleboard.putCommand("Pivot", "Pivot Retract", new PivotMoveRetract());
+    }
+
+  }
+
+  private void putCommandsInCompetition() {
+    SmartShuffleboard.putCommand("Driver", "Reset Gyro", new ResetGyro());
   }
 
 	public static Timer timer() {

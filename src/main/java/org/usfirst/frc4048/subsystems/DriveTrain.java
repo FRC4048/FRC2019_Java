@@ -169,7 +169,7 @@ public class DriveTrain extends Subsystem {
     }
 
     swerveDrivetrain = new SwerveDrive(frontRightWheel, frontLeftWheel, rearLeftWheel, rearRightWheel, WIDTH, LENGTH);
-
+    
     init();
 
   }
@@ -283,6 +283,8 @@ public class DriveTrain extends Subsystem {
       Robot.completed(this, "shuf");
     }
 
+    SmartShuffleboard.put("Driver", "Gyro Value", getGyro());
+
   }
 
   // Put methods for controlling this subsystem
@@ -352,7 +354,7 @@ public class DriveTrain extends Subsystem {
 
 
   @SuppressWarnings("unused")
-  private void setGyro(double angle) {
+  public void setGyro(double angle) {
     synchronized (pigeon) {
       pigeon.setYaw(angle, TIMEOUT);
       pigeon.setFusedHeading(angle, TIMEOUT);
