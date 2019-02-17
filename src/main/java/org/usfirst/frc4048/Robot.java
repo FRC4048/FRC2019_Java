@@ -22,6 +22,7 @@ import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
 import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
+import org.usfirst.frc4048.commands.drive.ResetGyro;
 import org.usfirst.frc4048.commands.drive.RotateAngle;
 import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
@@ -230,6 +231,8 @@ public class Robot extends TimedRobot {
     if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
       putCommandsOnShuffleboard();
     }
+    
+    putCommandsInCompetition();
   }
 
   /**
@@ -283,7 +286,7 @@ public class Robot extends TimedRobot {
       SmartShuffleboard.putCommand("Drive", "DriveAlignPhase2", new DriveAlignPhase2(0.3, 0.4, false));
       SmartShuffleboard.putCommand("Drive", "DriveAlignPhase3", new DriveAlignPhase3(0.25, false));
       SmartShuffleboard.putCommand("Drive", "Toggle Centric Mode", new CentricModeToggle());
-      SmartShuffleboard.putCommand("Drive", "ROtate angle align", new RotateAngleForAlignment());
+      SmartShuffleboard.putCommand("Drive", "Rotate angle align", new RotateAngleForAlignment());
     }
 
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight On", new LimelightToggle(true));
@@ -307,6 +310,10 @@ public class Robot extends TimedRobot {
       SmartShuffleboard.putCommand("Pivot", "Pivot Retract", new PivotMoveRetract());
     }
 
+  }
+
+  private void putCommandsInCompetition() {
+    SmartShuffleboard.putCommand("Competition", "Reset Gyro", new ResetGyro());
   }
 
 	public static Timer timer() {
