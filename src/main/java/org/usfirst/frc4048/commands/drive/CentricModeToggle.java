@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class CentricModeToggle extends LoggedCommand {
-  private boolean done;
 
   public CentricModeToggle() {
     super("CentricModeToggle");
@@ -27,7 +26,6 @@ public class CentricModeToggle extends LoggedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
-    done = false;
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -36,16 +34,12 @@ public class CentricModeToggle extends LoggedCommand {
     CentricMode mode = Robot.drivetrain.swerveDrivetrain.getModeRobot();
     if (DriverStation.getInstance().isAutonomous()) {
       Robot.drivetrain.swerveDrivetrain.setModeRobot();
-      Robot.drivetrain.setScaleSpeed(); 
-      done = true;
-    }
-    if (!done) {
+      Robot.drivetrain.toggleScaleSpeed(); 
+    } else {
       if (mode == CentricMode.FIELD) {
         Robot.drivetrain.swerveDrivetrain.setModeRobot();
-        done = true;
       } else {
         Robot.drivetrain.swerveDrivetrain.setModeField();
-        done = true;
       }
     }
   }
@@ -53,7 +47,7 @@ public class CentricModeToggle extends LoggedCommand {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean loggedIsFinished() {
-    return done;
+    return true;
   }
 
   // Called once after isFinished returns true
