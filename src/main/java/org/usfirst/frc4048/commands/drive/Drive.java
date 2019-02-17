@@ -11,7 +11,8 @@ import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 public class Drive extends Command {
 
-    double fwd, str, rcw;
+	double fwd, str, rcw;
+	private boolean scaleSpeed;
     public Drive() {
         requires(Robot.drivetrain);
     }
@@ -19,12 +20,20 @@ public class Drive extends Command {
     // Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-        
+		scaleSpeed = false;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+		if((Robot.drivetrain.swerveDrivetrain.getModeRobot() == CentricMode.FIELD && DriverStation.getInstance().isAutonomous()) || Robot.drivetrain.swerveDrivetrain.getModeRobot() == CentricMode.ROBOT && !DriverStation.getInstance().isAutonomous()) {
+			Robot.drivetrain.swerveDrivetrain.setModeRobot();
+			SmartShuffleboard.put("Driver", "Mode", "ROBOT WITH SCALED SPEED");
+			scaleSpeed = true;
+		} else {
+			SmartShuffleboard.put("Driver", "Mode", "NO SCALED SPEED");
+			scaleSpeed = false;
+		}
         fwd = -Robot.oi.getLeftJoy().getY();
         str = Robot.oi.getLeftJoy().getX();
 		rcw = Robot.oi.getRightJoy().getX();
@@ -46,7 +55,7 @@ public class Drive extends Command {
     	else
     		rcw *= rcw;
 		
-		if(Robot.drivetrain.swerveDrivetrain.getModeRobot() == CentricMode.ROBOT && !DriverStation.getInstance().isAutonomous()) {
+		if(scaleSpeed) {
 			fwd *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
 			str *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
 			rcw *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;

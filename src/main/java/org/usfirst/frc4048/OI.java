@@ -149,7 +149,7 @@ public class OI {
       alignWithVision = new JoystickButton(controller, RobotMap.XBOX_START_BUTTON);
       alignWithVision.whenPressed(new DriveAlignGroup());
 
-      driveSwitchMode = new JoystickButton(rightJoy, 6);
+      driveSwitchMode = new JoystickButton(rightJoy, 10);
       driveSwitchMode.whenPressed(new CentricModeToggle());
     }
 
