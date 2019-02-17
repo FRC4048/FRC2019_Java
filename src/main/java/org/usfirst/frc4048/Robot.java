@@ -22,7 +22,6 @@ import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
 import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
-import org.usfirst.frc4048.commands.drive.DriveDistance;
 import org.usfirst.frc4048.commands.drive.RotateAngle;
 import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
@@ -97,7 +96,7 @@ public class Robot extends TimedRobot {
 
     mechanicalMode = new MechanicalMode();
     int mode = mechanicalMode.getMode();
-
+    // int mode = RobotMap.CARGO_RETURN_CODE;
     if (RobotMap.ENABLE_DRIVETRAIN) {
       drivetrain = new DriveTrain();
     }
@@ -136,7 +135,6 @@ public class Robot extends TimedRobot {
     // OI must be initialized last
     oi = new OI();
 //    SmartDashboard.putData("Auto mode", m_chooser);
-
   }
 
   /**
@@ -163,7 +161,8 @@ public class Robot extends TimedRobot {
     logging.traceMessage(Logging.MessageLevel.INFORMATION,
 				"---------------------------- Robot Disabled ----------------------------");
     // Robot.drivetrainSensors.ledOff();
-    
+    new LimelightToggle(false);
+    Scheduler.getInstance().run();
   }
 
   @Override
@@ -222,6 +221,8 @@ public class Robot extends TimedRobot {
     logging.traceMessage(Logging.MessageLevel.INFORMATION, LINE, loggingLabel, LINE);
     logging.writeAllTitles();
 
+    new LimelightToggle(true);
+
     if(RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
     }
@@ -272,15 +273,11 @@ public class Robot extends TimedRobot {
 
   private void putCommandsOnShuffleboard() {
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
-      SmartShuffleboard.putCommand("Climber", "Forward", new ClimbWinchManual(0.5));
-      SmartShuffleboard.putCommand("Climber", "Backwards", new ClimbWinchManual(-0.5));
-      SmartShuffleboard.putCommand("Climber", "Stop", new ClimbWinchManual(0.0));
       SmartShuffleboard.putCommand("Climber", "Piston Forward", new PistonTest(DoubleSolenoid.Value.kForward));
       SmartShuffleboard.putCommand("Climber", "Piston Rev", new PistonTest(DoubleSolenoid.Value.kReverse));
       SmartShuffleboard.putCommand("Climber", "Piston Off", new PistonTest(DoubleSolenoid.Value.kOff));
     }
     if (RobotMap.ENABLE_DRIVETRAIN) {
-      SmartShuffleboard.putCommand("Drive", "drive distance 10", new DriveDistance(10, 0.3, 0.0, 0.0));
       SmartShuffleboard.putCommand("Drive", "rotate 0", new RotateAngle(0));
       SmartShuffleboard.putCommand("Drive", "DriveAlignGroup", new DriveAlignGroup());
       SmartShuffleboard.putCommand("Drive", "DriveAlignPhase2", new DriveAlignPhase2(0.3, 0.4, false));

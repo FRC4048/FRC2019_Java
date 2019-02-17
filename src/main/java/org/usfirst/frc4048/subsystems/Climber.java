@@ -11,10 +11,12 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
+import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
 import org.usfirst.frc4048.utils.AngleFinder;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.OpticalRangeFinder;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
+import org.usfirst.frc4048.utils.diagnostics.DiagOpticalRangeFinder;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -29,18 +31,17 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Climber extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  private CANSparkMax winch;
+  private Spark winch;
   private DoubleSolenoid climberPiston;
   private DigitalInput pistonSensor;
   private AngleFinder angleFinder;
 
   private final double RANGE_FINDER_DISTANCE_APART = 20;
   public Climber() {
-    winch = new CANSparkMax(RobotMap.WINCH_CAN_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
+    winch = new Spark(RobotMap.WINCH_ID);
     climberPiston = new DoubleSolenoid(RobotMap.PCM_CAN_ID, RobotMap.CLIMBER_PISTONS_ID[0], RobotMap.CLIMBER_PISTONS_ID[1]);
     angleFinder = initClimberAngleFinder();
     pistonSensor = new DigitalInput(RobotMap.CLIMBER_POSITION_SENSOR_ID);
-    winch.setIdleMode(CANSparkMax.IdleMode.kBrake);
   }
 
   public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
@@ -54,6 +55,7 @@ public class Climber extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new ClimbWinchManual());
   }
 
   @Override
@@ -96,6 +98,11 @@ public class Climber extends Subsystem {
 
     final OpticalRangeFinder leftRangeFinder = new OpticalRangeFinder(leftRangeInput);
     final OpticalRangeFinder rightRangeFinder = new OpticalRangeFinder(rightRangeInput);
+    
+    Robot.diagnostics.addDiagnosable(new DiagOpticalRangeFinder("Left Range Finder", leftRangeFinder, 5, 10));
+    Robot.diagnostics.addDiagnosable(new DiagOpticalRangeFinder("Right Range Finder", rightRangeFinder, 5, 10));
+  
     return new AngleFinder(leftRangeFinder, rightRangeFinder, RobotMap.INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS);
+  
   }
 }

@@ -12,10 +12,12 @@ import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.commands.drive.Drive;
 import org.usfirst.frc4048.swerve.drive.BaseEnclosure;
 import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
+import org.usfirst.frc4048.swerve.drive.SparkMAXSwerveEnclosure;
 import org.usfirst.frc4048.swerve.drive.SwerveDrive;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
-
+import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -23,12 +25,16 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.FusionStatus;
 import com.ctre.phoenix.sensors.PigeonIMU.GeneralStatus;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc4048.utils.diagnostics.DiagEncoder;
-import org.usfirst.frc4048.utils.diagnostics.DiagSwerveEnclosure;
+import org.usfirst.frc4048.utils.diagnostics.DiagSwerveEnclosureSparkMAX;
+import org.usfirst.frc4048.utils.diagnostics.DiagSwerveEnclosureTalonSRX;
 
 /**
  * Add your docs here.
@@ -47,12 +53,11 @@ public class DriveTrain extends Subsystem {
   private WPI_TalonSRX steerRR;
 
   /**
-   * Note that access to the pigeon should be done inside a synhronized block because the
-   * reading will be done in a separate thread. If you're reading values, use the pigeonData
-   * class member.
+   * Note that access to the pigeon should be done inside a synhronized block
+   * because the reading will be done in a separate thread. If you're reading
+   * values, use the pigeonData class member.
    */
   private PigeonIMU pigeon;
-
   private Encoder encoder;
 
   private AnalogInput analogInputFrontRight;
@@ -70,18 +75,18 @@ public class DriveTrain extends Subsystem {
   private final double GEAR_RATIO = (1988 / 1.2);
 
   // Width between drivetrain wheels
-  private final double WIDTH = 22.0; // Remeasure Chassis
+  private final double WIDTH = 18.1; // Remeasure Chassis
 
   // Length between drivetrain wheels
-  private final double LENGTH = 23.25; // Remeasure Chassis
+  private final double LENGTH = 23.75; // Remeasure Chassis
 
   private final boolean REVERSE_ENCODER = true;
   private final boolean REVERSE_OUTPUT = true;
 
-  private final int FR_ZERO = 3663;//1037;
-  private final int FL_ZERO = 1818;//1767;
-  private final int RL_ZERO = 1248;//1456;//1456;
-  private final int RR_ZERO = 1491;//2444;
+  private final int FR_ZERO = 3315;// 1037;
+  private final int FL_ZERO = 3109;// 1767;
+  private final int RL_ZERO = 1720;// 1456;//1456;
+  private final int RR_ZERO = 136;// 2444;
 
   private final double P = 10;
   private final double I = 0;
@@ -97,11 +102,17 @@ public class DriveTrain extends Subsystem {
 
   private final int TIMEOUT = 100;
 
-  /* Reading gyro angle is relatively slow, anywhere between 4mSec and 20mSec.             */
-  /* We will be reading it and storing it here in the periodic method and whoever needs    */
-  /* whoever needs to use the gyro will get the stored value through the getGyro() method. */
+  /* Reading gyro angle is relatively slow, anywhere between 4mSec and 20mSec. */
+  /*
+   * We will be reading it and storing it here in the periodic method and whoever
+   * needs
+   */
+  /*
+   * whoever needs to use the gyro will get the stored value through the getGyro()
+   * method.
+   */
   private final PigeonData pigeonData = new PigeonData();
-  
+
   private final BaseEnclosure wheelEnclosures[];
 
   public DriveTrain() {
@@ -115,13 +126,8 @@ public class DriveTrain extends Subsystem {
     steerRR = new WPI_TalonSRX(RobotMap.REAR_RIGHT_STEER_MOTOR_ID);
     pigeon = new PigeonIMU(RobotMap.DRIVE_PIGEON_ID);
     encoder = new Encoder(RobotMap.SWERVE_DRIVE_ENCODER_A_ID, RobotMap.SWERVE_DRIVE_ENCODER_B_ID);
-
-    Robot.diagnostics.addDiagnosable(new DiagEncoder("DistanceEncoder", 1000, encoder));
     
-    driveFL.setNeutralMode(NeutralMode.Brake);
-    driveFR.setNeutralMode(NeutralMode.Brake);
-    driveRL.setNeutralMode(NeutralMode.Brake);
-    driveRR.setNeutralMode(NeutralMode.Brake);
+    Robot.diagnostics.addDiagnosable(new DiagEncoder("DistanceEncoder", 1000, encoder));
 
     driveFL.setSafetyEnabled(true);
     driveFR.setSafetyEnabled(true);
@@ -133,28 +139,33 @@ public class DriveTrain extends Subsystem {
     driveRL.setExpiration(0.5);
     driveRR.setExpiration(0.5);
 
+    driveFR.setNeutralMode(NeutralMode.Brake);
+    driveFL.setNeutralMode(NeutralMode.Brake);
+    driveRR.setNeutralMode(NeutralMode.Brake);
+    driveRL.setNeutralMode(NeutralMode.Brake);
+
     analogInputFrontLeft = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_FRONT_LEFT_ID);
     analogInputFrontRight = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID);
     analogInputRearLeft = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_REAR_LEFT_ID);
     analogInputRearRight = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_REAR_RIGHT_ID);
-    
+
     frontLeftWheel = new CanTalonSwerveEnclosure("FrontLeftWheel", driveFL, steerFL, GEAR_RATIO, Robot.timer());
     frontRightWheel = new CanTalonSwerveEnclosure("FrontRightWheel", driveFR, steerFR, GEAR_RATIO, Robot.timer());
     rearLeftWheel = new CanTalonSwerveEnclosure("RearLeftWheel", driveRL, steerRL, GEAR_RATIO, Robot.timer());
     rearRightWheel = new CanTalonSwerveEnclosure("RearRightWheel", driveRR, steerRR, GEAR_RATIO, Robot.timer());
     wheelEnclosures = new BaseEnclosure[] { frontLeftWheel, frontRightWheel, rearLeftWheel, rearRightWheel };
 
-    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosure("FL Wheel", 1000, frontLeftWheel));
-    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosure("FR Wheel", 1000, frontRightWheel));
-    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosure("RL Wheel", 1000, rearLeftWheel));
-    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosure("RR Wheel", 1000, rearRightWheel));
+    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosureTalonSRX("FL Wheel", 1000, frontLeftWheel));
+    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosureTalonSRX("FR Wheel", 1000, frontRightWheel));
+    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosureTalonSRX("RL Wheel", 1000, rearLeftWheel));
+    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosureTalonSRX("RR Wheel", 1000, rearRightWheel));
 
     if (RobotMap.ENABLE_WHEEL_ENCODER_THREAD) {
       Robot.scheduleTask(new WheelEncoderThread(), RobotMap.WHEEL_ENCODER_THREAD_INTERVAL_MS);
-  }
+    }
 
     if (RobotMap.ENABLE_PIGEON_THREAD) {
-    	Robot.scheduleTask(new PigeonThread(), RobotMap.PIGEON_READ_DELAY_MS);
+      Robot.scheduleTask(new PigeonThread(), RobotMap.PIGEON_READ_DELAY_MS);
     }
 
     swerveDrivetrain = new SwerveDrive(frontRightWheel, frontLeftWheel, rearLeftWheel, rearRightWheel, WIDTH, LENGTH);
@@ -162,7 +173,7 @@ public class DriveTrain extends Subsystem {
     init();
 
   }
-  
+
   /**
    * Thread that reads all the wheel encoders at predetermined cycles on a
    * separate thread. The read cycle is determined by the value when the thread is
@@ -174,7 +185,7 @@ public class DriveTrain extends Subsystem {
         e.readEncPosition();
     }
   }
-  
+
   public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
 
     protected void addAll() {
@@ -215,14 +226,14 @@ public class DriveTrain extends Subsystem {
     private double pitch = 0;
 
     void update() {
-      synchronized(pigeon) {
+      synchronized (pigeon) {
         pigeon.getFusedHeading(fstatus);
         if (fstatus.bIsValid) {
           heading = fstatus.heading;
-        }
-        else {
+        } else {
           System.out.println("Pigeon reported invalid status");
-          Robot.logging.traceMessage(Logging.MessageLevel.INFORMATION, "-------------Pigeon reported invalid status--------------");
+          Robot.logging.traceMessage(Logging.MessageLevel.INFORMATION,
+              "-------------Pigeon reported invalid status--------------");
         }
         pigeon.getYawPitchRoll(ypr);
         pitch = ypr[1];
@@ -237,12 +248,10 @@ public class DriveTrain extends Subsystem {
               Robot.logging.traceMessage(Logging.MessageLevel.INFORMATION, "PigeonStatus: " + gstatus.toString());
             }
           }
+        }
       }
     }
   }
-}
-
-
 
   @Override
   public void periodic() {
@@ -263,19 +272,18 @@ public class DriveTrain extends Subsystem {
       SmartShuffleboard.put("Drive", "Encoders", "FL", frontLeftWheel.getLastEncPosition());
       SmartShuffleboard.put("Drive", "Encoders", "RR", rearRightWheel.getLastEncPosition());
       SmartShuffleboard.put("Drive", "Encoders", "RL", rearLeftWheel.getLastEncPosition());
-  
+
       SmartShuffleboard.put("Drive", "Abs Encoders", "FR abs", analogInputFrontRight.getValue());
       SmartShuffleboard.put("Drive", "Abs Encoders", "FL abs", analogInputFrontLeft.getValue());
       SmartShuffleboard.put("Drive", "Abs Encoders", "RR abs", analogInputRearRight.getValue());
       SmartShuffleboard.put("Drive", "Abs Encoders", "RL abs", analogInputRearLeft.getValue());
 
-      SmartShuffleboard.put("Drive", "Gyro", getGyro()); 
-      SmartShuffleboard.put("Drive", "Centric mode", swerveDrivetrain.getModeRobot().name()); 
+      SmartShuffleboard.put("Drive", "Gyro", getGyro());
+      SmartShuffleboard.put("Drive", "Centric mode", swerveDrivetrain.getModeRobot().name());
       Robot.completed(this, "shuf");
     }
 
   }
-
 
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
@@ -296,8 +304,6 @@ public class DriveTrain extends Subsystem {
     frontLeftWheel.setReverseSteerMotor(REVERSE_OUTPUT);
     rearLeftWheel.setReverseSteerMotor(REVERSE_OUTPUT);
     rearRightWheel.setReverseSteerMotor(REVERSE_OUTPUT);
-
-    resetDriveEncoder();
 
     resetQuadEncoder();
   }
@@ -325,10 +331,14 @@ public class DriveTrain extends Subsystem {
   }
 
   public void resetQuadEncoder() {
-    steerFR.setSelectedSensorPosition((int) ((analogInputFrontRight.getValue() - FR_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
-    steerFL.setSelectedSensorPosition((int) ((analogInputFrontLeft.getValue() - FL_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
-    steerRL.setSelectedSensorPosition((int) ((analogInputRearLeft.getValue() - RL_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
-    steerRR.setSelectedSensorPosition((int) ((analogInputRearRight.getValue() - RR_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
+    steerFR.setSelectedSensorPosition((int) ((analogInputFrontRight.getValue() - FR_ZERO) / 4000.0 * GEAR_RATIO), 0,
+        TIMEOUT);
+    steerFL.setSelectedSensorPosition((int) ((analogInputFrontLeft.getValue() - FL_ZERO) / 4000.0 * GEAR_RATIO), 0,
+        TIMEOUT);
+    steerRL.setSelectedSensorPosition((int) ((analogInputRearLeft.getValue() - RL_ZERO) / 4000.0 * GEAR_RATIO), 0,
+        TIMEOUT);
+    steerRR.setSelectedSensorPosition((int) ((analogInputRearRight.getValue() - RR_ZERO) / 4000.0 * GEAR_RATIO), 0,
+        TIMEOUT);
     // steerFR.setSelectedSensorPosition(0);
     // steerFL.setSelectedSensorPosition(0);
     // steerRL.setSelectedSensorPosition(0);
@@ -340,14 +350,10 @@ public class DriveTrain extends Subsystem {
     steerRR.set(ControlMode.Position, 0);
   }
 
-  public void resetDriveEncoder() {
-    encoder.reset();
-    encoder.setDistancePerPulse(RobotMap.SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK);
-  }
 
   @SuppressWarnings("unused")
   private void setGyro(double angle) {
-    synchronized(pigeon) {
+    synchronized (pigeon) {
       pigeon.setYaw(angle, TIMEOUT);
       pigeon.setFusedHeading(angle, TIMEOUT);
     }
@@ -376,17 +382,7 @@ public class DriveTrain extends Subsystem {
     return encoder.getDistance();
   }
 
-  /**
-   * Outputs direction of encoder
-   * 
-   * @return - true if encoder direction is positive, false if encoder direction
-   *         is negative
-   */
-  public boolean getEncoderDirection() {
-    return encoder.getDirection();
-  }
 
-  
   public void move(double fwd, double str, double rcw) {
     if (fwd <= LEFT_JOY_X_MAX_DEADZONE && fwd >= LEFT_JOY_X_MIN_DEADZONE)
       fwd = 0.0;

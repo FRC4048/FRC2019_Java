@@ -24,6 +24,7 @@ import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.MechanicalMode;
 import org.usfirst.frc4048.utils.MotorUtils;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
+import org.usfirst.frc4048.utils.diagnostics.DiagEncoder;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -38,19 +39,19 @@ public class Elevator extends Subsystem {
 
   private final int TIMEOUT = 100;
 
-  private final double ELEVATOR_POSITION_ERROR = 0;
+  private final double ELEVATOR_POSITION_ERROR = 150;
 
   private final double ELEVATOR_UP_SCALE_FACTOR = 1.00;
   private final double ELEVATOR_DOWN_SCALE_FACTOR = 1.00;
 
-  private final double ELEVATOR_CARGO_P = 10;
-  private final double ELEVATOR_CARGO_I = 0;
-  private final double ELEVATOR_CARGO_D = 3;
+  private final double ELEVATOR_CARGO_P = 5;
+  private final double ELEVATOR_CARGO_I = 0.5;
+  private final double ELEVATOR_CARGO_D = 0;
   private final double ELEVATOR_CARGO_F = 0;
 
-  private final double ELEVATOR_HATCH_P = 10;
+  private final double ELEVATOR_HATCH_P = 0.5;
   private final double ELEVATOR_HATCH_I = 0;
-  private final double ELEVATOR_HATCH_D = 3;
+  private final double ELEVATOR_HATCH_D = 0;
   private final double ELEVATOR_HATCH_F = 0;
 
   private final int ELEVATOR_ACCEL = 375/* 281 */; // RPM Of motor we can use these values to set max speed during the movement
@@ -75,7 +76,7 @@ public class Elevator extends Subsystem {
     elevatorMotor.configPeakOutputReverse(-ELEVATOR_DOWN_SCALE_FACTOR, TIMEOUT);
     elevatorMotor.setNeutralMode(NeutralMode.Brake);
     elevatorMotor.selectProfileSlot(0, 0);
-    elevatorMotor.configAllowableClosedloopError(0, 4, TIMEOUT);
+    elevatorMotor.configAllowableClosedloopError(0, 150, TIMEOUT);
     int elevatorMode = Robot.mechanicalMode.getMode();
     switch(elevatorMode){
       case RobotMap.CARGO_RETURN_CODE:
@@ -86,13 +87,15 @@ public class Elevator extends Subsystem {
         break;
     }
     
-    elevatorMotor.configMotionAcceleration(ELEVATOR_ACCEL, TIMEOUT);
-    elevatorMotor.configMotionCruiseVelocity(ELEVATOR_CRUISE_VELOCITY, TIMEOUT);
+    // elevatorMotor.configMotionAcceleration(ELEVATOR_ACCEL, TIMEOUT);
+    // elevatorMotor.configMotionCruiseVelocity(ELEVATOR_CRUISE_VELOCITY, TIMEOUT);
     elevatorMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     elevatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-
+    elevatorMotor.setInverted(true);
     resetEncoder();
     elevatorSetpoint = getEncoder();
+
+    
   }
 
   public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
@@ -113,6 +116,7 @@ public class Elevator extends Subsystem {
       SmartShuffleboard.put("Elevator", "Setpoint", elevatorSetpoint);
       SmartShuffleboard.put("Elevator", "Encoder", getEncoder());
       SmartShuffleboard.put("Elevator", "Current", elevatorMotor.getOutputCurrent());
+      SmartShuffleboard.putCommand("Elevator", "Elevator Hatch Mid", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
     }
     moveElevator();
   }
@@ -126,7 +130,7 @@ public class Elevator extends Subsystem {
 
   public void moveElevator() {
     double position = elevatorSetpoint;
-    elevatorMotor.set(ControlMode.MotionMagic, (int) position);
+    elevatorMotor.set(ControlMode.Position, (int) position);
   }
 
   public void elevatorToPosition(ElevatorPosition elevatorPosition) {

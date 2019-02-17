@@ -5,51 +5,51 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands.climber;
+package org.usfirst.frc4048.commands.drive;
 
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.commands.LoggedCommand;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ClimbWinchManual extends Command {
-  
-  private final double JOYSTICK_DEADZONE = 0.01;
-
-  public ClimbWinchManual() {
-
+public class CentricModeRobot extends LoggedCommand {
+  public CentricModeRobot() {
+    super("CentricModeRobot");
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.climber);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  protected void loggedInitialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
-    if(DriverStation.getInstance().getMatchTime() < 50 && Robot.oi.getXboxLeftJoystickY() < JOYSTICK_DEADZONE) {
-      Robot.climber.controlWinch(Robot.oi.getXboxLeftJoystickY());
-    }
+  protected void loggedExecute() {
+    Robot.drivetrain.swerveDrivetrain.setModeRobot();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
-    return false;
+  protected boolean loggedIsFinished() {
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  protected void loggedEnd() {
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
+  protected void loggedInterrupted() {
+    loggedEnd();
+  }
+
+  @Override
+  protected void loggedCancel() {
+    loggedEnd();
   }
 }

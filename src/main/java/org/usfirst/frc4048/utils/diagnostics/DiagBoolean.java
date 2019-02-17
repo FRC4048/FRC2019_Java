@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 public abstract class DiagBoolean implements Diagnosable {
 
     private String name;
-    private DigitalInput digitalInput;
     private NetworkTableEntry networkTableEntry;
 
     private boolean seenFalse;
@@ -21,10 +20,8 @@ public abstract class DiagBoolean implements Diagnosable {
      * Constructor
      *
      * @param name            the name of the unit. Will be used on the Shuffleboard
-     * @param digitalInput    - the DigitalInput the switch is connected to
      */
-    public DiagBoolean(String name, DigitalInput digitalInput) {
-        this.digitalInput = digitalInput;
+    public DiagBoolean(String name) {
         this.name = name;
 
         reset();
@@ -38,7 +35,7 @@ public abstract class DiagBoolean implements Diagnosable {
     @Override
     public void refresh() {
         if (networkTableEntry != null) {
-            networkTableEntry.setBoolean(getDiagResult(digitalInput));
+            networkTableEntry.setBoolean(getDiagResult());
         }
     }
 
@@ -47,9 +44,11 @@ public abstract class DiagBoolean implements Diagnosable {
         seenFalse = seenTrue = false;
     }
 
+    protected abstract boolean getValue();
+
     // Package protected
-    boolean getDiagResult(DigitalInput myDigitalInput) {
-        boolean currentValue = myDigitalInput.get();
+    boolean getDiagResult() {
+        boolean currentValue = getValue();
         // Set the value for the state - whether the switch is pressed or not
         if (currentValue) {
             seenTrue = true;

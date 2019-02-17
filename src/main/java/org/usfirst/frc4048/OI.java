@@ -10,6 +10,7 @@ package org.usfirst.frc4048;
 import org.usfirst.frc4048.commands.LogError;
 import org.usfirst.frc4048.commands.cargo.CargoEjectGroup;
 import org.usfirst.frc4048.commands.cargo.IntakeCargo;
+import org.usfirst.frc4048.commands.climber.ClimbDropRamp;
 import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
@@ -85,6 +86,8 @@ public class OI {
 
   private JoystickButton driveSwitchMode;
 
+  private JoystickButton dropRamp;
+
   public OI() {
     leftJoy = new Joystick(0);
     rightJoy = new Joystick(1);
@@ -142,15 +145,21 @@ public class OI {
       rightDPADTrigger.whenActive(new PivotMoveDeploy());
     }
 
-    alignWithVision = new JoystickButton(controller, RobotMap.XBOX_START_BUTTON);
-    alignWithVision.whenPressed(new DriveAlignGroup());
+    if (RobotMap.ENABLE_DRIVETRAIN) {
+      alignWithVision = new JoystickButton(controller, RobotMap.XBOX_START_BUTTON);
+      alignWithVision.whenPressed(new DriveAlignGroup());
 
-    driveSwitchMode = new JoystickButton(rightJoy, 6);
-    driveSwitchMode.whenPressed(new CentricModeToggle());
+      driveSwitchMode = new JoystickButton(rightJoy, 6);
+      driveSwitchMode.whenPressed(new CentricModeToggle());
+    }
 
     logError = new JoystickButton(leftJoy, 6);
     logError.whenPressed(new LogError());
 
+    if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
+      dropRamp = new JoystickButton(controller, RobotMap.XBOX_RIGHT_STICK_PRESS);
+      dropRamp.whenPressed(new ClimbDropRamp());
+    }
   }
 
   public Joystick getLeftJoy() {
@@ -159,5 +168,9 @@ public class OI {
 
   public Joystick getRightJoy() {
     return rightJoy;
+  }
+
+  public double getXboxLeftJoystickY(){
+    return xboxController.getY(Hand.kLeft);
   }
 }
