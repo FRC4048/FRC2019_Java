@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
  * Add your docs here.
@@ -32,18 +33,18 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Climber extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  private CANSparkMax winch;
+  private Spark winch;
   private DoubleSolenoidUtil climberPiston;
   private DigitalInput pistonSensor;
   private AngleFinder angleFinder;
 
   private final double RANGE_FINDER_DISTANCE_APART = 20;
   public Climber() {
-    winch = new CANSparkMax(RobotMap.WINCH_CAN_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
+    winch = new Spark(RobotMap.WINCH_ID);
+    LiveWindow.add(winch);
     climberPiston = new DoubleSolenoidUtil(RobotMap.PCM_CAN_ID, RobotMap.CLIMBER_PISTONS_ID[0], RobotMap.CLIMBER_PISTONS_ID[1]);
     angleFinder = initClimberAngleFinder();
     pistonSensor = new DigitalInput(RobotMap.CLIMBER_POSITION_SENSOR_ID);
-    winch.setIdleMode(CANSparkMax.IdleMode.kBrake);
   }
 
   public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {

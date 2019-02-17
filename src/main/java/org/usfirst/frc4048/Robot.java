@@ -184,6 +184,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     logging.setStartTime();
+    
+    if(RobotMap.ENABLE_DRIVETRAIN) {
+      Robot.drivetrain.swerveDrivetrain.setModeRobot();
+    }
+
     commonInit("autonomousInit");
     if(RobotMap.ENABLE_BEGIN_MATCH_GROUPCOMMAND){
       Scheduler.getInstance().add(new UnCradleIntake());
@@ -213,7 +218,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-      commonInit("teleopInit");
+    if(RobotMap.ENABLE_DRIVETRAIN) {
+      Robot.drivetrain.swerveDrivetrain.setModeField();
+    }
+
+    commonInit("teleopInit");
   }
   
   public void commonInit(final String loggingLabel) {
@@ -222,9 +231,6 @@ public class Robot extends TimedRobot {
 
     new LimelightToggle(true);
 
-    if(RobotMap.ENABLE_DRIVETRAIN) {
-      Robot.drivetrain.swerveDrivetrain.setModeField();
-    }
 
     if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
       putCommandsOnShuffleboard();

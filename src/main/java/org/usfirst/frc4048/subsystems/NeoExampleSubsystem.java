@@ -30,7 +30,7 @@ public class NeoExampleSubsystem extends Subsystem {
   private CANSparkMax winch;
 
   public NeoExampleSubsystem() {
-    winch = new CANSparkMax(RobotMap.WINCH_CAN_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
+    winch = new CANSparkMax(RobotMap.WINCH_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
     winch.setIdleMode(CANSparkMax.IdleMode.kBrake);
     pidController = winch.getPIDController();
     encoder = winch.getEncoder();

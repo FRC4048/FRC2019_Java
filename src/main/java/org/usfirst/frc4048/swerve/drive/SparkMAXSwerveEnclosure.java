@@ -2,6 +2,8 @@ package org.usfirst.frc4048.swerve.drive;
 
 import org.usfirst.frc4048.utils.Timer;
 
+import edu.wpi.first.wpilibj.Spark;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
@@ -11,13 +13,13 @@ import com.revrobotics.CANSparkMax;
  */
 public class SparkMAXSwerveEnclosure extends BaseEnclosure implements SwerveEnclosure {
 
-    private CANSparkMax driveMotor;
+    private Spark driveMotor;
 	private WPI_TalonSRX steerMotor;
 	
 	private boolean reverseEncoder = false;
 	private boolean reverseSteer = false;
 	
-    public SparkMAXSwerveEnclosure(String name, CANSparkMax driveMotor, WPI_TalonSRX steerMotor, double gearRatio,
+    public SparkMAXSwerveEnclosure(String name, Spark driveMotor, WPI_TalonSRX steerMotor, double gearRatio,
            final Timer timer) {
         super(name, gearRatio, timer);
 		this.driveMotor = driveMotor;
@@ -57,7 +59,7 @@ public class SparkMAXSwerveEnclosure extends BaseEnclosure implements SwerveEncl
 		steerMotor.setSelectedSensorPosition(position, 0, 10);
 	}
 	
-	public CANSparkMax getDriveMotor()
+	public Spark getDriveMotor()
 	{
 		return driveMotor;
 	}
