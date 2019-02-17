@@ -75,18 +75,18 @@ public class DriveTrain extends Subsystem {
   private final double GEAR_RATIO = (1988 / 1.2);
 
   // Width between drivetrain wheels
-  private final double WIDTH = 18.5; // Remeasure Chassis
+  private final double WIDTH = 18.1; // Remeasure Chassis
 
   // Length between drivetrain wheels
-  private final double LENGTH = 24.5; // Remeasure Chassis
+  private final double LENGTH = 23.75; // Remeasure Chassis
 
   private final boolean REVERSE_ENCODER = true;
   private final boolean REVERSE_OUTPUT = true;
 
-  private final int FR_ZERO = 2420;// 1037;
-  private final int FL_ZERO = 500;// 1767;
-  private final int RL_ZERO = 269;// 1456;//1456;
-  private final int RR_ZERO = 175;// 2444;
+  private final int FR_ZERO = 3315;// 1037;
+  private final int FL_ZERO = 3109;// 1767;
+  private final int RL_ZERO = 1720;// 1456;//1456;
+  private final int RR_ZERO = 136;// 2444;
 
   private final double P = 10;
   private final double I = 0;
@@ -138,6 +138,11 @@ public class DriveTrain extends Subsystem {
     driveFR.setExpiration(0.5);
     driveRL.setExpiration(0.5);
     driveRR.setExpiration(0.5);
+
+    driveFR.setNeutralMode(NeutralMode.Brake);
+    driveFL.setNeutralMode(NeutralMode.Brake);
+    driveRR.setNeutralMode(NeutralMode.Brake);
+    driveRL.setNeutralMode(NeutralMode.Brake);
 
     analogInputFrontLeft = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_FRONT_LEFT_ID);
     analogInputFrontRight = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID);
@@ -339,10 +344,10 @@ public class DriveTrain extends Subsystem {
     // steerRL.setSelectedSensorPosition(0);
     // steerRR.setSelectedSensorPosition(0);
 
-    // steerFR.set(ControlMode.Position, 0);
-    // steerFL.set(ControlMode.Position, 0);
-    // steerRL.set(ControlMode.Position, 0);
-    // steerRR.set(ControlMode.Position, 0);
+    steerFR.set(ControlMode.Position, 0);
+    steerFL.set(ControlMode.Position, 0);
+    steerRL.set(ControlMode.Position, 0);
+    steerRR.set(ControlMode.Position, 0);
   }
 
 
