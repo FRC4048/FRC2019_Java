@@ -30,11 +30,11 @@ public class ClimbDropRamp extends LoggedCommand {
   protected void loggedInitialize() {
     setTimeout(2);
     done = false;
-    // if(DriverStation.getInstance().getMatchTime() < 50){
+    if(DriverStation.getInstance().getMatchTime() < 50){
       Robot.climber.movePiston(DoubleSolenoidUtil.State.forward);
-    // } else {
+    } else {
       done = true;
-    // }
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run
