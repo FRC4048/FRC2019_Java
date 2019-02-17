@@ -11,9 +11,12 @@ import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
 import org.usfirst.frc4048.swerve.math.CentricMode;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class CentricModeToggle extends LoggedCommand {
+  private boolean done;
+
   public CentricModeToggle() {
     super("CentricModeToggle");
     // Use requires() here to declare subsystem dependencies
@@ -24,25 +27,33 @@ public class CentricModeToggle extends LoggedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
-  
+    done = false;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void loggedExecute() {
     CentricMode mode = Robot.drivetrain.swerveDrivetrain.getModeRobot();
-
-    if(mode == CentricMode.FIELD) {
+    if (DriverStation.getInstance().isAutonomous()) {
       Robot.drivetrain.swerveDrivetrain.setModeRobot();
-    } else {
-      Robot.drivetrain.swerveDrivetrain.setModeField();
+      Robot.drivetrain.setScaleSpeed(); 
+      done = true;
+    }
+    if (!done) {
+      if (mode == CentricMode.FIELD) {
+        Robot.drivetrain.swerveDrivetrain.setModeRobot();
+        done = true;
+      } else {
+        Robot.drivetrain.swerveDrivetrain.setModeField();
+        done = true;
+      }
     }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean loggedIsFinished() {
-    return true;
+    return done;
   }
 
   // Called once after isFinished returns true

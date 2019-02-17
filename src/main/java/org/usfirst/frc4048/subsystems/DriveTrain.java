@@ -14,6 +14,7 @@ import org.usfirst.frc4048.swerve.drive.BaseEnclosure;
 import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
 import org.usfirst.frc4048.swerve.drive.SparkMAXSwerveEnclosure;
 import org.usfirst.frc4048.swerve.drive.SwerveDrive;
+import org.usfirst.frc4048.swerve.math.CentricMode;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -29,6 +30,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -102,6 +104,7 @@ public class DriveTrain extends Subsystem {
 
   private final int TIMEOUT = 100;
 
+  public boolean scaleSpeed;
   /* Reading gyro angle is relatively slow, anywhere between 4mSec and 20mSec. */
   /*
    * We will be reading it and storing it here in the periodic method and whoever
@@ -397,5 +400,18 @@ public class DriveTrain extends Subsystem {
 
   public void stop() {
     swerveDrivetrain.stop();
+  }
+
+  public void setScaleSpeed() {
+    if(scaleSpeed) {
+      scaleSpeed = false;
+    } else {
+      scaleSpeed = true;
+    }
+  }
+
+  public boolean getScaleSpeed() {
+    SmartShuffleboard.put("Driver", "Scale Speed", scaleSpeed);
+    return scaleSpeed;
   }
 }
