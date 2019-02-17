@@ -169,7 +169,7 @@ public class DriveTrain extends Subsystem {
     }
 
     swerveDrivetrain = new SwerveDrive(frontRightWheel, frontLeftWheel, rearLeftWheel, rearRightWheel, WIDTH, LENGTH);
-
+    
     init();
 
   }
@@ -282,6 +282,8 @@ public class DriveTrain extends Subsystem {
       SmartShuffleboard.put("Drive", "Centric mode", swerveDrivetrain.getModeRobot().name());
       Robot.completed(this, "shuf");
     }
+
+    SmartShuffleboard.put("Driver", "Gyro Value", getGyro());
 
   }
 

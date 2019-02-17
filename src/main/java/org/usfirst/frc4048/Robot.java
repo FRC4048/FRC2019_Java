@@ -136,6 +136,8 @@ public class Robot extends TimedRobot {
     // OI must be initialized last
     oi = new OI();
 //    SmartDashboard.putData("Auto mode", m_chooser);
+
+    putCommandsInCompetition();
   }
 
   /**
@@ -149,7 +151,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-
+    
   }
 
   /**
@@ -232,7 +234,6 @@ public class Robot extends TimedRobot {
       putCommandsOnShuffleboard();
     }
     
-    putCommandsInCompetition();
   }
 
   /**
@@ -313,7 +314,7 @@ public class Robot extends TimedRobot {
   }
 
   private void putCommandsInCompetition() {
-    SmartShuffleboard.putCommand("Competition", "Reset Gyro", new ResetGyro());
+    SmartShuffleboard.putCommand("Driver", "Reset Gyro", new ResetGyro());
   }
 
 	public static Timer timer() {

@@ -15,13 +15,12 @@ public class ResetGyro extends Command {
   public ResetGyro() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    setRunWhenDisabled(true);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-
+    setRunWhenDisabled(true);
   }
 
   // Called repeatedly when this Command is scheduled to run
