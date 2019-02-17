@@ -402,12 +402,16 @@ public class DriveTrain extends Subsystem {
     swerveDrivetrain.stop();
   }
 
-  public void setScaleSpeed() {
+  public void toggleScaleSpeed() {
     if(scaleSpeed) {
       scaleSpeed = false;
     } else {
       scaleSpeed = true;
     }
+  }
+  
+  public void setScaleSpeed(boolean scale) {
+    scaleSpeed = scale;
   }
 
   public boolean getScaleSpeed() {

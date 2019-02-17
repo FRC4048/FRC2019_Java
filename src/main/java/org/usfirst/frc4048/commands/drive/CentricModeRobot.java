@@ -10,6 +10,7 @@ package org.usfirst.frc4048.commands.drive;
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class CentricModeRobot extends LoggedCommand {
@@ -27,6 +28,9 @@ public class CentricModeRobot extends LoggedCommand {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void loggedExecute() {
+    if(DriverStation.getInstance().isAutonomous()) {
+      Robot.drivetrain.setScaleSpeed(true);
+    }
     Robot.drivetrain.swerveDrivetrain.setModeRobot();
   }
 
