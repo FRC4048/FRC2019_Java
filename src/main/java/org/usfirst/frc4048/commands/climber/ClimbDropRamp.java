@@ -10,6 +10,7 @@ package org.usfirst.frc4048.commands.climber;
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -26,8 +27,12 @@ public class ClimbDropRamp extends LoggedCommand {
   @Override
   protected void loggedInitialize() {
     setTimeout(2);
-    Robot.climber.movePiston(Value.kForward);
     done = false;
+    if(DriverStation.getInstance().getMatchTime() < 50){
+      Robot.climber.movePiston(Value.kForward);
+    } else {
+      done = true;
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run

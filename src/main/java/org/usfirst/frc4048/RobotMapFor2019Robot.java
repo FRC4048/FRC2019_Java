@@ -66,7 +66,8 @@ interface RobotMapFor2019Robot {
 
 
   public static final double SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK = 0.0942478739;
-
+  public static final double SWERVE_DRIVE_NEO_DISTANCE_PER_TICK = 0.0942478739;//THIS WILL CHANGE
+  
   //CAN ID
   public static final int PDP_CAN_ID = 0;
   public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 6; 
@@ -81,7 +82,7 @@ interface RobotMapFor2019Robot {
   public static final int DRIVE_PIGEON_ID = 9;
   public static final int PCM_CAN_ID = 10;  
   public static final int ELEVATOR_MOTOR_ID = 11;
-  public static final int WINCH_CAN_ID = 12;
+  
 
   //ANALOG INPUTS
   public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID = 0;
@@ -109,7 +110,8 @@ interface RobotMapFor2019Robot {
   //PWM
   public static final int PIVOT_MOTOR_ID = 1;
   public static final int CARGO_MOTOR_ID = 0;
-
+  public static final int WINCH_ID = 2;
+  
   //PCM
   public static final int CARGO_PISTON_ID = 0;
   public static final int HATCH_PANEL_PISTON_ID = 0;
