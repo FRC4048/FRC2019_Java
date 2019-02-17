@@ -29,7 +29,7 @@ public class CentricModeRobot extends LoggedCommand {
   @Override
   protected void loggedExecute() {
     if(DriverStation.getInstance().isAutonomous()) {
-      Robot.drivetrain.setScaleSpeed(true);
+      Robot.drivetrain.setScale(true);
     }
     Robot.drivetrain.swerveDrivetrain.setModeRobot();
   }

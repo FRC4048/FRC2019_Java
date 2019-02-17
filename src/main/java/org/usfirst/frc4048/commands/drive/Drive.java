@@ -28,22 +28,6 @@ public class Drive extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		if (DriverStation.getInstance().isAutonomous()) {
-			if (Robot.drivetrain.getScaleSpeed()) {
-				scaleSpeed = true;
-				SmartShuffleboard.put("Driver", "Mode", "ROBOT CENTRIC SCALE");
-			} else {
-				SmartShuffleboard.put("Driver", "Mode", "NO SCALE");
-				scaleSpeed = false;
-			}
-		}
-		if(Robot.drivetrain.swerveDrivetrain.getModeRobot() == CentricMode.ROBOT && !DriverStation.getInstance().isAutonomous()) {
-			SmartShuffleboard.put("Driver", "Mode", "ROBOT CENTRIC SCALE");
-			scaleSpeed = true;
-		} else if (!DriverStation.getInstance().isAutonomous()){
-			SmartShuffleboard.put("Driver", "Mode", "NO SCALE");
-			scaleSpeed = false;
-		}
 		fwd = -Robot.oi.getLeftJoy().getY();
 		str = Robot.oi.getLeftJoy().getX();
 		rcw = Robot.oi.getRightJoy().getX();

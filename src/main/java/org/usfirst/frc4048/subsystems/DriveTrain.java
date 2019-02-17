@@ -285,7 +285,11 @@ public class DriveTrain extends Subsystem {
       SmartShuffleboard.put("Drive", "Centric mode", swerveDrivetrain.getModeRobot().name());
       Robot.completed(this, "shuf");
     }
+    if (scaleSpeed) {
+      
+    } else {
 
+    }
   }
 
   // Put methods for controlling this subsystem
@@ -402,20 +406,12 @@ public class DriveTrain extends Subsystem {
     swerveDrivetrain.stop();
   }
 
-  public void toggleScaleSpeed() {
-    if(scaleSpeed) {
-      scaleSpeed = false;
-    } else {
-      scaleSpeed = true;
-    }
-  }
-  
-  public void setScaleSpeed(boolean scale) {
-    scaleSpeed = scale;
+  public void setScale(boolean doScale) {
+    scaleSpeed = doScale;
   }
 
-  public boolean getScaleSpeed() {
-    SmartShuffleboard.put("Driver", "Scale Speed", scaleSpeed);
+  public boolean getScale() {
     return scaleSpeed;
   }
+
 }

@@ -34,7 +34,7 @@ public class CentricModeToggle extends LoggedCommand {
     CentricMode mode = Robot.drivetrain.swerveDrivetrain.getModeRobot();
     if (DriverStation.getInstance().isAutonomous()) {
       Robot.drivetrain.swerveDrivetrain.setModeRobot();
-      Robot.drivetrain.toggleScaleSpeed(); 
+      Robot.drivetrain.setScale(true); 
     } else {
       if (mode == CentricMode.FIELD) {
         Robot.drivetrain.swerveDrivetrain.setModeRobot();
