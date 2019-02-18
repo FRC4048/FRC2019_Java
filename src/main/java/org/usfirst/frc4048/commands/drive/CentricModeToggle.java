@@ -33,11 +33,14 @@ public class CentricModeToggle extends LoggedCommand {
   protected void loggedExecute() {
     CentricMode mode = Robot.drivetrain.swerveDrivetrain.getModeRobot();
     if (DriverStation.getInstance().isAutonomous()) {
-      Robot.drivetrain.swerveDrivetrain.setModeRobot();
-      Robot.drivetrain.setScale(true); 
-    } else {
-      if (mode == CentricMode.FIELD) {
+      if (mode == CentricMode.ROBOT) {
+        Robot.drivetrain.swerveDrivetrain.setModeRobotSlow();
+      } else {
         Robot.drivetrain.swerveDrivetrain.setModeRobot();
+      }
+    } else {
+      if(mode == CentricMode.FIELD) {
+        Robot.drivetrain.swerveDrivetrain.setModeRobotSlow();
       } else {
         Robot.drivetrain.swerveDrivetrain.setModeField();
       }

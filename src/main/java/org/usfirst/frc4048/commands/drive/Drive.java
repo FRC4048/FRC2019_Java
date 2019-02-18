@@ -48,6 +48,10 @@ public class Drive extends Command {
 			rcw *= rcw * -1;
 		else
 			rcw *= rcw;
+		CentricMode mode = Robot.drivetrain.swerveDrivetrain.getModeRobot();
+		if(mode == CentricMode.ROBOT_SLOW) {
+			scaleSpeed = true;
+		}
 
 		if (scaleSpeed) {
 			fwd *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;

@@ -39,6 +39,9 @@ public class SwerveMath {
 	public void setModeField() {
 		centricMode= CentricMode.FIELD;
 	}
+	public void setModeRobotSlow() {
+		centricMode = CentricMode.ROBOT_SLOW;
+	}
 
 	public SwerveMath(double width, double length) {
 		assert (width > 0) : "Width has to be larger than 0";
