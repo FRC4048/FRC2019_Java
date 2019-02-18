@@ -7,6 +7,7 @@
 
 package org.usfirst.frc4048;
 
+import org.usfirst.frc4048.commands.CancelCommand;
 import org.usfirst.frc4048.commands.LogError;
 import org.usfirst.frc4048.commands.cargo.CargoEjectGroup;
 import org.usfirst.frc4048.commands.cargo.IntakeCargo;
@@ -18,6 +19,7 @@ import org.usfirst.frc4048.commands.hatchpanel.HatchPanelIntake;
 import org.usfirst.frc4048.commands.hatchpanel.HatchPanelRelease;
 import org.usfirst.frc4048.commands.pivot.PivotMoveDeploy;
 import org.usfirst.frc4048.commands.pivot.PivotMoveRetract;
+import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
 import org.usfirst.frc4048.triggers.LeftDPADTrigger;
 import org.usfirst.frc4048.triggers.RightDPADTrigger;
 import org.usfirst.frc4048.triggers.XboxTriggerRight;
@@ -83,7 +85,7 @@ public class OI {
   private JoystickButton hatchDropoff;
 
   private JoystickButton alignWithVision;
-
+  private JoystickButton cancelCommand;
   private JoystickButton driveSwitchMode;
 
   private JoystickButton dropRamp;
@@ -155,6 +157,9 @@ public class OI {
 
     logError = new JoystickButton(leftJoy, 6);
     logError.whenPressed(new LogError());
+    
+    cancelCommand = new JoystickButton(controller, RobotMap.XBOX_BACK_BUTTON);
+    cancelCommand.whenPressed(new CancelCommand());
 
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
       dropRamp = new JoystickButton(controller, RobotMap.XBOX_RIGHT_STICK_PRESS);
