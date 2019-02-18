@@ -25,14 +25,14 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Pivot extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  //private Spark pivotMotor;
-  public WPI_TalonSRX pivotMotor;
+  private Spark pivotMotor;
+  // public WPI_TalonSRX pivotMotor;
   public DigitalInput limitSwitchDeployed;
   public DigitalInput limitSwitchRetracted;
   public boolean pivotDeployed = false;
   public Pivot() {
-  //  pivotMotor = new Spark(RobotMap.PIVOT_MOTOR_ID);
-    pivotMotor = new WPI_TalonSRX(7);
+    pivotMotor = new Spark(RobotMap.PIVOT_MOTOR_ID);
+    // pivotMotor = new WPI_TalonSRX(7);
     limitSwitchDeployed = new DigitalInput(RobotMap.PIVOT_LIMIT_SWITCH_LEFT_ID);
     limitSwitchRetracted = new DigitalInput(RobotMap.PIVOT_LIMIT_SWITCH_RIGHT_ID);
     LiveWindow.add(pivotMotor);
