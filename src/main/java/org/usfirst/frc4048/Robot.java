@@ -312,6 +312,9 @@ public class Robot extends TimedRobot {
       SmartShuffleboard.putCommand("Elevator", "Cargo Rocket High", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
       SmartShuffleboard.putCommand("Elevator", "Cargo Intake Pos", new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
       SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
+      
+      SmartShuffleboard.put("Elevator", "Encoder", elevator.getEncoder());
+      SmartShuffleboard.put("Elevator", "Current", elevator.getElevatorMotor().getOutputCurrent());
     }
 
     if (RobotMap.ENABLE_PIVOT_SUBSYSTEM)
