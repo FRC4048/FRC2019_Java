@@ -15,6 +15,7 @@ public class CargoRumble extends Command {
   public CargoRumble() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(Robot.cargoSubsystem);
   }
 
   // Called just before this Command runs the first time

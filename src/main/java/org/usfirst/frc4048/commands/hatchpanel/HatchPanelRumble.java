@@ -15,6 +15,7 @@ public class HatchPanelRumble extends Command {
   public HatchPanelRumble() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(Robot.hatchPanelSubsystem);
   }
 
   // Called just before this Command runs the first time
