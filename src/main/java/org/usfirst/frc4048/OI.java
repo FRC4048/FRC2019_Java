@@ -178,4 +178,8 @@ public class OI {
   public double getXboxLeftJoystickY(){
     return xboxController.getY(Hand.kLeft);
   }
+
+  public double getRightJoyStickY() {
+    return xboxController.getY(Hand.kRight);
+  }
 }
