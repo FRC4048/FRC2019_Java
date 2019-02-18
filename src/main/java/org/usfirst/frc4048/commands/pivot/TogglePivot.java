@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------------*/
+       /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
@@ -8,56 +8,53 @@
 package org.usfirst.frc4048.commands.pivot;
 
 import org.usfirst.frc4048.Robot;
-import org.usfirst.frc4048.commands.LoggedCommand;
+import org.usfirst.frc4048.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class PivotMoveDeploy extends LoggedCommand {
-  private static final double OUT_SPEED = 1;
-  public PivotMoveDeploy() {
-    super("PivotMoveDeploy");
+public class TogglePivot extends Command {
+  public final double MAX_ELEVATOR_HEIGHT_FOR_TOGGLE = 600;
+  private boolean done = false;
+
+  public TogglePivot() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.pivot);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void loggedInitialize() {
-    setTimeout(3);
+  protected void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void loggedExecute() {
-  
-    Robot.pivot.setSpeed(OUT_SPEED);
+  protected void execute() {
+    if (RobotMap.ENABLE_ELEVATOR){
+      if (Robot.elevator.getEncoder() > MAX_ELEVATOR_HEIGHT_FOR_TOGGLE) { 
+         done = true;
+      }
+    }
+
+    if (!done) { 
+      Robot.pivot.toggleState();
+     }
   }
+
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean loggedIsFinished() {
-    return Robot.pivot.getLeftSwitch() || isTimedOut();
+  protected boolean isFinished() {
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void loggedEnd() {
-    if(Robot.pivot.getLeftSwitch()){
-      Robot.pivot.movePiston(true);
-    }
-    Robot.pivot.setSpeed(0.0);
+  protected void end() {
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void loggedInterrupted() {
-    loggedEnd();
-  }
-
-  @Override
-  protected void loggedCancel() {
-
+  protected void interrupted() {
   }
 }
