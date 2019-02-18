@@ -22,6 +22,7 @@ import org.usfirst.frc4048.utils.diagnostics.DiagOpticalRangeFinder;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -113,6 +114,10 @@ public class Climber extends Subsystem {
   }
 
   public boolean canClimb() {
-    return leftRangeFinder.getDistanceInInches() <= 25 && rightRangeFinder.getDistanceInInches() <= 25;
+    if(DriverStation.getInstance().getMatchTime() > 60) {
+      return false;
+    } else {
+      return (leftRangeFinder.getDistanceInInches() <= 25 && rightRangeFinder.getDistanceInInches() <= 25) && (leftRangeFinder.getDistanceInInches() >= 5 && rightRangeFinder.getDistanceInInches() >= 5);
+    }
   }
 }
