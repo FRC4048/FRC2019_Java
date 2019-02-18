@@ -39,7 +39,7 @@ public class Elevator extends Subsystem {
 
   private final int TIMEOUT = 100;
 
-  private final double ELEVATOR_POSITION_ERROR = 150;
+  private final int ELEVATOR_POSITION_ERROR = 150;
 
   private final double ELEVATOR_UP_SCALE_FACTOR = 0.85;
   private final double ELEVATOR_DOWN_SCALE_FACTOR = 0.50;
@@ -49,18 +49,12 @@ public class Elevator extends Subsystem {
   private final double ELEVATOR_D = 0.4;
   private final double ELEVATOR_F = 0;
 
-  private final int ELEVATOR_ACCEL = 375/* 281 */; // RPM Of motor we can use these values to set max speed during the
-                                                   // movement
-  private final int ELEVATOR_CRUISE_VELOCITY = 375/* 281 */; // ^
   private double elevatorSetpoint;
 
   private double elevatorP;
   private double elevatorI;
   private double elevatorD;
   private double elevatorF;
-
-  private final boolean CARGO_MODE = true;
-  private final boolean HATCH_MODE = false;
 
   public Elevator() {
 
@@ -72,7 +66,7 @@ public class Elevator extends Subsystem {
     elevatorMotor.configPeakOutputReverse(-ELEVATOR_DOWN_SCALE_FACTOR, TIMEOUT);
     elevatorMotor.setNeutralMode(NeutralMode.Brake);
     elevatorMotor.selectProfileSlot(0, 0);
-    elevatorMotor.configAllowableClosedloopError(0, 150, TIMEOUT);
+    elevatorMotor.configAllowableClosedloopError(0, ELEVATOR_POSITION_ERROR, TIMEOUT);
     setPID();
 
     // elevatorMotor.configMotionAcceleration(ELEVATOR_ACCEL, TIMEOUT);
@@ -100,13 +94,6 @@ public class Elevator extends Subsystem {
 
   @Override
   public void periodic() {
-    if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
-      SmartShuffleboard.put("Elevator", "Setpoint", elevatorSetpoint);
-      SmartShuffleboard.put("Elevator", "Encoder", getEncoder());
-      SmartShuffleboard.put("Elevator", "Current", elevatorMotor.getOutputCurrent());
-      SmartShuffleboard.putCommand("Elevator", "Elevator Hatch Mid",
-          new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
-    }
     moveElevator();
   }
 
@@ -168,5 +155,9 @@ public class Elevator extends Subsystem {
     elevatorMotor.config_kI(0, elevatorI, TIMEOUT);
     elevatorMotor.config_kD(0, elevatorD, TIMEOUT);
     elevatorMotor.config_kF(0, elevatorF, TIMEOUT);
+  }
+
+  public WPI_TalonSRX getElevatorMotor() {
+    return elevatorMotor;
   }
 }
