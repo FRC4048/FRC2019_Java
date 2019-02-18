@@ -7,6 +7,7 @@
 
 package org.usfirst.frc4048;
 
+import org.usfirst.frc4048.commands.CancelCommand;
 import org.usfirst.frc4048.commands.LogError;
 import org.usfirst.frc4048.commands.cargo.CargoEjectGroup;
 import org.usfirst.frc4048.commands.cargo.IntakeCargo;
@@ -82,7 +83,7 @@ public class OI {
   private JoystickButton hatchDropoff;
 
   private JoystickButton alignWithVision;
-
+  private JoystickButton cancelCommand;
   private JoystickButton driveSwitchMode;
 
   private JoystickButton dropRamp;
@@ -155,6 +156,9 @@ public class OI {
 
     logError = new JoystickButton(leftJoy, 6);
     logError.whenPressed(new LogError());
+    
+    cancelCommand = new JoystickButton(controller, RobotMap.XBOX_BACK_BUTTON);
+    cancelCommand.whenPressed(new CancelCommand());
 
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
       dropRamp = new JoystickButton(controller, RobotMap.XBOX_RIGHT_STICK_PRESS);
@@ -172,5 +176,9 @@ public class OI {
 
   public double getXboxLeftJoystickY(){
     return xboxController.getY(Hand.kLeft);
+  }
+
+  public double getRightJoyStickY() {
+    return xboxController.getY(Hand.kRight);
   }
 }

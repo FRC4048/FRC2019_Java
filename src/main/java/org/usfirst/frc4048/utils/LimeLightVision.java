@@ -5,6 +5,8 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 
 public class LimeLightVision {
@@ -53,7 +55,12 @@ public class LimeLightVision {
         double x = tx.getDouble(0.0);
         double y = ty.getDouble(0.0);
 
-        return calcCameraDistance(x, y, RobotMap.TARGET_HEIGHT_HATCH, RobotMap.CAMERA_HEIGHT, RobotMap.CAMERA_ANGLE);
+        
+        if(Robot.mechanicalMode.getMode() == RobotMap.CARGO_RETURN_CODE){
+            return calcCameraDistance(x, y, RobotMap.TARGET_HEIGHT_CARGO, RobotMap.CAMERA_HEIGHT, RobotMap.CAMERA_ANGLE);
+        } else {
+            return calcCameraDistance(x, y, RobotMap.TARGET_HEIGHT_HATCH, RobotMap.CAMERA_HEIGHT, RobotMap.CAMERA_ANGLE);    
+        }
     }
 
     /**
