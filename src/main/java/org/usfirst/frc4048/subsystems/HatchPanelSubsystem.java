@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
+import org.usfirst.frc4048.commands.hatchpanel.HatchPanelRumble;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.diagnostics.DiagSwitch;
 
@@ -52,6 +53,7 @@ public class HatchPanelSubsystem extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new HatchPanelRumble());
     // This is a default command you always want to be done
   }
   

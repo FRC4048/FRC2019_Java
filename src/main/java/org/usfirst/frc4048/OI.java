@@ -28,6 +28,7 @@ import org.usfirst.frc4048.utils.ElevatorPosition;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
@@ -177,5 +178,15 @@ public class OI {
 
   public double getXboxLeftJoystickY(){
     return xboxController.getY(Hand.kLeft);
+  }
+
+  public void doRumble() {
+    xboxController.setRumble(RumbleType.kLeftRumble, 1);
+		xboxController.setRumble(RumbleType.kRightRumble, 1);
+  }
+
+  public void stopRumble() {
+    xboxController.setRumble(RumbleType.kLeftRumble, 0);
+		xboxController.setRumble(RumbleType.kRightRumble, 0);
   }
 }
