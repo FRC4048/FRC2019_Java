@@ -13,6 +13,7 @@ import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
 import org.usfirst.frc4048.utils.AngleFinder;
+import org.usfirst.frc4048.utils.DoubleSolenoidUtil;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.OpticalRangeFinder;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
@@ -24,6 +25,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
  * Add your docs here.
@@ -32,14 +34,15 @@ public class Climber extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   private Spark winch;
-  private DoubleSolenoid climberPiston;
+  private DoubleSolenoidUtil climberPiston;
   private DigitalInput pistonSensor;
   private AngleFinder angleFinder;
 
   private final double RANGE_FINDER_DISTANCE_APART = 20;
   public Climber() {
     winch = new Spark(RobotMap.WINCH_ID);
-    climberPiston = new DoubleSolenoid(RobotMap.PCM_CAN_ID, RobotMap.CLIMBER_PISTONS_ID[0], RobotMap.CLIMBER_PISTONS_ID[1]);
+    LiveWindow.add(winch);
+    climberPiston = new DoubleSolenoidUtil(RobotMap.PCM_CAN_ID, RobotMap.CLIMBER_PISTONS_ID[0], RobotMap.CLIMBER_PISTONS_ID[1]);
     angleFinder = initClimberAngleFinder();
     pistonSensor = new DigitalInput(RobotMap.CLIMBER_POSITION_SENSOR_ID);
   }
@@ -75,7 +78,7 @@ public class Climber extends Subsystem {
     winch.set(speed);
   } 
 
-  public void movePiston(DoubleSolenoid.Value state) {
+  public void movePiston(DoubleSolenoidUtil.State state) {
     climberPiston.set(state);
   }
 

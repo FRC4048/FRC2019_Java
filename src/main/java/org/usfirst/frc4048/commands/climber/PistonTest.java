@@ -8,13 +8,14 @@
 package org.usfirst.frc4048.commands.climber;
 
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.utils.DoubleSolenoidUtil;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class PistonTest extends Command {
-  DoubleSolenoid.Value state;
-  public PistonTest(DoubleSolenoid.Value state) {
+  DoubleSolenoidUtil.State state;
+  public PistonTest(DoubleSolenoidUtil.State state) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     this.state = state;
