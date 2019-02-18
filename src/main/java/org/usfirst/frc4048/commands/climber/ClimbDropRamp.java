@@ -9,10 +9,12 @@ package org.usfirst.frc4048.commands.climber;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
+import org.usfirst.frc4048.utils.DoubleSolenoidUtil;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
+
 
 public class ClimbDropRamp extends LoggedCommand {
   private boolean done;
@@ -29,7 +31,7 @@ public class ClimbDropRamp extends LoggedCommand {
     setTimeout(2);
     done = false;
     if(DriverStation.getInstance().getMatchTime() < 50){
-      Robot.climber.movePiston(Value.kForward);
+      Robot.climber.movePiston(DoubleSolenoidUtil.State.forward);
     } else {
       done = true;
     }
@@ -40,7 +42,7 @@ public class ClimbDropRamp extends LoggedCommand {
   protected void loggedExecute() {
     //This is to free the piston once deployed
     if(Robot.climber.getPositionSensor()) {
-      Robot.climber.movePiston(Value.kOff);
+      Robot.climber.movePiston(DoubleSolenoidUtil.State.off);
       done = true;
     }
   }

@@ -172,7 +172,7 @@ public class DriveTrain extends Subsystem {
     }
 
     swerveDrivetrain = new SwerveDrive(frontRightWheel, frontLeftWheel, rearLeftWheel, rearRightWheel, WIDTH, LENGTH);
-
+    
     init();
 
   }
@@ -283,12 +283,9 @@ public class DriveTrain extends Subsystem {
 
       SmartShuffleboard.put("Drive", "Gyro", getGyro());
       SmartShuffleboard.put("Drive", "Centric mode", swerveDrivetrain.getModeRobot().name());
-      Robot.completed(this, "shuf");
-    }
-    if (scaleSpeed) {
-      
-    } else {
+      SmartShuffleboard.put("Driver", "Gyro Value", getGyro());
 
+      Robot.completed(this, "shuf");
     }
   }
 
@@ -359,7 +356,7 @@ public class DriveTrain extends Subsystem {
 
 
   @SuppressWarnings("unused")
-  private void setGyro(double angle) {
+  public void setGyro(double angle) {
     synchronized (pigeon) {
       pigeon.setYaw(angle, TIMEOUT);
       pigeon.setFusedHeading(angle, TIMEOUT);

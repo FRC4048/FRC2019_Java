@@ -5,55 +5,53 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands.climber;
+package org.usfirst.frc4048.commands.drive;
 
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.commands.LoggedCommand;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ClimbWinchManual extends Command {
-  
-  private final double JOYSTICK_DEADZONE = 0.1;
-
-  public ClimbWinchManual() {
-
+public class ResetGyro extends LoggedCommand {
+  public ResetGyro() {
+    super(String.format(" is running"));
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.climber);
+    setRunWhenDisabled(true);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  protected void loggedInitialize() {
+
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
-    if(DriverStation.getInstance().getMatchTime() < 50 && Math.abs(Robot.oi.getXboxLeftJoystickY()) > JOYSTICK_DEADZONE) {
-      Robot.climber.controlWinch(Robot.oi.getXboxLeftJoystickY());
-    } else {
-      Robot.climber.controlWinch(0.0);
-    }
+  protected void loggedExecute() {
+    Robot.drivetrain.setGyro(0);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
-    return false;
+  protected boolean loggedIsFinished() {
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
-    Robot.climber.controlWinch(0.0);
+  protected void loggedEnd() {
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
-    end();
+  protected void loggedInterrupted() {
+    loggedEnd();
+  }
+
+  @Override
+  protected void loggedCancel() {
+    loggedEnd();
   }
 }
