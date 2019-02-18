@@ -13,6 +13,7 @@ import org.usfirst.frc4048.subsystems.Pivot;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class MovePivot extends Command {
+  private final double PIVOT_SPEED = 0.1;
   public MovePivot() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.pivot);
@@ -32,7 +33,7 @@ public class MovePivot extends Command {
       }
 
       else {
-        Robot.pivot.pivotMotor.set(0.1);
+        Robot.pivot.pivotMotor.set(PIVOT_SPEED);
       }
 
     }
@@ -44,7 +45,7 @@ public class MovePivot extends Command {
       }
 
       else {
-        Robot.pivot.pivotMotor.set(-0.1);
+        Robot.pivot.pivotMotor.set(-PIVOT_SPEED);
       }
 
     }
