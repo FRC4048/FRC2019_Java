@@ -22,7 +22,7 @@ public class RightDPADTrigger extends Trigger {
 
   @Override
   public boolean get() {
-    if (xboxController.getPOV() <= 105 || xboxController.getPOV() >= 75) {
+    if (xboxController.getPOV() <= 105 && xboxController.getPOV() >= 75) {
       return true;
     } else {
       return false;

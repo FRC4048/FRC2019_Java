@@ -16,8 +16,7 @@ import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
 import org.usfirst.frc4048.commands.hatchpanel.HatchPanelIntake;
 import org.usfirst.frc4048.commands.hatchpanel.HatchPanelRelease;
-import org.usfirst.frc4048.commands.pivot.PivotMoveDeploy;
-import org.usfirst.frc4048.commands.pivot.PivotMoveRetract;
+import org.usfirst.frc4048.commands.pivot.TogglePivot;
 import org.usfirst.frc4048.triggers.LeftDPADTrigger;
 import org.usfirst.frc4048.triggers.RightDPADTrigger;
 import org.usfirst.frc4048.triggers.XboxTriggerRight;
@@ -99,6 +98,7 @@ public class OI {
 
     // Put all button inputs that are based off of the mechanism they are tied to in
     // this switch statement
+  if (RobotMap.ENABLE_MANIPULATOR){
     int mode = Robot.mechanicalMode.getMode();
     switch (mode) {
     case RobotMap.CARGO_RETURN_CODE:
@@ -139,10 +139,10 @@ public class OI {
       }
       break;
     }
+  }
 
     if (RobotMap.ENABLE_PIVOT_SUBSYSTEM) {
-      leftDPADTrigger.whenActive(new PivotMoveRetract());
-      rightDPADTrigger.whenActive(new PivotMoveDeploy());
+      leftDPADTrigger.whenActive(new TogglePivot());
     }
 
     if (RobotMap.ENABLE_DRIVETRAIN) {

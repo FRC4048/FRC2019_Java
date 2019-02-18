@@ -7,13 +7,16 @@
 
 package org.usfirst.frc4048.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import org.usfirst.frc4048.RobotMap;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+
 
 /**
  * Add your docs here.
@@ -21,16 +24,32 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Pivot extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  private Spark pivotMotor;
-  private DigitalInput limitSwitchLeft;
-  private DigitalInput limitSwitchRight;
-  private Solenoid lockPiston;
+  //private Spark pivotMotor;
+  private WPI_TalonSRX pivotMotor;
+  private DigitalInput limitSwitchDeployed;
+  private DigitalInput limitSwitchRetracted;
+  private boolean pivotDeployed = false;
   public Pivot() {
-    pivotMotor = new Spark(RobotMap.PIVOT_MOTOR_ID);
-    limitSwitchLeft = new DigitalInput(RobotMap.PIVOT_LIMIT_SWITCH_LEFT_ID);
-    limitSwitchRight = new DigitalInput(RobotMap.PIVOT_LIMIT_SWITCH_RIGHT_ID);
-    lockPiston = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.PIVOT_PISTON_ID);
+  //  pivotMotor = new Spark(RobotMap.PIVOT_MOTOR_ID);
+    pivotMotor = new WPI_TalonSRX(7);
+    limitSwitchDeployed = new DigitalInput(RobotMap.PIVOT_LIMIT_SWITCH_LEFT_ID);
+    limitSwitchRetracted = new DigitalInput(RobotMap.PIVOT_LIMIT_SWITCH_RIGHT_ID);
     LiveWindow.add(pivotMotor);
+  }
+
+  public void toggleState(){
+    if (pivotDeployed == false){
+      pivotDeployed = true;
+    }
+
+    else {
+      pivotDeployed = false;
+    }
+  }
+
+  @Override
+  public void periodic() {
+     SmartShuffleboard.put("Pivot", "deployed", pivotDeployed);
   }
 
   @Override
@@ -44,14 +63,10 @@ public class Pivot extends Subsystem {
   }
 
   public boolean getLeftSwitch() {
-    return limitSwitchLeft.get();
+    return limitSwitchDeployed.get();
   }
 
   public boolean getRightSwitch() {
-    return limitSwitchRight.get();
-  }
-
-  public void movePiston(boolean state) {
-    lockPiston.set(state);
+    return limitSwitchRetracted.get();
   }
 }
