@@ -36,21 +36,22 @@ public class Climber extends Subsystem {
   private Spark winch;
   private DoubleSolenoidUtil climberPiston;
   private DigitalInput pistonSensor;
-  private AngleFinder angleFinder;
-
+  // private AngleFinder angleFinder;
+  private OpticalRangeFinder leftRangeFinder;
   private final double RANGE_FINDER_DISTANCE_APART = 20;
   public Climber() {
     winch = new Spark(RobotMap.WINCH_ID);
     LiveWindow.add(winch);
     climberPiston = new DoubleSolenoidUtil(RobotMap.PCM_CAN_ID, RobotMap.CLIMBER_PISTONS_ID[0], RobotMap.CLIMBER_PISTONS_ID[1]);
-    angleFinder = initClimberAngleFinder();
+    // angleFinder = initClimberAngleFinder();
+    leftRangeFinder = new OpticalRangeFinder(new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_LEFT_ID));
     pistonSensor = new DigitalInput(RobotMap.CLIMBER_POSITION_SENSOR_ID);
   }
 
   public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
 
 		protected void addAll() {
-      add("Angle", getAngle());
+      // add("Angle", getAngle());
 		}
   };
 
@@ -70,9 +71,9 @@ public class Climber extends Subsystem {
     }
   }
 
-  public double getAngle() {
-    return angleFinder.calcAngleInDegrees();
-  }
+  // public double getAngle() {
+  //   // return angleFinder.calcAngleInDegrees();
+  // }
 
   public void controlWinch(double speed) {
     winch.set(speed);
@@ -107,5 +108,9 @@ public class Climber extends Subsystem {
   
     return new AngleFinder(leftRangeFinder, rightRangeFinder, RobotMap.INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS);
   
+  }
+
+  public boolean canClimb() {
+    return leftRangeFinder.getDistanceInInches() <= 25;
   }
 }
