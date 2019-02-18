@@ -97,8 +97,8 @@ public class Robot extends TimedRobot {
     diagnostics = new Diagnostics();
 
     mechanicalMode = new MechanicalMode();
-    int mode = mechanicalMode.getMode();
-    // int mode = RobotMap.CARGO_RETURN_CODE;
+    // int mode = mechanicalMode.getMode();
+    int mode = RobotMap.CARGO_RETURN_CODE;
     if (RobotMap.ENABLE_DRIVETRAIN) {
       drivetrain = new DriveTrain();
     }

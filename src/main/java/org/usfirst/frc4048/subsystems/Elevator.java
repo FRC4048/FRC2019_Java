@@ -41,20 +41,16 @@ public class Elevator extends Subsystem {
 
   private final double ELEVATOR_POSITION_ERROR = 150;
 
-  private final double ELEVATOR_UP_SCALE_FACTOR = 1.00;
-  private final double ELEVATOR_DOWN_SCALE_FACTOR = 1.00;
+  private final double ELEVATOR_UP_SCALE_FACTOR = 0.85;
+  private final double ELEVATOR_DOWN_SCALE_FACTOR = 0.50;
 
-  private final double ELEVATOR_CARGO_P = 5;
-  private final double ELEVATOR_CARGO_I = 0.5;
-  private final double ELEVATOR_CARGO_D = 0;
-  private final double ELEVATOR_CARGO_F = 0;
+  private final double ELEVATOR_P = 1;
+  private final double ELEVATOR_I = 0.001;
+  private final double ELEVATOR_D = 0.4;
+  private final double ELEVATOR_F = 0;
 
-  private final double ELEVATOR_HATCH_P = 0.5;
-  private final double ELEVATOR_HATCH_I = 0;
-  private final double ELEVATOR_HATCH_D = 0;
-  private final double ELEVATOR_HATCH_F = 0;
-
-  private final int ELEVATOR_ACCEL = 375/* 281 */; // RPM Of motor we can use these values to set max speed during the movement
+  private final int ELEVATOR_ACCEL = 375/* 281 */; // RPM Of motor we can use these values to set max speed during the
+                                                   // movement
   private final int ELEVATOR_CRUISE_VELOCITY = 375/* 281 */; // ^
   private double elevatorSetpoint;
 
@@ -77,37 +73,29 @@ public class Elevator extends Subsystem {
     elevatorMotor.setNeutralMode(NeutralMode.Brake);
     elevatorMotor.selectProfileSlot(0, 0);
     elevatorMotor.configAllowableClosedloopError(0, 150, TIMEOUT);
-    int elevatorMode = Robot.mechanicalMode.getMode();
-    switch(elevatorMode){
-      case RobotMap.CARGO_RETURN_CODE:
-        setPID(CARGO_MODE);
-        break;
-      case RobotMap.HATCH_RETURN_CODE:
-        setPID(HATCH_MODE);
-        break;
-    }
-    
+    setPID();
+
     // elevatorMotor.configMotionAcceleration(ELEVATOR_ACCEL, TIMEOUT);
     // elevatorMotor.configMotionCruiseVelocity(ELEVATOR_CRUISE_VELOCITY, TIMEOUT);
     elevatorMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     elevatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     elevatorMotor.setInverted(true);
+
     resetEncoder();
     elevatorSetpoint = getEncoder();
 
-    
   }
 
   public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
 
-		protected void addAll() {
+    protected void addAll() {
       add("Top Switch", getTopSwitch());
       add("Bottom Switch", getBotSwitch());
       add("Setpoinnt", elevatorSetpoint);
       add("Encoder", getEncoder());
       add("Current", elevatorMotor.getOutputCurrent());
       add("PID Error", getError());
-		}
+    }
   };
 
   @Override
@@ -116,7 +104,8 @@ public class Elevator extends Subsystem {
       SmartShuffleboard.put("Elevator", "Setpoint", elevatorSetpoint);
       SmartShuffleboard.put("Elevator", "Encoder", getEncoder());
       SmartShuffleboard.put("Elevator", "Current", elevatorMotor.getOutputCurrent());
-      SmartShuffleboard.putCommand("Elevator", "Elevator Hatch Mid", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
+      SmartShuffleboard.putCommand("Elevator", "Elevator Hatch Mid",
+          new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
     }
     moveElevator();
   }
@@ -169,23 +158,15 @@ public class Elevator extends Subsystem {
     elevatorSetpoint += speed;
   }
 
-  public void setPID(boolean isCargo) {
-    if (isCargo) {
-      elevatorP = ELEVATOR_CARGO_P;
-      elevatorI = ELEVATOR_CARGO_I;
-      elevatorD = ELEVATOR_CARGO_D;
-      elevatorF = ELEVATOR_CARGO_F;
-    } else {
-      elevatorP = ELEVATOR_HATCH_P;
-      elevatorI = ELEVATOR_HATCH_I;
-      elevatorD = ELEVATOR_HATCH_D;
-      elevatorF = ELEVATOR_HATCH_F;
-    }
-    
+  public void setPID() {
+    elevatorP = ELEVATOR_P;
+    elevatorI = ELEVATOR_I;
+    elevatorD = ELEVATOR_D;
+    elevatorF = ELEVATOR_F;
+
     elevatorMotor.config_kP(0, elevatorP, TIMEOUT);
     elevatorMotor.config_kI(0, elevatorI, TIMEOUT);
     elevatorMotor.config_kD(0, elevatorD, TIMEOUT);
     elevatorMotor.config_kF(0, elevatorF, TIMEOUT);
-    
   }
 }
