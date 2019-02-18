@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
  * Add your docs here.
@@ -29,6 +30,7 @@ public class Pivot extends Subsystem {
     limitSwitchLeft = new DigitalInput(RobotMap.PIVOT_LIMIT_SWITCH_LEFT_ID);
     limitSwitchRight = new DigitalInput(RobotMap.PIVOT_LIMIT_SWITCH_RIGHT_ID);
     lockPiston = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.PIVOT_PISTON_ID);
+    LiveWindow.add(pivotMotor);
   }
 
   @Override
