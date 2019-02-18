@@ -7,50 +7,50 @@
 
 package org.usfirst.frc4048;
 
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import org.usfirst.frc4048.utils.DoubleSolenoidUtil;
 
-import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
-import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
-import org.usfirst.frc4048.commands.drive.DriveDistance;
-import org.usfirst.frc4048.commands.pneumatics.ExampleSolenoidCommand;
-import org.usfirst.frc4048.subsystems.CargoSubsystem;
-import org.usfirst.frc4048.subsystems.Climber;
-import org.usfirst.frc4048.subsystems.CompressorSubsystem;
-import org.usfirst.frc4048.subsystems.DriveTrain;
-import org.usfirst.frc4048.subsystems.ExampleSolenoidSubsystem;
-import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
-import org.usfirst.frc4048.utils.LimeLightVision;
-import org.usfirst.frc4048.commands.drive.DriveDistanceMaintainAngle;
-import org.usfirst.frc4048.commands.cargo.AutoCargoEjectGroup;
-import org.usfirst.frc4048.commands.cargo.CargoEjectGroup;
-import org.usfirst.frc4048.commands.cargo.IntakeCargo;
+import org.usfirst.frc4048.commands.UnCradleIntake;
+import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
+import org.usfirst.frc4048.commands.climber.PistonTest;
 // import org.usfirst.frc4048.commands.DriveTargetCenter;
 // import org.usfirst.frc4048.commands.LimelightAlign;
 import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
-import org.usfirst.frc4048.commands.limelight.LimelightToggle;
+import org.usfirst.frc4048.commands.drive.DriveAlignPhase2;
+import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
+import org.usfirst.frc4048.commands.drive.ResetGyro;
 import org.usfirst.frc4048.commands.drive.RotateAngle;
 import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
-
+import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
+import org.usfirst.frc4048.commands.limelight.LimelightToggle;
+import org.usfirst.frc4048.commands.limelight.LimelightToggleStream;
+import org.usfirst.frc4048.commands.pivot.PivotMoveDeploy;
+import org.usfirst.frc4048.commands.pivot.PivotMoveRetract;
+import org.usfirst.frc4048.subsystems.CargoSubsystem;
+import org.usfirst.frc4048.subsystems.Climber;
+import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
-import org.usfirst.frc4048.utils.LimeLightVision;
+import org.usfirst.frc4048.subsystems.DrivetrainSensors;
+import org.usfirst.frc4048.subsystems.Elevator;
+import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
+import org.usfirst.frc4048.subsystems.Pivot;
+import org.usfirst.frc4048.subsystems.PowerDistPanel;
+import org.usfirst.frc4048.utils.ElevatorPosition;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.MechanicalMode;
-import org.usfirst.frc4048.subsystems.PowerDistPanel;
-import org.usfirst.frc4048.utils.WorkQueue;
-import org.usfirst.frc4048.subsystems.DrivetrainSensors;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
+import org.usfirst.frc4048.utils.Timer;
 import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -60,22 +60,31 @@ import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
  * project.
  */
 public class Robot extends TimedRobot {
+  private final static String LINE = "-----------------------------------";
   public static OI oi;
   public static DriveTrain drivetrain;
   public static Logging logging;
   public static PowerDistPanel pdp;
-  public static WorkQueue wq;
-  public static double timeOfStart = 0;
   public static CompressorSubsystem compressorSubsystem;
   public static DrivetrainSensors drivetrainSensors;
+  public static Elevator elevator;
   public static CargoSubsystem cargoSubsystem;
   public static HatchPanelSubsystem hatchPanelSubsystem;
   public static Climber climber;
   public static Diagnostics diagnostics;
   public static MechanicalMode mechanicalMode;
+  private final static Timer timer = new Timer(100);
+  public static Pivot pivot;
+  
+  /**
+   * Robot thread scheduler. Initialized with a static thread pool.
+   * 
+   * @See {@link #scheduleTask(Runnable, long)}
+   * @See {@link #cancelAllTasks()}
+   */
+  private final static ScheduledExecutorService executor = Executors.newScheduledThreadPool(3);
+  private final static ArrayList<ScheduledFuture<?>> tasks = new ArrayList<ScheduledFuture<?>>(); 
 
-  Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -83,9 +92,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    cancelAllTasks();
+
+    diagnostics = new Diagnostics();
+
     mechanicalMode = new MechanicalMode();
     int mode = mechanicalMode.getMode();
-
+    // int mode = RobotMap.CARGO_RETURN_CODE;
     if (RobotMap.ENABLE_DRIVETRAIN) {
       drivetrain = new DriveTrain();
     }
@@ -95,7 +108,11 @@ public class Robot extends TimedRobot {
       compressorSubsystem = new CompressorSubsystem();
     }
     drivetrainSensors = new DrivetrainSensors();
+    drivetrainSensors.setStream(2);  // main USB with limelight PIP
 
+    if (RobotMap.ENABLE_ELEVATOR){
+      elevator = new Elevator();
+    }
     switch(mode){
       case RobotMap.CARGO_RETURN_CODE:
         if (RobotMap.ENABLE_CARGO_SUBSYSTEM) {
@@ -108,22 +125,22 @@ public class Robot extends TimedRobot {
         }
         break;
       default:
-        DriverStation.getInstance().reportError("-----Unable to determine robot has the Hatch Panel or Cargo assembly mounted-----", true);
         break;
     }
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
       climber = new Climber();
     }
-    diagnostics = new Diagnostics();
+
+    if(RobotMap.ENABLE_PIVOT_SUBSYSTEM){
+      pivot = new Pivot();
+    }
+    logging = new Logging();
 
     // OI must be initialized last
     oi = new OI();
-    // Robot.drivetrainSensors.ledOn();
-    SmartDashboard.putData("Auto mode", m_chooser);
+//    SmartDashboard.putData("Auto mode", m_chooser);
 
-    WorkQueue wq = new WorkQueue(512);
-    logging = new Logging(100, wq);
-    logging.startThread(); // Starts the logger
+    putCommandsInCompetition();
   }
 
   /**
@@ -137,11 +154,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-
-    if (RobotMap.ENABLE_COMPRESSOR) {
-      SmartDashboard.putNumber("Current", Robot.compressorSubsystem.getCurrent());
-      SmartDashboard.putNumber("Pressure", Robot.compressorSubsystem.getPressure());
-    }
+    
   }
 
   /**
@@ -151,7 +164,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    logging.traceMessage(Logging.MessageLevel.INFORMATION,
+				"---------------------------- Robot Disabled ----------------------------");
     // Robot.drivetrainSensors.ledOff();
+    new LimelightToggle(false);
+    Scheduler.getInstance().run();
   }
 
   @Override
@@ -173,7 +190,19 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
+    logging.setStartTime();
+    
+    if(RobotMap.ENABLE_DRIVETRAIN) {
+      Robot.drivetrain.swerveDrivetrain.setModeRobot();
+    }
+
+    commonInit("autonomousInit");
+    if(RobotMap.ENABLE_BEGIN_MATCH_GROUPCOMMAND){
+      Scheduler.getInstance().add(new UnCradleIntake());
+    }
+    //    logging.traceMessage(Logging.MessageLevel.INFORMATION,
+    //				"---------------------------- Autonomous mode starting ----------------------------");
+    //    m_autonomousCommand = m_chooser.getSelected();
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
@@ -182,10 +211,6 @@ public class Robot extends TimedRobot {
      * ExampleCommand(); break; }
      */
 
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
-    }
   }
 
   /**
@@ -193,45 +218,31 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-
-    Scheduler.getInstance().run();
+//
+//    Scheduler.getInstance().run();
+    teleopPeriodic();
   }
 
   @Override
   public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
-
-    // SmartDashboard.putData(new LimelightAlign());
-    SmartDashboard.putData("Limelight On", new LimelightToggle(true));
-    SmartDashboard.putData("Limelight Off", new LimelightToggle(false));
-
-    if (RobotMap.ENABLE_DRIVETRAIN) {
+    if(RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
-
-      // Shuffleboard.getTab("Approach").add("90", new RotateAngle(90));
-      // Shuffleboard.getTab("Approach").add("-45", new RotateAngle(-45));
-      // Shuffleboard.getTab("Approach").add("0", new RotateAngle(0));
-      // Shuffleboard.getTab("Approach").add("10", new RotateAngle(10));
-      // Shuffleboard.getTab("Approach").add("-30", new RotateAngle(-30));
-
-      // Shuffleboard.getTab("Approach").add("TargetAlign", new
-      // DriveTargetCenter(10.0, -0.25));
-      // SmartDashboard.putData(new DriveDistance(80, 0.1, 0.05, 0.0));
-
-      // SmartDashboard.putData(new DriveDistanceMaintainAngle(40, 20, -0.45, -0.3));
-      SmartDashboard.putData(new DriveAlignGroup());
-      SmartDashboard.putData(new RotateAngle(0));
-      // SmartDashboard.putData(new RotateAngleForAlignment());
-      SmartDashboard.putData("Toggle Centric Mode", new CentricModeToggle());
-      SmartDashboard.putData(new DriveAlignPhase2(0.3, 0.4, false));
-      SmartDashboard.putData(new DriveAlignPhase3(0.25, false));
     }
+
+    commonInit("teleopInit");
+  }
+  
+  public void commonInit(final String loggingLabel) {
+    logging.traceMessage(Logging.MessageLevel.INFORMATION, LINE, loggingLabel, LINE);
+    logging.writeAllTitles();
+
+    new LimelightToggle(true);
+
+
+    if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
+      putCommandsOnShuffleboard();
+    }
+    
   }
 
   /**
@@ -239,46 +250,23 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    // Disabled for now to look at watchdog timeouts
-    final boolean writeToDashboard = false;
-
-    SmartDashboard.putNumber("Pressure Value", compressorSubsystem.getPressure());
-
-    final long step0 = System.currentTimeMillis();
-    if (RobotMap.ENABLE_DRIVETRAIN && writeToDashboard) {
-      SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
-    }
-    final long step1 = System.currentTimeMillis();
-    if (RobotMap.ENABLE_DRIVETRAIN && writeToDashboard) {
-      SmartDashboard.putData(new RotateAngle(90));
-    }
-    final long step2 = System.currentTimeMillis();
-    if (RobotMap.ENABLE_DRIVETRAIN && writeToDashboard) {
-      SmartDashboard.putData(new DriveDistance(10, 0.3, 0.0, 0.0));
-      SmartDashboard.putData(new RotateAngle(90));
-      SmartDashboard.putNumber("Gyro", Robot.drivetrain.getGyro());
-    }
-    final long step3 = System.currentTimeMillis();
-
+    timer.init("teleopPeriodic");
+    logging.writeAllData();
+    timer.completed(this, "log");
+    
     Scheduler.getInstance().run();
-    final long step4 = System.currentTimeMillis();
+    timer.completed(this, "Sched");
 
-    if (RobotMap.LOG_PERIODIC_TIME) {
-      if ((step4 - step0) >= 5) {
-        java.lang.StringBuilder sb = new StringBuilder();
-        sb.append("DriDis: ").append((step1 - step0));
-        sb.append(" RotAng: ").append((step2 - step1));
-        sb.append(" GetGyr: ").append((step3 - step2));
-        sb.append(" Sched: ").append((step4 - step3));
-        sb.append(" PDP: ").append(pdp.last_periodic);
-        if (RobotMap.ENABLE_DRIVETRAIN) {
-          sb.append(" DrTr: ").append(drivetrain.last_periodic);
+    if (RobotMap.LOG_PERIODIC_TIME > 0) {
+      if (timer.total() >= RobotMap.LOG_PERIODIC_TIME) {
+        final String details = timer.toString();
+        if (RobotMap.LOG_PERIODIC_TIME_TO_CONSOLE) {
+          System.out.println(details);
         }
-        sb.append(" DrTrSen: ").append(drivetrainSensors.last_periodic);
-        sb.append(" DrCmd: ").append(org.usfirst.frc4048.commands.drive.Drive.last_execute);
-        System.out.println(sb);
+        logging.traceMessage(Logging.MessageLevel.TIMER, details);
       }
     }
+    timer.term();
   }
 
   @Override
@@ -291,10 +279,80 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-
     diagnostics.refresh();
-
     Scheduler.getInstance().run();
   }
+
+
+  private void putCommandsOnShuffleboard() {
+    if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
+      SmartShuffleboard.putCommand("Climber", "Piston Forward", new PistonTest(DoubleSolenoidUtil.State.forward));
+      SmartShuffleboard.putCommand("Climber", "Piston Rev", new PistonTest(DoubleSolenoidUtil.State.reverse));
+      SmartShuffleboard.putCommand("Climber", "Piston Off", new PistonTest(DoubleSolenoidUtil.State.off));
+    }
+    if (RobotMap.ENABLE_DRIVETRAIN) {
+      SmartShuffleboard.putCommand("Drive", "rotate 0", new RotateAngle(0));
+      SmartShuffleboard.putCommand("Drive", "DriveAlignGroup", new DriveAlignGroup());
+      SmartShuffleboard.putCommand("Drive", "DriveAlignPhase2", new DriveAlignPhase2(0.3, 0.4, false));
+      SmartShuffleboard.putCommand("Drive", "DriveAlignPhase3", new DriveAlignPhase3(0.25, false));
+      SmartShuffleboard.putCommand("Drive", "Toggle Centric Mode", new CentricModeToggle());
+      SmartShuffleboard.putCommand("Drive", "Rotate angle align", new RotateAngleForAlignment());
+    }
+
+    SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight On", new LimelightToggle(true));
+    SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Off", new LimelightToggle(false));
+    SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Stream Toggle", new LimelightToggleStream());
+    
+    if (RobotMap.ENABLE_ELEVATOR) {
+      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Bottom", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
+      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
+      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket High", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket High", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Intake Pos", new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
+      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
+      
+      SmartShuffleboard.put("Elevator", "Encoder", elevator.getEncoder());
+      SmartShuffleboard.put("Elevator", "Current", elevator.getElevatorMotor().getOutputCurrent());
+    }
+
+    if (RobotMap.ENABLE_PIVOT_SUBSYSTEM)
+    {
+      SmartShuffleboard.putCommand("Pivot", "Pivot Deploy", new PivotMoveDeploy());
+      SmartShuffleboard.putCommand("Pivot", "Pivot Retract", new PivotMoveRetract());
+    }
+
+  }
+
+  private void putCommandsInCompetition() {
+    SmartShuffleboard.putCommand("Driver", "Reset Gyro", new ResetGyro());
+  }
+
+	public static Timer timer() {
+	  return timer;
+	}
+
+	static public void completed(final Object caller, final String work) {
+		if (RobotMap.LOG_PERIODIC_TIME > 0)
+			timer.completed(caller, work);
+	}
+
+	/**
+	 * Schedule a Thread to run with a fixed delay between runs.
+	 */
+	static public void scheduleTask(final Runnable task, final long intervalMS) {
+		tasks.add(executor.scheduleWithFixedDelay(task, 0, intervalMS, TimeUnit.MILLISECONDS));
+	}
+
+	/**
+	 * Cancel all scheduled threads.
+	 */
+	private void cancelAllTasks() {
+		for (final ScheduledFuture<?> task : tasks) {
+			task.cancel(true);
+		}
+		tasks.removeAll(tasks);
+	}
 
 }

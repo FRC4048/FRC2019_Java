@@ -13,7 +13,7 @@ public class TestDiagSwitch {
     public void testSwitchInitially() throws Exception {
         DigitalInput mockInput = Mockito.mock(DigitalInput.class);
 
-        DiagSwitch classUnderTest = new DiagSwitch("switch", mockInput, true);
+        DiagSwitch classUnderTest = new DiagSwitch("switch", mockInput);
 
         when(mockInput.get()).thenReturn(true);
         Assert.assertFalse(classUnderTest.getDiagResult());
@@ -26,7 +26,7 @@ public class TestDiagSwitch {
     public void testSwitchAfterReset() throws Exception {
         DigitalInput mockInput = Mockito.mock(DigitalInput.class);
 
-        DiagSwitch classUnderTest = new DiagSwitch("switch", mockInput, true);
+        DiagSwitch classUnderTest = new DiagSwitch("switch", mockInput);
 
         when(mockInput.get()).thenReturn(true);
         Assert.assertFalse(classUnderTest.getDiagResult());

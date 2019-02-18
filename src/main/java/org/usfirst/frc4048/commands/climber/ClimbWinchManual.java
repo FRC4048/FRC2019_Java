@@ -9,16 +9,15 @@ package org.usfirst.frc4048.commands.climber;
 
 import org.usfirst.frc4048.Robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ClimbWinchManual extends Command {
-  private double speed;
-  /**
-   * This command is incomplete and needs to wait until we have a better understanding of how the 
-   * climber works/the control scheme. 
-   * */
-  public ClimbWinchManual(double speed) {
-    this.speed = speed;
+  
+  private final double JOYSTICK_DEADZONE = 0.1;
+
+  public ClimbWinchManual() {
+
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.climber);
@@ -32,7 +31,11 @@ public class ClimbWinchManual extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.climber.controlWinch(speed);
+    if(DriverStation.getInstance().getMatchTime() < 50 && Math.abs(Robot.oi.getXboxLeftJoystickY()) > JOYSTICK_DEADZONE) {
+      Robot.climber.controlWinch(Robot.oi.getXboxLeftJoystickY());
+    } else {
+      Robot.climber.controlWinch(0.0);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -44,11 +47,13 @@ public class ClimbWinchManual extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.climber.controlWinch(0.0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

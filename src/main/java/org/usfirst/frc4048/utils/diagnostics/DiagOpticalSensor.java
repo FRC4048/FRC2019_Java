@@ -1,13 +1,28 @@
 package org.usfirst.frc4048.utils.diagnostics;
 
-public class DiagOpticalSensor implements Diagnosable {
-    @Override
-    public void refresh() {
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
+/**
+ * Diagnostic class for the Optical sensor; it is a DiagBoolean object.
+ */
+public class DiagOpticalSensor extends DiagBoolean {
+
+    private DigitalInput digitalInput;
+
+    /**
+     * Constructor
+     * 
+     * @param name            - The sensor's name, which will be shown on Shuffleboard
+     * @param digitalInput    - The DigitalInput pin the sensor is connected to
+     */
+    public DiagOpticalSensor(String name, DigitalInput digitalInput){
+        super(name);
+        this.digitalInput = digitalInput;
     }
 
     @Override
-    public void reset() {
-
+    protected boolean getValue() {
+        return digitalInput.get();
     }
 }

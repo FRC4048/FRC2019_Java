@@ -7,6 +7,17 @@
 
 package org.usfirst.frc4048.subsystems;
 
+import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.RobotMap;
+import org.usfirst.frc4048.commands.drive.Drive;
+import org.usfirst.frc4048.swerve.drive.BaseEnclosure;
+import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
+import org.usfirst.frc4048.swerve.drive.SparkMAXSwerveEnclosure;
+import org.usfirst.frc4048.swerve.drive.SwerveDrive;
+import org.usfirst.frc4048.utils.Logging;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
+import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -14,16 +25,16 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.FusionStatus;
 import com.ctre.phoenix.sensors.PigeonIMU.GeneralStatus;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
-import org.usfirst.frc4048.swerve.drive.SwerveDrive;
-import org.usfirst.frc4048.utils.Logging;
-import org.usfirst.frc4048.RobotMap;
-import org.usfirst.frc4048.commands.drive.Drive;
+import org.usfirst.frc4048.utils.diagnostics.DiagEncoder;
+import org.usfirst.frc4048.utils.diagnostics.DiagSwerveEnclosureSparkMAX;
+import org.usfirst.frc4048.utils.diagnostics.DiagSwerveEnclosureTalonSRX;
 
 /**
  * Add your docs here.
@@ -42,12 +53,11 @@ public class DriveTrain extends Subsystem {
   private WPI_TalonSRX steerRR;
 
   /**
-   * Note that access to the pigeon should be done inside a synhronized block because the
-   * reading will be done in a separate thread. If you're reading values, use the pigeonData
-   * class member.
+   * Note that access to the pigeon should be done inside a synhronized block
+   * because the reading will be done in a separate thread. If you're reading
+   * values, use the pigeonData class member.
    */
   private PigeonIMU pigeon;
-
   private Encoder encoder;
 
   private AnalogInput analogInputFrontRight;
@@ -65,18 +75,18 @@ public class DriveTrain extends Subsystem {
   private final double GEAR_RATIO = (1988 / 1.2);
 
   // Width between drivetrain wheels
-  private final double WIDTH = 22.0; // Remeasure Chassis
+  private final double WIDTH = 18.1; // Remeasure Chassis
 
   // Length between drivetrain wheels
-  private final double LENGTH = 23.25; // Remeasure Chassis
+  private final double LENGTH = 23.75; // Remeasure Chassis
 
   private final boolean REVERSE_ENCODER = true;
   private final boolean REVERSE_OUTPUT = true;
 
-  private final int FR_ZERO = 1057;//1037;
-  private final int FL_ZERO = 1790;//1767;
-  private final int RL_ZERO = 2455;//1456;//1456;
-  private final int RR_ZERO = 1487;//2444;
+  private final int FR_ZERO = 3315;// 1037;
+  private final int FL_ZERO = 3109;// 1767;
+  private final int RL_ZERO = 1720;// 1456;//1456;
+  private final int RR_ZERO = 136;// 2444;
 
   private final double P = 10;
   private final double I = 0;
@@ -92,10 +102,18 @@ public class DriveTrain extends Subsystem {
 
   private final int TIMEOUT = 100;
 
-  /* Reading gyro angle is relatively slow, anywhere between 4mSec and 20mSec.             */
-  /* We will be reading it and storing it here in the periodic method and whoever needs    */
-  /* whoever needs to use the gyro will get the stored value through the getGyro() method. */
+  /* Reading gyro angle is relatively slow, anywhere between 4mSec and 20mSec. */
+  /*
+   * We will be reading it and storing it here in the periodic method and whoever
+   * needs
+   */
+  /*
+   * whoever needs to use the gyro will get the stored value through the getGyro()
+   * method.
+   */
   private final PigeonData pigeonData = new PigeonData();
+
+  private final BaseEnclosure wheelEnclosures[];
 
   public DriveTrain() {
     driveFL = new WPI_TalonSRX(RobotMap.FRONT_LEFT_DRIVE_MOTOR_ID);
@@ -109,43 +127,82 @@ public class DriveTrain extends Subsystem {
     pigeon = new PigeonIMU(RobotMap.DRIVE_PIGEON_ID);
     encoder = new Encoder(RobotMap.SWERVE_DRIVE_ENCODER_A_ID, RobotMap.SWERVE_DRIVE_ENCODER_B_ID);
     
-    driveFL.setNeutralMode(NeutralMode.Brake);
-    driveFR.setNeutralMode(NeutralMode.Brake);
-    driveRL.setNeutralMode(NeutralMode.Brake);
-    driveRR.setNeutralMode(NeutralMode.Brake);
+    Robot.diagnostics.addDiagnosable(new DiagEncoder("DistanceEncoder", 1000, encoder));
 
     driveFL.setSafetyEnabled(true);
     driveFR.setSafetyEnabled(true);
     driveRL.setSafetyEnabled(true);
-    driveRL.setSafetyEnabled(true);
+    driveRR.setSafetyEnabled(true);
+
+    driveFL.setExpiration(0.5);
+    driveFR.setExpiration(0.5);
+    driveRL.setExpiration(0.5);
+    driveRR.setExpiration(0.5);
+
+    driveFR.setNeutralMode(NeutralMode.Brake);
+    driveFL.setNeutralMode(NeutralMode.Brake);
+    driveRR.setNeutralMode(NeutralMode.Brake);
+    driveRL.setNeutralMode(NeutralMode.Brake);
 
     analogInputFrontLeft = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_FRONT_LEFT_ID);
     analogInputFrontRight = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID);
     analogInputRearLeft = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_REAR_LEFT_ID);
     analogInputRearRight = new AnalogInput(RobotMap.SWERVE_DRIVE_ANALOG_INPUT_REAR_RIGHT_ID);
 
-    frontLeftWheel = new CanTalonSwerveEnclosure("FrontLeftWheel", driveFL, steerFL, GEAR_RATIO);
-    frontRightWheel = new CanTalonSwerveEnclosure("FrontRightWheel", driveFR, steerFR, GEAR_RATIO);
-    rearLeftWheel = new CanTalonSwerveEnclosure("RearLeftWheel", driveRL, steerRL, GEAR_RATIO);
-    rearRightWheel = new CanTalonSwerveEnclosure("RearRightWheel", driveRR, steerRR, GEAR_RATIO);
+    frontLeftWheel = new CanTalonSwerveEnclosure("FrontLeftWheel", driveFL, steerFL, GEAR_RATIO, Robot.timer());
+    frontRightWheel = new CanTalonSwerveEnclosure("FrontRightWheel", driveFR, steerFR, GEAR_RATIO, Robot.timer());
+    rearLeftWheel = new CanTalonSwerveEnclosure("RearLeftWheel", driveRL, steerRL, GEAR_RATIO, Robot.timer());
+    rearRightWheel = new CanTalonSwerveEnclosure("RearRightWheel", driveRR, steerRR, GEAR_RATIO, Robot.timer());
+    wheelEnclosures = new BaseEnclosure[] { frontLeftWheel, frontRightWheel, rearLeftWheel, rearRightWheel };
 
-    init();
+    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosureTalonSRX("FL Wheel", 1000, frontLeftWheel));
+    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosureTalonSRX("FR Wheel", 1000, frontRightWheel));
+    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosureTalonSRX("RL Wheel", 1000, rearLeftWheel));
+    Robot.diagnostics.addDiagnosable(new DiagSwerveEnclosureTalonSRX("RR Wheel", 1000, rearRightWheel));
 
-    swerveDrivetrain = new SwerveDrive(frontRightWheel, frontLeftWheel, rearLeftWheel, rearRightWheel, WIDTH, LENGTH);
+    if (RobotMap.ENABLE_WHEEL_ENCODER_THREAD) {
+      Robot.scheduleTask(new WheelEncoderThread(), RobotMap.WHEEL_ENCODER_THREAD_INTERVAL_MS);
+    }
 
     if (RobotMap.ENABLE_PIGEON_THREAD) {
-      pigeonThread.start();
+      Robot.scheduleTask(new PigeonThread(), RobotMap.PIGEON_READ_DELAY_MS);
+    }
+
+    swerveDrivetrain = new SwerveDrive(frontRightWheel, frontLeftWheel, rearLeftWheel, rearRightWheel, WIDTH, LENGTH);
+    
+    init();
+
+  }
+
+  /**
+   * Thread that reads all the wheel encoders at predetermined cycles on a
+   * separate thread. The read cycle is determined by the value when the thread is
+   * scheduled.
+   */
+  private class WheelEncoderThread implements Runnable {
+    public void run() {
+      for (final BaseEnclosure e : wheelEnclosures)
+        e.readEncPosition();
     }
   }
-  
-  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.DRIVETRAIN) {
 
-		protected void addAll() {
-		}
+  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
 
-    	
-    
-    };
+    protected void addAll() {
+      add("FR Encoder", frontRightWheel.getLastEncPosition());
+      add("FL Encoder", frontLeftWheel.getLastEncPosition());
+      add("RR Encoder", rearRightWheel.getLastEncPosition());
+      add("RL Encoder", rearLeftWheel.getLastEncPosition());
+
+      add("FR Abs", analogInputFrontRight.getValue());
+      add("FL Abs", analogInputFrontLeft.getValue());
+      add("RR Abs", analogInputRearRight.getValue());
+      add("RL Abs", analogInputRearLeft.getValue());
+
+      add("Gyro", getGyro());
+      add("Centric Mode", swerveDrivetrain.getModeRobot().name());
+    }
+  };
 
   @Override
   public void initDefaultCommand() {
@@ -154,25 +211,9 @@ public class DriveTrain extends Subsystem {
     setDefaultCommand(new Drive());
   }
 
-  private final Thread pigeonThread = new Thread() {
+  private class PigeonThread implements Runnable {
     public void run() {
-      for (;;) {
-        final long start_time = System.currentTimeMillis();
-        pigeonData.update();
-
-        // Subtract the amount of time that it took to read the pigeon from
-        // the total delay time we want. This should give us
-        // consistently updated readings.
-        final long delta_time = System.currentTimeMillis() - start_time;
-        final long sleep_time = RobotMap.PIGEON_READ_DELAY_MS - delta_time;
-        if (sleep_time > 0) {
-          try {
-            Thread.sleep(sleep_time);
-          }
-          catch (InterruptedException e) {
-          }
-        }
-      }
+      pigeonData.update();
     }
   };
 
@@ -185,10 +226,14 @@ public class DriveTrain extends Subsystem {
     private double pitch = 0;
 
     void update() {
-      synchronized(pigeon) {
+      synchronized (pigeon) {
         pigeon.getFusedHeading(fstatus);
         if (fstatus.bIsValid) {
           heading = fstatus.heading;
+        } else {
+          System.out.println("Pigeon reported invalid status");
+          Robot.logging.traceMessage(Logging.MessageLevel.INFORMATION,
+              "-------------Pigeon reported invalid status--------------");
         }
         pigeon.getYawPitchRoll(ypr);
         pitch = ypr[1];
@@ -198,30 +243,49 @@ public class DriveTrain extends Subsystem {
           if (now > statusExpiration) {
             statusExpiration = now + (RobotMap.SHOW_PIGEON_STATUS_SECONDS * 1000);
             pigeon.getGeneralStatus(gstatus);
-            System.out.println(gstatus.toString());
+            if (gstatus.lastError.value != 0) {
+              System.out.println("PigeonStatus: " + gstatus.toString());
+              Robot.logging.traceMessage(Logging.MessageLevel.INFORMATION, "PigeonStatus: " + gstatus.toString());
+            }
           }
+        }
       }
     }
   }
-}
-
-
 
   @Override
   public void periodic() {
-    final long start = System.currentTimeMillis();
 
-    // Put code here to be run every loop
-    outputAbsEncValues();
     if (!RobotMap.ENABLE_PIGEON_THREAD) {
       pigeonData.update();
+      Robot.completed(this, "pigeon");
     }
-    loggingContext.writeData();
 
-    last_periodic = System.currentTimeMillis() - start;
+    if (!RobotMap.ENABLE_WHEEL_ENCODER_THREAD) {
+      for (final BaseEnclosure e : wheelEnclosures)
+        e.readEncPosition();
+      Robot.completed(this, "readenc");
+    }
+
+    if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
+      SmartShuffleboard.put("Drive", "Encoders", "FR", frontRightWheel.getLastEncPosition());
+      SmartShuffleboard.put("Drive", "Encoders", "FL", frontLeftWheel.getLastEncPosition());
+      SmartShuffleboard.put("Drive", "Encoders", "RR", rearRightWheel.getLastEncPosition());
+      SmartShuffleboard.put("Drive", "Encoders", "RL", rearLeftWheel.getLastEncPosition());
+
+      SmartShuffleboard.put("Drive", "Abs Encoders", "FR abs", analogInputFrontRight.getValue());
+      SmartShuffleboard.put("Drive", "Abs Encoders", "FL abs", analogInputFrontLeft.getValue());
+      SmartShuffleboard.put("Drive", "Abs Encoders", "RR abs", analogInputRearRight.getValue());
+      SmartShuffleboard.put("Drive", "Abs Encoders", "RL abs", analogInputRearLeft.getValue());
+
+      SmartShuffleboard.put("Drive", "Gyro", getGyro());
+      SmartShuffleboard.put("Drive", "Centric mode", swerveDrivetrain.getModeRobot().name());
+      Robot.completed(this, "shuf");
+    }
+
+    SmartShuffleboard.put("Driver", "Gyro Value", getGyro());
+
   }
-  public long last_periodic = -1;
-
 
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
@@ -242,8 +306,6 @@ public class DriveTrain extends Subsystem {
     frontLeftWheel.setReverseSteerMotor(REVERSE_OUTPUT);
     rearLeftWheel.setReverseSteerMotor(REVERSE_OUTPUT);
     rearRightWheel.setReverseSteerMotor(REVERSE_OUTPUT);
-
-    resetDriveEncoder();
 
     resetQuadEncoder();
   }
@@ -271,10 +333,14 @@ public class DriveTrain extends Subsystem {
   }
 
   public void resetQuadEncoder() {
-    steerFR.setSelectedSensorPosition((int) ((analogInputFrontRight.getValue() - FR_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
-    steerFL.setSelectedSensorPosition((int) ((analogInputFrontLeft.getValue() - FL_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
-    steerRL.setSelectedSensorPosition((int) ((analogInputRearLeft.getValue() - RL_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
-    steerRR.setSelectedSensorPosition((int) ((analogInputRearRight.getValue() - RR_ZERO) / 4000.0 * GEAR_RATIO), 0, TIMEOUT);
+    steerFR.setSelectedSensorPosition((int) ((analogInputFrontRight.getValue() - FR_ZERO) / 4000.0 * GEAR_RATIO), 0,
+        TIMEOUT);
+    steerFL.setSelectedSensorPosition((int) ((analogInputFrontLeft.getValue() - FL_ZERO) / 4000.0 * GEAR_RATIO), 0,
+        TIMEOUT);
+    steerRL.setSelectedSensorPosition((int) ((analogInputRearLeft.getValue() - RL_ZERO) / 4000.0 * GEAR_RATIO), 0,
+        TIMEOUT);
+    steerRR.setSelectedSensorPosition((int) ((analogInputRearRight.getValue() - RR_ZERO) / 4000.0 * GEAR_RATIO), 0,
+        TIMEOUT);
     // steerFR.setSelectedSensorPosition(0);
     // steerFL.setSelectedSensorPosition(0);
     // steerRL.setSelectedSensorPosition(0);
@@ -286,14 +352,10 @@ public class DriveTrain extends Subsystem {
     steerRR.set(ControlMode.Position, 0);
   }
 
-  public void resetDriveEncoder() {
-    encoder.reset();
-    encoder.setDistancePerPulse(RobotMap.SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK);
-  }
 
   @SuppressWarnings("unused")
-  private void setGyro(double angle) {
-    synchronized(pigeon) {
+  public void setGyro(double angle) {
+    synchronized (pigeon) {
       pigeon.setYaw(angle, TIMEOUT);
       pigeon.setFusedHeading(angle, TIMEOUT);
     }
@@ -306,21 +368,6 @@ public class DriveTrain extends Subsystem {
 
   public double getPitch() {
     return pigeonData.pitch;
-  }
-
-  /**
-   * Outputs absolute encoder positions
-   */
-  public void outputAbsEncValues() {
-    SmartDashboard.putNumber("Front Right Enc", steerFR.getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Front Left Enc", steerFL.getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Rear Left Enc", steerRL.getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Rear Right Enc", steerRR.getSelectedSensorPosition(0));
-
-    SmartDashboard.putNumber("Front Right Abs", analogInputFrontRight.getValue());
-    SmartDashboard.putNumber("Front Left Abs", analogInputFrontLeft.getValue());
-    SmartDashboard.putNumber("Rear Left Abs", analogInputRearLeft.getValue());
-    SmartDashboard.putNumber("Rear Right Abs", analogInputRearRight.getValue());
   }
 
   /**
@@ -337,17 +384,7 @@ public class DriveTrain extends Subsystem {
     return encoder.getDistance();
   }
 
-  /**
-   * Outputs direction of encoder
-   * 
-   * @return - true if encoder direction is positive, false if encoder direction
-   *         is negative
-   */
-  public boolean getEncoderDirection() {
-    return encoder.getDirection();
-  }
 
-  
   public void move(double fwd, double str, double rcw) {
     if (fwd <= LEFT_JOY_X_MAX_DEADZONE && fwd >= LEFT_JOY_X_MIN_DEADZONE)
       fwd = 0.0;

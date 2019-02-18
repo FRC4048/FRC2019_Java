@@ -7,20 +7,24 @@
 
 package org.usfirst.frc4048.subsystems;
 
+import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
+import org.usfirst.frc4048.commands.limelight.LimelightToggle;
+import org.usfirst.frc4048.commands.limelight.LimelightToggleStream;
 import org.usfirst.frc4048.utils.AngleFinder;
 import org.usfirst.frc4048.utils.CameraAngles;
 import org.usfirst.frc4048.utils.CameraDistance;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc4048.utils.LimeLightVision;
+import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.OpticalRangeFinder;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
+import org.usfirst.frc4048.utils.diagnostics.DiagSonar;
 
 /**
  * This subsystem holds the sensors the robot uses for navigation
@@ -31,19 +35,37 @@ public class DrivetrainSensors extends Subsystem {
 
     private LimeLightVision limelight;
 
-    private NetworkTableEntry unltrasonicEntry = Shuffleboard.getTab("DrivetrainSensors").add("Ultrasonic Distance", 0.0).getEntry();
-    private NetworkTableEntry limelightValidTargetEntry = Shuffleboard.getTab("DrivetrainSensors").add("LimelightValidTarget", false).getEntry();
-    private NetworkTableEntry limelightXEntry = Shuffleboard.getTab("DrivetrainSensors").add("LimelightX", 0.0).getEntry();
-    private NetworkTableEntry LimelightYEntry = Shuffleboard.getTab("DrivetrainSensors").add("LimelightY", 0.0).getEntry();
-    private NetworkTableEntry limelightForwardEntry = Shuffleboard.getTab("DrivetrainSensors").add("LimelightForward", 0.0).getEntry();
-    private NetworkTableEntry limelightSidewaysEntry = Shuffleboard.getTab("DrivetrainSensors").add("LimelightSideways", 0.0).getEntry();
-
     public DrivetrainSensors() {
         ultrasonic = new Ultrasonic(RobotMap.ALIGNMENT_ULTRASONIC_ID[0], RobotMap.ALIGNMENT_ULTRASONIC_ID[1]);
         ultrasonic.setAutomaticMode(true);
 
         limelight = new LimeLightVision();
+
+        Robot.diagnostics.addDiagnosable(new DiagSonar("Drive Sonar", ultrasonic, 10, 20));
     }
+
+    public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
+
+        protected void addAll() {
+            add("Distance", getUltrasonicDistance());
+
+            CameraDistance targetDistance = getTargetDistance();
+            add("LimelightValidTarget", targetDistance != null);
+
+            if(targetDistance != null) {
+                CameraAngles angles = getCameraAngles();
+                add("Camera Angle Tx", angles.getTx());
+                add("Camera Angle Ty", angles.getTy());
+                add("LimelightForward", targetDistance.getForward());
+                add("LimelightSideways", targetDistance.getSideways());
+            } else {
+                add("Camera Angle Tx", "NO TARGET");
+                add("Camera Angle Ty", "NO TARGET");
+                add("LimelightForward", "NO TARGET");
+                add("LimelightSideways", "NO TARGET");
+            }
+        }
+    };
 
     @Override
     public void initDefaultCommand() {
@@ -53,24 +75,19 @@ public class DrivetrainSensors extends Subsystem {
 
     @Override
     public void periodic() {
-        final long start = System.currentTimeMillis();
-
         // Put code here to be run every loop
-        CameraDistance targetDistance = getTargetDistance();
-        limelightValidTargetEntry.setBoolean(targetDistance != null);
-        if (targetDistance != null) {
-            limelightForwardEntry.setDouble(targetDistance.getForward());
-            limelightSidewaysEntry.setDouble(targetDistance.getSideways());
+
+        if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
+            SmartShuffleboard.put("DrivetrainSensors", "Ultrasonic", getUltrasonicDistance());
+            CameraDistance targetDistance = getTargetDistance();
+            SmartShuffleboard.put("DrivetrainSensors", "LimelightValidTarget", targetDistance != null);
+            if (targetDistance != null) {
+                SmartShuffleboard.put("DrivetrainSensors", "LimelightForward", targetDistance.getForward());
+                SmartShuffleboard.put("DrivetrainSensors", "LimelightSideways", targetDistance.getSideways());
+            }
+            Robot.completed(this, "shuf");
         }
-
-        // unltrasonicEntry.setDouble(ultrasonic.getRangeInches());
-        SmartDashboard.putNumber("Ultrasonic", getUltrasonicDistance());
-
-        last_periodic = System.currentTimeMillis() - start;
     }
-
-    public long last_periodic = -1;
-
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -95,5 +112,14 @@ public class DrivetrainSensors extends Subsystem {
 
     public void ledOff() {
         limelight.setLedOff();
+    }
+
+    /* Control the Limelight streaming mode */
+    public void setStream(double option) {
+        limelight.setStream(option);
+    }
+
+    public double getStream() {
+        return limelight.getStream();
     }
 }

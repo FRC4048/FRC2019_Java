@@ -11,7 +11,11 @@ package org.usfirst.frc4048;
  */
 
 // public interface RobotMap extends RobotMapForTestbed {
-public interface RobotMap extends RobotMapFor2018Robot {
+public interface RobotMap extends RobotMapFor2019Robot {
+  /**
+  * Logger will log every number of iteations specified here
+  */
+  public static final int LOGGING_FREQ = 5;
 
   // Add constants that are not specific to the Robot hardware or behavior.
   // Use one of the RobotMapForXXXXX classes to add
@@ -24,6 +28,15 @@ public interface RobotMap extends RobotMapFor2018Robot {
   public static final long PIGEON_READ_DELAY_MS = 11;
 
   public static final int SHOW_PIGEON_STATUS_SECONDS = 15;
+
+  /**
+   * Enable reading of the steer encoder position on a separate thread. This
+   * should reduce the period cycle time.
+   */
+  public static final boolean ENABLE_WHEEL_ENCODER_THREAD = true;
+
+  public static final boolean ENABLE_PIVOT = false;
   
+  public static final long WHEEL_ENCODER_THREAD_INTERVAL_MS = 11;
 
 }

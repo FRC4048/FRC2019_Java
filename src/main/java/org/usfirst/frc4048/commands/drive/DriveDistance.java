@@ -40,7 +40,7 @@ public class DriveDistance extends LoggedCommand {
 		distanceLeft = distance;
 		done = false;
 		doTimeout = true;
-		System.out.println("Travelling: " + this.distance + "in");
+		// System.out.println("Travelling: " + this.distance + "in");
 	}
 
 	// Called repeatedly when this Command is scheduled to run

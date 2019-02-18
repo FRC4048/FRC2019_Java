@@ -10,6 +10,7 @@ package org.usfirst.frc4048.utils;
 import org.usfirst.frc4048.RobotMap;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -29,14 +30,16 @@ public class MechanicalMode {
 
     public int getMode() {
         if(hatchInput.get() && !cargoInput.get()) {
-            SmartDashboard.putString("Mechanical Mode", "HATCH");
+            SmartShuffleboard.put("Driver", "Mechanical Mode", "HATCH");
             return RobotMap.HATCH_RETURN_CODE;
         } else if(!hatchInput.get() && cargoInput.get()) { 
-            SmartDashboard.putString("Mechanical Mode", "CARGO");
+            SmartShuffleboard.put("Driver", "Mechanical Mode", "CARGO");
             return RobotMap.CARGO_RETURN_CODE;
         } else {
-            SmartDashboard.putString("Mechanical Mode", "INVALID");
-            return RobotMap.NOTHING_RETURN_CODE;
+            DriverStation.reportError("-----Unable to determine robot has the Hatch Panel or Cargo assembly mounted-----", true);
+            DriverStation.reportError("-----DEFAULTED TO HATCH  SUBSYSTEM-----", true);
+            SmartShuffleboard.put("Driver", "ERROR", "COULD NOT DETERMINE THE MECHANISM ATTACHED DEFAULTED TO HATCH");
+            return RobotMap.HATCH_RETURN_CODE;
         }
     }
 }

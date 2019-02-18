@@ -1,8 +1,6 @@
 package org.usfirst.frc4048.subsystems;
 
-import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
-import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.utils.Logging;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -12,7 +10,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class PowerDistPanel extends Subsystem {
-	public long last_periodic = -1;
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -27,17 +24,28 @@ public class PowerDistPanel extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-	public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(Logging.Subsystems.POWERDISTPANEL) {
+	public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
 
 		@Override
 		protected void addAll() {
+			add("Total Voltage", pdp.getVoltage());
+			add("Total Current", pdp.getTotalCurrent());
+			add("FR Steer", pdp.getCurrent(RobotMap.PDP_STEERING_FR));
+			add("FL Steer", pdp.getCurrent(RobotMap.PDP_STEERING_FL));
+			add("RL Steer", pdp.getCurrent(RobotMap.PDP_STEERING_RL));
+			add("RR Steer", pdp.getCurrent(RobotMap.PDP_STEERING_RR));
+			add("FR Drive", pdp.getCurrent(RobotMap.PDP_DRIVE_FR));
+			add("FL Drive", pdp.getCurrent(RobotMap.PDP_DRIVE_FL));
+			add("RL Drive", pdp.getCurrent(RobotMap.PDP_DRIVE_RL));
+			add("RR Drive", pdp.getCurrent(RobotMap.PDP_DRIVE_RR));
+			add("Limelight", pdp.getCurrent(RobotMap.PDP_LIMELIGHT));
+			add("Cargo Intake", RobotMap.PDP_ID_CARGO_INTAKE);
+			add("Elevator Motor", pdp.getCurrent(RobotMap.PDP_ELEVATOR_MOTOR));
 		}
-
 	};
 
     
     public void periodic() {
-		final long start = System.currentTimeMillis();
     	/*
     	 * Logging:
     	 *  Battery Voltage
@@ -45,9 +53,8 @@ public class PowerDistPanel extends Subsystem {
     	 *  Swerve Steer Motors
     	 *  
     	 */
-		loggingContext.writeData();
-		last_periodic = System.currentTimeMillis() - start;
-    }
+	}
+	
     public PowerDistributionPanel getPDP() {
 		return pdp;
 	}

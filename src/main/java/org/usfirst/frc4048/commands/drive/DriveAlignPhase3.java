@@ -5,6 +5,7 @@ import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
 import org.usfirst.frc4048.swerve.math.CentricMode;
 import org.usfirst.frc4048.utils.CameraAngles;
+import org.usfirst.frc4048.utils.Logging;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Command;
@@ -56,6 +57,7 @@ public class DriveAlignPhase3 extends LoggedCommand {
 		CameraAngles cameraAngles = Robot.drivetrainSensors.getCameraAngles();
 		if(cameraAngles == null){
 			System.out.println("------------NO CAMERA VALUE------------");
+			Robot.logging.traceMessage(Logging.MessageLevel.INFORMATION, "------------NO CAMERA VALUE------------");
 			done = true;
 			return;
 		}

@@ -32,19 +32,33 @@ interface RobotMapForTestbed {
 
   public static final boolean ENABLE_DRIVETRAIN = false;
 
+  public static final boolean ENABLE_ELEVATOR = false;
+
   public static final boolean ENABLE_CARGO_SUBSYSTEM = false;
 
   public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = false;
 
-  public static final boolean ENABLE_CLIMBER_SUBSYSTEM = false;
+  public static final boolean ENABLE_CLIMBER_SUBSYSTEM = true;
 
+  public static final boolean ENABLE_BEGIN_MATCH_GROUPCOMMAND = false;
+
+  public static final boolean ENABLE_PIVOT_SUBSYSTEM = false;
     /**
    * Enables loging of timing data related to watchdog timeouts.
    */
-  public static final boolean LOG_PERIODIC_TIME = true;
+  public static final int LOG_PERIODIC_TIME = 15;
+  public static final boolean LOG_PERIODIC_TIME_TO_CONSOLE = true;
+
+  /**
+  * Enable shuffleboard debug tabs
+  */
+  public static final boolean SHUFFLEBOARD_DEBUG_MODE = true;
+
+
 
   public static final double SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK = 0.0942478739;
-
+  public static final double SWERVE_DRIVE_NEO_DISTANCE_PER_TICK = 0.0942478739;//THIS WILL CHANGE
+  
   //CAN ID
   public static final int PDP_CAN_ID = 0;
   public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 6; 
@@ -59,8 +73,7 @@ interface RobotMapForTestbed {
   public static final int DRIVE_PIGEON_ID = 9;
   public static final int PCM_CAN_ID = 10;  
   public static final int ELEVATOR_MOTOR_ID = 11;
-  public static final int CARGO_INTAKE_MOTOR_ID = 12;
-
+  public static final int WINCH_CAN_ID = 12;
 
   //ANALOG INPUTS
   public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID = 0;
@@ -70,8 +83,6 @@ interface RobotMapForTestbed {
   
   public static final int CLIMBER_DISTANCE_SENSOR_LEFT_ID = 4;
   public static final int CLIMBER_DISTANCE_SENSOR_RIGHT_ID = 5;
-  public static final int ALIGNMENT_DISTANCE_SENSOR_ID = 6;
-
   public static final int COMPRESSOR_PRESSURE_SENSOR = 2;
 
   //DIGITAL INPUTS
@@ -82,19 +93,21 @@ interface RobotMapForTestbed {
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
   public static final int HATCH_DIGITAL_INPUT_ID = 7;
   public static final int CARGO_DIGITAL_INPUT_ID = 8;
-  
+  public static final int PIVOT_LIMIT_SWITCH_LEFT_ID = 9;
+  public static final int PIVOT_LIMIT_SWITCH_RIGHT_ID = 10;
+  public static final int CLIMBER_POSITION_SENSOR_ID = 11;
 
   public static final int[] ALIGNMENT_ULTRASONIC_ID = {2,3};
 
   //PWM
-  public static final int WINCH_MOTOR_ID = 1;
+  public static final int PIVOT_MOTOR_ID = 0;
+  public static final int CARGO_MOTOR_ID = 1;
 
   //PCM
   public static final int CARGO_PISTON_ID = 0;
-  public static final int HATCH_PANEL_PISTON_ID = 1;
-  public static final int HATCH_PANEL_WRIST_PISTON_ID = 2;
-  public static final int INTAKES_WRIST_PISTON_ID = 3;
-  public static final int CLIMBER_PISTONS_ID = 4;
+  public static final int HATCH_PANEL_PISTON_ID = 0;
+  public static final int[] CLIMBER_PISTONS_ID = {0,1};
+  public static final int PIVOT_PISTON_ID = 4;
 
   //OI
   public static final int XBOX_A_BUTTON = 1;
@@ -131,8 +144,23 @@ interface RobotMapForTestbed {
   public static final int HATCH_RETURN_CODE = 0;
   public static final int CARGO_RETURN_CODE = 1;
   public static final int NOTHING_RETURN_CODE = 2;
+
+  /*
+  * TODO Add correct values for PDP on testbed
+  */
   //PDP IDS
-  public static final int PDP_ID_CARGO_INTAKE = 13; //Just a test value for now; will be changed on the real robot.
+  public static final int PDP_ID_CARGO_INTAKE = 0; //Just a test value for now; will be changed on the real robot.
+  public static final int PDP_STEERING_FR = 0;
+  public static final int PDP_STEERING_FL = 0;
+  public static final int PDP_STEERING_RL = 0;
+  public static final int PDP_STEERING_RR = 0;
+  public static final int PDP_DRIVE_FR = 0;
+  public static final int PDP_DRIVE_FL = 0;
+  public static final int PDP_DRIVE_RL = 0;
+  public static final int PDP_DRIVE_RR = 0;
+  public static final int PDP_LIMELIGHT = 0;
+  public static final int PDP_CLIMBER_WINCH = 0;
+  public static final int PDP_ELEVATOR_MOTOR = 0;
 
   //MOTOR STALL CURRENT THRESHOLDS
   public static final double CURRENT_THRESHOLD_CARGO_INTAKE = 15.0;

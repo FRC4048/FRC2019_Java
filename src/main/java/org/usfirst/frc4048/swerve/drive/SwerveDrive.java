@@ -3,6 +3,7 @@ package org.usfirst.frc4048.swerve.drive;
 import org.usfirst.frc4048.swerve.math.CentricMode;
 import org.usfirst.frc4048.swerve.math.SwerveDirective;
 import org.usfirst.frc4048.swerve.math.SwerveMath;
+import org.usfirst.frc4048.Robot;
 
 /**
  * The main class for the SwerveDrive subsystem: This class handles all aspects of controlling the swerve drive.
@@ -39,11 +40,15 @@ public class SwerveDrive {
 	public void move(double fwd, double str, double rcw, Double gyroValue)
 	{
 		swerveMath.move(fwd, str, rcw, gyroValue, swerveDirectives);
-		
+		Robot.completed(this, "swMath");	
 		swerveEnclosure1.move(swerveDirectives[0].getSpeed(), swerveDirectives[0].getAngle());
+		Robot.completed(this, "move1");	
 		swerveEnclosure2.move(swerveDirectives[1].getSpeed(), swerveDirectives[1].getAngle());
+		Robot.completed(this, "move2");	
 		swerveEnclosure3.move(swerveDirectives[2].getSpeed(), swerveDirectives[2].getAngle());
+		Robot.completed(this, "move3");	
 		swerveEnclosure4.move(swerveDirectives[3].getSpeed(), swerveDirectives[3].getAngle());
+		Robot.completed(this, "move4");	
 	}
 	
 	public void stop()
