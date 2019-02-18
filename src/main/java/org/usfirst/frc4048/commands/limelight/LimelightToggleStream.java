@@ -18,6 +18,7 @@ public class LimelightToggleStream extends LoggedCommand {
 
   public LimelightToggleStream() {
     super(String.format(" is running"));
+    setRunWhenDisabled(true);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
