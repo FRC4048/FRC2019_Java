@@ -187,6 +187,9 @@ public class OI {
 
   public void stopRumble() {
     xboxController.setRumble(RumbleType.kLeftRumble, 0);
-		xboxController.setRumble(RumbleType.kRightRumble, 0);
+    xboxController.setRumble(RumbleType.kRightRumble, 0);
+  }
+  public double getRightJoyStickY() {
+    return xboxController.getY(Hand.kRight);
   }
 }
