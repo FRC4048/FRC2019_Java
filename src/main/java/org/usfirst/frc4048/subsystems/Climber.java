@@ -67,6 +67,7 @@ public class Climber extends Subsystem {
 
   @Override
   public void periodic() {
+    SmartShuffleboard.put("Driver", "Can Climb?", canClimb());
     // Put code here to be run every loop
     if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
       // PUT SHUFFLEBOARD CODE HERE

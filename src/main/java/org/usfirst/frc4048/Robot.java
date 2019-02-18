@@ -322,7 +322,6 @@ public class Robot extends TimedRobot {
       SmartShuffleboard.putCommand("Pivot", "Pivot Deploy", new PivotMoveDeploy());
       SmartShuffleboard.putCommand("Pivot", "Pivot Retract", new PivotMoveRetract());
     }
-    SmartShuffleboard.put("Driver", "Can Climb?", climber.canClimb());
 
   }
 
