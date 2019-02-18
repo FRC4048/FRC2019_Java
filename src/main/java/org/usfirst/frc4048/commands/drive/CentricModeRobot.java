@@ -28,10 +28,7 @@ public class CentricModeRobot extends LoggedCommand {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void loggedExecute() {
-    if(DriverStation.getInstance().isAutonomous()) {
-      Robot.drivetrain.setScale(true);
-    }
-    Robot.drivetrain.swerveDrivetrain.setModeRobot();
+    Robot.drivetrain.swerveDrivetrain.setModeRobotSlow(); //we asume they want slow robot no matter what.
   }
 
   // Make this return true when this Command no longer needs to run execute()

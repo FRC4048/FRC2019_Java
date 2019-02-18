@@ -104,7 +104,6 @@ public class DriveTrain extends Subsystem {
 
   private final int TIMEOUT = 100;
 
-  public boolean scaleSpeed;
   /* Reading gyro angle is relatively slow, anywhere between 4mSec and 20mSec. */
   /*
    * We will be reading it and storing it here in the periodic method and whoever
@@ -401,14 +400,6 @@ public class DriveTrain extends Subsystem {
 
   public void stop() {
     swerveDrivetrain.stop();
-  }
-
-  public void setScale(boolean doScale) {
-    scaleSpeed = doScale;
-  }
-
-  public boolean getScale() {
-    return scaleSpeed;
   }
 
 }
