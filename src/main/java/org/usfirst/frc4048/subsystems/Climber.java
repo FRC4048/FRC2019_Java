@@ -38,6 +38,7 @@ public class Climber extends Subsystem {
   private DigitalInput pistonSensor;
   // private AngleFinder angleFinder;
   private OpticalRangeFinder leftRangeFinder;
+  private OpticalRangeFinder rightRangeFinder;
   private final double RANGE_FINDER_DISTANCE_APART = 20;
   public Climber() {
     winch = new Spark(RobotMap.WINCH_ID);
@@ -45,6 +46,7 @@ public class Climber extends Subsystem {
     climberPiston = new DoubleSolenoidUtil(RobotMap.PCM_CAN_ID, RobotMap.CLIMBER_PISTONS_ID[0], RobotMap.CLIMBER_PISTONS_ID[1]);
     // angleFinder = initClimberAngleFinder();
     leftRangeFinder = new OpticalRangeFinder(new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_LEFT_ID));
+    rightRangeFinder = new OpticalRangeFinder(new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_RIGHT_ID));
     pistonSensor = new DigitalInput(RobotMap.CLIMBER_POSITION_SENSOR_ID);
   }
 
@@ -111,6 +113,6 @@ public class Climber extends Subsystem {
   }
 
   public boolean canClimb() {
-    return leftRangeFinder.getDistanceInInches() <= 25;
+    return leftRangeFinder.getDistanceInInches() <= 25 && rightRangeFinder.getDistanceInInches() <= 25;
   }
 }
