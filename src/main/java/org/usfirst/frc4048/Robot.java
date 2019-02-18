@@ -108,6 +108,8 @@ public class Robot extends TimedRobot {
       compressorSubsystem = new CompressorSubsystem();
     }
     drivetrainSensors = new DrivetrainSensors();
+    drivetrainSensors.setStream(2);  // main USB with limelight PIP
+
     if (RobotMap.ENABLE_ELEVATOR){
       elevator = new Elevator();
     }
