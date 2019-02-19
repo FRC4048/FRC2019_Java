@@ -14,6 +14,7 @@ public class Drive extends Command {
 
 	private double fwd, str, rcw;
 	private boolean scaleSpeed;
+	private CentricMode mode;
 
 	public Drive() {
 		requires(Robot.drivetrain);
@@ -48,9 +49,11 @@ public class Drive extends Command {
 			rcw *= rcw * -1;
 		else
 			rcw *= rcw;
-		CentricMode mode = Robot.drivetrain.swerveDrivetrain.getModeRobot();
+		mode = Robot.drivetrain.swerveDrivetrain.getModeRobot();
 		if(mode == CentricMode.ROBOT_SLOW) {
 			scaleSpeed = true;
+		} else {
+			scaleSpeed = false;
 		}
 
 		if (scaleSpeed) {
