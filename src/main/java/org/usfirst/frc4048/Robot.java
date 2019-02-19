@@ -48,6 +48,7 @@ import org.usfirst.frc4048.utils.SmartShuffleboard;
 import org.usfirst.frc4048.utils.Timer;
 import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -145,7 +146,7 @@ public class Robot extends TimedRobot {
     // OI must be initialized last
     oi = new OI();
 //    SmartDashboard.putData("Auto mode", m_chooser);
-
+    CameraServer.getInstance().startAutomaticCapture();
     putCommandsInCompetition();
   }
 
@@ -179,6 +180,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    drivetrainSensors.setStream(2);  // main USB with limelight PIP
     Scheduler.getInstance().run();
   }
 

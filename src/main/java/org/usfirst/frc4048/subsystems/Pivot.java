@@ -29,8 +29,8 @@ public class Pivot extends Subsystem {
   // here. Call these from Commands.
   private Spark pivotMotor;
   // public WPI_TalonSRX pivotMotor;
-  public DigitalInput limitSwitchDeployed;
-  public DigitalInput limitSwitchRetracted;
+  private DigitalInput limitSwitchDeployed;
+  private DigitalInput limitSwitchRetracted;
   public boolean pivotDeployed = false;
   public Pivot() {
     pivotMotor = new Spark(RobotMap.PIVOT_MOTOR_ID);
