@@ -11,9 +11,11 @@ import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
 import org.usfirst.frc4048.swerve.math.CentricMode;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class CentricModeToggle extends LoggedCommand {
+
   public CentricModeToggle() {
     super("CentricModeToggle");
     // Use requires() here to declare subsystem dependencies
@@ -24,18 +26,24 @@ public class CentricModeToggle extends LoggedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
-  
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void loggedExecute() {
     CentricMode mode = Robot.drivetrain.swerveDrivetrain.getModeRobot();
-
-    if(mode == CentricMode.FIELD) {
-      Robot.drivetrain.swerveDrivetrain.setModeRobot();
+    if (DriverStation.getInstance().isAutonomous()) {
+      if (mode == CentricMode.ROBOT) {
+        Robot.drivetrain.swerveDrivetrain.setModeRobotSlow();
+      } else {
+        Robot.drivetrain.swerveDrivetrain.setModeRobot();
+      }
     } else {
-      Robot.drivetrain.swerveDrivetrain.setModeField();
+      if(mode == CentricMode.FIELD) {
+        Robot.drivetrain.swerveDrivetrain.setModeRobotSlow();
+      } else {
+        Robot.drivetrain.swerveDrivetrain.setModeField();
+      }
     }
   }
 

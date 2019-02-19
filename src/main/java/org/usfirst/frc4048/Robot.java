@@ -17,6 +17,7 @@ import org.usfirst.frc4048.utils.DoubleSolenoidUtil;
 // import org.usfirst.frc4048.commands.UnCradleIntake;
 import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
 import org.usfirst.frc4048.commands.climber.PistonTest;
+import org.usfirst.frc4048.commands.drive.CentricModeRobot;
 // import org.usfirst.frc4048.commands.DriveTargetCenter;
 // import org.usfirst.frc4048.commands.LimelightAlign;
 import org.usfirst.frc4048.commands.drive.CentricModeToggle;
@@ -74,7 +75,7 @@ public class Robot extends TimedRobot {
   public static MechanicalMode mechanicalMode;
   private final static Timer timer = new Timer(100);
   public static Pivot pivot;
-  
+
   /**
    * Robot thread scheduler. Initialized with a static thread pool.
    * 
@@ -82,8 +83,7 @@ public class Robot extends TimedRobot {
    * @See {@link #cancelAllTasks()}
    */
   private final static ScheduledExecutorService executor = Executors.newScheduledThreadPool(3);
-  private final static ArrayList<ScheduledFuture<?>> tasks = new ArrayList<ScheduledFuture<?>>(); 
-
+  private final static ArrayList<ScheduledFuture<?>> tasks = new ArrayList<ScheduledFuture<?>>();
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -110,6 +110,7 @@ public class Robot extends TimedRobot {
       compressorSubsystem = new CompressorSubsystem();
     }
     drivetrainSensors = new DrivetrainSensors();
+
     drivetrainSensors.setStream(2);  // main USB with limelight PIP
 
     if (RobotMap.ENABLE_ELEVATOR){
@@ -135,7 +136,7 @@ public class Robot extends TimedRobot {
       climber = new Climber();
     }
 
-    if(RobotMap.ENABLE_PIVOT_SUBSYSTEM){
+    if (RobotMap.ENABLE_PIVOT_SUBSYSTEM) {
       pivot = new Pivot();
     }
     logging = new Logging();
@@ -169,7 +170,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     logging.traceMessage(Logging.MessageLevel.INFORMATION,
-				"---------------------------- Robot Disabled ----------------------------");
+        "---------------------------- Robot Disabled ----------------------------");
     // Robot.drivetrainSensors.ledOff();
     new LimelightToggle(false);
     Scheduler.getInstance().run();
@@ -201,6 +202,7 @@ public class Robot extends TimedRobot {
     }
 
     commonInit("autonomousInit");
+
     // if(RobotMap.ENABLE_BEGIN_MATCH_GROUPCOMMAND){
     //   Scheduler.getInstance().add(new UnCradleIntake());
     // }
@@ -214,7 +216,7 @@ public class Robot extends TimedRobot {
      * MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new
      * ExampleCommand(); break; }
      */
-
+    Scheduler.getInstance().add(new CentricModeRobot());
   }
 
   /**
@@ -222,8 +224,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-//
-//    Scheduler.getInstance().run();
+    //
+    // Scheduler.getInstance().run();
     teleopPeriodic();
   }
 
@@ -232,16 +234,14 @@ public class Robot extends TimedRobot {
     if(RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
     }
-
     commonInit("teleopInit");
   }
-  
+
   public void commonInit(final String loggingLabel) {
     logging.traceMessage(Logging.MessageLevel.INFORMATION, LINE, loggingLabel, LINE);
     logging.writeAllTitles();
 
     new LimelightToggle(true);
-
 
     if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
       putCommandsOnShuffleboard();
@@ -257,7 +257,7 @@ public class Robot extends TimedRobot {
     timer.init("teleopPeriodic");
     logging.writeAllData();
     timer.completed(this, "log");
-    
+
     Scheduler.getInstance().run();
     timer.completed(this, "Sched");
 
@@ -287,7 +287,6 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   }
 
-
   private void putCommandsOnShuffleboard() {
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
       SmartShuffleboard.putCommand("Climber", "Piston Forward", new PistonTest(DoubleSolenoidUtil.State.forward));
@@ -306,7 +305,7 @@ public class Robot extends TimedRobot {
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight On", new LimelightToggle(true));
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Off", new LimelightToggle(false));
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Stream Toggle", new LimelightToggleStream());
-    
+
     if (RobotMap.ENABLE_ELEVATOR) {
       SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Bottom", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
       SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
@@ -357,5 +356,4 @@ public class Robot extends TimedRobot {
 		}
 		tasks.removeAll(tasks);
 	}
-
 }

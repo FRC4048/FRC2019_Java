@@ -14,6 +14,7 @@ import org.usfirst.frc4048.swerve.drive.BaseEnclosure;
 import org.usfirst.frc4048.swerve.drive.CanTalonSwerveEnclosure;
 import org.usfirst.frc4048.swerve.drive.SparkMAXSwerveEnclosure;
 import org.usfirst.frc4048.swerve.drive.SwerveDrive;
+import org.usfirst.frc4048.swerve.math.CentricMode;
 import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -29,6 +30,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -280,11 +282,10 @@ public class DriveTrain extends Subsystem {
 
       SmartShuffleboard.put("Drive", "Gyro", getGyro());
       SmartShuffleboard.put("Drive", "Centric mode", swerveDrivetrain.getModeRobot().name());
+      SmartShuffleboard.put("Driver", "Gyro Value", getGyro());
+
       Robot.completed(this, "shuf");
     }
-
-    SmartShuffleboard.put("Driver", "Gyro Value", getGyro());
-
   }
 
   // Put methods for controlling this subsystem
@@ -400,4 +401,5 @@ public class DriveTrain extends Subsystem {
   public void stop() {
     swerveDrivetrain.stop();
   }
+
 }

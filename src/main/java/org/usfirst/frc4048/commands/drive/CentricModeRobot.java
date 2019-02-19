@@ -10,6 +10,7 @@ package org.usfirst.frc4048.commands.drive;
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class CentricModeRobot extends LoggedCommand {
@@ -27,7 +28,7 @@ public class CentricModeRobot extends LoggedCommand {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void loggedExecute() {
-    Robot.drivetrain.swerveDrivetrain.setModeRobot();
+    Robot.drivetrain.swerveDrivetrain.setModeRobotSlow(); //we asume they want slow robot no matter what.
   }
 
   // Make this return true when this Command no longer needs to run execute()
