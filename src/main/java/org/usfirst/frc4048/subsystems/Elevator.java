@@ -44,7 +44,7 @@ public class Elevator extends Subsystem {
 
   private final int ELEVATOR_POSITION_ERROR = 150;
 
-  private final double ELEVATOR_UP_SCALE_FACTOR = 0.85;
+  private final double ELEVATOR_UP_SCALE_FACTOR = 0.9;
   private final double ELEVATOR_DOWN_SCALE_FACTOR = 0.50;
 
   private final double ELEVATOR_P = 1;

@@ -148,7 +148,7 @@ public class OI {
     }
 
     if (RobotMap.ENABLE_DRIVETRAIN) {
-      alignWithVision = new JoystickButton(controller, RobotMap.XBOX_START_BUTTON);
+      alignWithVision = new JoystickButton(leftJoy, 6);
       alignWithVision.whenPressed(new DriveAlignGroup());
 
       driveSwitchMode = new JoystickButton(rightJoy, 11);

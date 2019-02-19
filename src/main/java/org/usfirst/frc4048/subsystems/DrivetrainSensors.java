@@ -80,7 +80,7 @@ public class DrivetrainSensors extends Subsystem {
         if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
             SmartShuffleboard.put("DrivetrainSensors", "Ultrasonic", getUltrasonicDistance());
             CameraDistance targetDistance = getTargetDistance();
-            SmartShuffleboard.put("DrivetrainSensors", "LimelightValidTarget", targetDistance != null);
+            SmartShuffleboard.put("Driver", "LimelightValidTarget", targetDistance != null);
             if (targetDistance != null) {
                 SmartShuffleboard.put("DrivetrainSensors", "LimelightForward", targetDistance.getForward());
                 SmartShuffleboard.put("DrivetrainSensors", "LimelightSideways", targetDistance.getSideways());

@@ -122,7 +122,7 @@ public class Climber extends Subsystem {
     if(DriverStation.getInstance().getMatchTime() > 60) {
       return false;
     } else {
-      return (leftRangeFinder.getDistanceInInches() <= 25 && rightRangeFinder.getDistanceInInches() <= 25) && (leftRangeFinder.getDistanceInInches() >= 10 && rightRangeFinder.getDistanceInInches() >= 10);
+      return (leftRangeFinder.getDistanceInInches() <= 23 && rightRangeFinder.getDistanceInInches() <= 25) && (leftRangeFinder.getDistanceInInches() >= 10 && rightRangeFinder.getDistanceInInches() >= 10);
     }
   }
 }
