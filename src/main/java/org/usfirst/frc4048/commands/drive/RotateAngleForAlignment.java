@@ -24,7 +24,7 @@ public class RotateAngleForAlignment extends LoggedCommand {
   private static final double cargoFrontAngle = 0.0;
   private static final double loadingStationAngle = 180.0;
   private static final double[] hatchDepositAngles = new double[] { rightRocketSideAngle, rightRocketBackAngle,
-      rightRocketFrontAngle, leftRocketSideAngle, leftRocketBackAngle, leftRocketFrontAngle, cargoFrontAngle,
+      rightRocketFrontAngle, leftRocketSideAngle, leftRocketBackAngle, leftRocketFrontAngle,
       loadingStationAngle };
   private static final double[] cargoDepositAngles = new double[] { rightRocketSideAngle, leftRocketSideAngle,
       cargoFrontAngle, loadingStationAngle };

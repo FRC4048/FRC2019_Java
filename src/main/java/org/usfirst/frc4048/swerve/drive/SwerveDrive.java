@@ -68,6 +68,10 @@ public class SwerveDrive {
 		this.swerveMath.setModeRobot();
 	}
 	
+	public void setModeRobotSlow() {
+		this.swerveMath.setModeRobotSlow();
+	}
+	
 	public CentricMode getModeRobot() {
 		return this.swerveMath.getCentricMode();
 	}
