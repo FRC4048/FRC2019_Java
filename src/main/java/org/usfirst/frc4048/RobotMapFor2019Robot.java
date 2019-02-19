@@ -106,8 +106,8 @@ interface RobotMapFor2019Robot {
   public static final int HATCH_DIGITAL_INPUT_ID = 7;
   public static final int CARGO_DIGITAL_INPUT_ID = 8;
   public static final int PIVOT_LIMIT_SWITCH_LEFT_ID = 9;
-  public static final int PIVOT_LIMIT_SWITCH_RIGHT_ID = 10;
-  public static final int CLIMBER_POSITION_SENSOR_ID = 11;
+  public static final int PIVOT_LIMIT_SWITCH_RIGHT_ID = 11;
+  public static final int CLIMBER_POSITION_SENSOR_ID = 12;
   
   //PWM
   public static final int PIVOT_MOTOR_ID = 1;
@@ -145,10 +145,10 @@ interface RobotMapFor2019Robot {
 
   public static final int CLIMBER_DISTANCE_SENSOR_AVERAGE_BITS = 0;
 
-  public static final double CAMERA_HEIGHT = 43.5; // Inches, height of Limelight
+  public static final double CAMERA_HEIGHT = 47.0; // Inches, height of Limelight
   public static final double TARGET_HEIGHT_CARGO = 36.5; // Inches, height of field target
-  public static final double TARGET_HEIGHT_HATCH = 32.0;
-  public static final double CAMERA_ANGLE = -17; // Degrees, angle that the camera is mounted at
+  public static final double TARGET_HEIGHT_HATCH = 28.5;
+  public static final double CAMERA_ANGLE = -6; // Degrees, angle that the camera is mounted at
 
   public static final double ROBOT_CENTRIC_SCALE_RATIO = 0.3;
 
