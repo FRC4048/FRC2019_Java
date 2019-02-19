@@ -26,6 +26,8 @@ import org.usfirst.frc4048.utils.MechanicalMode;
 import org.usfirst.frc4048.utils.MotorUtils;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
 import org.usfirst.frc4048.utils.diagnostics.DiagEncoder;
+import org.usfirst.frc4048.utils.diagnostics.DiagTalonSrxEncoder;
+import org.usfirst.frc4048.utils.diagnostics.DiagTalonSrxSwitch;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -75,6 +77,12 @@ public class Elevator extends Subsystem {
     elevatorMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     elevatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     elevatorMotor.setInverted(true);
+
+    Robot.diagnostics.addDiagnosable(new DiagTalonSrxSwitch("Elevator Forward Switch", elevatorMotor, DiagTalonSrxSwitch.Direction.FORWARD));
+    Robot.diagnostics.addDiagnosable(new DiagTalonSrxSwitch("Elevator Reverse Switch", elevatorMotor, DiagTalonSrxSwitch.Direction.REVERSE));
+  
+    Robot.diagnostics.addDiagnosable(new DiagTalonSrxEncoder("Elevator Encoder", 100, elevatorMotor));
+
 
     resetEncoder();
     elevatorSetpoint = getEncoder();

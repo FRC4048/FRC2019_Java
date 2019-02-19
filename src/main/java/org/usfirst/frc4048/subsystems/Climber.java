@@ -49,6 +49,10 @@ public class Climber extends Subsystem {
     leftRangeFinder = new OpticalRangeFinder(new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_LEFT_ID));
     rightRangeFinder = new OpticalRangeFinder(new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_RIGHT_ID));
     pistonSensor = new DigitalInput(RobotMap.CLIMBER_POSITION_SENSOR_ID);
+  
+    Robot.diagnostics.addDiagnosable(new DiagOpticalRangeFinder("Left Range Finder", leftRangeFinder, 5, 10));
+    Robot.diagnostics.addDiagnosable(new DiagOpticalRangeFinder("Right Range Finder", rightRangeFinder, 5, 10));
+  
   }
 
   public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {

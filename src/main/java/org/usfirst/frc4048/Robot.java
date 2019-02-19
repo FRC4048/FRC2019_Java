@@ -27,6 +27,8 @@ import org.usfirst.frc4048.commands.drive.ResetGyro;
 import org.usfirst.frc4048.commands.drive.RotateAngle;
 import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
+import org.usfirst.frc4048.commands.hatchpanel.HatchPanelIntake;
+import org.usfirst.frc4048.commands.hatchpanel.HatchPanelRelease;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
 import org.usfirst.frc4048.commands.limelight.LimelightToggleStream;
 import org.usfirst.frc4048.commands.pivot.TogglePivot;
@@ -297,12 +299,15 @@ public class Robot extends TimedRobot {
     if (RobotMap.ENABLE_DRIVETRAIN) {
       SmartShuffleboard.putCommand("Drive", "rotate 0", new RotateAngle(0));
       SmartShuffleboard.putCommand("Drive", "DriveAlignGroup", new DriveAlignGroup());
-      SmartShuffleboard.putCommand("Drive", "DriveAlignPhase2", new DriveAlignPhase2(0.3, 0.4, false));
-      SmartShuffleboard.putCommand("Drive", "DriveAlignPhase3", new DriveAlignPhase3(0.25, false));
+      SmartShuffleboard.putCommand("Drive", "DriveAlignPhase2", new DriveAlignPhase2(0.3, 0.4, true));
+      SmartShuffleboard.putCommand("Drive", "DriveAlignPhase3", new DriveAlignPhase3(0.25, true));
       SmartShuffleboard.putCommand("Drive", "Toggle Centric Mode", new CentricModeToggle());
       SmartShuffleboard.putCommand("Drive", "Rotate angle align", new RotateAngleForAlignment());
     }
-
+    if(RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM) {
+      SmartShuffleboard.putCommand("Hatch Panel", "Intake", new HatchPanelIntake());
+      SmartShuffleboard.putCommand("Hatch Panel", "Release", new HatchPanelRelease());
+    }
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight On", new LimelightToggle(true));
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Off", new LimelightToggle(false));
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Stream Toggle", new LimelightToggleStream());
