@@ -91,7 +91,17 @@ public class SmartShuffleboardTab {
     {
         if (!commandSet.contains(fieldName))
         {
-            tab.add(fieldName, cmd);
+            //getting the layout, or creating it if it doesn't exist
+            ShuffleboardLayout layout;
+            try {
+                layout = tab.getLayout("Commands");
+            } catch (NoSuchElementException ex) {
+                layout = tab.getLayout("Commands", BuiltInLayouts.kList);
+                layout.withSize(2,4).withProperties(Map.of("Label position", "LEFT"));
+            }
+
+            //adding the command to the tab
+            layout.add(fieldName, cmd);
             commandSet.add(fieldName);
         }
     }
