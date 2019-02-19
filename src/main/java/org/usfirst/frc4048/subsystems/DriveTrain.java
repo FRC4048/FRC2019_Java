@@ -279,7 +279,7 @@ public class DriveTrain extends Subsystem {
       SmartShuffleboard.put("Drive", "Abs Encoders", "RL abs", analogInputRearLeft.getValue());
 
       SmartShuffleboard.put("Drive", "Gyro", getGyro());
-      SmartShuffleboard.put("Drive", "Centric mode", swerveDrivetrain.getModeRobot().name());
+      SmartShuffleboard.put("Driver", "Centric mode", swerveDrivetrain.getModeRobot().name());
       Robot.completed(this, "shuf");
     }
 

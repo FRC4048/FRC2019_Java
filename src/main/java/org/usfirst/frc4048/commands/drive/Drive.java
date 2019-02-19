@@ -31,19 +31,19 @@ public class Drive extends Command {
         
         //Square the values for finer movement
     	if(fwd < 0)
-    		fwd *= fwd * -1;
+    		fwd *= fwd * fwd;
     	else
-    		fwd *= fwd;
+    		fwd *= fwd * fwd;
     	
     	if(str < 0)
-    		str *= str * -1;
+    		str *= str * str;
     	else
-    		str *= str;
+    		str *= str * str;
     	
     	if(rcw < 0)
-    		rcw *= rcw * -1;
+    		rcw *= rcw * rcw;
     	else
-    		rcw *= rcw;
+    		rcw *= rcw * rcw;
 		
 		if(Robot.drivetrain.swerveDrivetrain.getModeRobot() == CentricMode.ROBOT) {
 			fwd *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;

@@ -46,6 +46,7 @@ import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.MechanicalMode;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
 import org.usfirst.frc4048.utils.Timer;
+import org.usfirst.frc4048.utils.DoubleSolenoidUtil.State;
 import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
 
 import edu.wpi.first.cameraserver.CameraServer;
@@ -181,7 +182,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    drivetrainSensors.setStream(2);  // main USB with limelight PIP
+    // drivetrainSensors.setStream(2);  // main USB with limelight PIP
     Scheduler.getInstance().run();
   }
 
@@ -237,21 +238,25 @@ public class Robot extends TimedRobot {
     if(RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
     }
-
     commonInit("teleopInit");
   }
   
   public void commonInit(final String loggingLabel) {
     logging.traceMessage(Logging.MessageLevel.INFORMATION, LINE, loggingLabel, LINE);
     logging.writeAllTitles();
-
+    
     new LimelightToggle(true);
 
 
     if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
       putCommandsOnShuffleboard();
     }
-    
+    if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM) {
+      Scheduler.getInstance().add(new HatchPanelIntake());
+    }
+    if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
+      Scheduler.getInstance().add(new PistonTest(State.reverse));
+    }
   }
 
   /**

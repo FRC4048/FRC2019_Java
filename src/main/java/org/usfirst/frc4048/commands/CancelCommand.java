@@ -8,6 +8,7 @@
 package org.usfirst.frc4048.commands;
 
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
+import org.usfirst.frc4048.commands.hatchpanel.HatchPanelRelease;
 import org.usfirst.frc4048.utils.ElevatorPosition;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -23,7 +24,7 @@ public class CancelCommand extends Command {
   @Override
   protected void initialize() {
     Scheduler.getInstance().removeAll();
-    Scheduler.getInstance().add(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));//brings it to bottom
+    Scheduler.getInstance().add(new HatchPanelRelease());
   }
 
   // Called repeatedly when this Command is scheduled to run
