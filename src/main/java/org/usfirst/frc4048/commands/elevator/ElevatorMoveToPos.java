@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ElevatorMoveToPos extends LoggedCommand {
   private ElevatorPosition elevatorPosition;
+
   public ElevatorMoveToPos(ElevatorPosition elevatorPosition) {
     super("ElevatorMoveToPos: " + elevatorPosition.toString());
     // Use requires() here to declare subsystem dependencies
@@ -33,13 +34,16 @@ public class ElevatorMoveToPos extends LoggedCommand {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void loggedExecute() {
-    Robot.elevator.elevatorToPosition(elevatorPosition);
+    if (Robot.pivot.getDeployedSwitch()) {
+      Robot.elevator.elevatorToPosition(elevatorPosition);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean loggedIsFinished() {
-    return isTimedOut() || Robot.elevator.elevatorAtPos(elevatorPosition) || !Robot.elevator.getTopSwitch() || !Robot.elevator.getBotSwitch();//we do this because on the test bed false is pushed down
+    return isTimedOut() || Robot.elevator.elevatorAtPos(elevatorPosition) || !Robot.elevator.getTopSwitch()
+        || !Robot.elevator.getBotSwitch();// we do this because on the test bed false is pushed down
   }
 
   // Called once after isFinished returns true
