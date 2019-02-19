@@ -147,6 +147,7 @@ public class Robot extends TimedRobot {
     oi = new OI();
 //    SmartDashboard.putData("Auto mode", m_chooser);
     CameraServer.getInstance().startAutomaticCapture();
+    
     putCommandsInCompetition();
   }
 
