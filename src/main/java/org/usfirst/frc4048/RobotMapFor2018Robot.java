@@ -41,6 +41,8 @@ interface RobotMapFor2018Robot {
 
   public static final boolean ENABLE_ELEVATOR = false;
 
+  public static final boolean ENABLE_MANIPULATOR = false;
+
   public static final boolean ENABLE_CARGO_SUBSYSTEM = false; //this should be true when we actually get the robot
 
   public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = false; //this should be true when we actually get the robot
@@ -81,7 +83,7 @@ interface RobotMapFor2018Robot {
   public static final int DRIVE_PIGEON_ID = 9;
   public static final int PCM_CAN_ID = 10;  
   public static final int ELEVATOR_MOTOR_ID = 11;
-  public static final int WINCH_CAN_ID = 12;
+  public static final int WINCH_ID = 12;
 
   //ANALOG INPUTS
   public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID = 0;

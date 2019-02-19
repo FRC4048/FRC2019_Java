@@ -22,7 +22,7 @@ public class LeftDPADTrigger extends Trigger {
 
   @Override
   public boolean get() {
-    if (xboxController.getPOV() <= 105 || xboxController.getPOV() >= 75) {
+    if (xboxController.getPOV() <= 285 && xboxController.getPOV() >= 255) {
       return true;
     } else {
       return false;

@@ -14,7 +14,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import org.usfirst.frc4048.utils.DoubleSolenoidUtil;
 
-import org.usfirst.frc4048.commands.UnCradleIntake;
+// import org.usfirst.frc4048.commands.UnCradleIntake;
 import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
 import org.usfirst.frc4048.commands.climber.PistonTest;
 import org.usfirst.frc4048.commands.drive.CentricModeRobot;
@@ -30,8 +30,7 @@ import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
 import org.usfirst.frc4048.commands.limelight.LimelightToggleStream;
-import org.usfirst.frc4048.commands.pivot.PivotMoveDeploy;
-import org.usfirst.frc4048.commands.pivot.PivotMoveRetract;
+import org.usfirst.frc4048.commands.pivot.TogglePivot;
 import org.usfirst.frc4048.subsystems.CargoSubsystem;
 import org.usfirst.frc4048.subsystems.Climber;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
@@ -92,12 +91,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    int mode;
     cancelAllTasks();
 
     diagnostics = new Diagnostics();
 
-    mechanicalMode = new MechanicalMode();
-    int mode = mechanicalMode.getMode();
+    if (RobotMap.ENABLE_MANIPULATOR){
+      mechanicalMode = new MechanicalMode();
+      mode = mechanicalMode.getMode();
+    }
     // int mode = RobotMap.CARGO_RETURN_CODE;
     if (RobotMap.ENABLE_DRIVETRAIN) {
       drivetrain = new DriveTrain();
@@ -114,19 +116,21 @@ public class Robot extends TimedRobot {
     if (RobotMap.ENABLE_ELEVATOR){
       elevator = new Elevator();
     }
-    switch (mode) {
-    case RobotMap.CARGO_RETURN_CODE:
-      if (RobotMap.ENABLE_CARGO_SUBSYSTEM) {
-        cargoSubsystem = new CargoSubsystem();
+    if (RobotMap.ENABLE_MANIPULATOR){
+      switch(mode){
+        case RobotMap.CARGO_RETURN_CODE:
+          if (RobotMap.ENABLE_CARGO_SUBSYSTEM) {
+            cargoSubsystem = new CargoSubsystem();
+          }
+          break;
+        case RobotMap.HATCH_RETURN_CODE:
+          if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM) {
+            hatchPanelSubsystem = new HatchPanelSubsystem();
+          }
+          break;
+        default:
+          break;
       }
-      break;
-    case RobotMap.HATCH_RETURN_CODE:
-      if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM) {
-        hatchPanelSubsystem = new HatchPanelSubsystem();
-      }
-      break;
-    default:
-      break;
     }
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
       climber = new Climber();
@@ -198,13 +202,13 @@ public class Robot extends TimedRobot {
     }
 
     commonInit("autonomousInit");
-    if (RobotMap.ENABLE_BEGIN_MATCH_GROUPCOMMAND) {
-      Scheduler.getInstance().add(new UnCradleIntake());
-    }
-    // logging.traceMessage(Logging.MessageLevel.INFORMATION,
-    // "---------------------------- Autonomous mode starting
-    // ----------------------------");
-    // m_autonomousCommand = m_chooser.getSelected();
+
+    // if(RobotMap.ENABLE_BEGIN_MATCH_GROUPCOMMAND){
+    //   Scheduler.getInstance().add(new UnCradleIntake());
+    // }
+    //    logging.traceMessage(Logging.MessageLevel.INFORMATION,
+    //				"---------------------------- Autonomous mode starting ----------------------------");
+    //    m_autonomousCommand = m_chooser.getSelected();
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
@@ -318,8 +322,7 @@ public class Robot extends TimedRobot {
 
     if (RobotMap.ENABLE_PIVOT_SUBSYSTEM)
     {
-      SmartShuffleboard.putCommand("Pivot", "Pivot Deploy", new PivotMoveDeploy());
-      SmartShuffleboard.putCommand("Pivot", "Pivot Retract", new PivotMoveRetract());
+      SmartShuffleboard.putCommand("Pivot", "Pivot Deploy", new TogglePivot   ());
     }
 
   }

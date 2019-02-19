@@ -8,55 +8,63 @@
 package org.usfirst.frc4048.commands.pivot;
 
 import org.usfirst.frc4048.Robot;
-import org.usfirst.frc4048.commands.LoggedCommand;
+import org.usfirst.frc4048.subsystems.Pivot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class PivotMoveRetract extends LoggedCommand {
-  private static final double IN_SPEED = -1;
-  public PivotMoveRetract() {
-    super("PivotMoveRetract");
+public class MovePivot extends Command {
+  private final double PIVOT_SPEED = 0.1;
+  public MovePivot() {
     // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
     requires(Robot.pivot);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void loggedInitialize() {
-    setTimeout(3);
+  protected void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void loggedExecute() {
-    Robot.pivot.setSpeed(IN_SPEED);
+  protected void execute() {
+    if (Robot.pivot.pivotDeployed){
+      if (Robot.pivot.getDeployedSwitch()){
+        Robot.pivot.pivotMotor.set(0);
+      }
+
+      else {
+        Robot.pivot.pivotMotor.set(PIVOT_SPEED);
+      }
+
+    }
+
+    else {
+      if (Robot.pivot.getRetractedSwitch()){
+        Robot.pivot.pivotMotor.set(0);
+
+      }
+
+      else {
+        Robot.pivot.pivotMotor.set(-PIVOT_SPEED);
+      }
+
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean loggedIsFinished() {
-    return Robot.pivot.getRightSwitch() || isTimedOut();
+  protected boolean isFinished() {
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void loggedEnd() {
-    if(Robot.pivot.getRightSwitch()) {
-      Robot.pivot.movePiston(false);
-    }
-    Robot.pivot.setSpeed(0.0);
+  protected void end() {
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void loggedInterrupted() {
-    loggedEnd();
-  }
-
-  @Override
-  protected void loggedCancel() {
-    loggedEnd();
+  protected void interrupted() {
   }
 }

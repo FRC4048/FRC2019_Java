@@ -19,30 +19,32 @@ package org.usfirst.frc4048;
 interface RobotMapForTestbed {
 
   /**
-   * Enable the compressor subsystem
+   * Enable the compressor subsystemh
    */
-  public static final boolean ENABLE_COMPRESSOR = true;
+  public static final boolean ENABLE_COMPRESSOR = false;
 
   /**
    * Enables reading of the gyro angle from the pigeon on it's own thread
    * so it does not impact the amount of time it takes to complete the
    * periodic() loop.
-   */
-  public static final boolean ENABLE_PIGEON_THREAD = true;
+   */ 
+  public static final boolean ENABLE_PIGEON_THREAD = false;
 
   public static final boolean ENABLE_DRIVETRAIN = false;
 
   public static final boolean ENABLE_ELEVATOR = false;
 
+  public static final boolean ENABLE_MANIPULATOR = false;
+
   public static final boolean ENABLE_CARGO_SUBSYSTEM = false;
 
   public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = false;
 
-  public static final boolean ENABLE_CLIMBER_SUBSYSTEM = true;
+  public static final boolean ENABLE_CLIMBER_SUBSYSTEM = false;
 
   public static final boolean ENABLE_BEGIN_MATCH_GROUPCOMMAND = false;
 
-  public static final boolean ENABLE_PIVOT_SUBSYSTEM = false;
+  public static final boolean ENABLE_PIVOT_SUBSYSTEM = true;
     /**
    * Enables loging of timing data related to watchdog timeouts.
    */
@@ -73,7 +75,7 @@ interface RobotMapForTestbed {
   public static final int DRIVE_PIGEON_ID = 9;
   public static final int PCM_CAN_ID = 10;  
   public static final int ELEVATOR_MOTOR_ID = 11;
-  public static final int WINCH_CAN_ID = 12;
+  public static final int WINCH_ID = 12;
 
   //ANALOG INPUTS
   public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID = 0;
@@ -86,18 +88,18 @@ interface RobotMapForTestbed {
   public static final int COMPRESSOR_PRESSURE_SENSOR = 2;
 
   //DIGITAL INPUTS
-  public static final int CARGO_LIMIT_SWITCH_LEFT_ID = 1;
-  public static final int CARGO_LIMIT_SWITCH_RIGHT_ID = 2;
+  public static final int CARGO_LIMIT_SWITCH_LEFT_ID = 9;
+  public static final int CARGO_LIMIT_SWITCH_RIGHT_ID = 10;
   public static final int CARGO_OPTICAL_SENSOR_ID = 3;
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
   public static final int HATCH_DIGITAL_INPUT_ID = 7;
   public static final int CARGO_DIGITAL_INPUT_ID = 8;
-  public static final int PIVOT_LIMIT_SWITCH_LEFT_ID = 9;
-  public static final int PIVOT_LIMIT_SWITCH_RIGHT_ID = 10;
+  public static final int PIVOT_LIMIT_SWITCH_LEFT_ID = 1;
+  public static final int PIVOT_LIMIT_SWITCH_RIGHT_ID = 2;
   public static final int CLIMBER_POSITION_SENSOR_ID = 11;
 
-  public static final int[] ALIGNMENT_ULTRASONIC_ID = {2,3};
+  public static final int[] ALIGNMENT_ULTRASONIC_ID = {12,13};
 
   //PWM
   public static final int PIVOT_MOTOR_ID = 0;
