@@ -42,8 +42,7 @@ public class ElevatorMoveToPos extends LoggedCommand {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean loggedIsFinished() {
-    return isTimedOut() || Robot.elevator.elevatorAtPos(elevatorPosition) || !Robot.elevator.getTopSwitch()
-        || !Robot.elevator.getBotSwitch();// we do this because on the test bed false is pushed down
+    return isTimedOut() || Robot.elevator.elevatorAtPos(elevatorPosition);
   }
 
   // Called once after isFinished returns true
