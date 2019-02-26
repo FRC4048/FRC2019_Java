@@ -45,7 +45,7 @@ public class Elevator extends Subsystem {
   private final int ELEVATOR_POSITION_ERROR = 150;
 
   private final double ELEVATOR_UP_SCALE_FACTOR = 1.0;
-  private final double ELEVATOR_DOWN_SCALE_FACTOR = 0.55;
+  private final double ELEVATOR_DOWN_SCALE_FACTOR = 0.6;
 
   private final double ELEVATOR_P = 1;
   private final double ELEVATOR_I = 0.001;
@@ -72,8 +72,6 @@ public class Elevator extends Subsystem {
     elevatorMotor.configAllowableClosedloopError(0, ELEVATOR_POSITION_ERROR, TIMEOUT);
     setPID();
 
-    // elevatorMotor.configMotionAcceleration(ELEVATOR_ACCEL, TIMEOUT);
-    // elevatorMotor.configMotionCruiseVelocity(ELEVATOR_CRUISE_VELOCITY, TIMEOUT);
     elevatorMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     elevatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     elevatorMotor.setInverted(true);

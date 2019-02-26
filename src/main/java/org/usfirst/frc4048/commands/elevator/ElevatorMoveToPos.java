@@ -34,9 +34,7 @@ public class ElevatorMoveToPos extends LoggedCommand {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void loggedExecute() {
-    // if (Robot.pivot.getDeployedSwitch()) {
-      Robot.elevator.elevatorToPosition(elevatorPosition);
-    // }
+    Robot.elevator.elevatorToPosition(elevatorPosition);
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -37,18 +37,15 @@ public class Climber extends Subsystem {
   private Spark winch;
   private DoubleSolenoidUtil climberPiston;
   private DigitalInput pistonSensor;
-  // private AngleFinder angleFinder;
   private OpticalRangeFinder leftRangeFinder;
   private OpticalRangeFinder rightRangeFinder;
-  private final double RANGE_FINDER_DISTANCE_APART = 20;
   public Climber() {
     winch = new Spark(RobotMap.WINCH_ID);
     LiveWindow.add(winch);
     climberPiston = new DoubleSolenoidUtil(RobotMap.PCM_CAN_ID, RobotMap.CLIMBER_PISTONS_ID[0], RobotMap.CLIMBER_PISTONS_ID[1]);
-    // angleFinder = initClimberAngleFinder();
     leftRangeFinder = new OpticalRangeFinder(new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_LEFT_ID));
     rightRangeFinder = new OpticalRangeFinder(new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_RIGHT_ID));
-    pistonSensor = new DigitalInput(RobotMap.CLIMBER_POSITION_SENSOR_ID);
+    pistonSensor = new DigitalInput(RobotMap.CLIMBER_POSITION_SENSOR_ID); //This is not used
   
     Robot.diagnostics.addDiagnosable(new DiagOpticalRangeFinder("Left Range Finder", leftRangeFinder, 5, 10));
     Robot.diagnostics.addDiagnosable(new DiagOpticalRangeFinder("Right Range Finder", rightRangeFinder, 5, 10));
@@ -79,10 +76,6 @@ public class Climber extends Subsystem {
     }
   }
 
-  // public double getAngle() {
-  //   // return angleFinder.calcAngleInDegrees();
-  // }
-
   public void controlWinch(double speed) {
     winch.set(speed);
   } 
@@ -111,9 +104,6 @@ public class Climber extends Subsystem {
     final OpticalRangeFinder leftRangeFinder = new OpticalRangeFinder(leftRangeInput);
     final OpticalRangeFinder rightRangeFinder = new OpticalRangeFinder(rightRangeInput);
     
-    Robot.diagnostics.addDiagnosable(new DiagOpticalRangeFinder("Left Range Finder", leftRangeFinder, 5, 10));
-    Robot.diagnostics.addDiagnosable(new DiagOpticalRangeFinder("Right Range Finder", rightRangeFinder, 5, 10));
-  
     return new AngleFinder(leftRangeFinder, rightRangeFinder, RobotMap.INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS);
   
   }

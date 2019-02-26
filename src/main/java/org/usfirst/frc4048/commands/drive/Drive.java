@@ -42,21 +42,10 @@ public class Drive extends Command {
 		}
 
 		if (!scaleSpeed) {
-			// Square the values for finer movement
-			if (fwd < 0)
-				fwd *= fwd * fwd;
-			else
-				fwd *= fwd * fwd;
-
-			if (str < 0)
-				str *= str * str;
-			else
-				str *= str * str;
-
-			if (rcw < 0)
-				rcw *= rcw * rcw;
-			else
-				rcw *= rcw * rcw;
+			// Cube the values for finer movement
+			fwd = Math.pow(fwd, 3);
+			str = Math.pow(fwd, 3);
+			rcw = Math.pow(rcw, 3);
 		}
 
 		if (scaleSpeed) {
