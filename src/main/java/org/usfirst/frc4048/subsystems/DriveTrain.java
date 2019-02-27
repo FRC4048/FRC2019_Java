@@ -356,10 +356,10 @@ public class DriveTrain extends Subsystem {
 
   @SuppressWarnings("unused")
   public void setGyro(double angle) {
-    // synchronized (pigeon) {
+    synchronized (pigeon) {
       pigeon.setYaw(angle, TIMEOUT);
       pigeon.setFusedHeading(angle, TIMEOUT);
-    // }
+    }
   }
 
   public double getGyro() {

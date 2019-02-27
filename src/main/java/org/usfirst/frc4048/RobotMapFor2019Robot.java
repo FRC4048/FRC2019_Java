@@ -35,7 +35,7 @@ interface RobotMapFor2019Robot {
    * so it does not impact the amount of time it takes to complete the
    * periodic() loop.
    */
-  public static final boolean ENABLE_PIGEON_THREAD = false;
+  public static final boolean ENABLE_PIGEON_THREAD = true;
 
   public static final boolean ENABLE_DRIVETRAIN = true;
 
