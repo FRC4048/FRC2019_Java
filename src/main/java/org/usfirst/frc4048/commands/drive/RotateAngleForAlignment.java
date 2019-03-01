@@ -34,7 +34,12 @@ public class RotateAngleForAlignment extends LoggedCommand {
   private final double MIN_SPEED = 0.25;
 
   /*
-   * \ <-- Back Angle \ | | <-- Side Angle / / <-- Front Angle
+   * \ <-- Back Angle 
+   *  \ 
+   *   | 
+   *   | <-- Side Angle 
+   *  / 
+   * / <-- Front Angle
    */
 
   public RotateAngleForAlignment() {
