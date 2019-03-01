@@ -167,4 +167,8 @@ public class Elevator extends Subsystem {
   public WPI_TalonSRX getElevatorMotor() {
     return elevatorMotor;
   }
+
+  public void stopMotor() {
+    elevatorMotor.set(ControlMode.PercentOutput, 0.0);
+  }
 }
