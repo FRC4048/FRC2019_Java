@@ -16,7 +16,7 @@ import org.usfirst.frc4048.utils.DoubleSolenoidUtil;
 
 // import org.usfirst.frc4048.commands.UnCradleIntake;
 import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
-import org.usfirst.frc4048.commands.climber.PistonTest;
+import org.usfirst.frc4048.commands.climber.ClimbMovePiston;
 import org.usfirst.frc4048.commands.drive.CentricModeRobot;
 // import org.usfirst.frc4048.commands.DriveTargetCenter;
 // import org.usfirst.frc4048.commands.LimelightAlign;
@@ -226,7 +226,6 @@ public class Robot extends TimedRobot {
      * ExampleCommand(); break; }
      */
     Scheduler.getInstance().add(new CentricModeRobot());
-    Robot.drivetrainSensors.ledOn();
   }
 
   /**
@@ -256,7 +255,7 @@ public class Robot extends TimedRobot {
       putCommandsOnShuffleboard();
     }
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
-      Scheduler.getInstance().add(new PistonTest(State.reverse));
+      Scheduler.getInstance().add(new ClimbMovePiston(State.reverse));
     }
   }
 
@@ -300,9 +299,9 @@ public class Robot extends TimedRobot {
 
   private void putCommandsOnShuffleboard() {
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
-      SmartShuffleboard.putCommand("Climber", "Piston Forward", new PistonTest(DoubleSolenoidUtil.State.forward));
-      SmartShuffleboard.putCommand("Climber", "Piston Rev", new PistonTest(DoubleSolenoidUtil.State.reverse));
-      SmartShuffleboard.putCommand("Climber", "Piston Off", new PistonTest(DoubleSolenoidUtil.State.off));
+      SmartShuffleboard.putCommand("Climber", "Piston Forward", new ClimbMovePiston(DoubleSolenoidUtil.State.forward));
+      SmartShuffleboard.putCommand("Climber", "Piston Rev", new ClimbMovePiston(DoubleSolenoidUtil.State.reverse));
+      SmartShuffleboard.putCommand("Climber", "Piston Off", new ClimbMovePiston(DoubleSolenoidUtil.State.off));
     }
     if (RobotMap.ENABLE_DRIVETRAIN) {
       SmartShuffleboard.putCommand("Drive", "rotate 0", new RotateAngle(0));

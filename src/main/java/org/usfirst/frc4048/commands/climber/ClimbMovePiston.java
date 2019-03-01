@@ -13,9 +13,9 @@ import org.usfirst.frc4048.utils.DoubleSolenoidUtil;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class PistonTest extends Command {
+public class ClimbMovePiston extends Command {
   DoubleSolenoidUtil.State state;
-  public PistonTest(DoubleSolenoidUtil.State state) {
+  public ClimbMovePiston(DoubleSolenoidUtil.State state) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     this.state = state;

@@ -39,6 +39,10 @@ public class Climber extends Subsystem {
   private DigitalInput pistonSensor;
   private OpticalRangeFinder leftRangeFinder;
   private OpticalRangeFinder rightRangeFinder;
+
+  private final double MAX_CLIMB_DISTANCE = 24;
+  private final double MIN_CLIMB_DISTANCE = 10;
+  private final double MAX_CLIMB_ERROR = 2;
   public Climber() {
     winch = new Spark(RobotMap.WINCH_ID);
     LiveWindow.add(winch);
@@ -112,8 +116,8 @@ public class Climber extends Subsystem {
     if(DriverStation.getInstance().getMatchTime() > 60) {
       return false;
     } else {
-      return (leftRangeFinder.getDistanceInInches() <= 24 && rightRangeFinder.getDistanceInInches() <= 25) && (leftRangeFinder.getDistanceInInches() >= 10 && rightRangeFinder.getDistanceInInches() >= 10)
-      && (Math.abs(leftRangeFinder.getDistanceInInches() - rightRangeFinder.getDistanceInInches()) <= 2);
+      return (leftRangeFinder.getDistanceInInches() <= MAX_CLIMB_DISTANCE && rightRangeFinder.getDistanceInInches() <= MAX_CLIMB_DISTANCE) && (leftRangeFinder.getDistanceInInches() >= MIN_CLIMB_DISTANCE && rightRangeFinder.getDistanceInInches() >= MIN_CLIMB_DISTANCE)
+      && (Math.abs(leftRangeFinder.getDistanceInInches() - rightRangeFinder.getDistanceInInches()) <= MAX_CLIMB_ERROR);
     }
   }
 }

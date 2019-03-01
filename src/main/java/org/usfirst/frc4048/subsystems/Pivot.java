@@ -55,9 +55,11 @@ public class Pivot extends Subsystem {
 
   @Override
   public void periodic() {
-     SmartShuffleboard.put("Pivot", "deployed", pivotDeployed);
-     SmartShuffleboard.put("Pivot", "fwd Switch", getDeployedSwitch());
-     SmartShuffleboard.put("Pivot", "rev Switch", getRetractedSwitch());
+    if(RobotMap.SHUFFLEBOARD_DEBUG_MODE){
+      SmartShuffleboard.put("Pivot", "deployed", pivotDeployed);
+      SmartShuffleboard.put("Pivot", "fwd Switch", getDeployedSwitch());
+      SmartShuffleboard.put("Pivot", "rev Switch", getRetractedSwitch());
+    }
   }
 
   @Override
