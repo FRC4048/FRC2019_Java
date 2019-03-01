@@ -255,7 +255,8 @@ public class Robot extends TimedRobot {
       putCommandsOnShuffleboard();
     }
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
-      Scheduler.getInstance().add(new ClimbMovePiston(State.reverse));
+      Robot.climber.movePiston(State.reverse);
+      // Scheduler.getInstance().add(new ClimbMovePiston(State.reverse));
     }
   }
 
