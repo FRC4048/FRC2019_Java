@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands.cargo;
+package org.usfirst.frc4048.commands.manipulator.cargo;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

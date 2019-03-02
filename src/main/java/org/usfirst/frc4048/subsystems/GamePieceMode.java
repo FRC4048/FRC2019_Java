@@ -7,8 +7,10 @@
 
 package org.usfirst.frc4048.subsystems;
 
+import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
+import org.usfirst.frc4048.utils.diagnostics.DiagSwitch;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -24,6 +26,7 @@ public class GamePieceMode extends Subsystem {
 
   public GamePieceMode() {
     cargoSensor = new DigitalInput(RobotMap.CARGO_OPTICAL_SENSOR_ID);
+    Robot.diagnostics.addDiagnosable(new DiagSwitch("Cargo Optical Sensor", cargoSensor));
   }
 
   @Override
@@ -35,7 +38,7 @@ public class GamePieceMode extends Subsystem {
   @Override
   public void periodic() {
     setStateBasedOnSensor();
-    SmartShuffleboard.put("Driver", "Is Cargo?", getState());
+    SmartShuffleboard.put("Driver", "Is Cargo?", isCargo());
   }
   public void toggleState() {
     if (gamePieceState) {
@@ -53,7 +56,7 @@ public class GamePieceMode extends Subsystem {
     }
   }
 
-  public boolean getState() {
+  public boolean isCargo() {
     return gamePieceState;
   }
 }

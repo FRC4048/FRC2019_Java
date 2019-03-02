@@ -55,7 +55,6 @@ public class LimeLightVision {
         double x = tx.getDouble(0.0);
         double y = ty.getDouble(0.0);
 
-        Robot.gamePieceMode.setStateBasedOnSensor();
         if(Robot.gamePieceMode.getState()){
             return calcCameraDistance(x, y, RobotMap.TARGET_HEIGHT_CARGO, RobotMap.CAMERA_HEIGHT, RobotMap.CAMERA_ANGLE);
         } else {
