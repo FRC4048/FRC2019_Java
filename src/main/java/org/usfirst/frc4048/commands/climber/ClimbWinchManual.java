@@ -32,7 +32,7 @@ public class ClimbWinchManual extends Command {
   @Override
   protected void execute() {
     if(DriverStation.getInstance().getMatchTime() < 50 && Math.abs(Robot.oi.getXboxLeftJoystickY()) > JOYSTICK_DEADZONE) {
-      Robot.climber.controlWinch(Robot.oi.getXboxLeftJoystickY());
+      Robot.climber.controlWinch(-Robot.oi.getXboxLeftJoystickY());
     } else {
       Robot.climber.controlWinch(0.0);
     }

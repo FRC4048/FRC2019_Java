@@ -37,18 +37,23 @@ public class Climber extends Subsystem {
   private Spark winch;
   private DoubleSolenoidUtil climberPiston;
   private DigitalInput pistonSensor;
-  // private AngleFinder angleFinder;
   private OpticalRangeFinder leftRangeFinder;
   private OpticalRangeFinder rightRangeFinder;
-  private final double RANGE_FINDER_DISTANCE_APART = 20;
+
+  private final double MAX_CLIMB_DISTANCE = 24;
+  private final double MIN_CLIMB_DISTANCE = 10;
+  private final double MAX_CLIMB_ERROR = 2;
   public Climber() {
     winch = new Spark(RobotMap.WINCH_ID);
     LiveWindow.add(winch);
     climberPiston = new DoubleSolenoidUtil(RobotMap.PCM_CAN_ID, RobotMap.CLIMBER_PISTONS_ID[0], RobotMap.CLIMBER_PISTONS_ID[1]);
-    // angleFinder = initClimberAngleFinder();
     leftRangeFinder = new OpticalRangeFinder(new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_LEFT_ID));
     rightRangeFinder = new OpticalRangeFinder(new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_RIGHT_ID));
-    pistonSensor = new DigitalInput(RobotMap.CLIMBER_POSITION_SENSOR_ID);
+    pistonSensor = new DigitalInput(RobotMap.CLIMBER_POSITION_SENSOR_ID); //This is not used
+  
+    Robot.diagnostics.addDiagnosable(new DiagOpticalRangeFinder("Left Range Finder", leftRangeFinder, 5, 10));
+    Robot.diagnostics.addDiagnosable(new DiagOpticalRangeFinder("Right Range Finder", rightRangeFinder, 5, 10));
+  
   }
 
   public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
@@ -74,10 +79,6 @@ public class Climber extends Subsystem {
       Robot.completed(this, "shuf");
     }
   }
-
-  // public double getAngle() {
-  //   // return angleFinder.calcAngleInDegrees();
-  // }
 
   public void controlWinch(double speed) {
     winch.set(speed);
@@ -107,9 +108,6 @@ public class Climber extends Subsystem {
     final OpticalRangeFinder leftRangeFinder = new OpticalRangeFinder(leftRangeInput);
     final OpticalRangeFinder rightRangeFinder = new OpticalRangeFinder(rightRangeInput);
     
-    Robot.diagnostics.addDiagnosable(new DiagOpticalRangeFinder("Left Range Finder", leftRangeFinder, 5, 10));
-    Robot.diagnostics.addDiagnosable(new DiagOpticalRangeFinder("Right Range Finder", rightRangeFinder, 5, 10));
-  
     return new AngleFinder(leftRangeFinder, rightRangeFinder, RobotMap.INCHES_BETWEEN_CLIMBER_DISTANCE_SENSORS);
   
   }
@@ -118,7 +116,8 @@ public class Climber extends Subsystem {
     if(DriverStation.getInstance().getMatchTime() > 60) {
       return false;
     } else {
-      return (leftRangeFinder.getDistanceInInches() <= 25 && rightRangeFinder.getDistanceInInches() <= 25) && (leftRangeFinder.getDistanceInInches() >= 5 && rightRangeFinder.getDistanceInInches() >= 5);
+      return (leftRangeFinder.getDistanceInInches() <= MAX_CLIMB_DISTANCE && rightRangeFinder.getDistanceInInches() <= MAX_CLIMB_DISTANCE) && (leftRangeFinder.getDistanceInInches() >= MIN_CLIMB_DISTANCE && rightRangeFinder.getDistanceInInches() >= MIN_CLIMB_DISTANCE)
+      && (Math.abs(leftRangeFinder.getDistanceInInches() - rightRangeFinder.getDistanceInInches()) <= MAX_CLIMB_ERROR);
     }
   }
 }

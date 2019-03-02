@@ -9,9 +9,11 @@ package org.usfirst.frc4048.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.commands.pivot.MovePivot;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
+import org.usfirst.frc4048.utils.diagnostics.DiagSwitch;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Spark;
@@ -27,14 +29,18 @@ public class Pivot extends Subsystem {
   // here. Call these from Commands.
   private Spark pivotMotor;
   // public WPI_TalonSRX pivotMotor;
-  public DigitalInput limitSwitchDeployed;
-  public DigitalInput limitSwitchRetracted;
+  private DigitalInput limitSwitchDeployed;
+  private DigitalInput limitSwitchRetracted;
   public boolean pivotDeployed = false;
   public Pivot() {
     pivotMotor = new Spark(RobotMap.PIVOT_MOTOR_ID);
     // pivotMotor = new WPI_TalonSRX(7);
     limitSwitchDeployed = new DigitalInput(RobotMap.PIVOT_LIMIT_SWITCH_LEFT_ID);
     limitSwitchRetracted = new DigitalInput(RobotMap.PIVOT_LIMIT_SWITCH_RIGHT_ID);
+
+    Robot.diagnostics.addDiagnosable(new DiagSwitch("Pivot forward switch", limitSwitchDeployed));
+    Robot.diagnostics.addDiagnosable(new DiagSwitch("Pivot reverse switch", limitSwitchRetracted));
+
     LiveWindow.add(pivotMotor);
   }
 
@@ -42,7 +48,6 @@ public class Pivot extends Subsystem {
     if (pivotDeployed == false){
       pivotDeployed = true;
     }
-
     else {
       pivotDeployed = false;
     }
@@ -50,7 +55,11 @@ public class Pivot extends Subsystem {
 
   @Override
   public void periodic() {
-     SmartShuffleboard.put("Pivot", "deployed", pivotDeployed);
+    if(RobotMap.SHUFFLEBOARD_DEBUG_MODE){
+      SmartShuffleboard.put("Pivot", "deployed", pivotDeployed);
+      SmartShuffleboard.put("Pivot", "fwd Switch", getDeployedSwitch());
+      SmartShuffleboard.put("Pivot", "rev Switch", getRetractedSwitch());
+    }
   }
 
   @Override

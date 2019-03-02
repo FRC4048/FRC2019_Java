@@ -8,7 +8,9 @@
 package org.usfirst.frc4048.commands;
 
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
+import org.usfirst.frc4048.commands.hatchpanel.HatchPanelRelease;
 import org.usfirst.frc4048.utils.ElevatorPosition;
+import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
@@ -23,7 +25,8 @@ public class CancelCommand extends LoggedCommand {
   @Override
   protected void loggedInitialize() {
     Scheduler.getInstance().removeAll();
-    Scheduler.getInstance().add(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));//brings it to bottom
+    Scheduler.getInstance().add(new HatchPanelRelease());
+    Robot.elevator.stopMotor();
   }
 
   // Called repeatedly when this Command is scheduled to run

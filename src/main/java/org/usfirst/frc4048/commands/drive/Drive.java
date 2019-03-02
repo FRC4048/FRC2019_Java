@@ -34,26 +34,18 @@ public class Drive extends Command {
 		rcw = Robot.oi.getRightJoy().getX();
 		Robot.completed(this, "getJoy");
 
-		// Square the values for finer movement
-		if (fwd < 0)
-			fwd *= fwd * -1;
-		else
-			fwd *= fwd;
-
-		if (str < 0)
-			str *= str * -1;
-		else
-			str *= str;
-
-		if (rcw < 0)
-			rcw *= rcw * -1;
-		else
-			rcw *= rcw;
 		mode = Robot.drivetrain.swerveDrivetrain.getModeRobot();
-		if(mode == CentricMode.ROBOT_SLOW) {
+		if (mode == CentricMode.ROBOT_SLOW) {
 			scaleSpeed = true;
 		} else {
 			scaleSpeed = false;
+		}
+
+		if (!scaleSpeed) {
+			// Cube the values for finer movement
+			fwd = Math.pow(fwd, 3);
+			str = Math.pow(fwd, 3);
+			rcw = Math.pow(rcw, 3);
 		}
 
 		if (scaleSpeed) {

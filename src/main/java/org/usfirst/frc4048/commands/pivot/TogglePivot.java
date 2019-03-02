@@ -37,7 +37,7 @@ public class TogglePivot extends Command {
 
     if (!done) { 
       Robot.pivot.toggleState();
-     }
+    }
   }
 
 

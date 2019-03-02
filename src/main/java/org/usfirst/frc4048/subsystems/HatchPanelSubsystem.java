@@ -75,7 +75,6 @@ public boolean getRightLimit(){
   } 
 
   public boolean checkPiston(){
-
     return hatchPanelPiston.get(); 
   }
 

@@ -76,11 +76,11 @@ public class DrivetrainSensors extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
+        CameraDistance targetDistance = getTargetDistance();
+        SmartShuffleboard.put("Driver", "LimelightValidTarget", targetDistance != null);
 
         if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
             SmartShuffleboard.put("DrivetrainSensors", "Ultrasonic", getUltrasonicDistance());
-            CameraDistance targetDistance = getTargetDistance();
-            SmartShuffleboard.put("DrivetrainSensors", "LimelightValidTarget", targetDistance != null);
             if (targetDistance != null) {
                 SmartShuffleboard.put("DrivetrainSensors", "LimelightForward", targetDistance.getForward());
                 SmartShuffleboard.put("DrivetrainSensors", "LimelightSideways", targetDistance.getSideways());

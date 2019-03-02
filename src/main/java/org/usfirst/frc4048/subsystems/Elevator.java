@@ -26,6 +26,8 @@ import org.usfirst.frc4048.utils.MechanicalMode;
 import org.usfirst.frc4048.utils.MotorUtils;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
 import org.usfirst.frc4048.utils.diagnostics.DiagEncoder;
+import org.usfirst.frc4048.utils.diagnostics.DiagTalonSrxEncoder;
+import org.usfirst.frc4048.utils.diagnostics.DiagTalonSrxSwitch;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -42,8 +44,8 @@ public class Elevator extends Subsystem {
 
   private final int ELEVATOR_POSITION_ERROR = 150;
 
-  private final double ELEVATOR_UP_SCALE_FACTOR = 0.85;
-  private final double ELEVATOR_DOWN_SCALE_FACTOR = 0.50;
+  private final double ELEVATOR_UP_SCALE_FACTOR = 1.0;
+  private final double ELEVATOR_DOWN_SCALE_FACTOR = 0.6;
 
   private final double ELEVATOR_P = 1;
   private final double ELEVATOR_I = 0.001;
@@ -70,11 +72,15 @@ public class Elevator extends Subsystem {
     elevatorMotor.configAllowableClosedloopError(0, ELEVATOR_POSITION_ERROR, TIMEOUT);
     setPID();
 
-    // elevatorMotor.configMotionAcceleration(ELEVATOR_ACCEL, TIMEOUT);
-    // elevatorMotor.configMotionCruiseVelocity(ELEVATOR_CRUISE_VELOCITY, TIMEOUT);
     elevatorMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     elevatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     elevatorMotor.setInverted(true);
+
+    Robot.diagnostics.addDiagnosable(new DiagTalonSrxSwitch("Elevator Forward Switch", elevatorMotor, DiagTalonSrxSwitch.Direction.FORWARD));
+    Robot.diagnostics.addDiagnosable(new DiagTalonSrxSwitch("Elevator Reverse Switch", elevatorMotor, DiagTalonSrxSwitch.Direction.REVERSE));
+  
+    Robot.diagnostics.addDiagnosable(new DiagTalonSrxEncoder("Elevator Encoder", 100, elevatorMotor));
+
 
     resetEncoder();
     elevatorSetpoint = getEncoder();
@@ -160,5 +166,9 @@ public class Elevator extends Subsystem {
 
   public WPI_TalonSRX getElevatorMotor() {
     return elevatorMotor;
+  }
+
+  public void stopMotor() {
+    elevatorMotor.set(ControlMode.PercentOutput, 0.0);
   }
 }

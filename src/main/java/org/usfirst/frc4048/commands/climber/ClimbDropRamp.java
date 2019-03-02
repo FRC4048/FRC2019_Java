@@ -28,7 +28,7 @@ public class ClimbDropRamp extends LoggedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
-    setTimeout(2);
+    setTimeout(1);
     done = false;
     if(DriverStation.getInstance().getMatchTime() < 50){
       Robot.climber.movePiston(DoubleSolenoidUtil.State.forward);
@@ -41,10 +41,6 @@ public class ClimbDropRamp extends LoggedCommand {
   @Override
   protected void loggedExecute() {
     //This is to free the piston once deployed
-    if(Robot.climber.getPositionSensor()) {
-      Robot.climber.movePiston(DoubleSolenoidUtil.State.off);
-      done = true;
-    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -56,6 +52,7 @@ public class ClimbDropRamp extends LoggedCommand {
   // Called once after isFinished returns true
   @Override
   protected void loggedEnd() {
+    Robot.climber.movePiston(DoubleSolenoidUtil.State.off);
   }
 
   // Called when another command which requires one or more of the same

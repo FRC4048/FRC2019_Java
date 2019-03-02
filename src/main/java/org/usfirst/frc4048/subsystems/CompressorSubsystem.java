@@ -74,5 +74,4 @@ public class CompressorSubsystem extends Subsystem {
   public double getCurrent() {
     return compressor.getCompressorCurrent();
   }
- 
 }
