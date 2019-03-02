@@ -5,48 +5,64 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands.cargo;
+package org.usfirst.frc4048.commands.manipulator.hatchpanel;
 
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.commands.LoggedCommand;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class CargoRumble extends Command {
-  public CargoRumble() {
+public class HatchPanelIntake extends LoggedCommand {
+  
+  /**
+   * true is extend false is retract
+   * 
+   */
+  public HatchPanelIntake() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.cargoSubsystem);
+    super("ManualHatchPanelIntake");
+    requires(Robot.hatchPanelSubsystem);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  protected void loggedInitialize() {
+
+    Robot.hatchPanelSubsystem.extendPiston(); 
+
+
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
-    if(Robot.cargoSubsystem.leftLimitPressed() || Robot.cargoSubsystem.rightLimitPressed()) {
-      Robot.oi.doRumble();
-    } else {
-      Robot.oi.stopRumble();
-    }
+  protected void loggedExecute() {
+   
+
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
-    return false;
+  protected boolean loggedIsFinished() {
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  protected void loggedEnd() {
+
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
+  protected void loggedInterrupted() {
+    end(); 
+  }
+
+  @Override
+  protected void loggedCancel() {
+
   }
 }

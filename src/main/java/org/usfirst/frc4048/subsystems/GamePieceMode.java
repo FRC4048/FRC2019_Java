@@ -7,60 +7,56 @@
 
 package org.usfirst.frc4048.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
-
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
-import org.usfirst.frc4048.utils.Logging;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 import org.usfirst.frc4048.utils.diagnostics.DiagSwitch;
 
-import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Solenoid;
-
+import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * Add your docs here.
  */
-public class HatchPanelSubsystem extends Subsystem {
+public class GamePieceMode extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
+  private DigitalInput cargoSensor;
+  private boolean gamePieceState;
 
-  private Solenoid hatchPanelPiston;
-  public HatchPanelSubsystem() {
-
-    hatchPanelPiston = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.HATCH_PANEL_PISTON_ID);
-  
+  public GamePieceMode() {
+    cargoSensor = new DigitalInput(RobotMap.CARGO_OPTICAL_SENSOR_ID);
+    Robot.diagnostics.addDiagnosable(new DiagSwitch("Cargo Optical Sensor", cargoSensor));
   }
-
-  public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
-    
-    protected void addAll() {
-      add("Check Piston", checkPiston());
-    }
-  };
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    // This is a default command you always want to be done
   }
-  
+
   @Override
   public void periodic() {
+    setStateBasedOnSensor();
+    SmartShuffleboard.put("Driver", "Is Cargo?", isCargo());
+  }
+  public void toggleState() {
+    if (gamePieceState) {
+      gamePieceState = false;
+    } else {
+      gamePieceState = true;
+    }
   }
 
-  public void extendPiston() {
-    hatchPanelPiston.set(true);
+  public void setStateBasedOnSensor() {
+    if (!cargoSensor.get()) { //we are assuming when a cargo is in the sensor returns false 
+      gamePieceState = true;
+    } else {
+      gamePieceState = false;
+    }
   }
 
-  public void retractPiston() {
-    hatchPanelPiston.set(false);
-  } 
-
-  public boolean checkPiston(){
-    return hatchPanelPiston.get(); 
+  public boolean isCargo() {
+    return gamePieceState;
   }
-
 }

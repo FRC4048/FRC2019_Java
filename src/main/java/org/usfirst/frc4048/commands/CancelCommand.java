@@ -8,7 +8,7 @@
 package org.usfirst.frc4048.commands;
 
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
-import org.usfirst.frc4048.commands.hatchpanel.HatchPanelRelease;
+import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelRelease;
 import org.usfirst.frc4048.utils.ElevatorPosition;
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
