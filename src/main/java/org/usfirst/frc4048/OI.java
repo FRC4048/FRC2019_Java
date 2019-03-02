@@ -76,6 +76,7 @@ public class OI {
   private JoystickButton rocketLow;
   private JoystickButton rocketMid;
   private JoystickButton rocketHigh;
+  private JoystickButton cargoShipHeight;
 
   private JoystickButton cargoCargoship;
 
@@ -125,10 +126,13 @@ public class OI {
       rocketHigh = new JoystickButton(controller, RobotMap.XBOX_Y_BUTTON);
       rocketMid = new JoystickButton(controller, RobotMap.XBOX_X_BUTTON);
       rocketLow = new JoystickButton(controller, RobotMap.XBOX_A_BUTTON);
+      cargoCargoship = new JoystickButton(controller, RobotMap.XBOX_B_BUTTON);
 
       rocketHigh.whenPressed(new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_HIGH));
       rocketMid.whenPressed(new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_MID));
       rocketLow.whenPressed(new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_LOW));
+      cargoCargoship.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
+      
     }
 
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
