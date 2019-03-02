@@ -52,7 +52,9 @@ public class RotateAngleForAlignment extends LoggedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
-    angle = calculateAngle(Robot.drivetrain.getGyro(), Robot.mechanicalMode.getMode());
+    Robot.gamePieceMode.setStateBasedOnSensor();
+  
+    angle = calculateAngle(Robot.drivetrain.getGyro(), Robot.gamePieceMode.getState());
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -104,18 +106,16 @@ public class RotateAngleForAlignment extends LoggedCommand {
     loggedEnd();
   }
 
-  public double calculateAngle(double currAngle, int mode) {
+  public double calculateAngle(double currAngle, boolean mode) {
     double currentDistance = 0;
     double closestDistance = 360;
     int closestIndex = 0;
     double[] currentDepositAngles;
 
-    if (mode == RobotMap.CARGO_RETURN_CODE) {
+    if (mode) {
       currentDepositAngles = cargoDepositAngles;
-    } else if (mode == RobotMap.HATCH_RETURN_CODE) {
-      currentDepositAngles = hatchDepositAngles;
     } else {
-      return 0;
+      currentDepositAngles = hatchDepositAngles;
     }
 
     if (!Robot.hatchPanelSubsystem.checkPiston()) {
