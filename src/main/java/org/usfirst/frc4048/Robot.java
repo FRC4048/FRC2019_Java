@@ -39,6 +39,7 @@ import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
 import org.usfirst.frc4048.subsystems.Elevator;
+import org.usfirst.frc4048.subsystems.GamePieceMode;
 import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
 import org.usfirst.frc4048.subsystems.Pivot;
 import org.usfirst.frc4048.subsystems.PowerDistPanel;
@@ -75,6 +76,7 @@ public class Robot extends TimedRobot {
   public static CargoSubsystem cargoSubsystem;
   public static HatchPanelSubsystem hatchPanelSubsystem;
   public static Climber climber;
+  public static GamePieceMode gamePieceMode;
   public static Diagnostics diagnostics;
   public static MechanicalMode mechanicalMode;
   private final static Timer timer = new Timer(100);
@@ -102,6 +104,7 @@ public class Robot extends TimedRobot {
 
     if (RobotMap.ENABLE_MANIPULATOR){
       mechanicalMode = new MechanicalMode();
+      gamePieceMode = new GamePieceMode();
       mode = mechanicalMode.getMode();
     }
     // int mode = RobotMap.CARGO_RETURN_CODE;
@@ -109,7 +112,6 @@ public class Robot extends TimedRobot {
       drivetrain = new DriveTrain();
     }
     pdp = new PowerDistPanel();
-
     if (RobotMap.ENABLE_COMPRESSOR) {
       compressorSubsystem = new CompressorSubsystem();
     }
