@@ -32,19 +32,19 @@ interface RobotMapForTestbed {
 
   public static final boolean ENABLE_DRIVETRAIN = false;
 
-  public static final boolean ENABLE_ELEVATOR = true;
+  public static final boolean ENABLE_ELEVATOR = false;
 
-  public static final boolean ENABLE_MANIPULATOR = true;
+  public static final boolean ENABLE_MANIPULATOR = false;
 
-  public static final boolean ENABLE_CARGO_SUBSYSTEM = true;
+  public static final boolean ENABLE_CARGO_SUBSYSTEM = false;
 
-  public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = true;
+  public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = false;
 
   public static final boolean ENABLE_CLIMBER_SUBSYSTEM = false;
 
   public static final boolean ENABLE_BEGIN_MATCH_GROUPCOMMAND = false;
 
-  public static final boolean ENABLE_PIVOT_SUBSYSTEM = true;
+  public static final boolean ENABLE_PIVOT_SUBSYSTEM = false;
     /**
    * Enables loging of timing data related to watchdog timeouts.
    */
