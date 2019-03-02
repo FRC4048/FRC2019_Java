@@ -5,23 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands.hatchpanel;
+package org.usfirst.frc4048.commands.manipulator.hatchpanel;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class HatchPanelIntake extends LoggedCommand {
+public class HatchPanelRelease extends LoggedCommand {
   
   /**
    * true is extend false is retract
    * 
    */
-  public HatchPanelIntake() {
+  public HatchPanelRelease() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    super("ManualHatchPanelIntake");
+    super("Manual Hatch Panel Release");
     requires(Robot.hatchPanelSubsystem);
   }
 
@@ -29,7 +29,7 @@ public class HatchPanelIntake extends LoggedCommand {
   @Override
   protected void loggedInitialize() {
 
-    Robot.hatchPanelSubsystem.extendPiston(); 
+    Robot.hatchPanelSubsystem.retractPiston(); 
 
 
   }

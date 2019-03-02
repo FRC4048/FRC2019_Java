@@ -9,19 +9,22 @@ package org.usfirst.frc4048;
 
 import org.usfirst.frc4048.commands.CancelCommand;
 import org.usfirst.frc4048.commands.LogError;
-import org.usfirst.frc4048.commands.cargo.CargoEjectGroup;
-import org.usfirst.frc4048.commands.cargo.IntakeCargo;
+import org.usfirst.frc4048.commands.manipulator.ReleaseGamePieceScheduler;
+import org.usfirst.frc4048.commands.manipulator.cargo.CargoEjectGroup;
+import org.usfirst.frc4048.commands.manipulator.cargo.IntakeCargo;
 import org.usfirst.frc4048.commands.climber.ClimbDropRamp;
 import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
+import org.usfirst.frc4048.commands.elevator.ElevatorMoveScheduler;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
-import org.usfirst.frc4048.commands.hatchpanel.HatchPanelIntake;
-import org.usfirst.frc4048.commands.hatchpanel.HatchPanelRelease;
+import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelIntake;
+import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelRelease;
 import org.usfirst.frc4048.commands.pivot.TogglePivot;
 import org.usfirst.frc4048.triggers.LeftDPADTrigger;
 import org.usfirst.frc4048.triggers.RightDPADTrigger;
 import org.usfirst.frc4048.triggers.XboxTriggerRight;
 import org.usfirst.frc4048.utils.ElevatorPosition;
+import org.usfirst.frc4048.utils.WantedElevatorPosition;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -70,18 +73,15 @@ public class OI {
   private final RightDPADTrigger rightDPADTrigger;
   private final LeftDPADTrigger leftDPADTrigger;
 
-  private JoystickButton hatchTopRocket;
-  private JoystickButton hatchMidRocket;
-  private JoystickButton hatchBotRocket;
-  private JoystickButton cargoTopRocket;
-  private JoystickButton cargoMidRocket;
-  private JoystickButton cargoBotRocket;
+  private JoystickButton rocketLow;
+  private JoystickButton rocketMid;
+  private JoystickButton rocketHigh;
+  private JoystickButton cargoShipHeight;
+
   private JoystickButton cargoCargoship;
 
-  private JoystickButton cargoIntake;
-  private JoystickButton cargoShoot;
   private JoystickButton hatchIntake;
-  private JoystickButton hatchDropoff;
+  private JoystickButton gamePieceRelease;
 
   private JoystickButton alignWithVision;
   private JoystickButton cancelCommand;
@@ -97,51 +97,6 @@ public class OI {
     xboxTriggerRight = new XboxTriggerRight(xboxController);
     rightDPADTrigger = new RightDPADTrigger(xboxController);
     leftDPADTrigger = new LeftDPADTrigger(xboxController);
-
-    // Put all button inputs that are based off of the mechanism they are tied to in
-    // this switch statement
-  if (RobotMap.ENABLE_MANIPULATOR){
-    int mode = Robot.mechanicalMode.getMode();
-    switch (mode) {
-    case RobotMap.CARGO_RETURN_CODE:
-      cargoTopRocket = new JoystickButton(controller, RobotMap.XBOX_Y_BUTTON);
-      cargoMidRocket = new JoystickButton(controller, RobotMap.XBOX_X_BUTTON);
-      cargoBotRocket = new JoystickButton(controller, RobotMap.XBOX_A_BUTTON);
-      cargoCargoship = new JoystickButton(controller, RobotMap.XBOX_B_BUTTON);
-      cargoIntake = new JoystickButton(controller, RobotMap.XBOX_RIGHT_BUMPER);
-      cargoShoot = new JoystickButton(controller, RobotMap.XBOX_LEFT_BUMPER);
-
-      if (RobotMap.ENABLE_ELEVATOR) {
-        xboxTriggerRight.whenActive(new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
-        cargoTopRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
-        cargoMidRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
-        cargoBotRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
-        cargoCargoship.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
-      }
-      if (RobotMap.ENABLE_CARGO_SUBSYSTEM) {
-        cargoIntake.whenPressed(new IntakeCargo());
-        cargoShoot.whenPressed(new CargoEjectGroup());
-      }
-      break;
-    case RobotMap.HATCH_RETURN_CODE:
-      hatchTopRocket = new JoystickButton(controller, RobotMap.XBOX_Y_BUTTON);
-      hatchMidRocket = new JoystickButton(controller, RobotMap.XBOX_X_BUTTON);
-      hatchBotRocket = new JoystickButton(controller, RobotMap.XBOX_A_BUTTON);
-      hatchIntake = new JoystickButton(controller, RobotMap.XBOX_RIGHT_BUMPER);
-      hatchDropoff = new JoystickButton(controller, RobotMap.XBOX_LEFT_BUMPER);
-
-      if (RobotMap.ENABLE_ELEVATOR) {
-        hatchTopRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
-        hatchMidRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
-        hatchBotRocket.whenPressed(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
-      }
-      if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM) {
-        hatchIntake.whenPressed(new HatchPanelIntake());
-        hatchDropoff.whenPressed(new HatchPanelRelease());
-      }
-      break;
-    }
-  }
 
     if (RobotMap.ENABLE_PIVOT_SUBSYSTEM) {
       leftDPADTrigger.whenActive(new TogglePivot());
@@ -160,6 +115,25 @@ public class OI {
     
     cancelCommand = new JoystickButton(controller, RobotMap.XBOX_BACK_BUTTON);
     cancelCommand.whenPressed(new CancelCommand());
+    if (RobotMap.ENABLE_MANIPULATOR) {
+      hatchIntake = new JoystickButton(controller, RobotMap.XBOX_RIGHT_BUMPER);
+      gamePieceRelease = new JoystickButton(controller, RobotMap.XBOX_LEFT_BUMPER);
+
+      hatchIntake.whenPressed(new HatchPanelIntake());
+      gamePieceRelease.whenPressed(new ReleaseGamePieceScheduler());
+    }
+    if (RobotMap.ENABLE_ELEVATOR) {
+      rocketHigh = new JoystickButton(controller, RobotMap.XBOX_Y_BUTTON);
+      rocketMid = new JoystickButton(controller, RobotMap.XBOX_X_BUTTON);
+      rocketLow = new JoystickButton(controller, RobotMap.XBOX_A_BUTTON);
+      cargoCargoship = new JoystickButton(controller, RobotMap.XBOX_B_BUTTON);
+
+      rocketHigh.whenPressed(new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_HIGH));
+      rocketMid.whenPressed(new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_MID));
+      rocketLow.whenPressed(new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_LOW));
+      cargoCargoship.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
+      
+    }
 
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
       dropRamp = new JoystickButton(controller, RobotMap.XBOX_RIGHT_STICK_PRESS);
