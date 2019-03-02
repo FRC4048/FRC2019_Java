@@ -318,14 +318,6 @@ public class Robot extends TimedRobot {
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Stream Toggle", new LimelightToggleStream());
 
     if (RobotMap.ENABLE_ELEVATOR) {
-      // SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Bottom", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
-      // SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
-      // SmartShuffleboard.putCommand("Elevator", "Hatch Rocket High", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
-      // SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
-      // SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
-      // SmartShuffleboard.putCommand("Elevator", "Cargo Rocket High", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
-      // SmartShuffleboard.putCommand("Elevator", "Cargo Intake Pos", new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
-      // SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
       SmartShuffleboard.putCommand("Elevator", "Rocket High", new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_HIGH));
       SmartShuffleboard.putCommand("Elevator", "Rocket High", new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_MID));
       SmartShuffleboard.putCommand("Elevator", "Rocket High", new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_LOW));
@@ -335,7 +327,7 @@ public class Robot extends TimedRobot {
 
     if (RobotMap.ENABLE_PIVOT_SUBSYSTEM)
     {
-      SmartShuffleboard.putCommand("Pivot", "Pivot Deploy", new TogglePivot   ());
+      SmartShuffleboard.putCommand("Pivot", "Pivot Deploy", new TogglePivot());
     }
 
   }

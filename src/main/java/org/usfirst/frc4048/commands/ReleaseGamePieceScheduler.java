@@ -31,7 +31,6 @@ public class ReleaseGamePieceScheduler extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.gamePieceMode.setStateBasedOnSensor();
     if(Robot.gamePieceMode.getState()){ //true is cargo
       Scheduler.getInstance().add(new CargoEjectGroup());//this will change with new mechanism
     } else {

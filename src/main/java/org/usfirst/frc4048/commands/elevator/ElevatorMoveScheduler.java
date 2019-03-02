@@ -32,8 +32,6 @@ public class ElevatorMoveScheduler extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.gamePieceMode.setStateBasedOnSensor();
-
     if (Robot.gamePieceMode.getState()) {// true is cargo
       switch (wantedPos) {
       case ROCKET_HIGH:
