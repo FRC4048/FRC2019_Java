@@ -8,6 +8,7 @@
 package org.usfirst.frc4048.subsystems;
 
 import org.usfirst.frc4048.RobotMap;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -31,6 +32,11 @@ public class GamePieceMode extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 
+  @Override
+  public void periodic() {
+    setStateBasedOnSensor();
+    SmartShuffleboard.put("Driver", "Is Cargo?", getState());
+  }
   public void toggleState() {
     if (gamePieceState) {
       gamePieceState = false;

@@ -31,7 +31,7 @@ public class CargoSubsystem extends Subsystem {
         leftLimit = new DigitalInput(RobotMap.CARGO_LIMIT_SWITCH_LEFT_ID);
         rightLimit = new DigitalInput(RobotMap.CARGO_LIMIT_SWITCH_RIGHT_ID);
         ejectPiston = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.CARGO_PISTON_ID);
-        opticalSensor = new DigitalInput(RobotMap.CARGO_OPTICAL_SENSOR_ID);
+        opticalSensor = new DigitalInput(15);
 
         Robot.diagnostics.addDiagnosable(new DiagSwitch("Cargo Limit Switch Left", leftLimit));
         Robot.diagnostics.addDiagnosable(new DiagSwitch("Cargo Limit Switch Right", rightLimit));

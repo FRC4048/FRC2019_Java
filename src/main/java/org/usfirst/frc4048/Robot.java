@@ -16,6 +16,7 @@ import org.usfirst.frc4048.utils.DoubleSolenoidUtil;
 
 // import org.usfirst.frc4048.commands.UnCradleIntake;
 import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
+import org.usfirst.frc4048.commands.ReleaseGamePieceScheduler;
 import org.usfirst.frc4048.commands.climber.ClimbMovePiston;
 import org.usfirst.frc4048.commands.drive.CentricModeRobot;
 // import org.usfirst.frc4048.commands.DriveTargetCenter;
@@ -27,6 +28,7 @@ import org.usfirst.frc4048.commands.drive.DriveAlignPhase3;
 import org.usfirst.frc4048.commands.drive.ResetGyro;
 import org.usfirst.frc4048.commands.drive.RotateAngle;
 import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
+import org.usfirst.frc4048.commands.elevator.ElevatorMoveScheduler;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
 import org.usfirst.frc4048.commands.hatchpanel.HatchPanelIntake;
 import org.usfirst.frc4048.commands.hatchpanel.HatchPanelRelease;
@@ -48,6 +50,7 @@ import org.usfirst.frc4048.utils.Logging;
 import org.usfirst.frc4048.utils.MechanicalMode;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
 import org.usfirst.frc4048.utils.Timer;
+import org.usfirst.frc4048.utils.WantedElevatorPosition;
 import org.usfirst.frc4048.utils.DoubleSolenoidUtil.State;
 import org.usfirst.frc4048.utils.diagnostics.Diagnostics;
 
@@ -97,15 +100,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    int mode;
     cancelAllTasks();
 
     diagnostics = new Diagnostics();
 
     if (RobotMap.ENABLE_MANIPULATOR){
-      mechanicalMode = new MechanicalMode();
+      // mechanicalMode = new MechanicalMode();
       gamePieceMode = new GamePieceMode();
-      mode = mechanicalMode.getMode();
+      // mode = mechanicalMode.getMode();
     }
     // int mode = RobotMap.CARGO_RETURN_CODE;
     if (RobotMap.ENABLE_DRIVETRAIN) {
@@ -123,19 +125,11 @@ public class Robot extends TimedRobot {
       elevator = new Elevator();
     }
     if (RobotMap.ENABLE_MANIPULATOR){
-      switch(mode){
-        case RobotMap.CARGO_RETURN_CODE:
-          if (RobotMap.ENABLE_CARGO_SUBSYSTEM) {
-            cargoSubsystem = new CargoSubsystem();
-          }
-          break;
-        case RobotMap.HATCH_RETURN_CODE:
-          if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM) {
-            hatchPanelSubsystem = new HatchPanelSubsystem();
-          }
-          break;
-        default:
-          break;
+      if (RobotMap.ENABLE_CARGO_SUBSYSTEM) {
+          cargoSubsystem = new CargoSubsystem();
+      }
+      if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM) {
+        hatchPanelSubsystem = new HatchPanelSubsystem();
       }
     }
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
@@ -317,21 +311,24 @@ public class Robot extends TimedRobot {
     if(RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM) {
       SmartShuffleboard.putCommand("Hatch Panel", "Intake", new HatchPanelIntake());
       SmartShuffleboard.putCommand("Hatch Panel", "Release", new HatchPanelRelease());
+      SmartShuffleboard.putCommand("Hatch Panel", "Schedule release", new ReleaseGamePieceScheduler());
     }
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight On", new LimelightToggle(true));
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Off", new LimelightToggle(false));
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Stream Toggle", new LimelightToggleStream());
 
     if (RobotMap.ENABLE_ELEVATOR) {
-      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Bottom", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
-      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
-      SmartShuffleboard.putCommand("Elevator", "Hatch Rocket High", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
-      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
-      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
-      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket High", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
-      SmartShuffleboard.putCommand("Elevator", "Cargo Intake Pos", new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
-      SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
-      
+      // SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Bottom", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
+      // SmartShuffleboard.putCommand("Elevator", "Hatch Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
+      // SmartShuffleboard.putCommand("Elevator", "Hatch Rocket High", new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_HIGH));
+      // SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
+      // SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Mid", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
+      // SmartShuffleboard.putCommand("Elevator", "Cargo Rocket High", new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_HIGH));
+      // SmartShuffleboard.putCommand("Elevator", "Cargo Intake Pos", new ElevatorMoveToPos(ElevatorPosition.CARGO_INTAKE_POS));
+      // SmartShuffleboard.putCommand("Elevator", "Cargo Rocket Low", new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
+      SmartShuffleboard.putCommand("Elevator", "Rocket High", new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_HIGH));
+      SmartShuffleboard.putCommand("Elevator", "Rocket High", new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_MID));
+      SmartShuffleboard.putCommand("Elevator", "Rocket High", new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_LOW));
       SmartShuffleboard.put("Elevator", "Encoder", elevator.getEncoder());
       SmartShuffleboard.put("Elevator", "Current", elevator.getElevatorMotor().getOutputCurrent());
     }

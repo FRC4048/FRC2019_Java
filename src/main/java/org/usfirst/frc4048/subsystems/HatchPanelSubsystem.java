@@ -26,24 +26,16 @@ public class HatchPanelSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private DigitalInput limitSwitchLeft; 
-  private DigitalInput limitSwitchRight; 
   private Solenoid hatchPanelPiston;
   public HatchPanelSubsystem() {
 
-    limitSwitchLeft = new DigitalInput(RobotMap.CARGO_LIMIT_SWITCH_LEFT_ID); //these are cargo because they use the same input ID's
-    limitSwitchRight = new DigitalInput(RobotMap.CARGO_LIMIT_SWITCH_RIGHT_ID); //TODO: Change the name of the constant in Robotmap
     hatchPanelPiston = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.HATCH_PANEL_PISTON_ID);
   
-    Robot.diagnostics.addDiagnosable(new DiagSwitch("Hatch Panel Left Limit Switch", limitSwitchLeft));
-    Robot.diagnostics.addDiagnosable(new DiagSwitch("Hatch Panel Right Limit Switch", limitSwitchRight));
   }
 
   public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
     
     protected void addAll() {
-      add("Left Limit", getLeftLimit());
-      add("Right Limit", getRightLimit());
       add("Check Piston", checkPiston());
     }
   };
@@ -59,13 +51,6 @@ public class HatchPanelSubsystem extends Subsystem {
   public void periodic() {
   }
 
-public boolean getLeftLimit(){
-  return limitSwitchLeft.get();
-}
-
-public boolean getRightLimit(){
-  return limitSwitchRight.get();
-}
   public void extendPiston() {
     hatchPanelPiston.set(true);
   }
