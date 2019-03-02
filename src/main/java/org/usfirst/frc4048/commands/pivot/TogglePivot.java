@@ -11,6 +11,7 @@ import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 public class TogglePivot extends Command {
   public final double MAX_ELEVATOR_HEIGHT_FOR_TOGGLE = 600;
@@ -50,6 +51,7 @@ public class TogglePivot extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Scheduler.getInstance().add(new MovePivot());//calls the actual movement of the pivot after toggling.
   }
 
   // Called when another command which requires one or more of the same

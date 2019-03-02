@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class MovePivot extends Command {
   private final double PIVOT_SPEED = 0.3;
+  private boolean startingState;
   public MovePivot() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.pivot);
@@ -22,39 +23,47 @@ public class MovePivot extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    startingState = Robot.pivot.getDeployedSwitch();
+    Robot.pivot.movePiston(false);//Unlock pivot at beginning of command
+    setTimeout(3);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     if (Robot.pivot.pivotDeployed){
-      if (Robot.pivot.getDeployedSwitch()){
-        Robot.pivot.setSpeed(0);
-      }
-      else {
-        Robot.pivot.setSpeed(PIVOT_SPEED);
-      }
-
+      // if (Robot.pivot.getDeployedSwitch()){
+      //   Robot.pivot.setSpeed(0);
+      // }
+      // else {
+      //   Robot.pivot.setSpeed(PIVOT_SPEED);
+      // }
+      Robot.pivot.setSpeed(-PIVOT_SPEED);
     } else {
-      if (Robot.pivot.getRetractedSwitch()){
-        Robot.pivot.setSpeed(0);
+      // if (Robot.pivot.getRetractedSwitch()){
+      //   Robot.pivot.setSpeed(0);
 
-      } else {
-        Robot.pivot.setSpeed(-PIVOT_SPEED);
-      }
-
+      // } else {
+      //   Robot.pivot.setSpeed(-PIVOT_SPEED);
+      // }
+      Robot.pivot.setSpeed(PIVOT_SPEED);
     }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    if(startingState) {
+      return Robot.pivot.getRetractedSwitch() || isTimedOut();
+    } else {
+      return Robot.pivot.getDeployedSwitch() || isTimedOut();
+    }
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.pivot.movePiston(true);//Lock pivot in place when done
   }
 
   // Called when another command which requires one or more of the same
