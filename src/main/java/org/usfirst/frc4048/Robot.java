@@ -17,6 +17,7 @@ import org.usfirst.frc4048.utils.DoubleSolenoidUtil;
 // import org.usfirst.frc4048.commands.UnCradleIntake;
 import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
 import org.usfirst.frc4048.commands.manipulator.ReleaseGamePieceScheduler;
+import org.usfirst.frc4048.commands.ScheduleBButton;
 import org.usfirst.frc4048.commands.climber.ClimbMovePiston;
 import org.usfirst.frc4048.commands.drive.CentricModeRobot;
 // import org.usfirst.frc4048.commands.DriveTargetCenter;
@@ -208,12 +209,18 @@ public class Robot extends TimedRobot {
     if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM && !Robot.gamePieceMode.isCargo()) {
       Scheduler.getInstance().add(new HatchPanelIntake());
     }
+    logging.traceMessage(Logging.MessageLevel.INFORMATION, "---------------------------- Autonomous mode starting ----------------------------");
+    
+    StringBuilder gameInfo = new StringBuilder();
+    gameInfo.append("Match Number=");
+		gameInfo.append(DriverStation.getInstance().getMatchNumber());
+		gameInfo.append(", Alliance Color=");
+		gameInfo.append(DriverStation.getInstance().getAlliance().toString());
+		gameInfo.append(", Match Type=");
+		gameInfo.append(DriverStation.getInstance().getMatchType().toString());
+		logging.traceMessage(Logging.MessageLevel.INFORMATION, gameInfo.toString());
+
     Scheduler.getInstance().add(new PivotGroup());
-    // if(RobotMap.ENABLE_BEGIN_MATCH_GROUPCOMMAND){
-    //   Scheduler.getInstance().add(new UnCradleIntake());
-    // }
-    //    logging.traceMessage(Logging.MessageLevel.INFORMATION,
-    //				"---------------------------- Autonomous mode starting ----------------------------");
     //    m_autonomousCommand = m_chooser.getSelected();
 
     /*
@@ -237,6 +244,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+		logging.traceMessage(Logging.MessageLevel.INFORMATION, "---------------------------- Teleop mode starting ----------------------------");
     if(RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
     }
@@ -317,6 +325,7 @@ public class Robot extends TimedRobot {
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight On", new LimelightToggle(true));
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Off", new LimelightToggle(false));
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Stream Toggle", new LimelightToggleStream());
+    SmartShuffleboard.putCommand("DrivetrainSensors", "Schedule Blink or Move", new ScheduleBButton());
 
     if (RobotMap.ENABLE_ELEVATOR) {
       SmartShuffleboard.putCommand("Elevator", "Rocket High", new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_HIGH));

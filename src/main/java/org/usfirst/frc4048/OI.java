@@ -9,9 +9,8 @@ package org.usfirst.frc4048;
 
 import org.usfirst.frc4048.commands.CancelCommand;
 import org.usfirst.frc4048.commands.LogError;
+import org.usfirst.frc4048.commands.ScheduleBButton;
 import org.usfirst.frc4048.commands.manipulator.ReleaseGamePieceScheduler;
-import org.usfirst.frc4048.commands.manipulator.cargo.CargoEjectGroup;
-import org.usfirst.frc4048.commands.manipulator.cargo.IntakeCargo;
 import org.usfirst.frc4048.commands.climber.ClimbDropRamp;
 import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
@@ -131,7 +130,7 @@ public class OI {
       rocketHigh.whenPressed(new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_HIGH));
       rocketMid.whenPressed(new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_MID));
       rocketLow.whenPressed(new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_LOW));
-      cargoCargoship.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
+      cargoCargoship.whenPressed(new ScheduleBButton());
       
     }
 

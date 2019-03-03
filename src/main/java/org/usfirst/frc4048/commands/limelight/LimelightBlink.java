@@ -5,21 +5,16 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands.manipulator;
+package org.usfirst.frc4048.commands.limelight;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
-import org.usfirst.frc4048.commands.manipulator.cargo.CargoWristDown;
-import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelIntake;
-import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelRelease;
-import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
 
-public class ReleaseGamePieceScheduler extends LoggedCommand {
-  public ReleaseGamePieceScheduler() {
-    super("ReleaseGamePieceScheduler");
+public class LimelightBlink extends LoggedCommand {
+  public LimelightBlink() {
+    super("LimlightBlink");
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -27,27 +22,25 @@ public class ReleaseGamePieceScheduler extends LoggedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
+    setTimeout(2);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void loggedExecute() {
-    if(Robot.gamePieceMode.isCargo()){ //true is cargo
-      Scheduler.getInstance().add(new CargoWristDown());//this will change with new mechanism
-    } else {
-      Scheduler.getInstance().add(new HatchPanelRelease());
-    }
+    Robot.drivetrainSensors.ledBlink();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean loggedIsFinished() {
-    return true;
+    return isTimedOut();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void loggedEnd() {
+    Robot.drivetrainSensors.ledOn();
   }
 
   // Called when another command which requires one or more of the same
@@ -61,5 +54,4 @@ public class ReleaseGamePieceScheduler extends LoggedCommand {
   protected void loggedCancel() {
     loggedEnd();
   }
-
 }

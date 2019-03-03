@@ -5,21 +5,19 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands.manipulator;
+package org.usfirst.frc4048.commands;
 
 import org.usfirst.frc4048.Robot;
-import org.usfirst.frc4048.commands.LoggedCommand;
-import org.usfirst.frc4048.commands.manipulator.cargo.CargoWristDown;
-import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelIntake;
-import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelRelease;
-import org.usfirst.frc4048.utils.SmartShuffleboard;
+import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
+import org.usfirst.frc4048.commands.limelight.LimelightBlink;
+import org.usfirst.frc4048.utils.ElevatorPosition;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
-public class ReleaseGamePieceScheduler extends LoggedCommand {
-  public ReleaseGamePieceScheduler() {
-    super("ReleaseGamePieceScheduler");
+public class ScheduleBButton extends LoggedCommand {
+  public ScheduleBButton() {
+    super("Schedule Blink/MoveElevator");
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -32,10 +30,10 @@ public class ReleaseGamePieceScheduler extends LoggedCommand {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void loggedExecute() {
-    if(Robot.gamePieceMode.isCargo()){ //true is cargo
-      Scheduler.getInstance().add(new CargoWristDown());//this will change with new mechanism
+    if(Robot.gamePieceMode.isCargo()) {
+      Scheduler.getInstance().add(new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
     } else {
-      Scheduler.getInstance().add(new HatchPanelRelease());
+      Scheduler.getInstance().add(new LimelightBlink());
     }
   }
 
@@ -61,5 +59,4 @@ public class ReleaseGamePieceScheduler extends LoggedCommand {
   protected void loggedCancel() {
     loggedEnd();
   }
-
 }

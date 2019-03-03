@@ -32,7 +32,7 @@ interface RobotMapForTestbed {
 
   public static final boolean ENABLE_DRIVETRAIN = false;
 
-  public static final boolean ENABLE_ELEVATOR = false;
+  public static final boolean ENABLE_ELEVATOR = true;
 
   public static final boolean ENABLE_MANIPULATOR = false;
 
