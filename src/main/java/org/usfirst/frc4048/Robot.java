@@ -208,11 +208,16 @@ public class Robot extends TimedRobot {
       Scheduler.getInstance().add(new HatchPanelIntake());
     }
 
-    // if(RobotMap.ENABLE_BEGIN_MATCH_GROUPCOMMAND){
-    //   Scheduler.getInstance().add(new UnCradleIntake());
-    // }
-    //    logging.traceMessage(Logging.MessageLevel.INFORMATION,
-    //				"---------------------------- Autonomous mode starting ----------------------------");
+    logging.traceMessage(Logging.MessageLevel.INFORMATION, "---------------------------- Autonomous mode starting ----------------------------");
+    
+    StringBuilder gameInfo = new StringBuilder();
+    gameInfo.append("Match Number=");
+		gameInfo.append(DriverStation.getInstance().getMatchNumber());
+		gameInfo.append(", Alliance Color=");
+		gameInfo.append(DriverStation.getInstance().getAlliance().toString());
+		gameInfo.append(", Match Type=");
+		gameInfo.append(DriverStation.getInstance().getMatchType().toString());
+		logging.traceMessage(Logging.MessageLevel.INFORMATION, gameInfo.toString());
     //    m_autonomousCommand = m_chooser.getSelected();
 
     /*
@@ -236,6 +241,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+		logging.traceMessage(Logging.MessageLevel.INFORMATION, "---------------------------- Teleop mode starting ----------------------------");
     if(RobotMap.ENABLE_DRIVETRAIN) {
       Robot.drivetrain.swerveDrivetrain.setModeField();
     }

@@ -12,6 +12,7 @@ import org.usfirst.frc4048.RobotMap;
 public class LimeLightVision {
 
     public static final int LED_ON = 3;
+    public static final int LED_BLINK = 2;
     public static final int LED_OFF = 1;
     
     NetworkTable table;
@@ -84,6 +85,10 @@ public class LimeLightVision {
 
     public void setLedOff() {
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(LED_OFF);
+    }
+
+    public void setLedBlink() {
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(LED_BLINK);
     }
 
     /**
