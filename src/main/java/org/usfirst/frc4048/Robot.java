@@ -17,6 +17,7 @@ import org.usfirst.frc4048.utils.DoubleSolenoidUtil;
 // import org.usfirst.frc4048.commands.UnCradleIntake;
 import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
 import org.usfirst.frc4048.commands.manipulator.ReleaseGamePieceScheduler;
+import org.usfirst.frc4048.commands.ScheduleBButton;
 import org.usfirst.frc4048.commands.climber.ClimbMovePiston;
 import org.usfirst.frc4048.commands.drive.CentricModeRobot;
 // import org.usfirst.frc4048.commands.DriveTargetCenter;
@@ -322,6 +323,7 @@ public class Robot extends TimedRobot {
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight On", new LimelightToggle(true));
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Off", new LimelightToggle(false));
     SmartShuffleboard.putCommand("DrivetrainSensors", "Limelight Stream Toggle", new LimelightToggleStream());
+    SmartShuffleboard.putCommand("DrivetrainSensors", "Schedule Blink or Move", new ScheduleBButton());
 
     if (RobotMap.ENABLE_ELEVATOR) {
       SmartShuffleboard.putCommand("Elevator", "Rocket High", new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_HIGH));
