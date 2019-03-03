@@ -34,6 +34,7 @@ import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelIntake;
 import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelRelease;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
 import org.usfirst.frc4048.commands.limelight.LimelightToggleStream;
+import org.usfirst.frc4048.commands.pivot.PivotGroup;
 import org.usfirst.frc4048.commands.pivot.TogglePivot;
 import org.usfirst.frc4048.subsystems.CargoSubsystem;
 import org.usfirst.frc4048.subsystems.Climber;
@@ -204,10 +205,10 @@ public class Robot extends TimedRobot {
 
     commonInit("autonomousInit");
 
-    if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM) {
+    if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM && !Robot.gamePieceMode.isCargo()) {
       Scheduler.getInstance().add(new HatchPanelIntake());
     }
-
+    Scheduler.getInstance().add(new PivotGroup());
     // if(RobotMap.ENABLE_BEGIN_MATCH_GROUPCOMMAND){
     //   Scheduler.getInstance().add(new UnCradleIntake());
     // }

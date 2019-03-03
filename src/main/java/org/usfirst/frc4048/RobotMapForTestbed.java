@@ -21,7 +21,7 @@ interface RobotMapForTestbed {
   /**
    * Enable the compressor subsystemh
    */
-  public static final boolean ENABLE_COMPRESSOR = false;
+  public static final boolean ENABLE_COMPRESSOR = true;
 
   /**
    * Enables reading of the gyro angle from the pigeon on it's own thread
@@ -96,7 +96,7 @@ interface RobotMapForTestbed {
   public static final int HATCH_DIGITAL_INPUT_ID = 7;
   public static final int CARGO_DIGITAL_INPUT_ID = 3;
   public static final int PIVOT_LIMIT_SWITCH_LEFT_ID = 1;
-  public static final int PIVOT_LIMIT_SWITCH_RIGHT_ID = 2;
+  public static final int PIVOT_LIMIT_SWITCH_RIGHT_ID = 0;
   public static final int CLIMBER_POSITION_SENSOR_ID = 11;
 
   public static final int[] ALIGNMENT_ULTRASONIC_ID = {12,13};
@@ -107,9 +107,9 @@ interface RobotMapForTestbed {
 
   //PCM
   public static final int CARGO_PISTON_ID = 1;
-  public static final int HATCH_PANEL_PISTON_ID = 0;
+  public static final int HATCH_PANEL_PISTON_ID = 4;
   public static final int[] CLIMBER_PISTONS_ID = {2,3};
-  public static final int PIVOT_PISTON_ID = 4;
+  public static final int PIVOT_PISTON_ID = 0;
 
   //OI
   public static final int XBOX_A_BUTTON = 1;

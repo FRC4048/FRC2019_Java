@@ -9,6 +9,7 @@ package org.usfirst.frc4048.commands.pivot;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -51,8 +52,9 @@ public class TogglePivot extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Scheduler.getInstance().add(new MovePivot());//calls the actual movement of the pivot after toggling.
+    Scheduler.getInstance().add(new PivotGroup());//calls the actual movement of the pivot after toggling.
   }
+
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run

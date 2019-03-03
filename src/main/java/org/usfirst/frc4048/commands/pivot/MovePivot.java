@@ -9,11 +9,12 @@ package org.usfirst.frc4048.commands.pivot;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.subsystems.Pivot;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class MovePivot extends Command {
-  private final double PIVOT_SPEED = 0.3;
+  private final double PIVOT_SPEED = 1.0;
   private boolean startingState;
   public MovePivot() {
     // Use requires() here to declare subsystem dependencies
@@ -31,7 +32,7 @@ public class MovePivot extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.pivot.pivotDeployed){
+    if (Robot.pivot.getState()){
       // if (Robot.pivot.getDeployedSwitch()){
       //   Robot.pivot.setSpeed(0);
       // }
@@ -53,6 +54,7 @@ public class MovePivot extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    SmartShuffleboard.put("Pivot", "move pivot done", "yeet");
     if(startingState) {
       return Robot.pivot.getRetractedSwitch() || isTimedOut();
     } else {
@@ -63,6 +65,7 @@ public class MovePivot extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.pivot.setSpeed(0.0);
     Robot.pivot.movePiston(true);//Lock pivot in place when done
   }
 
