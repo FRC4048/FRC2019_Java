@@ -9,52 +9,52 @@ package org.usfirst.frc4048.commands.pivot;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
+import org.usfirst.frc4048.commands.LoggedCommand;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
-public class TogglePivot extends Command {
-  public final double MAX_ELEVATOR_HEIGHT_FOR_TOGGLE = 600;
-  private boolean done = false;
+public class TogglePivot extends LoggedCommand {
 
   public TogglePivot() {
+    super("TogglePivot");
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  protected void loggedInitialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
-    if (RobotMap.ENABLE_ELEVATOR){
-      if (Robot.elevator.getEncoder() > MAX_ELEVATOR_HEIGHT_FOR_TOGGLE) { 
-         done = true;
-      }
-    }
-
-    if (!done) { 
-      Robot.pivot.toggleState();
-    }
+  protected void loggedExecute() {
+    Robot.pivot.toggleState();
   }
 
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  protected boolean loggedIsFinished() {
     return true;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  protected void loggedEnd() {
+    Scheduler.getInstance().add(new PivotGroup());//calls the actual movement of the pivot after toggling.
   }
+
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
+  protected void loggedInterrupted() {
+  }
+
+  @Override
+  protected void loggedCancel() {
+
   }
 }

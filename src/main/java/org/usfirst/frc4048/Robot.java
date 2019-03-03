@@ -35,6 +35,7 @@ import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelIntake;
 import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelRelease;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
 import org.usfirst.frc4048.commands.limelight.LimelightToggleStream;
+import org.usfirst.frc4048.commands.pivot.PivotGroup;
 import org.usfirst.frc4048.commands.pivot.TogglePivot;
 import org.usfirst.frc4048.subsystems.CargoSubsystem;
 import org.usfirst.frc4048.subsystems.Climber;
@@ -205,10 +206,9 @@ public class Robot extends TimedRobot {
 
     commonInit("autonomousInit");
 
-    if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM) {
+    if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM && !Robot.gamePieceMode.isCargo()) {
       Scheduler.getInstance().add(new HatchPanelIntake());
     }
-
     logging.traceMessage(Logging.MessageLevel.INFORMATION, "---------------------------- Autonomous mode starting ----------------------------");
     
     StringBuilder gameInfo = new StringBuilder();
@@ -219,6 +219,8 @@ public class Robot extends TimedRobot {
 		gameInfo.append(", Match Type=");
 		gameInfo.append(DriverStation.getInstance().getMatchType().toString());
 		logging.traceMessage(Logging.MessageLevel.INFORMATION, gameInfo.toString());
+
+    Scheduler.getInstance().add(new PivotGroup());
     //    m_autonomousCommand = m_chooser.getSelected();
 
     /*
