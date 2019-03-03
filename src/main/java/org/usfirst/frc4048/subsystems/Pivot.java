@@ -16,6 +16,7 @@ import org.usfirst.frc4048.utils.SmartShuffleboard;
 import org.usfirst.frc4048.utils.diagnostics.DiagSwitch;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -27,16 +28,18 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Pivot extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  private Spark pivotMotor;
-  // public WPI_TalonSRX pivotMotor;
+  // private Spark pivotMotor;
+  public WPI_TalonSRX pivotMotor;
   private DigitalInput limitSwitchDeployed;
   private DigitalInput limitSwitchRetracted;
-  public boolean pivotDeployed = false;
+  private Solenoid lockPiston;
+  private boolean pivotDeployed = false;
   public Pivot() {
-    pivotMotor = new Spark(RobotMap.PIVOT_MOTOR_ID);
-    // pivotMotor = new WPI_TalonSRX(7);
+    // pivotMotor = new Spark(RobotMap.PIVOT_MOTOR_ID);
+    pivotMotor = new WPI_TalonSRX(7);
     limitSwitchDeployed = new DigitalInput(RobotMap.PIVOT_LIMIT_SWITCH_LEFT_ID);
     limitSwitchRetracted = new DigitalInput(RobotMap.PIVOT_LIMIT_SWITCH_RIGHT_ID);
+    lockPiston = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.PIVOT_PISTON_ID);
 
     Robot.diagnostics.addDiagnosable(new DiagSwitch("Pivot forward switch", limitSwitchDeployed));
     Robot.diagnostics.addDiagnosable(new DiagSwitch("Pivot reverse switch", limitSwitchRetracted));
@@ -53,6 +56,10 @@ public class Pivot extends Subsystem {
     }
   }
 
+  public void movePiston(boolean state) {
+    lockPiston.set(state);
+  } 
+  
   @Override
   public void periodic() {
     if(RobotMap.SHUFFLEBOARD_DEBUG_MODE){
@@ -65,7 +72,7 @@ public class Pivot extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new MovePivot());
+    // setDefaultCommand(new MovePivot());
   }
 
   public void setSpeed(double speed) {
@@ -78,5 +85,9 @@ public class Pivot extends Subsystem {
 
   public boolean getRetractedSwitch() {
     return !limitSwitchRetracted.get();
+  }
+
+  public boolean getState() {
+    return pivotDeployed;
   }
 }

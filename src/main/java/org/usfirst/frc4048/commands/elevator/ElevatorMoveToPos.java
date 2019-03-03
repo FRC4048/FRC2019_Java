@@ -11,6 +11,7 @@ import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
 import org.usfirst.frc4048.commands.LoggedCommand;
 import org.usfirst.frc4048.utils.ElevatorPosition;
+import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -28,7 +29,7 @@ public class ElevatorMoveToPos extends LoggedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
-    setTimeout(5);
+    setTimeout(6);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -46,6 +47,7 @@ public class ElevatorMoveToPos extends LoggedCommand {
   // Called once after isFinished returns true
   @Override
   protected void loggedEnd() {
+
   }
 
   // Called when another command which requires one or more of the same
