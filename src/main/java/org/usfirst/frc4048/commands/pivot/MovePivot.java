@@ -24,7 +24,7 @@ public class MovePivot extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    startingState = Robot.pivot.getDeployedSwitch();
+    startingState = Robot.pivot.getState();
     Robot.pivot.movePiston(false);//Unlock pivot at beginning of command
     setTimeout(3);
   }
@@ -54,7 +54,6 @@ public class MovePivot extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    SmartShuffleboard.put("Pivot", "move pivot done", "yeet");
     if(startingState) {
       return Robot.pivot.getRetractedSwitch() || isTimedOut();
     } else {
