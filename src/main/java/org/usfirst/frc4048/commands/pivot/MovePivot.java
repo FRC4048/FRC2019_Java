@@ -8,30 +8,30 @@
 package org.usfirst.frc4048.commands.pivot;
 
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.commands.LoggedCommand;
 import org.usfirst.frc4048.subsystems.Pivot;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
 
-import edu.wpi.first.wpilibj.command.Command;
-
-public class MovePivot extends Command {
+public class MovePivot extends LoggedCommand {
   private final double PIVOT_SPEED = 1.0;
   private boolean startingState;
   public MovePivot() {
+    super("MovePivot");
     // Use requires() here to declare subsystem dependencies
     requires(Robot.pivot);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  protected void loggedInitialize() {
     startingState = Robot.pivot.getState();
     Robot.pivot.movePiston(false);//Unlock pivot at beginning of command
-    setTimeout(3);
+    setTimeout(6);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  protected void loggedExecute() {
     if (Robot.pivot.getState()){
       // if (Robot.pivot.getDeployedSwitch()){
       //   Robot.pivot.setSpeed(0);
@@ -53,7 +53,7 @@ public class MovePivot extends Command {
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  protected boolean loggedIsFinished() {
     if(startingState) {
       return Robot.pivot.getRetractedSwitch() || isTimedOut();
     } else {
@@ -63,7 +63,7 @@ public class MovePivot extends Command {
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  protected void loggedEnd() {
     Robot.pivot.setSpeed(0.0);
     Robot.pivot.movePiston(true);//Lock pivot in place when done
   }
@@ -71,6 +71,12 @@ public class MovePivot extends Command {
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
+  protected void loggedInterrupted() {
+    loggedEnd();
+  }
+
+  @Override
+  protected void loggedCancel() {
+    loggedEnd();
   }
 }
