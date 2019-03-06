@@ -33,6 +33,7 @@ public class PivotGroup extends CommandGroup {
     // e.g. if Command1 requires chassis, and Command2 requires arm,
     // a CommandGroup containing them would require both the chassis and the
     // arm.
+
     addSequential(new ElevatorMoveToPos(ElevatorPosition.SAFE_PIVOT_POS));
     addSequential(new MovePivot());
     addSequential(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT)); //brings it down to 0
