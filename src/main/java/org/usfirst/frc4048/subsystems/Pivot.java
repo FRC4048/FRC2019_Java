@@ -29,7 +29,7 @@ public class Pivot extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   // private Spark pivotMotor;
-  public WPI_TalonSRX pivotMotor;
+  private WPI_TalonSRX pivotMotor;
   private DigitalInput limitSwitchDeployed;
   private DigitalInput limitSwitchRetracted;
   private Solenoid lockPiston;
@@ -46,7 +46,6 @@ public class Pivot extends Subsystem {
 
     LiveWindow.add(pivotMotor);
   }
-
   public void toggleState(){
     if (pivotDeployed == false){
       pivotDeployed = true;
@@ -80,11 +79,11 @@ public class Pivot extends Subsystem {
   }
 
   public boolean getDeployedSwitch() {
-    return !limitSwitchDeployed.get();
+    return limitSwitchDeployed.get();
   }
 
   public boolean getRetractedSwitch() {
-    return !limitSwitchRetracted.get();
+    return limitSwitchRetracted.get();
   }
 
   public boolean getState() {
