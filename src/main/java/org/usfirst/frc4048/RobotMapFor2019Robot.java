@@ -105,8 +105,8 @@ interface RobotMapFor2019Robot {
   public static final int[] ALIGNMENT_ULTRASONIC_ID = {3,4};
   public static final int HATCH_DIGITAL_INPUT_ID = 7;
   public static final int CARGO_DIGITAL_INPUT_ID = 8;
-  public static final int PIVOT_LIMIT_SWITCH_LEFT_ID = 0;
-  public static final int PIVOT_LIMIT_SWITCH_RIGHT_ID = 1;
+  public static final int PIVOT_LIMIT_SWITCH_LEFT_ID = 1;
+  public static final int PIVOT_LIMIT_SWITCH_RIGHT_ID = 0;
   public static final int CLIMBER_POSITION_SENSOR_ID = 12;
   
   //PWM
@@ -115,9 +115,9 @@ interface RobotMapFor2019Robot {
   public static final int WINCH_ID = 2;
   
   //PCM
-  public static final int CARGO_PISTON_ID = 0;
-  public static final int HATCH_PANEL_PISTON_ID = 1;
-  public static final int[] CLIMBER_PISTONS_ID = {2,3};
+  public static final int CARGO_PISTON_ID = 3;
+  public static final int HATCH_PANEL_PISTON_ID = 0;
+  public static final int[] CLIMBER_PISTONS_ID = {1,2};
   public static final int PIVOT_PISTON_ID = 4;
 
   //OI

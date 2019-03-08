@@ -44,7 +44,7 @@ public class Drive extends Command {
 		if (!scaleSpeed) {
 			// Cube the values for finer movement
 			fwd = Math.pow(fwd, 3);
-			str = Math.pow(fwd, 3);
+			str = Math.pow(str, 3);
 			rcw = Math.pow(rcw, 3);
 		}
 
