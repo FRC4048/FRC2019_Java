@@ -44,7 +44,7 @@ interface RobotMapForTestbed {
 
   public static final boolean ENABLE_BEGIN_MATCH_GROUPCOMMAND = false;
 
-  public static final boolean ENABLE_PIVOT_SUBSYSTEM = true;
+  public static final boolean ENABLE_PIVOT_SUBSYSTEM = false;
     /**
    * Enables loging of timing data related to watchdog timeouts.
    */
@@ -88,8 +88,6 @@ interface RobotMapForTestbed {
   public static final int COMPRESSOR_PRESSURE_SENSOR = 2;
 
   //DIGITAL INPUTS
-  public static final int CARGO_LIMIT_SWITCH_LEFT_ID = 14;
-  public static final int CARGO_LIMIT_SWITCH_RIGHT_ID = 10;
   public static final int CARGO_OPTICAL_SENSOR_ID = 9;
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;

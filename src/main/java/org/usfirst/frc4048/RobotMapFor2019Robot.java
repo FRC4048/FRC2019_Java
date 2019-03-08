@@ -97,8 +97,6 @@ interface RobotMapFor2019Robot {
   public static final int COMPRESSOR_PRESSURE_SENSOR = 6;
 
   //DIGITAL INPUTS
-  public static final int CARGO_LIMIT_SWITCH_LEFT_ID = 9;
-  public static final int CARGO_LIMIT_SWITCH_RIGHT_ID = 11;
   public static final int CARGO_OPTICAL_SENSOR_ID = 2;
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
