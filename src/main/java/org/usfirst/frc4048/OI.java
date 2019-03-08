@@ -18,6 +18,7 @@ import org.usfirst.frc4048.commands.elevator.ElevatorMoveScheduler;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
 import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelIntake;
 import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelRelease;
+import org.usfirst.frc4048.commands.pivot.PivotGroup;
 import org.usfirst.frc4048.commands.pivot.TogglePivot;
 import org.usfirst.frc4048.triggers.LeftDPADTrigger;
 import org.usfirst.frc4048.triggers.RightDPADTrigger;
@@ -98,7 +99,7 @@ public class OI {
     leftDPADTrigger = new LeftDPADTrigger(xboxController);
 
     if (RobotMap.ENABLE_PIVOT_SUBSYSTEM) {
-      leftDPADTrigger.whenActive(new TogglePivot());
+      leftDPADTrigger.whenActive(new PivotGroup());
     }
 
     if (RobotMap.ENABLE_DRIVETRAIN) {

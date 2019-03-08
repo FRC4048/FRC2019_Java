@@ -34,11 +34,11 @@ interface RobotMapForTestbed {
 
   public static final boolean ENABLE_ELEVATOR = true;
 
-  public static final boolean ENABLE_MANIPULATOR = false;
+  public static final boolean ENABLE_MANIPULATOR = true;
 
-  public static final boolean ENABLE_CARGO_SUBSYSTEM = false;
+  public static final boolean ENABLE_CARGO_SUBSYSTEM = true;
 
-  public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = false;
+  public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = true;
 
   public static final boolean ENABLE_CLIMBER_SUBSYSTEM = false;
 
@@ -88,15 +88,13 @@ interface RobotMapForTestbed {
   public static final int COMPRESSOR_PRESSURE_SENSOR = 2;
 
   //DIGITAL INPUTS
-  public static final int CARGO_LIMIT_SWITCH_LEFT_ID = 14;
-  public static final int CARGO_LIMIT_SWITCH_RIGHT_ID = 10;
   public static final int CARGO_OPTICAL_SENSOR_ID = 9;
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
   public static final int HATCH_DIGITAL_INPUT_ID = 7;
   public static final int CARGO_DIGITAL_INPUT_ID = 3;
-  public static final int PIVOT_LIMIT_SWITCH_LEFT_ID = 1;
-  public static final int PIVOT_LIMIT_SWITCH_RIGHT_ID = 0;
+  public static final int PIVOT_LIMIT_SWITCH_LEFT_ID = 5;
+  public static final int PIVOT_LIMIT_SWITCH_RIGHT_ID = 4;
   public static final int CLIMBER_POSITION_SENSOR_ID = 11;
 
   public static final int[] ALIGNMENT_ULTRASONIC_ID = {12,13};
@@ -106,10 +104,10 @@ interface RobotMapForTestbed {
   public static final int CARGO_MOTOR_ID = 1;
 
   //PCM
-  public static final int CARGO_PISTON_ID = 1;
-  public static final int HATCH_PANEL_PISTON_ID = 4;
-  public static final int[] CLIMBER_PISTONS_ID = {2,3};
-  public static final int PIVOT_PISTON_ID = 0;
+  public static final int CARGO_PISTON_ID = 2;
+  public static final int HATCH_PANEL_PISTON_ID = 1;
+  public static final int[] CLIMBER_PISTONS_ID = {4,5};
+  public static final int PIVOT_PISTON_ID = 3;
 
   //OI
   public static final int XBOX_A_BUTTON = 1;

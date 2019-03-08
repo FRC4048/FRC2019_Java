@@ -5,54 +5,48 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands.manipulator.cargo;
+package org.usfirst.frc4048.commands.pivot;
 
 import org.usfirst.frc4048.Robot;
-import org.usfirst.frc4048.commands.LoggedCommand;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class CargoWristDown extends LoggedCommand {
-  public CargoWristDown() {
-    super("CargoWristDown");
+public class PivotPistonTest extends Command {
+  private boolean state;
+
+  public PivotPistonTest(boolean state) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.cargoSubsystem);
+    this.state = state;
+
+    requires(Robot.pivot);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void loggedInitialize() {
-    Robot.cargoSubsystem.setPiston(false);
-    setTimeout(2);
+  protected void initialize() {
+    Robot.pivot.movePiston(state);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void loggedExecute() {
+  protected void execute() {
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean loggedIsFinished() {
-    return isTimedOut();
+  protected boolean isFinished() {
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void loggedEnd() {
-    Robot.cargoSubsystem.setPiston(true);
+  protected void end() {
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void loggedInterrupted() {
-    loggedEnd();
-  }
-
-  @Override
-  protected void loggedCancel() {
-    loggedEnd();
+  protected void interrupted() {
   }
 }

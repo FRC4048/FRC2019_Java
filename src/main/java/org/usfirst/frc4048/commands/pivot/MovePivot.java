@@ -66,6 +66,7 @@ public class MovePivot extends LoggedCommand {
   protected void loggedEnd() {
     Robot.pivot.setSpeed(0.0);
     Robot.pivot.movePiston(true);//Lock pivot in place when done
+    Robot.pivot.toggleState();
   }
 
   // Called when another command which requires one or more of the same

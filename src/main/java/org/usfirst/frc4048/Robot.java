@@ -17,6 +17,7 @@ import org.usfirst.frc4048.utils.DoubleSolenoidUtil;
 // import org.usfirst.frc4048.commands.UnCradleIntake;
 import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
 import org.usfirst.frc4048.commands.manipulator.ReleaseGamePieceScheduler;
+import org.usfirst.frc4048.commands.manipulator.cargo.CargoWristDown;
 import org.usfirst.frc4048.commands.ScheduleBButton;
 import org.usfirst.frc4048.commands.climber.ClimbMovePiston;
 import org.usfirst.frc4048.commands.drive.CentricModeRobot;
@@ -36,6 +37,7 @@ import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelRelease;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
 import org.usfirst.frc4048.commands.limelight.LimelightToggleStream;
 import org.usfirst.frc4048.commands.pivot.PivotGroup;
+import org.usfirst.frc4048.commands.pivot.PivotPistonTest;
 import org.usfirst.frc4048.commands.pivot.TogglePivot;
 import org.usfirst.frc4048.subsystems.CargoSubsystem;
 import org.usfirst.frc4048.subsystems.Climber;
@@ -220,7 +222,9 @@ public class Robot extends TimedRobot {
 		gameInfo.append(DriverStation.getInstance().getMatchType().toString());
 		logging.traceMessage(Logging.MessageLevel.INFORMATION, gameInfo.toString());
 
-    Scheduler.getInstance().add(new PivotGroup());
+    if (RobotMap.ENABLE_PIVOT_SUBSYSTEM){
+      Scheduler.getInstance().add(new PivotGroup());
+    }
     //    m_autonomousCommand = m_chooser.getSelected();
 
     /*
@@ -229,7 +233,9 @@ public class Robot extends TimedRobot {
      * MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new
      * ExampleCommand(); break; }
      */
-    Scheduler.getInstance().add(new CentricModeRobot());
+    if (RobotMap.ENABLE_DRIVETRAIN){
+      Scheduler.getInstance().add(new CentricModeRobot());
+    }
   }
 
   /**
@@ -337,7 +343,13 @@ public class Robot extends TimedRobot {
 
     if (RobotMap.ENABLE_PIVOT_SUBSYSTEM)
     {
-      SmartShuffleboard.putCommand("Pivot", "Pivot Deploy", new TogglePivot());
+      SmartShuffleboard.putCommand("Pivot", "Pivot Deploy", new PivotGroup());
+      SmartShuffleboard.putCommand("Pivot", "Piston Extend", new PivotPistonTest(true));
+      SmartShuffleboard.putCommand("Pivot", "Piston Retract", new PivotPistonTest(false));
+    }
+
+    if (RobotMap.ENABLE_CARGO_SUBSYSTEM) {
+      SmartShuffleboard.putCommand("Cargo", "Cargo drop ball", new CargoWristDown());
     }
 
   }
