@@ -23,7 +23,7 @@ public class CargoWristDown extends LoggedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
-    Robot.cargoSubsystem.setPiston(false);
+    Robot.cargoSubsystem.setPiston(true);
     setTimeout(2);
   }
 
@@ -41,7 +41,7 @@ public class CargoWristDown extends LoggedCommand {
   // Called once after isFinished returns true
   @Override
   protected void loggedEnd() {
-    Robot.cargoSubsystem.setPiston(true);
+    Robot.cargoSubsystem.setPiston(false);
   }
 
   // Called when another command which requires one or more of the same

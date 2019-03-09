@@ -16,6 +16,7 @@ import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveScheduler;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
+import org.usfirst.frc4048.commands.limelight.LimelightBlink;
 import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelIntake;
 import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelRelease;
 import org.usfirst.frc4048.commands.pivot.PivotGroup;
@@ -131,7 +132,7 @@ public class OI {
       rocketHigh.whenPressed(new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_HIGH));
       rocketMid.whenPressed(new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_MID));
       rocketLow.whenPressed(new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_LOW));
-      cargoCargoship.whenPressed(new ScheduleBButton());
+      cargoCargoship.whenPressed(new LimelightBlink());
       
     }
 
