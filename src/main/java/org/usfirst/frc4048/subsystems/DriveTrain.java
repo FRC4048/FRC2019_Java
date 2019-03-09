@@ -84,7 +84,7 @@ public class DriveTrain extends Subsystem {
   private final boolean REVERSE_OUTPUT = true;
 
   private final int FR_ZERO = 3315;// 1037;
-  private final int FL_ZERO = 121;// 1767;
+  private final int FL_ZERO = 50;// 1767;
   private final int RL_ZERO = 1720;// 1456;//1456;
   private final int RR_ZERO = 136;// 2444;
 
@@ -334,14 +334,14 @@ public class DriveTrain extends Subsystem {
   public void resetQuadEncoder() {
     steerFR.setSelectedSensorPosition((int) ((analogInputFrontRight.getValue() - FR_ZERO) / 4000.0 * GEAR_RATIO), 0,
         TIMEOUT);
-    steerFL.setSelectedSensorPosition((int) ((analogInputFrontLeft.getValue() - FL_ZERO) / 4000.0 * GEAR_RATIO), 0,
-        TIMEOUT);
+    // steerFL.setSelectedSensorPosition((int) ((analogInputFrontLeft.getValue() - FL_ZERO) / 4000.0 * GEAR_RATIO), 0,
+    //     TIMEOUT);
     steerRL.setSelectedSensorPosition((int) ((analogInputRearLeft.getValue() - RL_ZERO) / 4000.0 * GEAR_RATIO), 0,
         TIMEOUT);
     steerRR.setSelectedSensorPosition((int) ((analogInputRearRight.getValue() - RR_ZERO) / 4000.0 * GEAR_RATIO), 0,
         TIMEOUT);
     // steerFR.setSelectedSensorPosition(0);
-    // steerFL.setSelectedSensorPosition(0);
+    steerFL.setSelectedSensorPosition(0);
     // steerRL.setSelectedSensorPosition(0);
     // steerRR.setSelectedSensorPosition(0);
 

@@ -116,7 +116,7 @@ public class RotateAngleForAlignment extends LoggedCommand {
       currentDepositAngles = hatchDepositAngles;
     }
 
-    if (!Robot.hatchPanelSubsystem.checkPiston()) {
+    if (!Robot.hatchPanelSubsystem.checkPiston() && !Robot.gamePieceMode.isCargo()) {
       return loadingStationAngle;
     }
     

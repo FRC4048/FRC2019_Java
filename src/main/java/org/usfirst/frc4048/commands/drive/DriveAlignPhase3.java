@@ -15,7 +15,7 @@ public class DriveAlignPhase3 extends LoggedCommand {
 	private final double SIDEWAYS_POWER_FACTOR = 0.1; // factor to apply to forward power when adjusting horizontally
 	private final double MIN_ANGLE_ERROR = 2.0; // The angle error that triggers correction
 	private final double ROTATION_SPEED = 0.05; // The rotation correction power
-	private final double DISTANCE_FROM_TARGET = 25; // required distance from target to drive to
+	private final double DISTANCE_FROM_TARGET = 27; // required distance from target to drive to
 	private double power; // power the robot will use to drive
 
 	private double startAngle = 0.0; // Initial orientation of the robot (this is the one we will try to maintain), in degrees

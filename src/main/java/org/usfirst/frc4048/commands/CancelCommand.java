@@ -25,7 +25,7 @@ public class CancelCommand extends LoggedCommand {
   @Override
   protected void loggedInitialize() {
     Scheduler.getInstance().removeAll();
-    Scheduler.getInstance().add(new HatchPanelRelease());
+    // Scheduler.getInstance().add(new HatchPanelRelease());
     Robot.elevator.stopMotor();
   }
 

@@ -172,6 +172,7 @@ public class Elevator extends Subsystem {
   }
 
   public void stopMotor() {
-    elevatorMotor.set(ControlMode.PercentOutput, 0.0);
+    // elevatorMotor.set(ControlMode.PercentOutput, 0.0);
+    elevatorSetpoint = getEncoder();
   }
 }
