@@ -25,7 +25,6 @@ public class MovePivot extends LoggedCommand {
   @Override
   protected void loggedInitialize() {
     startingState = Robot.pivot.getState();
-    Robot.pivot.movePiston(false);//Unlock pivot at beginning of command
     setTimeout(6);
   }
 
@@ -65,7 +64,6 @@ public class MovePivot extends LoggedCommand {
   @Override
   protected void loggedEnd() {
     Robot.pivot.setSpeed(0.0);
-    Robot.pivot.movePiston(true);//Lock pivot in place when done
     Robot.pivot.toggleState();
   }
 

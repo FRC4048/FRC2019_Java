@@ -5,34 +5,32 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands;
+package org.usfirst.frc4048.commands.pivot;
 
-import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
-import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelRelease;
-import org.usfirst.frc4048.utils.ElevatorPosition;
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
-import edu.wpi.first.wpilibj.command.Scheduler;
 
-public class CancelCommand extends LoggedCommand {
-  public CancelCommand() {
+import edu.wpi.first.wpilibj.command.Command;
+
+public class LockPivot extends LoggedCommand {
+  private boolean lock;
+  public LockPivot(boolean lock) {
+    super("LockPivot");
+    this.lock = lock;
+    requires(Robot.pivot);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    super("Cancel Command");
-    requires(Robot.elevator);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
-    Scheduler.getInstance().removeAll();
-    // Scheduler.getInstance().add(new HatchPanelRelease());
-    Robot.elevator.stopMotor();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void loggedExecute() {
+    Robot.pivot.movePiston(lock);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -46,14 +44,13 @@ public class CancelCommand extends LoggedCommand {
   protected void loggedEnd() {
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
   @Override
   protected void loggedInterrupted() {
+
   }
 
-@Override
-protected void loggedCancel() {
-	
-}
+  @Override
+  protected void loggedCancel() {
+
+  }
 }

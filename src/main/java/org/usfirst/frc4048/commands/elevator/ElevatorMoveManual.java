@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ElevatorMoveManual extends Command {
     private final double JOYSTICK_MARGIN_VALUE = 0.10;
-    private final int FINETUNE_PROPORTION = 10;//this will change
+    private final int FINETUNE_PROPORTION = 150;//this will change
 
     public ElevatorMoveManual() {
         // Use requires() here to declare subsystem dependencies
@@ -29,8 +29,12 @@ public class ElevatorMoveManual extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (Robot.oi.getRightJoyStickY() > JOYSTICK_MARGIN_VALUE) {
-            Robot.elevator.fineTune(Robot.oi.getRightJoyStickY()*FINETUNE_PROPORTION);
+        if(Math.abs(Robot.oi.getRightTrigger()) > JOYSTICK_MARGIN_VALUE) {
+            Robot.elevator.fineTune(Robot.oi.getRightTrigger() * FINETUNE_PROPORTION);
+        } else if(Math.abs(Robot.oi.getLeftTrigger()) > JOYSTICK_MARGIN_VALUE) {
+            Robot.elevator.fineTune(Robot.oi.getLeftTrigger() * FINETUNE_PROPORTION * -1);
+        } else {
+            Robot.elevator.fineTune(0.0);
         }
     }
 

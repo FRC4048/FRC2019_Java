@@ -5,55 +5,43 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands;
+package org.usfirst.frc4048.commands.elevator;
 
-import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
-import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelRelease;
-import org.usfirst.frc4048.utils.ElevatorPosition;
 import org.usfirst.frc4048.Robot;
-import org.usfirst.frc4048.commands.LoggedCommand;
-import edu.wpi.first.wpilibj.command.Scheduler;
 
-public class CancelCommand extends LoggedCommand {
-  public CancelCommand() {
+import edu.wpi.first.wpilibj.command.Command;
+
+public class ElevatorResetEncoder extends Command {
+  public ElevatorResetEncoder() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    super("Cancel Command");
-    requires(Robot.elevator);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void loggedInitialize() {
-    Scheduler.getInstance().removeAll();
-    // Scheduler.getInstance().add(new HatchPanelRelease());
-    Robot.elevator.stopMotor();
+  protected void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void loggedExecute() {
+  protected void execute() {
+    Robot.elevator.resetEncoder();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean loggedIsFinished() {
+  protected boolean isFinished() {
     return true;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void loggedEnd() {
+  protected void end() {
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void loggedInterrupted() {
+  protected void interrupted() {
   }
-
-@Override
-protected void loggedCancel() {
-	
-}
 }

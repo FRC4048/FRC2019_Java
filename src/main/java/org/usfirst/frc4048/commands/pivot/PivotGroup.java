@@ -11,6 +11,7 @@ import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
 import org.usfirst.frc4048.utils.ElevatorPosition;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 public class PivotGroup extends CommandGroup {
   /**
@@ -35,7 +36,10 @@ public class PivotGroup extends CommandGroup {
     // arm.
 
     addSequential(new ElevatorMoveToPos(ElevatorPosition.SAFE_PIVOT_POS));
+    addSequential(new LockPivot(false));
+    addSequential(new WaitCommand(0.2));
     addSequential(new MovePivot());
+    addSequential(new LockPivot(true));
     addSequential(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT)); //brings it down to 0
   }
 }

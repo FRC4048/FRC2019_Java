@@ -166,4 +166,12 @@ public class OI {
   public double getRightJoyStickY() {
     return xboxController.getY(Hand.kRight);
   }
+
+  public double getRightTrigger() {
+    return xboxController.getTriggerAxis(Hand.kRight);
+  }
+
+  public double getLeftTrigger() {
+    return xboxController.getTriggerAxis(Hand.kLeft);
+  }
 }
