@@ -102,9 +102,10 @@ public class Elevator extends Subsystem {
   @Override
   public void periodic() {
     if(RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
-      SmartShuffleboard.put("Elevator", "Setpoint", elevatorSetpoint);
     }
     moveElevator();
+    SmartShuffleboard.put("Elevator", "encoder", getEncoder());
+    SmartShuffleboard.put("Elevator", "Setpoint", elevatorSetpoint);
   }
 
   @Override

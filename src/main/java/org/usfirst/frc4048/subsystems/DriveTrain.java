@@ -85,7 +85,7 @@ public class DriveTrain extends Subsystem {
 
   private final int FR_ZERO = 3315;// 1037;
   private final int FL_ZERO = 50;// 1767;
-  private final int RL_ZERO = 1720;// 1456;//1456;
+  private final int RL_ZERO = 3575;// 1456;//1456;
   private final int RR_ZERO = 136;// 2444;
 
   private final double P = 10;

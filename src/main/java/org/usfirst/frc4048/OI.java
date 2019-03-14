@@ -132,7 +132,7 @@ public class OI {
       rocketHigh.whenPressed(new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_HIGH));
       rocketMid.whenPressed(new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_MID));
       rocketLow.whenPressed(new ElevatorMoveScheduler(WantedElevatorPosition.ROCKET_LOW));
-      cargoCargoship.whenPressed(new LimelightBlink());
+      cargoCargoship.whenPressed(new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
       
     }
 

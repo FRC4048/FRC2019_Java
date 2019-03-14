@@ -66,6 +66,7 @@ public class Pivot extends Subsystem {
       SmartShuffleboard.put("Pivot", "fwd Switch", getDeployedSwitch());
       SmartShuffleboard.put("Pivot", "rev Switch", getRetractedSwitch());
     }
+
   }
 
   @Override
