@@ -41,18 +41,24 @@ public class RotateAngleForAlignment extends LoggedCommand {
    *  / 
    * / <-- Front Angle
    */
-
   public RotateAngleForAlignment() {
+    super(String.format(" is running"));
+    requires(Robot.drivetrain);
+  }
+
+  public RotateAngleForAlignment(boolean isTest) {
     super(String.format(" is running"));
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.drivetrain);
+    if(!isTest){
+      requires(Robot.drivetrain);
+    }
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
-    angle = calculateAngle(Robot.drivetrain.getGyro(), Robot.gamePieceMode.isCargo());
+    angle = calculateAngle(Robot.drivetrain.getGyro(), Robot.gamePieceMode.isCargo(), Robot.hatchPanelSubsystem.checkPiston());
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -104,7 +110,7 @@ public class RotateAngleForAlignment extends LoggedCommand {
     loggedEnd();
   }
 
-  public double calculateAngle(double currAngle, boolean isCargo) {
+  public double calculateAngle(double currAngle, boolean isCargo, boolean hatchPanelOpen) {
     double currentDistance = 0;
     double closestDistance = 360;
     int closestIndex = 0;
@@ -116,7 +122,7 @@ public class RotateAngleForAlignment extends LoggedCommand {
       currentDepositAngles = hatchDepositAngles;
     }
 
-    if (!Robot.hatchPanelSubsystem.checkPiston()) {
+    if (!hatchPanelOpen && !isCargo) {
       return loadingStationAngle;
     }
     

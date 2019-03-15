@@ -32,13 +32,13 @@ interface RobotMapForTestbed {
 
   public static final boolean ENABLE_DRIVETRAIN = false;
 
-  public static final boolean ENABLE_ELEVATOR = true;
+  public static final boolean ENABLE_ELEVATOR = false;
 
-  public static final boolean ENABLE_MANIPULATOR = true;
+  public static final boolean ENABLE_MANIPULATOR = false;
 
-  public static final boolean ENABLE_CARGO_SUBSYSTEM = true;
+  public static final boolean ENABLE_CARGO_SUBSYSTEM = false;
 
-  public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = true;
+  public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = false;
 
   public static final boolean ENABLE_CLIMBER_SUBSYSTEM = false;
 
@@ -104,8 +104,8 @@ interface RobotMapForTestbed {
   public static final int CARGO_MOTOR_ID = 1;
 
   //PCM
-  public static final int CARGO_PISTON_ID = 2;
-  public static final int HATCH_PANEL_PISTON_ID = 1;
+  public static final int CARGO_PISTON_ID = 4;
+  public static final int HATCH_PANEL_PISTON_ID = 0;
   public static final int[] CLIMBER_PISTONS_ID = {4,5};
   public static final int PIVOT_PISTON_ID = 3;
 

@@ -16,6 +16,7 @@ import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveScheduler;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
+import org.usfirst.frc4048.commands.limelight.LimelightBlink;
 import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelIntake;
 import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelRelease;
 import org.usfirst.frc4048.commands.pivot.PivotGroup;
@@ -164,5 +165,13 @@ public class OI {
   }
   public double getRightJoyStickY() {
     return xboxController.getY(Hand.kRight);
+  }
+
+  public double getRightTrigger() {
+    return xboxController.getTriggerAxis(Hand.kRight);
+  }
+
+  public double getLeftTrigger() {
+    return xboxController.getTriggerAxis(Hand.kLeft);
   }
 }

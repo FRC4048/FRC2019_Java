@@ -102,6 +102,7 @@ public class Elevator extends Subsystem {
   @Override
   public void periodic() {
     if(RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
+      SmartShuffleboard.put("Elevator", "encoder", getEncoder());
       SmartShuffleboard.put("Elevator", "Setpoint", elevatorSetpoint);
     }
     moveElevator();
@@ -111,7 +112,7 @@ public class Elevator extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    // setDefaultCommand(new ElevatorMoveManual()); //ENABLE THIS IF NEEDED
+    setDefaultCommand(new ElevatorMoveManual()); //ENABLE THIS IF NEEDED
   }
 
   public void moveElevator() {
@@ -172,6 +173,7 @@ public class Elevator extends Subsystem {
   }
 
   public void stopMotor() {
-    elevatorMotor.set(ControlMode.PercentOutput, 0.0);
+    // elevatorMotor.set(ControlMode.PercentOutput, 0.0);
+    elevatorSetpoint = getEncoder();
   }
 }

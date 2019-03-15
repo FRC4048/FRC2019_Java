@@ -32,6 +32,7 @@ import org.usfirst.frc4048.commands.drive.RotateAngle;
 import org.usfirst.frc4048.commands.drive.RotateAngleForAlignment;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveScheduler;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
+import org.usfirst.frc4048.commands.elevator.ElevatorResetEncoder;
 import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelIntake;
 import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelRelease;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
@@ -356,6 +357,7 @@ public class Robot extends TimedRobot {
 
   private void putCommandsInCompetition() {
     SmartShuffleboard.putCommand("Driver", "Reset Gyro", new ResetGyro());
+    SmartShuffleboard.putCommand("Driver", "Reset Elevator Encoder", new ElevatorResetEncoder());
   }
 
 	public static Timer timer() {

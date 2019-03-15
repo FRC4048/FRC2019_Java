@@ -19,13 +19,14 @@ public class CancelCommand extends LoggedCommand {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     super("Cancel Command");
+    requires(Robot.elevator);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
     Scheduler.getInstance().removeAll();
-    Scheduler.getInstance().add(new HatchPanelRelease());
+    // Scheduler.getInstance().add(new HatchPanelRelease());
     Robot.elevator.stopMotor();
   }
 
