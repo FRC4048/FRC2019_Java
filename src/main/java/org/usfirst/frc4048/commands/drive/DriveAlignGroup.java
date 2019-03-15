@@ -35,7 +35,7 @@ public class DriveAlignGroup extends CommandGroup {
     // arm.
     addSequential(new LimelightToggle(true));
     addSequential(new WaitCommand(0.1));
-    addSequential(new RotateAngleForAlignment(false)); //STEP 1
+    addSequential(new RotateAngleForAlignment()); //STEP 1
     // addSequential(new DriveAlignPhase2(0.25, 0.4, false)); //STEP 2
     addSequential(new DriveAlignPhase3(0.3, true)); //STEP 3
     addSequential(new CentricModeRobot());

@@ -210,7 +210,7 @@ public class Robot extends TimedRobot {
     commonInit("autonomousInit");
 
     if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM && !Robot.gamePieceMode.isCargo()) {
-      // Scheduler.getInstance().add(new HatchPanelIntake());
+      Scheduler.getInstance().add(new HatchPanelIntake());
     }
     logging.traceMessage(Logging.MessageLevel.INFORMATION, "---------------------------- Autonomous mode starting ----------------------------");
     
@@ -224,7 +224,7 @@ public class Robot extends TimedRobot {
 		logging.traceMessage(Logging.MessageLevel.INFORMATION, gameInfo.toString());
 
     if (RobotMap.ENABLE_PIVOT_SUBSYSTEM){
-      // Scheduler.getInstance().add(new PivotGroup());
+      Scheduler.getInstance().add(new PivotGroup());
     }
     //    m_autonomousCommand = m_chooser.getSelected();
 
@@ -322,7 +322,7 @@ public class Robot extends TimedRobot {
       SmartShuffleboard.putCommand("Drive", "DriveAlignPhase2", new DriveAlignPhase2(0.3, 0.4, true));
       SmartShuffleboard.putCommand("Drive", "DriveAlignPhase3", new DriveAlignPhase3(0.25, true));
       SmartShuffleboard.putCommand("Drive", "Toggle Centric Mode", new CentricModeToggle());
-      SmartShuffleboard.putCommand("Drive", "Rotate angle align", new RotateAngleForAlignment(false));
+      SmartShuffleboard.putCommand("Drive", "Rotate angle align", new RotateAngleForAlignment());
     }
     if(RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM) {
       SmartShuffleboard.putCommand("Hatch Panel", "Intake", new HatchPanelIntake());

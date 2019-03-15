@@ -8,40 +8,46 @@
 package org.usfirst.frc4048.commands.elevator;
 
 import org.usfirst.frc4048.Robot;
+import org.usfirst.frc4048.commands.LoggedCommand;
 
-import edu.wpi.first.wpilibj.command.Command;
 
-public class ElevatorResetEncoder extends Command {
+public class ElevatorResetEncoder extends LoggedCommand {
   public ElevatorResetEncoder() {
+    super("Elevator Reset Encoder");
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  protected void loggedInitialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  protected void loggedExecute() {
     Robot.elevator.resetEncoder();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  protected boolean loggedIsFinished() {
     return true;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  protected void loggedEnd() {
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
+  protected void loggedInterrupted() {
+  }
+
+  @Override
+  protected void loggedCancel() {
+
   }
 }

@@ -28,23 +28,23 @@ interface RobotMapForTestbed {
    * so it does not impact the amount of time it takes to complete the
    * periodic() loop.
    */ 
-  public static final boolean ENABLE_PIGEON_THREAD = true;
+  public static final boolean ENABLE_PIGEON_THREAD = false;
 
-  public static final boolean ENABLE_DRIVETRAIN = true;
+  public static final boolean ENABLE_DRIVETRAIN = false;
 
-  public static final boolean ENABLE_ELEVATOR = true;
+  public static final boolean ENABLE_ELEVATOR = false;
 
-  public static final boolean ENABLE_MANIPULATOR = true;
+  public static final boolean ENABLE_MANIPULATOR = false;
 
-  public static final boolean ENABLE_CARGO_SUBSYSTEM = true;
+  public static final boolean ENABLE_CARGO_SUBSYSTEM = false;
 
-  public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = true;
+  public static final boolean ENABLE_HATCH_PANEL_SUBSYSTEM = false;
 
   public static final boolean ENABLE_CLIMBER_SUBSYSTEM = false;
 
   public static final boolean ENABLE_BEGIN_MATCH_GROUPCOMMAND = false;
 
-  public static final boolean ENABLE_PIVOT_SUBSYSTEM = true;
+  public static final boolean ENABLE_PIVOT_SUBSYSTEM = false;
     /**
    * Enables loging of timing data related to watchdog timeouts.
    */

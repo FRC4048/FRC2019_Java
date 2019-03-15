@@ -41,6 +41,10 @@ public class RotateAngleForAlignment extends LoggedCommand {
    *  / 
    * / <-- Front Angle
    */
+  public RotateAngleForAlignment() {
+    super(String.format(" is running"));
+    requires(Robot.drivetrain);
+  }
 
   public RotateAngleForAlignment(boolean isTest) {
     super(String.format(" is running"));
