@@ -45,15 +45,15 @@ public class Elevator extends Subsystem {
 
   private final int TIMEOUT = 100;
 
-  private final int ELEVATOR_POSITION_ERROR = (int) (150 * ELEVATOR_ENCODER_SCALE);
+  private final int ELEVATOR_POSITION_ERROR = 150;
 
   private final double ELEVATOR_UP_SCALE_FACTOR = 1.0;
   private final double ELEVATOR_DOWN_SCALE_FACTOR = 0.6;
 
-  private final double ELEVATOR_P = 1 * ELEVATOR_ENCODER_SCALE;
-  private final double ELEVATOR_I = 0.001 * ELEVATOR_ENCODER_SCALE;
-  private final double ELEVATOR_D = 0.4 * ELEVATOR_ENCODER_SCALE;
-  private final double ELEVATOR_F = 0 * ELEVATOR_ENCODER_SCALE;
+  private final double ELEVATOR_P = 1;
+  private final double ELEVATOR_I = 0.001;
+  private final double ELEVATOR_D = 0.4;
+  private final double ELEVATOR_F = 0;
 
   private double elevatorSetpoint;
 
@@ -194,5 +194,9 @@ public class Elevator extends Subsystem {
   }
   public void setElevatorSetpoint(double setpoint) {
     elevatorSetpoint = setpoint;
+  }
+
+  public double getSetpoint() {
+    return elevatorSetpoint;
   }
 }

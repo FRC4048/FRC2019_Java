@@ -65,7 +65,7 @@ interface RobotMapForTestbed {
   public static final int PDP_CAN_ID = 0;
   public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 6; 
   public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 5; 
-  public static final int REAR_LEFT_DRIVE_MOTOR_ID = 11; //Switched this from 7 to 11, because elevator motor needed to be tested
+  public static final int REAR_LEFT_DRIVE_MOTOR_ID = 7; //Switched this from 7 to 11, because elevator motor needed to be tested
   public static final int REAR_RIGHT_DRIVE_MOTOR_ID = 8; 
   public static final int FRONT_LEFT_STEER_MOTOR_ID = 2; 
   public static final int FRONT_RIGHT_STEER_MOTOR_ID = 1; 
@@ -74,9 +74,9 @@ interface RobotMapForTestbed {
  
   public static final int DRIVE_PIGEON_ID = 9;
   public static final int PCM_CAN_ID = 10;  
-  public static final int ELEVATOR_MOTOR_ID = 7;
+  public static final int ELEVATOR_MOTOR_ID = 11;
   public static final int WINCH_ID = 12;
-
+ 
   //ANALOG INPUTS
   public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID = 0;
   public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_LEFT_ID = 1;

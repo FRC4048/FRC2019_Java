@@ -9,6 +9,7 @@ package org.usfirst.frc4048.commands.extension;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
+import org.usfirst.frc4048.utils.ElevatorPosition;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
 
 public class ExtensionMove extends LoggedCommand {
@@ -25,7 +26,9 @@ public class ExtensionMove extends LoggedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
-    Robot.extension.setPiston(extend);
+    if(Robot.elevator.getSetpoint() != 0.0) {
+      Robot.extension.setPiston(extend);
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run
