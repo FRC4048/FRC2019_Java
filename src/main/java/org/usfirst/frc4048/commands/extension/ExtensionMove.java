@@ -26,7 +26,7 @@ public class ExtensionMove extends LoggedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
-    if(Robot.elevator.getSetpoint() != 0.0) {
+    if(Robot.elevator.getSetpoint() != 0.0 || extend) {
       Robot.extension.setPiston(extend);
     }
   }
