@@ -5,21 +5,28 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.utils;
+package org.usfirst.frc4048.triggers;
+
+import org.usfirst.frc4048.utils.SmartShuffleboard;
+
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 
 /**
  * Add your docs here.
  */
-public enum ElevatorPosition {
-    CARGO_CARGOSHIP_POS(3630.0), CARGO_INTAKE_POS(2615.0), HATCH_ROCKET_BOT(0.0), HATCH_ROCKET_MID(5625.0), HATCH_ROCKET_HIGH(10568.0), CARGO_ROCKET_LOW(0.0), CARGO_ROCKET_MID(5226.0), CARGO_ROCKET_HIGH(10588.0), SAFE_HEIGHT(675);
+public class UpDPADTrigger extends Trigger {
+  XboxController xboxController;
 
-    public double position;
-
-    ElevatorPosition(double position) {
-        this.position = position;
+  public UpDPADTrigger(XboxController xboxController) {
+    this.xboxController = xboxController;
+  }
+  @Override
+  public boolean get() {
+    if(xboxController.getPOV() == 0) {
+      return true;
+    } else {
+      return false;
     }
-    
-    public double getPosition() {
-        return position;
-    }
+  }
 }

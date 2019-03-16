@@ -29,6 +29,7 @@ public class ElevatorMoveToPos extends LoggedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
+    
     setTimeout(2.5);
   }
 

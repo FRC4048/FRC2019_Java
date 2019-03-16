@@ -5,66 +5,44 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands.pivot;
+package org.usfirst.frc4048.commands.extension;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
-import org.usfirst.frc4048.subsystems.Pivot;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
 
-public class MovePivot extends LoggedCommand {
-  private final double PIVOT_SPEED = 1.0;
-  private boolean startingState;
-  public MovePivot() {
-    super("MovePivot");
+public class ExtensionMove extends LoggedCommand {
+  private boolean extend;
+
+  public ExtensionMove(boolean extend) {
+    super("Move Extension state " + extend);
+    this.extend = extend;
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.pivot);
+    // eg. requires(chassis);
+    requires(Robot.extension);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
-    startingState = Robot.pivot.getState();
-    setTimeout(6);
+    Robot.extension.setPiston(extend);
+    SmartShuffleboard.put("Driver", "Moving Piston", extend);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void loggedExecute() {
-    if (Robot.pivot.getState()){
-      // if (Robot.pivot.getDeployedSwitch()){
-      //   Robot.pivot.setSpeed(0);
-      // }
-      // else {
-      //   Robot.pivot.setSpeed(PIVOT_SPEED);
-      // }
-      Robot.pivot.setSpeed(-PIVOT_SPEED);
-    } else {
-      // if (Robot.pivot.getRetractedSwitch()){
-      //   Robot.pivot.setSpeed(0);
-
-      // } else {
-      //   Robot.pivot.setSpeed(-PIVOT_SPEED);
-      // }
-      Robot.pivot.setSpeed(PIVOT_SPEED);
-    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean loggedIsFinished() {
-    if(startingState) {
-      return Robot.pivot.getRetractedSwitch() || isTimedOut();
-    } else {
-      return Robot.pivot.getDeployedSwitch() || isTimedOut();
-    }
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void loggedEnd() {
-    Robot.pivot.setSpeed(0.0);
-    Robot.pivot.toggleState();
   }
 
   // Called when another command which requires one or more of the same

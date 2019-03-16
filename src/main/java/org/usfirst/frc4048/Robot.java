@@ -37,15 +37,16 @@ import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelIntake;
 import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelRelease;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
 import org.usfirst.frc4048.commands.limelight.LimelightToggleStream;
-import org.usfirst.frc4048.commands.pivot.PivotGroup;
-import org.usfirst.frc4048.commands.pivot.PivotPistonTest;
-import org.usfirst.frc4048.commands.pivot.TogglePivot;
+// import org.usfirst.frc4048.commands.pivot.PivotGroup;
+// import org.usfirst.frc4048.commands.pivot.PivotPistonTest;
+// import org.usfirst.frc4048.commands.pivot.TogglePivot;
 import org.usfirst.frc4048.subsystems.CargoSubsystem;
 import org.usfirst.frc4048.subsystems.Climber;
 import org.usfirst.frc4048.subsystems.CompressorSubsystem;
 import org.usfirst.frc4048.subsystems.DriveTrain;
 import org.usfirst.frc4048.subsystems.DrivetrainSensors;
 import org.usfirst.frc4048.subsystems.Elevator;
+import org.usfirst.frc4048.subsystems.Extension;
 import org.usfirst.frc4048.subsystems.GamePieceMode;
 import org.usfirst.frc4048.subsystems.HatchPanelSubsystem;
 import org.usfirst.frc4048.subsystems.Pivot;
@@ -87,6 +88,7 @@ public class Robot extends TimedRobot {
   public static GamePieceMode gamePieceMode;
   public static Diagnostics diagnostics;
   public static MechanicalMode mechanicalMode;
+  public static Extension extension;
   private final static Timer timer = new Timer(100);
   public static Pivot pivot;
 
@@ -142,8 +144,11 @@ public class Robot extends TimedRobot {
     }
 
     if (RobotMap.ENABLE_PIVOT_SUBSYSTEM) {
-      pivot = new Pivot();
+      // pivot = new Pivot();
+      extension = new Extension();
+
     }
+    
     logging = new Logging();
 
     // OI must be initialized last
@@ -224,7 +229,7 @@ public class Robot extends TimedRobot {
 		logging.traceMessage(Logging.MessageLevel.INFORMATION, gameInfo.toString());
 
     if (RobotMap.ENABLE_PIVOT_SUBSYSTEM){
-      Scheduler.getInstance().add(new PivotGroup());
+      // Scheduler.getInstance().add(new PivotGroup());
     }
     //    m_autonomousCommand = m_chooser.getSelected();
 
@@ -280,7 +285,6 @@ public class Robot extends TimedRobot {
     timer.init("teleopPeriodic");
     logging.writeAllData();
     timer.completed(this, "log");
-
     Scheduler.getInstance().run();
     timer.completed(this, "Sched");
 
@@ -344,9 +348,9 @@ public class Robot extends TimedRobot {
 
     if (RobotMap.ENABLE_PIVOT_SUBSYSTEM)
     {
-      SmartShuffleboard.putCommand("Pivot", "Pivot Deploy", new PivotGroup());
-      SmartShuffleboard.putCommand("Pivot", "Piston Extend", new PivotPistonTest(true));
-      SmartShuffleboard.putCommand("Pivot", "Piston Retract", new PivotPistonTest(false));
+      // SmartShuffleboard.putCommand("Pivot", "Pivot Deploy", new PivotGroup());
+      // SmartShuffleboard.putCommand("Pivot", "Piston Extend", new PivotPistonTest(true));
+      // SmartShuffleboard.putCommand("Pivot", "Piston Retract", new PivotPistonTest(false));
     }
 
     if (RobotMap.ENABLE_CARGO_SUBSYSTEM) {

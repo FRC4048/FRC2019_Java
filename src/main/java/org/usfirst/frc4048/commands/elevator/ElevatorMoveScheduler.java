@@ -9,6 +9,7 @@ package org.usfirst.frc4048.commands.elevator;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.commands.LoggedCommand;
+import org.usfirst.frc4048.commands.extension.ExtensionMove;
 import org.usfirst.frc4048.utils.ElevatorPosition;
 import org.usfirst.frc4048.utils.WantedElevatorPosition;
 
@@ -42,7 +43,8 @@ public class ElevatorMoveScheduler extends LoggedCommand {
         Scheduler.getInstance().add(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_MID));
         break;
       case ROCKET_LOW:
-        Scheduler.getInstance().add(new ElevatorMoveToPos(ElevatorPosition.CARGO_ROCKET_LOW));
+        Scheduler.getInstance().add(new ExtensionMove(false));
+        Scheduler.getInstance().add(new ElevatorMoveToPos(ElevatorPosition.SAFE_HEIGHT));
         break;
       }
     } else {
@@ -54,7 +56,8 @@ public class ElevatorMoveScheduler extends LoggedCommand {
         Scheduler.getInstance().add(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_MID));
         break;
       case ROCKET_LOW: 
-        Scheduler.getInstance().add(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
+        Scheduler.getInstance().add(new ExtensionMove(false));
+        Scheduler.getInstance().add(new ElevatorMoveToPos(ElevatorPosition.SAFE_HEIGHT));
         break;
       }
     }

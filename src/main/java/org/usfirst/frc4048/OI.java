@@ -16,13 +16,16 @@ import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveScheduler;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveToPos;
+import org.usfirst.frc4048.commands.extension.ExtensionMove;
 import org.usfirst.frc4048.commands.limelight.LimelightBlink;
 import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelIntake;
 import org.usfirst.frc4048.commands.manipulator.hatchpanel.HatchPanelRelease;
-import org.usfirst.frc4048.commands.pivot.PivotGroup;
-import org.usfirst.frc4048.commands.pivot.TogglePivot;
+// import org.usfirst.frc4048.commands.pivot.PivotGroup;
+// import org.usfirst.frc4048.commands.pivot.TogglePivot;
+import org.usfirst.frc4048.triggers.DownDPADTrigger;
 import org.usfirst.frc4048.triggers.LeftDPADTrigger;
 import org.usfirst.frc4048.triggers.RightDPADTrigger;
+import org.usfirst.frc4048.triggers.UpDPADTrigger;
 import org.usfirst.frc4048.triggers.XboxTriggerRight;
 import org.usfirst.frc4048.utils.ElevatorPosition;
 import org.usfirst.frc4048.utils.WantedElevatorPosition;
@@ -71,8 +74,9 @@ public class OI {
   private Joystick rightJoy;
   private XboxController xboxController;
   private final XboxTriggerRight xboxTriggerRight;
-  private final RightDPADTrigger rightDPADTrigger;
-  private final LeftDPADTrigger leftDPADTrigger;
+  private final DownDPADTrigger downDPADTrigger;
+  private final UpDPADTrigger upDPADTrigger;
+
 
   private JoystickButton rocketLow;
   private JoystickButton rocketMid;
@@ -96,11 +100,13 @@ public class OI {
     controller = new Joystick(2);
     xboxController = new XboxController(2);
     xboxTriggerRight = new XboxTriggerRight(xboxController);
-    rightDPADTrigger = new RightDPADTrigger(xboxController);
-    leftDPADTrigger = new LeftDPADTrigger(xboxController);
+    downDPADTrigger = new DownDPADTrigger(xboxController);
+    upDPADTrigger = new UpDPADTrigger(xboxController);
 
     if (RobotMap.ENABLE_PIVOT_SUBSYSTEM) {
-      leftDPADTrigger.whenActive(new PivotGroup());
+      downDPADTrigger.whenActive(new ExtensionMove(false));
+      upDPADTrigger.whenActive(new ExtensionMove(true));
+      
     }
 
     if (RobotMap.ENABLE_DRIVETRAIN) {
@@ -174,4 +180,8 @@ public class OI {
   public double getLeftTrigger() {
     return xboxController.getTriggerAxis(Hand.kLeft);
   }
+
+  public XboxController getXboxController() {
+    return xboxController;
+  } 
 }

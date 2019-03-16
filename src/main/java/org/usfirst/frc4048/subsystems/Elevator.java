@@ -59,8 +59,10 @@ public class Elevator extends Subsystem {
   private double elevatorD;
   private double elevatorF;
 
-  public Elevator() {
+  private boolean isManualControl;
 
+  public Elevator() {
+    isManualControl = false;
     elevatorMotor = new WPI_TalonSRX(RobotMap.ELEVATOR_MOTOR_ID);
     elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT);
     elevatorMotor.configNominalOutputForward(0, TIMEOUT);
@@ -104,8 +106,11 @@ public class Elevator extends Subsystem {
     if(RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
       SmartShuffleboard.put("Elevator", "encoder", getEncoder());
       SmartShuffleboard.put("Elevator", "Setpoint", elevatorSetpoint);
+      SmartShuffleboard.put("Elevator", "isManualControl", isManualControl);
     }
-    moveElevator();
+    if(!isManualControl){
+      moveElevator();
+    }
   }
 
   @Override
@@ -176,4 +181,13 @@ public class Elevator extends Subsystem {
     // elevatorMotor.set(ControlMode.PercentOutput, 0.0);
     elevatorSetpoint = getEncoder();
   }
+
+  public void setManualControl(boolean isManualControl) {
+    this.isManualControl = isManualControl; 
+  }
+
+  public void setSpeed(double speed) {
+    elevatorMotor.set(ControlMode.PercentOutput, speed);
+  }
+
 }
