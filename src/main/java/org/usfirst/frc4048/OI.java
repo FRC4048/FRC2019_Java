@@ -12,6 +12,7 @@ import org.usfirst.frc4048.commands.LogError;
 import org.usfirst.frc4048.commands.ScheduleBButton;
 import org.usfirst.frc4048.commands.manipulator.ReleaseGamePieceScheduler;
 import org.usfirst.frc4048.commands.climber.ClimbDropRamp;
+import org.usfirst.frc4048.commands.climber.ClimbMoveStilts;
 import org.usfirst.frc4048.commands.drive.CentricModeToggle;
 import org.usfirst.frc4048.commands.drive.DriveAlignGroup;
 import org.usfirst.frc4048.commands.elevator.ElevatorMoveScheduler;
@@ -93,6 +94,7 @@ public class OI {
   private JoystickButton driveSwitchMode;
 
   private JoystickButton dropRamp;
+  private JoystickButton dropStilts;
 
   public OI() {
     leftJoy = new Joystick(0);
@@ -145,6 +147,9 @@ public class OI {
     if (RobotMap.ENABLE_CLIMBER_SUBSYSTEM) {
       dropRamp = new JoystickButton(controller, RobotMap.XBOX_RIGHT_STICK_PRESS);
       dropRamp.whenPressed(new ClimbDropRamp());
+
+      dropStilts = new JoystickButton(rightJoy, 1);
+      dropStilts.whenPressed(new ClimbMoveStilts(true));
     }
   }
 

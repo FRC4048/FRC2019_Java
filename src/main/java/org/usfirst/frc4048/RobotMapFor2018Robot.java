@@ -112,9 +112,10 @@ interface RobotMapFor2018Robot {
 
   //PCM
   public static final int CARGO_PISTON_ID = 0;
-  public static final int HATCH_PANEL_PISTON_ID = 0;
+  public static final int HATCH_PANEL_PISTON_ID = 4;
   public static final int[] CLIMBER_PISTONS_ID = {1,2};
   public static final int EXTENSION_PISTON_ID = 3;
+  public static final int CLIMBER_STILT_PISTONS_ID = 5;
 
   //OI
   public static final int XBOX_A_BUTTON = 1;
