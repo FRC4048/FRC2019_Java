@@ -31,9 +31,11 @@ public class ElevatorMoveManual extends Command {
     protected void execute() {
         if(Math.abs(Robot.oi.getRightTrigger()) > JOYSTICK_MARGIN_VALUE) {
             Robot.elevator.setManualControl(true);
+            Robot.elevator.setElevatorSetpoint(Robot.elevator.getEncoder());
             Robot.elevator.setSpeed(Robot.oi.getRightTrigger());
         } else if(Math.abs(Robot.oi.getLeftTrigger()) > JOYSTICK_MARGIN_VALUE) {
             Robot.elevator.setManualControl(true);
+            Robot.elevator.setElevatorSetpoint(Robot.elevator.getEncoder());
             Robot.elevator.setSpeed(Robot.oi.getLeftTrigger() * -1);
         } else {
             Robot.elevator.setManualControl(false);

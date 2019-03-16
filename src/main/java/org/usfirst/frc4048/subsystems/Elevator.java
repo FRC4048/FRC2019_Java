@@ -192,5 +192,7 @@ public class Elevator extends Subsystem {
   public void setSpeed(double speed) {
     elevatorMotor.set(ControlMode.PercentOutput, speed);
   }
-
+  public void setElevatorSetpoint(double setpoint) {
+    elevatorSetpoint = setpoint;
+  }
 }
