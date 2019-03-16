@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Extension extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  Solenoid extensionPiston;
+  private Solenoid extensionPiston;
 
   public Extension() {
     extensionPiston = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.EXTENSION_PISTON_ID);
@@ -37,6 +37,4 @@ public class Extension extends Subsystem {
   public void setPiston(boolean state) {
     extensionPiston.set(state);
   }
-
-  
 }
