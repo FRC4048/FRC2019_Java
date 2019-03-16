@@ -24,12 +24,15 @@ public class ElevatorMoveToPos extends LoggedCommand {
     // eg. requires(chassis);
     this.elevatorPosition = elevatorPosition;
     requires(Robot.elevator);
+    requires(Robot.extension);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
-    
+    if(Robot.elevator.getEncoder() > 600 && elevatorPosition == ElevatorPosition.SAFE_HEIGHT) {//about the safe height
+      Robot.extension.setPiston(false);
+    }
     setTimeout(2.5);
   }
 
@@ -48,7 +51,9 @@ public class ElevatorMoveToPos extends LoggedCommand {
   // Called once after isFinished returns true
   @Override
   protected void loggedEnd() {
-
+    if(elevatorPosition == ElevatorPosition.SAFE_HEIGHT){
+      Robot.extension.setPiston(true);
+    }
   }
 
   // Called when another command which requires one or more of the same
@@ -60,6 +65,6 @@ public class ElevatorMoveToPos extends LoggedCommand {
 
   @Override
   protected void loggedCancel() {
-
+    loggedEnd();
   }
 }
