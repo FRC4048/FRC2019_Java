@@ -26,7 +26,6 @@ public class ExtensionMove extends LoggedCommand {
   @Override
   protected void loggedInitialize() {
     Robot.extension.setPiston(extend);
-    SmartShuffleboard.put("Driver", "Moving Piston", extend);
   }
 
   // Called repeatedly when this Command is scheduled to run
