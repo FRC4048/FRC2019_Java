@@ -52,7 +52,7 @@ public class ElevatorMoveToPos extends LoggedCommand {
   @Override
   protected void loggedEnd() {
     if(elevatorPosition == ElevatorPosition.SAFE_HEIGHT){
-      Robot.extension.setPiston(true);
+      Robot.extension.setPiston(false);
     }
   }
 

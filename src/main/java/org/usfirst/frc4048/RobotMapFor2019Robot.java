@@ -72,10 +72,10 @@ interface RobotMapFor2019Robot {
   
   //CAN ID
   public static final int PDP_CAN_ID = 0;
-  public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 6; 
-  public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 5; 
-  public static final int REAR_LEFT_DRIVE_MOTOR_ID = 7;
-  public static final int REAR_RIGHT_DRIVE_MOTOR_ID = 8; 
+  public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 8/*6*/; 
+  public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 7/*5*/; 
+  public static final int REAR_LEFT_DRIVE_MOTOR_ID = 5/*7*/;
+  public static final int REAR_RIGHT_DRIVE_MOTOR_ID = 6/*8*/; 
   public static final int FRONT_LEFT_STEER_MOTOR_ID = 2; 
   public static final int FRONT_RIGHT_STEER_MOTOR_ID = 1; 
   public static final int REAR_LEFT_STEER_MOTOR_ID = 3; 
@@ -164,10 +164,10 @@ interface RobotMapFor2019Robot {
   public static final int PDP_STEERING_FL = 11;
   public static final int PDP_STEERING_RL = 4;
   public static final int PDP_STEERING_RR = 7;
-  public static final int PDP_DRIVE_FR = 13;
-  public static final int PDP_DRIVE_FL = 15;
-  public static final int PDP_DRIVE_RL = 0;
-  public static final int PDP_DRIVE_RR = 3;
+  public static final int PDP_DRIVE_FR = 0/*13*/;
+  public static final int PDP_DRIVE_FL = 3/*15*/;
+  public static final int PDP_DRIVE_RL = 13/*0*/;
+  public static final int PDP_DRIVE_RR = 15/*3*/;
   public static final int PDP_LIMELIGHT = 2;
   public static final int PDP_CLIMBER_WINCH = 3;
   public static final int PDP_ELEVATOR_MOTOR = 6;
