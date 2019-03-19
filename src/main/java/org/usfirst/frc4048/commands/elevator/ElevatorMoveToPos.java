@@ -34,6 +34,8 @@ public class ElevatorMoveToPos extends LoggedCommand {
       Robot.extension.setPiston(false);
     }
     setTimeout(2.5);
+    
+    Robot.elevator.setManualControl(false);
   }
 
   // Called repeatedly when this Command is scheduled to run

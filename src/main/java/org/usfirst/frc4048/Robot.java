@@ -18,6 +18,7 @@ import org.usfirst.frc4048.utils.DoubleSolenoidUtil;
 import org.usfirst.frc4048.commands.climber.ClimbWinchManual;
 import org.usfirst.frc4048.commands.manipulator.ReleaseGamePieceScheduler;
 import org.usfirst.frc4048.commands.manipulator.cargo.CargoWristDown;
+import org.usfirst.frc4048.commands.ManualCargoSensorToggle;
 import org.usfirst.frc4048.commands.ScheduleBButton;
 import org.usfirst.frc4048.commands.climber.ClimbMovePiston;
 import org.usfirst.frc4048.commands.drive.CentricModeRobot;
@@ -356,12 +357,12 @@ public class Robot extends TimedRobot {
     if (RobotMap.ENABLE_CARGO_SUBSYSTEM) {
       SmartShuffleboard.putCommand("Cargo", "Cargo drop ball", new CargoWristDown());
     }
-
   }
 
   private void putCommandsInCompetition() {
     SmartShuffleboard.putCommand("Driver", "Reset Gyro", new ResetGyro());
     SmartShuffleboard.putCommand("Driver", "Reset Elevator Encoder", new ElevatorResetEncoder());
+    SmartShuffleboard.putCommand("Driver", "Toggle Cargo State", new ManualCargoSensorToggle());
   }
 
 	public static Timer timer() {

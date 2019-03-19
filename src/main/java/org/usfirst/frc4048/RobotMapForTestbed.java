@@ -88,7 +88,7 @@ interface RobotMapForTestbed {
   public static final int COMPRESSOR_PRESSURE_SENSOR = 6;
 
   //DIGITAL INPUTS
-  public static final int CARGO_OPTICAL_SENSOR_ID = 9;
+  public static final int CARGO_OPTICAL_SENSOR_ID = 2;
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
   public static final int HATCH_DIGITAL_INPUT_ID = 7;
