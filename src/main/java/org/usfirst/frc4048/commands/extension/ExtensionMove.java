@@ -26,7 +26,7 @@ public class ExtensionMove extends LoggedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
-    if(Robot.elevator.getSetpoint() != 0.0 || extend) {
+    if(Robot.elevator.getEncoder() > 600 || extend) { //600 is about the height of safe pos
       Robot.extension.setPiston(extend);
     }
   }

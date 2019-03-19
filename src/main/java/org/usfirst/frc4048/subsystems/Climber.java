@@ -35,7 +35,7 @@ public class Climber extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   private Spark winch;
-  private Solenoid stiltPistons;
+  // private Solenoid stiltPistons;
   private DoubleSolenoidUtil climberPiston;
   private DigitalInput pistonSensor;
   private OpticalRangeFinder leftRangeFinder;
@@ -47,7 +47,7 @@ public class Climber extends Subsystem {
   public Climber() {
     winch = new Spark(RobotMap.WINCH_ID);
     LiveWindow.add(winch);
-    stiltPistons = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.CLIMBER_STILT_PISTONS_ID);
+    // stiltPistons = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.CLIMBER_STILT_PISTONS_ID);
     climberPiston = new DoubleSolenoidUtil(RobotMap.PCM_CAN_ID, RobotMap.CLIMBER_PISTONS_ID[0], RobotMap.CLIMBER_PISTONS_ID[1]);
     leftRangeFinder = new OpticalRangeFinder(new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_LEFT_ID));
     rightRangeFinder = new OpticalRangeFinder(new AnalogInput(RobotMap.CLIMBER_DISTANCE_SENSOR_RIGHT_ID));
@@ -90,9 +90,9 @@ public class Climber extends Subsystem {
     climberPiston.set(state);
   }
   
-  public void moveStilts(boolean state) {
-    stiltPistons.set(state);
-  }
+  // public void moveStilts(boolean state) {
+  //   stiltPistons.set(state);
+  // }
 
   public boolean getPositionSensor() {
     return pistonSensor.get();

@@ -80,6 +80,7 @@ public class Elevator extends Subsystem {
     elevatorMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     elevatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     elevatorMotor.setInverted(true);
+    elevatorMotor.setSensorPhase(true);
 
     Robot.diagnostics.addDiagnosable(new DiagTalonSrxSwitch("Elevator Forward Switch", elevatorMotor, DiagTalonSrxSwitch.Direction.FORWARD));
     Robot.diagnostics.addDiagnosable(new DiagTalonSrxSwitch("Elevator Reverse Switch", elevatorMotor, DiagTalonSrxSwitch.Direction.REVERSE));
