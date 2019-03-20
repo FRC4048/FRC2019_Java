@@ -63,7 +63,7 @@ public class GamePieceMode extends Subsystem {
     return gamePieceState;
   }
 
-  public void setOverrideSensor(boolean isCargo) {
-    gamePieceState = isCargo;
+  public void setOverrideSensor(boolean override) {
+    overrideSensor = override;
   }
 }

@@ -361,7 +361,7 @@ public class Robot extends TimedRobot {
 
   private void putCommandsInCompetition() {
     SmartShuffleboard.putCommand("Driver", "Reset Gyro", new ResetGyro());
-    SmartShuffleboard.putCommand("Driver", "Reset Elevator Encoder", new ElevatorResetEncoder());
+    // SmartShuffleboard.putCommand("Driver", "Reset Elevator Encoder", new ElevatorResetEncoder());
     SmartShuffleboard.putCommand("Driver", "Toggle Cargo State", new ManualCargoSensorToggle());
   }
 
