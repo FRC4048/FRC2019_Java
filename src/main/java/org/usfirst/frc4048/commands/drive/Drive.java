@@ -53,7 +53,9 @@ public class Drive extends Command {
 			str *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
 			rcw *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
 		}
-
+		fwd *= -1;
+		str *= -1;
+		
 		Robot.completed(this, "getMode");
 		if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
 			SmartShuffleboard.put("DrivetrainSensors", "drive-cmd-rotation", rcw);

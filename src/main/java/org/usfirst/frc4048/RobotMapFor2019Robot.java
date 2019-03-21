@@ -76,10 +76,10 @@ interface RobotMapFor2019Robot {
   public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 7/*5*/; 
   public static final int REAR_LEFT_DRIVE_MOTOR_ID = 5/*7*/;
   public static final int REAR_RIGHT_DRIVE_MOTOR_ID = 6/*8*/; 
-  public static final int FRONT_LEFT_STEER_MOTOR_ID = 2; 
-  public static final int FRONT_RIGHT_STEER_MOTOR_ID = 1; 
-  public static final int REAR_LEFT_STEER_MOTOR_ID = 3; 
-  public static final int REAR_RIGHT_STEER_MOTOR_ID = 4;
+  public static final int FRONT_LEFT_STEER_MOTOR_ID = 4/*2*/; 
+  public static final int FRONT_RIGHT_STEER_MOTOR_ID = 3/*1*/; 
+  public static final int REAR_LEFT_STEER_MOTOR_ID = 1/*3*/; 
+  public static final int REAR_RIGHT_STEER_MOTOR_ID = 2/*4*/;
 
   public static final int DRIVE_PIGEON_ID = 9;
   public static final int PCM_CAN_ID = 10;  
@@ -87,10 +87,10 @@ interface RobotMapFor2019Robot {
   
 
   //ANALOG INPUTS
-  public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID = 0;
-  public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_LEFT_ID = 1;
-  public static final int SWERVE_DRIVE_ANALOG_INPUT_REAR_RIGHT_ID = 3;
-  public static final int SWERVE_DRIVE_ANALOG_INPUT_REAR_LEFT_ID = 2;
+  public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID = 2/*0*/;
+  public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_LEFT_ID = 3/*1*/;
+  public static final int SWERVE_DRIVE_ANALOG_INPUT_REAR_RIGHT_ID = 1/*3*/;
+  public static final int SWERVE_DRIVE_ANALOG_INPUT_REAR_LEFT_ID = 0/*2*/;
   
   public static final int CLIMBER_DISTANCE_SENSOR_LEFT_ID = 4;
   public static final int CLIMBER_DISTANCE_SENSOR_RIGHT_ID = 5;

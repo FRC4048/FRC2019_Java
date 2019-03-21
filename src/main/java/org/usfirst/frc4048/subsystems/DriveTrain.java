@@ -83,10 +83,10 @@ public class DriveTrain extends Subsystem {
   private final boolean REVERSE_ENCODER = true;
   private final boolean REVERSE_OUTPUT = true;
 
-  private final int FR_ZERO = 3240;//3315;
-  private final int FL_ZERO = 3850;//50;
-  private final int RL_ZERO = 3566;//3575;
-  private final int RR_ZERO = 125;//136;
+  private final int FR_ZERO = 3534;//3315;
+  private final int FL_ZERO = 140;//50;
+  private final int RL_ZERO = 3316;//3575;
+  private final int RR_ZERO = 3836;//136;
 
   private final double P = 10;
   private final double I = 0;
@@ -338,17 +338,18 @@ public class DriveTrain extends Subsystem {
         TIMEOUT);
     steerRL.setSelectedSensorPosition((int) ((analogInputRearLeft.getValue() - RL_ZERO) / 4000.0 * GEAR_RATIO), 0,
         TIMEOUT);
-    steerRR.setSelectedSensorPosition((int) ((analogInputRearRight.getValue() - RR_ZERO) / 4000.0 * GEAR_RATIO), 0,
-        TIMEOUT);
+    // steerRR.setSelectedSensorPosition((int) ((analogInputRearRight.getValue() - RR_ZERO) / 4000.0 * GEAR_RATIO), 0,
+    //     TIMEOUT);
+     
     // steerFR.setSelectedSensorPosition(0);
     // steerFL.setSelectedSensorPosition(0);
     // steerRL.setSelectedSensorPosition(0);
-    // steerRR.setSelectedSensorPosition(0);
+    steerRR.setSelectedSensorPosition(0);
 
     steerFR.set(ControlMode.Position, 0);
     steerFL.set(ControlMode.Position, 0);
     steerRL.set(ControlMode.Position, 0);
-    steerRR.set(ControlMode.Position, 0);
+    // steerRR.set(ControlMode.Position, 0);
   }
 
 

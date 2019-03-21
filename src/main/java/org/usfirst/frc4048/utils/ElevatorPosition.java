@@ -21,7 +21,7 @@ public enum ElevatorPosition {
     CARGO_ROCKET_LOW(0.0), 
     CARGO_ROCKET_MID(5226.0), 
     CARGO_ROCKET_HIGH(10588.0), 
-    SAFE_HEIGHT(675);
+    SAFE_HEIGHT(800.0);
 
     public double position;
 
