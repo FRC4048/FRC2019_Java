@@ -200,4 +200,8 @@ public class Elevator extends Subsystem {
   public double getSetpoint() {
     return elevatorSetpoint;
   }
+
+  public boolean getManualControl() {
+    return isManualControl;
+  }
 }

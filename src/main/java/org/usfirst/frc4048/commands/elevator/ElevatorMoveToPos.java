@@ -36,12 +36,14 @@ public class ElevatorMoveToPos extends LoggedCommand {
     setTimeout(2.5);
     
     Robot.elevator.setManualControl(false);
+    
+    Robot.elevator.elevatorToPosition(elevatorPosition);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void loggedExecute() {
-    Robot.elevator.elevatorToPosition(elevatorPosition);
+
   }
 
   // Make this return true when this Command no longer needs to run execute()

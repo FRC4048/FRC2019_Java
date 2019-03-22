@@ -38,7 +38,9 @@ public class ElevatorMoveManual extends Command {
             Robot.elevator.setElevatorSetpoint(Robot.elevator.getEncoder());
             Robot.elevator.setSpeed(Robot.oi.getLeftTrigger() * -1);
         } else {
-            Robot.elevator.setSpeed(0.0);
+            if(Robot.elevator.getManualControl()) {
+                Robot.elevator.setSpeed(0.0);
+            }
         }
     }
 

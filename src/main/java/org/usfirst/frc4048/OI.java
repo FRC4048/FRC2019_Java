@@ -104,7 +104,7 @@ public class OI {
     downDPADTrigger = new DownDPADTrigger(xboxController);
     upDPADTrigger = new UpDPADTrigger(xboxController);
 
-    if (RobotMap.ENABLE_PIVOT_SUBSYSTEM) {
+    if (RobotMap.ENABLE_EXTENSION_SUBSYSTEM) {
       downDPADTrigger.whenActive(new ExtensionMove(false));
       upDPADTrigger.whenActive(new ExtensionMove(true));
       

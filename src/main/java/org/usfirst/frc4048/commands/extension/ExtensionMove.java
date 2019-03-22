@@ -26,7 +26,7 @@ public class ExtensionMove extends LoggedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
-    if(!Robot.gamePieceMode.isCargo()) {
+    if(!Robot.gamePieceMode.isCargo() || (Robot.gamePieceMode.isCargo() && !extend)) {
       Robot.extension.setPiston(extend);
     }
   }

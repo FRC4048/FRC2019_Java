@@ -144,7 +144,7 @@ public class Robot extends TimedRobot {
       climber = new Climber();
     }
 
-    if (RobotMap.ENABLE_PIVOT_SUBSYSTEM) {
+    if (RobotMap.ENABLE_EXTENSION_SUBSYSTEM) {
       // pivot = new Pivot();
       extension = new Extension();
 
@@ -229,7 +229,7 @@ public class Robot extends TimedRobot {
 		gameInfo.append(DriverStation.getInstance().getMatchType().toString());
 		logging.traceMessage(Logging.MessageLevel.INFORMATION, gameInfo.toString());
 
-    if (RobotMap.ENABLE_PIVOT_SUBSYSTEM){
+    if (RobotMap.ENABLE_EXTENSION_SUBSYSTEM){
       // Scheduler.getInstance().add(new PivotGroup());
     }
     //    m_autonomousCommand = m_chooser.getSelected();
@@ -347,7 +347,7 @@ public class Robot extends TimedRobot {
       SmartShuffleboard.put("Elevator", "Current", elevator.getElevatorMotor().getOutputCurrent());
     }
 
-    if (RobotMap.ENABLE_PIVOT_SUBSYSTEM)
+    if (RobotMap.ENABLE_EXTENSION_SUBSYSTEM)
     {
       // SmartShuffleboard.putCommand("Pivot", "Pivot Deploy", new PivotGroup());
       // SmartShuffleboard.putCommand("Pivot", "Piston Extend", new PivotPistonTest(true));

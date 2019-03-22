@@ -51,7 +51,7 @@ interface RobotMapFor2018Robot {
 
   public static final boolean ENABLE_BEGIN_MATCH_GROUPCOMMAND = false;
 
-  public static final boolean ENABLE_PIVOT_SUBSYSTEM = false;
+  public static final boolean ENABLE_EXTENSION_SUBSYSTEM = false;
   /**
    * Enables logging of timing data related to watchdog timeouts. Set to 0 to disable, otherwise, set to the 
    * minimum number of milliseconds that will be logged. For example, if 15, then don't log any timing data less
