@@ -267,7 +267,7 @@ public class Robot extends TimedRobot {
   public void commonInit(final String loggingLabel) {
     logging.traceMessage(Logging.MessageLevel.INFORMATION, LINE, loggingLabel, LINE);
     logging.writeAllTitles();
-    Robot.drivetrainSensors.ledOn();
+    Robot.drivetrainSensors.ledOff();
 
     if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
       putCommandsOnShuffleboard();
