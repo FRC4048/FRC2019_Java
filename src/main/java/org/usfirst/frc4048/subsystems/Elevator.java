@@ -40,6 +40,9 @@ public class Elevator extends Subsystem {
   // here. Call these from Commands.
   private WPI_TalonSRX elevatorMotor;
 
+  //Used for scaling PID, setpoints, power output, and margin
+  public static final double ELEVATOR_ENCODER_SCALE = 256/20;
+
   private final int TIMEOUT = 100;
 
   private final int ELEVATOR_POSITION_ERROR = 150;
@@ -48,8 +51,8 @@ public class Elevator extends Subsystem {
   private final double ELEVATOR_DOWN_SCALE_FACTOR = 0.6;
 
   private final double ELEVATOR_P = 1;
-  private final double ELEVATOR_I = 0.001;
-  private final double ELEVATOR_D = 0.4;
+  private final double ELEVATOR_I = 0;
+  private final double ELEVATOR_D = 0;
   private final double ELEVATOR_F = 0;
 
   private double elevatorSetpoint;
@@ -59,8 +62,10 @@ public class Elevator extends Subsystem {
   private double elevatorD;
   private double elevatorF;
 
-  public Elevator() {
+  private boolean isManualControl;
 
+  public Elevator() {
+    isManualControl = false;
     elevatorMotor = new WPI_TalonSRX(RobotMap.ELEVATOR_MOTOR_ID);
     elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT);
     elevatorMotor.configNominalOutputForward(0, TIMEOUT);
@@ -75,6 +80,7 @@ public class Elevator extends Subsystem {
     elevatorMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     elevatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     elevatorMotor.setInverted(true);
+    elevatorMotor.setSensorPhase(true);
 
     Robot.diagnostics.addDiagnosable(new DiagTalonSrxSwitch("Elevator Forward Switch", elevatorMotor, DiagTalonSrxSwitch.Direction.FORWARD));
     Robot.diagnostics.addDiagnosable(new DiagTalonSrxSwitch("Elevator Reverse Switch", elevatorMotor, DiagTalonSrxSwitch.Direction.REVERSE));
@@ -104,8 +110,11 @@ public class Elevator extends Subsystem {
     if(RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
       SmartShuffleboard.put("Elevator", "encoder", getEncoder());
       SmartShuffleboard.put("Elevator", "Setpoint", elevatorSetpoint);
+      SmartShuffleboard.put("Elevator", "isManualControl", isManualControl);
     }
-    moveElevator();
+    if(!isManualControl){
+      moveElevator();
+    }
   }
 
   @Override
@@ -175,5 +184,24 @@ public class Elevator extends Subsystem {
   public void stopMotor() {
     // elevatorMotor.set(ControlMode.PercentOutput, 0.0);
     elevatorSetpoint = getEncoder();
+  }
+
+  public void setManualControl(boolean isManualControl) {
+    this.isManualControl = isManualControl; 
+  }
+
+  public void setSpeed(double speed) {
+    elevatorMotor.set(ControlMode.PercentOutput, speed);
+  }
+  public void setElevatorSetpoint(double setpoint) {
+    elevatorSetpoint = setpoint;
+  }
+
+  public double getSetpoint() {
+    return elevatorSetpoint;
+  }
+
+  public boolean getManualControl() {
+    return isManualControl;
   }
 }

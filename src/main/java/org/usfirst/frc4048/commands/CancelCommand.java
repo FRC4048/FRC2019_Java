@@ -28,6 +28,7 @@ public class CancelCommand extends LoggedCommand {
     Scheduler.getInstance().removeAll();
     // Scheduler.getInstance().add(new HatchPanelRelease());
     Robot.elevator.stopMotor();
+    Robot.elevator.setManualControl(true);
   }
 
   // Called repeatedly when this Command is scheduled to run

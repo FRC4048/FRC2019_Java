@@ -23,6 +23,7 @@ public class GamePieceMode extends Subsystem {
   // here. Call these from Commands.
   private DigitalInput cargoSensor;
   private boolean gamePieceState;
+  private boolean overrideSensor;
 
   public GamePieceMode() {
     cargoSensor = new DigitalInput(RobotMap.CARGO_OPTICAL_SENSOR_ID);
@@ -37,7 +38,9 @@ public class GamePieceMode extends Subsystem {
 
   @Override
   public void periodic() {
-    setStateBasedOnSensor();
+    if (!overrideSensor){
+      setStateBasedOnSensor();
+    }
     SmartShuffleboard.put("Driver", "Is Cargo?", isCargo());
   }
   public void toggleState() {
@@ -58,5 +61,9 @@ public class GamePieceMode extends Subsystem {
 
   public boolean isCargo() {
     return gamePieceState;
+  }
+
+  public void setOverrideSensor(boolean override) {
+    overrideSensor = override;
   }
 }

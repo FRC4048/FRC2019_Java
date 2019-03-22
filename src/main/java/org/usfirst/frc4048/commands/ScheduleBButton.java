@@ -33,7 +33,7 @@ public class ScheduleBButton extends LoggedCommand {
     if(Robot.gamePieceMode.isCargo()) {
       Scheduler.getInstance().add(new ElevatorMoveToPos(ElevatorPosition.CARGO_CARGOSHIP_POS));
     } else {
-      Scheduler.getInstance().add(new LimelightBlink());
+      Scheduler.getInstance().add(new ElevatorMoveToPos(ElevatorPosition.HATCH_ROCKET_BOT));
     }
   }
 

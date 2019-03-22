@@ -83,10 +83,10 @@ public class DriveTrain extends Subsystem {
   private final boolean REVERSE_ENCODER = true;
   private final boolean REVERSE_OUTPUT = true;
 
-  private final int FR_ZERO = 3315;// 1037;
-  private final int FL_ZERO = 50;// 1767;
-  private final int RL_ZERO = 3575;// 1456;//1456;
-  private final int RR_ZERO = 136;// 2444;
+  private final int FR_ZERO = 3534;//3315;
+  private final int FL_ZERO = 140;//50;
+  private final int RL_ZERO = 3340;//3575;
+  private final int RR_ZERO = 3900;//136;
 
   private final double P = 10;
   private final double I = 0;
@@ -278,6 +278,9 @@ public class DriveTrain extends Subsystem {
       SmartShuffleboard.put("Drive", "Abs Encoders", "RR abs", analogInputRearRight.getValue());
       SmartShuffleboard.put("Drive", "Abs Encoders", "RL abs", analogInputRearLeft.getValue());
 
+      SmartShuffleboard.put("Drive", "Abs Encoder Voltage", "RR", analogInputRearRight.getVoltage());
+      SmartShuffleboard.put("Drive", "Abs Encoder Voltage", "RL", analogInputRearLeft.getVoltage());
+
       SmartShuffleboard.put("Drive", "Gyro", getGyro());
       Robot.completed(this, "shuf");
     }
@@ -338,17 +341,18 @@ public class DriveTrain extends Subsystem {
         TIMEOUT);
     steerRL.setSelectedSensorPosition((int) ((analogInputRearLeft.getValue() - RL_ZERO) / 4000.0 * GEAR_RATIO), 0,
         TIMEOUT);
-    steerRR.setSelectedSensorPosition((int) ((analogInputRearRight.getValue() - RR_ZERO) / 4000.0 * GEAR_RATIO), 0,
-        TIMEOUT);
+    // steerRR.setSelectedSensorPosition((int) ((analogInputRearRight.getValue() - RR_ZERO) / 4000.0 * GEAR_RATIO), 0,
+    //     TIMEOUT);
+     
     // steerFR.setSelectedSensorPosition(0);
     // steerFL.setSelectedSensorPosition(0);
     // steerRL.setSelectedSensorPosition(0);
-    // steerRR.setSelectedSensorPosition(0);
+    steerRR.setSelectedSensorPosition(0);
 
     steerFR.set(ControlMode.Position, 0);
     steerFL.set(ControlMode.Position, 0);
     steerRL.set(ControlMode.Position, 0);
-    steerRR.set(ControlMode.Position, 0);
+    // steerRR.set(ControlMode.Position, 0);
   }
 
 
@@ -393,7 +397,7 @@ public class DriveTrain extends Subsystem {
       rcw = 0.0;
 
     // TODO: Add Gyro Value from here to Drive.java
-    swerveDrivetrain.move(fwd, str, rcw, getGyro());
+    swerveDrivetrain.move(-fwd, -str, -rcw, getGyro());
   }
 
   public void stop() {

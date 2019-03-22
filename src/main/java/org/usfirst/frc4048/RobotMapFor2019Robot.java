@@ -51,7 +51,7 @@ interface RobotMapFor2019Robot {
 
   public static final boolean ENABLE_BEGIN_MATCH_GROUPCOMMAND = false;
 
-  public static final boolean ENABLE_PIVOT_SUBSYSTEM = true;
+  public static final boolean ENABLE_EXTENSION_SUBSYSTEM = true;
   /**
    * Enables logging of timing data related to watchdog timeouts. Set to 0 to disable, otherwise, set to the 
    * minimum number of milliseconds that will be logged. For example, if 15, then don't log any timing data less
@@ -72,14 +72,14 @@ interface RobotMapFor2019Robot {
   
   //CAN ID
   public static final int PDP_CAN_ID = 0;
-  public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 6; 
-  public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 5; 
-  public static final int REAR_LEFT_DRIVE_MOTOR_ID = 7;
-  public static final int REAR_RIGHT_DRIVE_MOTOR_ID = 8; 
-  public static final int FRONT_LEFT_STEER_MOTOR_ID = 2; 
-  public static final int FRONT_RIGHT_STEER_MOTOR_ID = 1; 
-  public static final int REAR_LEFT_STEER_MOTOR_ID = 3; 
-  public static final int REAR_RIGHT_STEER_MOTOR_ID = 4;
+  public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 8/*6*/; 
+  public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 7/*5*/; 
+  public static final int REAR_LEFT_DRIVE_MOTOR_ID = 5/*7*/;
+  public static final int REAR_RIGHT_DRIVE_MOTOR_ID = 6/*8*/; 
+  public static final int FRONT_LEFT_STEER_MOTOR_ID = 4/*2*/; 
+  public static final int FRONT_RIGHT_STEER_MOTOR_ID = 3/*1*/; 
+  public static final int REAR_LEFT_STEER_MOTOR_ID = 1/*3*/; 
+  public static final int REAR_RIGHT_STEER_MOTOR_ID = 2/*4*/;
 
   public static final int DRIVE_PIGEON_ID = 9;
   public static final int PCM_CAN_ID = 10;  
@@ -87,13 +87,13 @@ interface RobotMapFor2019Robot {
   
 
   //ANALOG INPUTS
-  public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID = 0;
-  public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_LEFT_ID = 1;
-  public static final int SWERVE_DRIVE_ANALOG_INPUT_REAR_RIGHT_ID = 3;
-  public static final int SWERVE_DRIVE_ANALOG_INPUT_REAR_LEFT_ID = 2;
+  public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID = 2/*0*/;
+  public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_LEFT_ID = 3/*1*/;
+  public static final int SWERVE_DRIVE_ANALOG_INPUT_REAR_RIGHT_ID = 5/*3*/;
+  public static final int SWERVE_DRIVE_ANALOG_INPUT_REAR_LEFT_ID = 1/*2*/;
   
   public static final int CLIMBER_DISTANCE_SENSOR_LEFT_ID = 4;
-  public static final int CLIMBER_DISTANCE_SENSOR_RIGHT_ID = 5;
+  public static final int CLIMBER_DISTANCE_SENSOR_RIGHT_ID = 0;
   public static final int COMPRESSOR_PRESSURE_SENSOR = 6;
 
   //DIGITAL INPUTS
@@ -116,7 +116,8 @@ interface RobotMapFor2019Robot {
   public static final int CARGO_PISTON_ID = 3;
   public static final int HATCH_PANEL_PISTON_ID = 0;
   public static final int[] CLIMBER_PISTONS_ID = {1,2};
-  public static final int PIVOT_PISTON_ID = 4;
+  public static final int EXTENSION_PISTON_ID = 4;
+  public static final int CLIMBER_STILT_PISTONS_ID = 5;
 
   //OI
   public static final int XBOX_A_BUTTON = 1;
@@ -163,10 +164,10 @@ interface RobotMapFor2019Robot {
   public static final int PDP_STEERING_FL = 11;
   public static final int PDP_STEERING_RL = 4;
   public static final int PDP_STEERING_RR = 7;
-  public static final int PDP_DRIVE_FR = 13;
-  public static final int PDP_DRIVE_FL = 15;
-  public static final int PDP_DRIVE_RL = 0;
-  public static final int PDP_DRIVE_RR = 3;
+  public static final int PDP_DRIVE_FR = 0/*13*/;
+  public static final int PDP_DRIVE_FL = 3/*15*/;
+  public static final int PDP_DRIVE_RL = 13/*0*/;
+  public static final int PDP_DRIVE_RR = 15/*3*/;
   public static final int PDP_LIMELIGHT = 2;
   public static final int PDP_CLIMBER_WINCH = 3;
   public static final int PDP_ELEVATOR_MOTOR = 6;

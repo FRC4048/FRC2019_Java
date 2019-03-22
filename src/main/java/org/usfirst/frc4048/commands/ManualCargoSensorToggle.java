@@ -5,27 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc4048.commands.pivot;
+package org.usfirst.frc4048.commands;
 
 import org.usfirst.frc4048.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class PivotPistonTest extends Command {
-  private boolean state;
-
-  public PivotPistonTest(boolean state) {
+public class ManualCargoSensorToggle extends Command {
+  public ManualCargoSensorToggle() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    this.state = state;
-
-    requires(Robot.pivot);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.pivot.movePiston(state);
+    Robot.gamePieceMode.setOverrideSensor(true);
+    Robot.gamePieceMode.toggleState();
   }
 
   // Called repeatedly when this Command is scheduled to run

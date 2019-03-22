@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import org.usfirst.frc4048.Robot;
 import org.usfirst.frc4048.RobotMap;
-import org.usfirst.frc4048.commands.pivot.MovePivot;
+// import org.usfirst.frc4048.commands.pivot.MovePivot;
 import org.usfirst.frc4048.utils.SmartShuffleboard;
 import org.usfirst.frc4048.utils.diagnostics.DiagSwitch;
 
@@ -39,7 +39,7 @@ public class Pivot extends Subsystem {
     // pivotMotor = new WPI_TalonSRX(7);
     limitSwitchDeployed = new DigitalInput(RobotMap.PIVOT_LIMIT_SWITCH_LEFT_ID);
     limitSwitchRetracted = new DigitalInput(RobotMap.PIVOT_LIMIT_SWITCH_RIGHT_ID);
-    lockPiston = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.PIVOT_PISTON_ID);
+    lockPiston = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.EXTENSION_PISTON_ID);
 
     Robot.diagnostics.addDiagnosable(new DiagSwitch("Pivot forward switch", limitSwitchDeployed));
     Robot.diagnostics.addDiagnosable(new DiagSwitch("Pivot reverse switch", limitSwitchRetracted));

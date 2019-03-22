@@ -51,7 +51,7 @@ interface RobotMapFor2018Robot {
 
   public static final boolean ENABLE_BEGIN_MATCH_GROUPCOMMAND = false;
 
-  public static final boolean ENABLE_PIVOT_SUBSYSTEM = false;
+  public static final boolean ENABLE_EXTENSION_SUBSYSTEM = false;
   /**
    * Enables logging of timing data related to watchdog timeouts. Set to 0 to disable, otherwise, set to the 
    * minimum number of milliseconds that will be logged. For example, if 15, then don't log any timing data less
@@ -112,9 +112,10 @@ interface RobotMapFor2018Robot {
 
   //PCM
   public static final int CARGO_PISTON_ID = 0;
-  public static final int HATCH_PANEL_PISTON_ID = 0;
+  public static final int HATCH_PANEL_PISTON_ID = 4;
   public static final int[] CLIMBER_PISTONS_ID = {1,2};
-  public static final int PIVOT_PISTON_ID = 3;
+  public static final int EXTENSION_PISTON_ID = 3;
+  public static final int CLIMBER_STILT_PISTONS_ID = 5;
 
   //OI
   public static final int XBOX_A_BUTTON = 1;

@@ -21,7 +21,7 @@ interface RobotMapForTestbed {
   /**
    * Enable the compressor subsystemh
    */
-  public static final boolean ENABLE_COMPRESSOR = true;
+  public static final boolean ENABLE_COMPRESSOR = false;
 
   /**
    * Enables reading of the gyro angle from the pigeon on it's own thread
@@ -44,7 +44,7 @@ interface RobotMapForTestbed {
 
   public static final boolean ENABLE_BEGIN_MATCH_GROUPCOMMAND = false;
 
-  public static final boolean ENABLE_PIVOT_SUBSYSTEM = false;
+  public static final boolean ENABLE_EXTENSION_SUBSYSTEM = false;
     /**
    * Enables loging of timing data related to watchdog timeouts.
    */
@@ -65,7 +65,7 @@ interface RobotMapForTestbed {
   public static final int PDP_CAN_ID = 0;
   public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 6; 
   public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 5; 
-  public static final int REAR_LEFT_DRIVE_MOTOR_ID = 7;
+  public static final int REAR_LEFT_DRIVE_MOTOR_ID = 7; //Switched this from 7 to 11, because elevator motor needed to be tested
   public static final int REAR_RIGHT_DRIVE_MOTOR_ID = 8; 
   public static final int FRONT_LEFT_STEER_MOTOR_ID = 2; 
   public static final int FRONT_RIGHT_STEER_MOTOR_ID = 1; 
@@ -76,7 +76,7 @@ interface RobotMapForTestbed {
   public static final int PCM_CAN_ID = 10;  
   public static final int ELEVATOR_MOTOR_ID = 11;
   public static final int WINCH_ID = 12;
-
+ 
   //ANALOG INPUTS
   public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_RIGHT_ID = 0;
   public static final int SWERVE_DRIVE_ANALOG_INPUT_FRONT_LEFT_ID = 1;
@@ -85,10 +85,10 @@ interface RobotMapForTestbed {
   
   public static final int CLIMBER_DISTANCE_SENSOR_LEFT_ID = 4;
   public static final int CLIMBER_DISTANCE_SENSOR_RIGHT_ID = 5;
-  public static final int COMPRESSOR_PRESSURE_SENSOR = 2;
+  public static final int COMPRESSOR_PRESSURE_SENSOR = 6;
 
   //DIGITAL INPUTS
-  public static final int CARGO_OPTICAL_SENSOR_ID = 9;
+  public static final int CARGO_OPTICAL_SENSOR_ID = 2;
   public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
   public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
   public static final int HATCH_DIGITAL_INPUT_ID = 7;
@@ -104,10 +104,11 @@ interface RobotMapForTestbed {
   public static final int CARGO_MOTOR_ID = 1;
 
   //PCM
-  public static final int CARGO_PISTON_ID = 4;
+  public static final int CARGO_PISTON_ID = 1;
   public static final int HATCH_PANEL_PISTON_ID = 0;
-  public static final int[] CLIMBER_PISTONS_ID = {4,5};
-  public static final int PIVOT_PISTON_ID = 3;
+  public static final int[] CLIMBER_PISTONS_ID = {2,3};
+  public static final int EXTENSION_PISTON_ID = 4;
+  public static final int CLIMBER_STILT_PISTONS_ID = 5;
 
   //OI
   public static final int XBOX_A_BUTTON = 1;

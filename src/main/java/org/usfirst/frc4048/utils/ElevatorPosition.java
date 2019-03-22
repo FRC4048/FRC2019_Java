@@ -7,11 +7,21 @@
 
 package org.usfirst.frc4048.utils;
 
+import org.usfirst.frc4048.subsystems.Elevator;
+
 /**
  * Add your docs here.
  */
 public enum ElevatorPosition {
-    CARGO_CARGOSHIP_POS(3630.0), CARGO_INTAKE_POS(2615.0), HATCH_ROCKET_BOT(0.0), HATCH_ROCKET_MID(5625.0), HATCH_ROCKET_HIGH(10568.0), CARGO_ROCKET_LOW(0.0), CARGO_ROCKET_MID(5226.0), CARGO_ROCKET_HIGH(10588.0), SAFE_PIVOT_POS(675);
+    CARGO_CARGOSHIP_POS(3630.0), 
+    CARGO_INTAKE_POS(2615.0), 
+    HATCH_ROCKET_BOT(0.0), 
+    HATCH_ROCKET_MID(6500.0), 
+    HATCH_ROCKET_HIGH(10688.0), 
+    CARGO_ROCKET_LOW(0.0), 
+    CARGO_ROCKET_MID(6500.0), 
+    CARGO_ROCKET_HIGH(10688.0), 
+    SAFE_HEIGHT(1100.0);
 
     public double position;
 
