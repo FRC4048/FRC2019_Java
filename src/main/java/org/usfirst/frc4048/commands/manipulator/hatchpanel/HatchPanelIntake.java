@@ -28,8 +28,9 @@ public class HatchPanelIntake extends LoggedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
-
-    Robot.hatchPanelSubsystem.extendPiston(); 
+    if(!Robot.gamePieceMode.isCargo()){
+      Robot.hatchPanelSubsystem.extendPiston(); 
+    }
 
 
   }

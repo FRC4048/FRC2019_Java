@@ -20,6 +20,7 @@ import org.usfirst.frc4048.commands.manipulator.ReleaseGamePieceScheduler;
 import org.usfirst.frc4048.commands.manipulator.cargo.CargoWristDown;
 import org.usfirst.frc4048.commands.ManualCargoSensorToggle;
 import org.usfirst.frc4048.commands.ScheduleBButton;
+import org.usfirst.frc4048.commands.StartAuton;
 import org.usfirst.frc4048.commands.climber.ClimbMovePiston;
 import org.usfirst.frc4048.commands.drive.CentricModeRobot;
 // import org.usfirst.frc4048.commands.DriveTargetCenter;
@@ -215,9 +216,10 @@ public class Robot extends TimedRobot {
 
     commonInit("autonomousInit");
 
-    if (RobotMap.ENABLE_HATCH_PANEL_SUBSYSTEM && !Robot.gamePieceMode.isCargo()) {
-      Scheduler.getInstance().add(new HatchPanelIntake());
-    }
+    if (RobotMap.ENABLE_ELEVATOR) {
+      Scheduler.getInstance().add(new StartAuton());
+    } 
+
     logging.traceMessage(Logging.MessageLevel.INFORMATION, "---------------------------- Autonomous mode starting ----------------------------");
     
     StringBuilder gameInfo = new StringBuilder();
