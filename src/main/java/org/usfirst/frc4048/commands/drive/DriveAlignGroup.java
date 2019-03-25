@@ -35,7 +35,7 @@ public class DriveAlignGroup extends CommandGroup {
     // a CommandGroup containing them would require both the chassis and the
     // arm.
     addSequential(new LimelightToggle(true));
-    addSequential(new WaitCommand(0.1));
+    addSequential(new WaitCommand(0.5));
     addSequential(new ExtensionMove(false));
     addSequential(new RotateAngleForAlignment()); //STEP 1
     // addSequential(new DriveAlignPhase2(0.25, 0.4, false)); //STEP 2

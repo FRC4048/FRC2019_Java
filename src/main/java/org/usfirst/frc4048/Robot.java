@@ -191,6 +191,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     // drivetrainSensors.setStream(2);  // main USB with limelight PIP
+    Robot.drivetrainSensors.ledOff();
     Scheduler.getInstance().run();
   }
 

@@ -115,7 +115,7 @@ public class RotateAngleForAlignment extends LoggedCommand {
     double closestDistance = 360;
     int closestIndex = 0;
     double[] currentDepositAngles;
-
+    
     if (isCargo) {
       currentDepositAngles = cargoDepositAngles;
     } else {
