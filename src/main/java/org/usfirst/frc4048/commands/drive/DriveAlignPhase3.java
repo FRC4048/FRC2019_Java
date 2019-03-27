@@ -63,6 +63,8 @@ public class DriveAlignPhase3 extends LoggedCommand {
 			Robot.logging.traceMessage(Logging.MessageLevel.INFORMATION, "------------NO CAMERA VALUE------------");
 			done = true;
 			return;
+		} else {
+			Robot.logging.traceMessage(Logging.MessageLevel.INFORMATION, "------------VAILD CAMERA VALUE------------");
 		}
 		double horizontalAngleToTarget = cameraAngles.getTx();
 		double forwardDistance = Robot.drivetrainSensors.getUltrasonicDistance();
@@ -91,6 +93,8 @@ public class DriveAlignPhase3 extends LoggedCommand {
 	protected void loggedEnd() {
 		if(mode.equals(CentricMode.FIELD)) {
 			Robot.drivetrain.swerveDrivetrain.setModeField();
+		} else if(mode.equals(CentricMode.ROBOT_SLOW)) {
+			Robot.drivetrain.swerveDrivetrain.setModeRobotSlow();
 		} else {
 			Robot.drivetrain.swerveDrivetrain.setModeRobot();
 		}

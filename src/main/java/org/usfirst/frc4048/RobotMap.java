@@ -15,7 +15,7 @@ public interface RobotMap extends RobotMapFor2019Robot {
   /**
   * Logger will log every number of iteations specified here
   */
-  public static final int LOGGING_FREQ = 5;
+  public static final int LOGGING_FREQ = 1;
 
   // Add constants that are not specific to the Robot hardware or behavior.
   // Use one of the RobotMapForXXXXX classes to add

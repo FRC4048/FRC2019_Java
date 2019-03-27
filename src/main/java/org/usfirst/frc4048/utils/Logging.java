@@ -28,7 +28,7 @@ public class Logging implements RobotMap {
    * Time period in milliseconds between writing to the log file by the dedicated
    * logging thread.
    */
-  private static final int LOGGING_PERIOD = 100;
+  private static final int LOGGING_PERIOD = 20;
 
   /**
    * Maximum size of the work queue for sending messages to the dedicated logging
@@ -182,9 +182,9 @@ public class Logging implements RobotMap {
    * so we don't run over the 20ms budget.
    */
   public void writeAllData() {
-    final int idx = (counter++) % loggingContexts.size();
-    final LoggingContext lc = loggingContexts.get(idx);
-    lc.writeData();
+    for (final LoggingContext lc : loggingContexts) {
+        lc.writeData();
+    }
   }
 
   /**

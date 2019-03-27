@@ -9,6 +9,7 @@ package org.usfirst.frc4048.commands.drive;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
+import edu.wpi.first.wpilibj.command.WaitForChildren;
 
 import org.usfirst.frc4048.commands.extension.ExtensionMove;
 import org.usfirst.frc4048.commands.limelight.LimelightToggle;
@@ -37,11 +38,12 @@ public class DriveAlignGroup extends CommandGroup {
     addSequential(new LimelightToggle(true));
     addSequential(new ExtensionMove(false));
     addSequential(new RotateAngleForAlignment()); //STEP 1
-    addParallel(new WaitCommand(0.5));
+    // addParallel(new WaitCommand(0.5));
+    // addParallel(new WaitForChildren());
     // addSequential(new DriveAlignPhase2(0.25, 0.4, false)); //STEP 2
     addSequential(new DriveAlignPhase3(0.3, true)); //STEP 3
     addSequential(new CentricModeRobot());
-    addSequential(new LimelightToggle(false));
+    // addSequential(new LimelightToggle(false));
 
   }
 }
