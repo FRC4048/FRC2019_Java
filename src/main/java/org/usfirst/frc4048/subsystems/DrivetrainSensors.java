@@ -79,12 +79,12 @@ public class DrivetrainSensors extends Subsystem {
         // Put code here to be run every loop
         CameraDistance targetDistance = getTargetDistance();
         SmartShuffleboard.put("Driver", "LimelightValidTarget", targetDistance != null);
-        if( targetDistance != null){ 
-            Robot.logging.traceMessage(MessageLevel.INFORMATION, "GOT TARGET");
-        } else {
-            Robot.logging.traceMessage(MessageLevel.INFORMATION, "NO TARGET");
+        // if( targetDistance != null){ 
+        //     Robot.logging.traceMessage(MessageLevel.INFORMATION, "GOT TARGET");
+        // } else {
+        //     Robot.logging.traceMessage(MessageLevel.INFORMATION, "NO TARGET");
             
-        }
+        // }
 
         if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
             SmartShuffleboard.put("DrivetrainSensors", "Ultrasonic", getUltrasonicDistance());

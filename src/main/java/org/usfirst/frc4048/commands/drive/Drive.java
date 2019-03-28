@@ -55,6 +55,10 @@ public class Drive extends Command {
 			fwd *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
 			str *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
 			rcw *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
+
+			fwd *= fwd * Math.signum(fwd);
+			str *= str * Math.signum(str);
+			rcw *= rcw * Math.signum(rcw);
 		}
 
 		Robot.completed(this, "getMode");

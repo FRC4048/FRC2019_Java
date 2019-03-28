@@ -201,6 +201,7 @@ public class DriveTrain extends Subsystem {
 
       add("Gyro", getGyro());
       add("Centric Mode", swerveDrivetrain.getModeRobot().name());
+      add("Command Running", Robot.drivetrain.getCurrentCommandName());
     }
   };
 
