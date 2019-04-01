@@ -53,8 +53,8 @@ public class CancelCommand extends LoggedCommand {
   protected void loggedInterrupted() {
   }
 
-@Override
-protected void loggedCancel() {
-	
-}
+  @Override
+  protected void loggedCancel() {
+    
+  }
 }

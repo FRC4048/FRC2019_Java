@@ -191,7 +191,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     // drivetrainSensors.setStream(2);  // main USB with limelight PIP
-    // Robot.drivetrainSensors.ledOff();
+    Robot.drivetrainSensors.ledOff();
     Scheduler.getInstance().run();
   }
 
@@ -243,8 +243,8 @@ public class Robot extends TimedRobot {
      * MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new
      * ExampleCommand(); break; }
      */
-    if (RobotMap.ENABLE_DRIVETRAIN){
-      Scheduler.getInstance().add(new CentricModeRobot());
+    if (RobotMap.ENABLE_DRIVETRAIN) {
+      drivetrain.swerveDrivetrain.setModeRobot();
     }
   }
 
