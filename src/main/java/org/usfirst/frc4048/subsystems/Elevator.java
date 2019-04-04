@@ -51,7 +51,7 @@ public class Elevator extends Subsystem {
   private final double ELEVATOR_DOWN_SCALE_FACTOR = 0.6;
 
   private final double ELEVATOR_P = 1;
-  private final double ELEVATOR_I = 0;
+  private final double ELEVATOR_I = 0.01;
   private final double ELEVATOR_D = 0;
   private final double ELEVATOR_F = 0;
 
@@ -134,7 +134,7 @@ public class Elevator extends Subsystem {
   }
 
   public boolean elevatorAtPos(ElevatorPosition elevatorPosition) {
-    return Math.abs(elevatorPosition.getPosition() - getEncoder()) < ELEVATOR_POSITION_ERROR;
+    return Math.abs(elevatorPosition.getPosition() - getEncoder()) < ELEVATOR_POSITION_ERROR*2;
   }
 
   public int getError() {

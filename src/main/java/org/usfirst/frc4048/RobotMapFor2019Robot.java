@@ -64,7 +64,7 @@ interface RobotMapFor2019Robot {
   /**
   * Enable shuffleboard debug tabs
   */
-  public static final boolean SHUFFLEBOARD_DEBUG_MODE = true;
+  public static final boolean SHUFFLEBOARD_DEBUG_MODE = false;
 
 
   public static final double SWERVE_DRIVE_ENCODER_DISTANCE_PER_TICK = 0.0942478739;
@@ -149,7 +149,7 @@ interface RobotMapFor2019Robot {
   public static final double TARGET_HEIGHT_HATCH = 28.5;
   public static final double CAMERA_ANGLE = -6; // Degrees, angle that the camera is mounted at
 
-  public static final double ROBOT_CENTRIC_SCALE_RATIO = 0.3;
+  public static final double ROBOT_CENTRIC_SCALE_RATIO = 0.60;
 
   public static final int HATCH_RETURN_CODE = 0;
   public static final int CARGO_RETURN_CODE = 1;

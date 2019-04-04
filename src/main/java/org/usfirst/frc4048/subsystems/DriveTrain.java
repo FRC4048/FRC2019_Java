@@ -84,9 +84,9 @@ public class DriveTrain extends Subsystem {
   private final boolean REVERSE_OUTPUT = true;
 
   private final int FR_ZERO = 3534;//3315;
-  private final int FL_ZERO = 140;//50;
+  private final int FL_ZERO = 180;//50;
   private final int RL_ZERO = 3340;//3575;
-  private final int RR_ZERO = 3900;//136;
+  private final int RR_ZERO = 150;//136;
 
   private final double P = 10;
   private final double I = 0;
@@ -201,6 +201,7 @@ public class DriveTrain extends Subsystem {
 
       add("Gyro", getGyro());
       add("Centric Mode", swerveDrivetrain.getModeRobot().name());
+      add("Command Running", Robot.drivetrain.getCurrentCommandName());
     }
   };
 

@@ -30,7 +30,7 @@ public class ElevatorMoveToPos extends LoggedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void loggedInitialize() {
-    if(Robot.elevator.getEncoder() > 600 && elevatorPosition == ElevatorPosition.SAFE_HEIGHT) {//about the safe height
+    if(Robot.elevator.getEncoder() > 800 && elevatorPosition == ElevatorPosition.SAFE_HEIGHT) {//about the safe height
       Robot.extension.setPiston(false);
     }
     setTimeout(2.5);

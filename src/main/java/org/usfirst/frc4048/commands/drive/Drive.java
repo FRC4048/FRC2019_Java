@@ -15,7 +15,7 @@ public class Drive extends Command {
 	private double fwd, str, rcw;
 	private boolean scaleSpeed;
 	private CentricMode mode;
-
+	private double i = 0;
 	public Drive() {
 		requires(Robot.drivetrain);
 	}
@@ -33,7 +33,10 @@ public class Drive extends Command {
 		str = Robot.oi.getLeftJoy().getX();
 		rcw = Robot.oi.getRightJoy().getX();
 		Robot.completed(this, "getJoy");
-
+		if (RobotMap.SHUFFLEBOARD_DEBUG_MODE) {
+			SmartShuffleboard.put("Drive", "Is Default command", i);
+			i++;
+		}
 		mode = Robot.drivetrain.swerveDrivetrain.getModeRobot();
 		if (mode == CentricMode.ROBOT_SLOW) {
 			scaleSpeed = true;
@@ -52,6 +55,10 @@ public class Drive extends Command {
 			fwd *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
 			str *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
 			rcw *= RobotMap.ROBOT_CENTRIC_SCALE_RATIO;
+
+			fwd *= fwd * Math.signum(fwd);
+			str *= str * Math.signum(str);
+			rcw *= rcw * Math.signum(rcw);
 		}
 
 		Robot.completed(this, "getMode");
