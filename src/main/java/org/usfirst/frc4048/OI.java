@@ -124,8 +124,8 @@ public class OI {
     cancelCommand = new JoystickButton(controller, RobotMap.XBOX_BACK_BUTTON);
     cancelCommand.whenPressed(new CancelCommand());
     if (RobotMap.ENABLE_MANIPULATOR) {
-      hatchIntake = new JoystickButton(controller, RobotMap.XBOX_LEFT_BUMPER);
-      gamePieceRelease = new JoystickButton(controller, RobotMap.XBOX_RIGHT_BUMPER);
+      hatchIntake = new JoystickButton(controller, RobotMap.XBOX_RIGHT_BUMPER);
+      gamePieceRelease = new JoystickButton(controller, RobotMap.XBOX_LEFT_BUMPER);
 
       hatchIntake.whenPressed(new HatchPanelIntake());
       gamePieceRelease.whenPressed(new ReleaseGamePieceScheduler());
