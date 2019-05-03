@@ -32,17 +32,21 @@ import org.usfirst.frc4048.utils.diagnostics.DiagSonar;
  */
 public class DrivetrainSensors extends Subsystem {
 
-    private Ultrasonic ultrasonic;
+    private Ultrasonic ultrasonicLeft;
+    // private Ultrasonic ultrasonicRight;
 
     private LimeLightVision limelight;
 
     public DrivetrainSensors() {
-        ultrasonic = new Ultrasonic(RobotMap.ALIGNMENT_ULTRASONIC_ID[0], RobotMap.ALIGNMENT_ULTRASONIC_ID[1]);
-        ultrasonic.setAutomaticMode(true);
+        ultrasonicLeft = new Ultrasonic(RobotMap.ALIGNMENT_ULTRASONIC_LEFT_ID[0], RobotMap.ALIGNMENT_ULTRASONIC_LEFT_ID[1]);
+        ultrasonicLeft.setAutomaticMode(true);
+
+        // ultrasonicRight = new Ultrasonic(RobotMap.ALIGNMENT_ULTRASONIC_RIGHT_ID[0], RobotMap.ALIGNMENT_ULTRASONIC_RIGHT_ID[1]);
+        // ultrasonicRight.setAutomaticMode(true);
 
         limelight = new LimeLightVision();
 
-        Robot.diagnostics.addDiagnosable(new DiagSonar("Drive Sonar", ultrasonic, 10, 20));
+        Robot.diagnostics.addDiagnosable(new DiagSonar("Drive Sonar", ultrasonicLeft, 10, 20));
     }
 
     public final Logging.LoggingContext loggingContext = new Logging.LoggingContext(this.getClass()) {
@@ -102,7 +106,7 @@ public class DrivetrainSensors extends Subsystem {
     }
 
     public double getUltrasonicDistance() {
-        return ultrasonic.getRangeInches();
+        return ultrasonicLeft.getRangeInches();
     }
 
     public CameraDistance getTargetDistance() {

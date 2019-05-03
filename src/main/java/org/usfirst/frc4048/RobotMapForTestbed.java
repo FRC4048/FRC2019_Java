@@ -89,16 +89,15 @@ interface RobotMapForTestbed {
 
   //DIGITAL INPUTS
   public static final int CARGO_OPTICAL_SENSOR_ID = 2;
-  public static final int SWERVE_DRIVE_ENCODER_A_ID = 5; 
-  public static final int SWERVE_DRIVE_ENCODER_B_ID = 6;
+  public static final int SWERVE_DRIVE_ENCODER_A_ID = 0; 
+  public static final int SWERVE_DRIVE_ENCODER_B_ID = 1;
   public static final int HATCH_DIGITAL_INPUT_ID = 7;
   public static final int CARGO_DIGITAL_INPUT_ID = 3;
   public static final int PIVOT_LIMIT_SWITCH_LEFT_ID = 5;
   public static final int PIVOT_LIMIT_SWITCH_RIGHT_ID = 4;
   public static final int CLIMBER_POSITION_SENSOR_ID = 11;
-
-  public static final int[] ALIGNMENT_ULTRASONIC_ID = {12,13};
-
+  public static final int[] ALIGNMENT_ULTRASONIC_LEFT_ID = {3,4};
+  public static final int[] ALIGNMENT_ULTRASONIC_RIGHT_ID = {5,6};
   //PWM
   public static final int PIVOT_MOTOR_ID = 0;
   public static final int CARGO_MOTOR_ID = 1;
